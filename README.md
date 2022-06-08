@@ -1,2 +1,4 @@
 # Eriks-Java-Collection
-A little collection of my first ever coding projects (Only JFrame applications)
+A little collection of my first ever coding projects 
+## Includes Applications of type
+JFrame : Yes | Command Line : No
