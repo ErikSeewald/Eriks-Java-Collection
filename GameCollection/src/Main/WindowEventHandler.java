@@ -47,6 +47,7 @@ public class WindowEventHandler extends WindowAdapter
 			case "Speedrun": JumpAndRun.stop(); index = 10; break;
 			case "Pixel Collision": PixelCollision.stop(); index = 11; break;
 			case "Cloth Sim": ClothSim.stop(); index = 12; break;
+			case "Gravity Vectors": index = 13; break;
 		}
 		
 		if (index != -1)

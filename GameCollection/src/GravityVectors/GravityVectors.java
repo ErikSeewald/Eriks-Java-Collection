@@ -15,6 +15,9 @@ public class GravityVectors extends JFrame
 	{
 		GravityVectorsPanel panel = new GravityVectorsPanel();
 		
+		this.addWindowListener(eventHandler);
+		this.setTitle("Gravity Vectors");
+		
 		this.addKeyListener(new KeyListener()
 		{
 			@Override
@@ -44,5 +47,4 @@ public class GravityVectors extends JFrame
 		this.setVisible(true);
 		
 	}
-
 }
