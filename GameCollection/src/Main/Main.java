@@ -2,13 +2,15 @@ package Main;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import Quicksort.QuickSort;
+
 public class Main 
 {
 
 	public static void main(String[] args) 
 	{
 		MainMenu menu = new MainMenu();
-	
+		
 		menu.addKeyListener(new KeyListener()
 		{
 			@Override
