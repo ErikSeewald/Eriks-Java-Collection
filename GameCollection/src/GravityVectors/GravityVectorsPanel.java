@@ -27,7 +27,7 @@ public class GravityVectorsPanel extends JPanel
 	
 	final private int PPOINT_SIZE = 12;
 	private int PPOINT_COUNT = 1;
-	private int selectedPPOINT;
+	private int selectedPPOINT = 0;
 	private PullPoint[] pullPoints = {new PullPoint(), new PullPoint()};
 	
 	final private Color BACKGROUND_COLOR = new Color(50,50,70);
@@ -37,6 +37,8 @@ public class GravityVectorsPanel extends JPanel
 	boolean gradientMode = false;
 	final private float[] gradientFractions = {0.0f, 1.0f};
 	final private Color[] gradientColors = {PPOINT_COLOR, Color.green};
+	
+	boolean validDrag = false;
 	
 	GravityVectorsPanel()
 	{
@@ -87,6 +89,8 @@ public class GravityVectorsPanel extends JPanel
 	
 	public void changePPOINT_COUNT(int amount)
 	{
+		selectedPPOINT = 0;
+		
 		if (PPOINT_COUNT + amount < 1) {return;}
 		PPOINT_COUNT+= amount;
 		
@@ -212,7 +216,7 @@ public class GravityVectorsPanel extends JPanel
 		if (gradientMode)
 		{
 			RadialGradientPaint distFromCenter = 
-			new RadialGradientPaint(pullPoints[0].locX, pullPoints[0].locY, 500, gradientFractions, gradientColors);
+			new RadialGradientPaint(pullPoints[selectedPPOINT].locX, pullPoints[selectedPPOINT].locY, 500, gradientFractions, gradientColors);
 			g2D.setPaint(distFromCenter);
 		}
 		
@@ -224,7 +228,7 @@ public class GravityVectorsPanel extends JPanel
 			if (arrowPoints[i].arrowX != 0) 
 			{g2D.drawLine(arrowPoints[i].locX, arrowPoints[i].locY, arrowPoints[i].arrowX, arrowPoints[i].arrowY);}
 			
-			g2D.drawRect(arrowPoints[i].locX-1, arrowPoints[i].locY-1, 2, 2);
+			g2D.drawRect(arrowPoints[i].arrowX-1, arrowPoints[i].arrowY-1, 2, 2);
 		}
 		
 		//PULL POINTS
@@ -233,7 +237,7 @@ public class GravityVectorsPanel extends JPanel
 			g2D.setPaint(PPOINT_COLOR);
 			for (int i = 0; i < PPOINT_COUNT; i++)
 			{
-				g2D.fillOval(pullPoints[i].locX, pullPoints[i].locY, PPOINT_SIZE, PPOINT_SIZE);
+				g2D.fillOval(pullPoints[i].locX-6, pullPoints[i].locY-6, PPOINT_SIZE, PPOINT_SIZE);
 			}
 		}
 	}
@@ -252,7 +256,7 @@ public class GravityVectorsPanel extends JPanel
 	
 	private void selectGravityPoint(int X, int Y)
 	{	
-		selectedPPOINT = -1;
+		validDrag = false;
 		
 		for (int i = 0; i < PPOINT_COUNT; i++)
 		{
@@ -261,17 +265,18 @@ public class GravityVectorsPanel extends JPanel
 				X > pullPoints[i].locX-10 && X < pullPoints[i].locX+10 &&
 				Y > pullPoints[i].locY-10 && Y < pullPoints[i].locY+10 
 			)
-			{selectedPPOINT = i; break;}
+			{selectedPPOINT = i; validDrag = true; break;}
 		}
 	}
 	
 	private void moveGravityPoint(int X, int Y)
 	{
-		if (selectedPPOINT == -1) {return;}
-		
-		pullPoints[selectedPPOINT].locX = X-5;
-		pullPoints[selectedPPOINT].locY = Y-5;
-		
-		repaint();
+		if (validDrag)
+		{
+			pullPoints[selectedPPOINT].locX = X;
+			pullPoints[selectedPPOINT].locY = Y;
+			
+			repaint();
+		}
 	}
 }
