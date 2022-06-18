@@ -34,15 +34,15 @@ public class WindowEventHandler extends WindowAdapter
 		
 		switch(title)
 		{
-			case "Mouse Dodge": MouseDodgePanel.stop(); index = 0; break; 
-			case "Reflection Demo": index = 1; break;
-			case "Sudoku": index = 2; break;
-			//case "Pathfind": PathfindDemo.stop(); index = 3; break;
-			case "Sierpinski": SierpinskiSlow.stop();index = 4; break;
-			case "Parallel Universes": ParallelUniverses.stop(); index = 5; break;
-			case "Insects": InsectsPanel.stop(); index = 6; break;
-			case "Particles" : ParticlesPanel.stop();index = 7; break;
-			case "3D Coordinates": Coordinates3DFrame.stop(); index = 8; break;
+			case "3D Coordinates": Coordinates3DFrame.stop(); index = 0; break;	
+			case "Insects": InsectsPanel.stop(); index = 1; break;
+			case "Particles" : ParticlesPanel.stop();index = 2; break;
+			case "Sierpinski": SierpinskiSlow.stop();index = 3; break;
+			case "Sudoku": index = 4; break;
+			//case "Pathfind": PathfindDemo.stop(); index = 5; break;
+			case "Parallel Universes": ParallelUniverses.stop(); index = 6; break;
+			case "Reflection Demo": index = 7; break;
+			case "Mouse Dodge": MouseDodgePanel.stop(); index = 8; break; 
 			case "Sidescroller": JumpAndRun.stop(); index = 9; break;
 			case "Speedrun": JumpAndRun.stop(); index = 10; break;
 			case "Pixel Collision": PixelCollision.stop(); index = 11; break;

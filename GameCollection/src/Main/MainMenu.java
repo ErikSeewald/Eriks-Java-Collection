@@ -29,15 +29,15 @@ public class MainMenu extends JFrame implements MouseListener
 
 	int resolution = 600;
 	
-	JLabel gameButton1 = new JLabel(" Mouse Dodge");
-	JLabel gameButton2 = new JLabel("    Reflection");
-	JLabel gameButton3 = new JLabel("      Sudoku");
-	JLabel gameButton4 = new JLabel("      Pathfind");
-	JLabel gameButton5 = new JLabel("    Sierpinski");
-	JLabel gameButton6 = new JLabel("    Parallel U.");
-	JLabel gameButton7 = new JLabel("      Insects");
-	JLabel gameButton8 = new JLabel("     Particles");
-	JLabel gameButton9 = new JLabel("   3D Coords");
+	JLabel gameButton1 = new JLabel("   3D Coords");
+	JLabel gameButton2 = new JLabel("      Insects");
+	JLabel gameButton3 = new JLabel("     Particles");
+	JLabel gameButton4 = new JLabel("    Sierpinski");
+	JLabel gameButton5 = new JLabel("      Sudoku");
+	JLabel gameButton6 = new JLabel("      Pathfind");
+	JLabel gameButton7 = new JLabel("    Parallel U.");
+	JLabel gameButton8 = new JLabel("    Reflection");
+	JLabel gameButton9 = new JLabel(" Mouse Dodge");
 	JLabel gameButton10 = new JLabel("   Sidescroller");
 	JLabel gameButton11 = new JLabel("    Speedrun");
 	JLabel gameButton12 = new JLabel(" Pixel Collision");
@@ -92,7 +92,7 @@ public class MainMenu extends JFrame implements MouseListener
 		this.setTitle("Menu");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
-		this.getContentPane().setBackground(new Color(30,30,40));
+		this.getContentPane().setBackground(new Color(40,40,55));
 		
 		this.setLayout(null);
 		
@@ -174,23 +174,23 @@ public class MainMenu extends JFrame implements MouseListener
 		
 		switch (index)
 		{
-			case 0: MouseDodge mouseDodge = new MouseDodge(); mouseDodge.start(eventHandler);
+			case 0: Coordinates3D coordinates3D = new Coordinates3D(); coordinates3D.start(eventHandler);
 			break;
-			case 1: ReflectionDemo reflectionDemo = new ReflectionDemo(); reflectionDemo.start(eventHandler);
+			case 1: Insects insects = new Insects(); insects.start(eventHandler);
 			break;
-			case 2: Sudoku sudoku = new Sudoku(); sudoku.start(eventHandler);
+			case 2: Particles particles = new Particles(); particles.start(eventHandler);
 			break;
-			case 3: SelectionFrame pathfind = new SelectionFrame(); pathfind.start("Pathfind", null);
+			case 3: SelectionFrame sierpinski = new SelectionFrame(); sierpinski.start("Sierpinski", eventHandler);
 			break;
-			case 4: SelectionFrame sierpinski = new SelectionFrame(); sierpinski.start("Sierpinski", eventHandler);
+			case 4: Sudoku sudoku = new Sudoku(); sudoku.start(eventHandler);
 			break;
-			case 5: ParallelUniverses parallelUniverses = new ParallelUniverses();parallelUniverses.start(eventHandler);
+			case 5: SelectionFrame pathfind = new SelectionFrame(); pathfind.start("Pathfind", null);
 			break;
-			case 6: Insects insects = new Insects(); insects.start(eventHandler);
+			case 6: ParallelUniverses parallelUniverses = new ParallelUniverses();parallelUniverses.start(eventHandler);
 			break;
-			case 7: Particles particles = new Particles(); particles.start(eventHandler);
+			case 7: ReflectionDemo reflectionDemo = new ReflectionDemo(); reflectionDemo.start(eventHandler);
 			break;
-			case 8: Coordinates3D coordinates3D = new Coordinates3D(); coordinates3D.start(eventHandler);
+			case 8: MouseDodge mouseDodge = new MouseDodge(); mouseDodge.start(eventHandler);
 			break;
 			case 9: JumpAndRun jumpAndRun = new JumpAndRun(); jumpAndRun.start(eventHandler, false);
 			break;
@@ -266,56 +266,57 @@ public class MainMenu extends JFrame implements MouseListener
 	{
 		String[][] titles = new String[24][6];
 		
-		titles[0][0] = "MOUSE DODGE";
-		titles[0][1] = "MOVE YOUR MOUSE TO DODGE THE ENEMIES";
-		titles[0][2] = "PRESS F TO SWITCH DARK MODE ON OR OFF";
-		titles[0][3] = "OTHER CONTROLS ARE DISPLAYED INGAME";
 		
-		titles[1][0] = "REFLECTION DEMO";
-		titles[1][1] ="MOVE THE ORIGIN WITH YOUR MOUSE HELD DOWN AND ROTATE WITH THE MOUSE WHEEL";
-		titles[1][2] ="1 - LESS REFLECTIONS  |  2 - MORE REFLECTIONS";
-		titles[1][3] ="3 - LESS ROTATION SPEED  |  4 - MORE ROTATION SPEED";
-		titles[1][4] ="5 - LOW ACCURACY | 6 - DEFAULT ACCURACY | 7 - ULTRA ACCURACY (DEMANDING)";
+		titles[0][0] = "3D COORDINATES";
+		titles[0][1] ="TYPE IN THE COORDINATES OF POINTS OF THE PLANE YOU WANT TO BE DISPLAYED";
+		titles[0][2] ="CLICK THE TOP LEFT BUTTON TO TURN IT INTO A CUBE, THE TOP RIGHT TO SPIN";
+		titles[0][3] ="CLICK THE BUTTONS AT THE BOTTOM TO REMOVE THE AXIS' OR TO MOVE THE PLANE";
+		titles[0][4] ="RECOMMENDED COORDINATES: 12,0,0   0,0,0   0,12,0";
 		
-		titles[2][0] = "SUDOKU";
-		titles[2][1] ="USE YOUR MOUSE TO CLICK ON A BOX, THEN TYPE IN A NUMBER";
-		titles[2][2] ="S -- SOLVE SUDOKU | R -- RESET";
-		titles[2][3] ="+ -- INCREASE SIZE | - -- DECREASE SIZE";
+		titles[1][0] = "INSECTS";
+		titles[1][1] ="OBSERVE AS THE INSECTS TRY TO SURVIVE IN THIS MAZE | R - RESTART";
+		titles[1][2] ="YOU CAN SEE THE AMOUNT OF INSECTS IN THE TOP LEFT CORNER";
+		titles[1][3] ="BLUE SQUARES ARE SOURCES OF WATER, RED SQUARES ARE FOOD. THE NUMBER OF";
+		titles[1][4] ="INSECTS CHANGES IN RELATION TO HOW MANY INSECTS ARE INSIDE THESE SOURCES";
+		titles[1][5] ="1 - LESS ANTS | 2 - MORE ANTS | 3 - LESS INCREASE PER PRESS | 4 - MORE";
 		
-		titles[3][0] = "PATHFIND";
-		titles[3][1] ="USE W,A,S,D TO ESCAPE THE RED ENEMIES FOR AS MANY TURNS AS POSSIBLE";
-		titles[3][2] ="LOAD AND SAVE LEVELS WITH THE MENU BAR | SHIFT + CLICK ON TILES TO EDIT THEM";
-		titles[3][3] ="0 -- WIPE BOARD | R -- RESET BOARD";
-		titles[3][4] ="T -- NEW BOARD | +/- -- CHANGE SIZE";
+		titles[2][0] = "PARTICLES";
+		titles[2][1] ="PRESS DOWN YOUR MOUSE TO DRAW ON THE PARTICLES";
+		titles[2][2] ="PRESS R TO RESET";
 		
-		titles[4][0] = "SIERPINSKI";
-		titles[4][1] ="EVERY TURN THERE IS A RANDOM CHANCE FOR THE POINT TO MOVE TOWARDS ONE OF THE";
-		titles[4][2] ="3 POINTS OF THE TRIANGLE. THEN IT LEAVES A POINT HALFWAY ON THE PATH TO THE";
-		titles[4][3] ="CHOSEN POINT. REPEATING THIS WILL SLOWLY CREATE A SIERPINSKI TRIANGLE.";
-		titles[4][4] ="HOLD DOWN YOUR MOUSE OVER A TRIANGLE POINT AND HOLD SHIFT TO MOVE IT";
+		titles[3][0] = "SIERPINSKI";
+		titles[3][1] ="EVERY TURN THERE IS A RANDOM CHANCE FOR THE POINT TO MOVE TOWARDS ONE OF THE";
+		titles[3][2] ="3 POINTS OF THE TRIANGLE. THEN IT LEAVES A POINT HALFWAY ON THE PATH TO THE";
+		titles[3][3] ="CHOSEN POINT. REPEATING THIS WILL SLOWLY CREATE A SIERPINSKI TRIANGLE.";
+		titles[3][4] ="HOLD DOWN YOUR MOUSE OVER A TRIANGLE POINT AND HOLD SHIFT TO MOVE IT";
 		
-		titles[5][0] = "PARALLEL UNIVERSES";
-		titles[5][1] ="THE RED POINT REPRESENTS YOUR POSTITION IN THE UNIVERSE";
-		titles[5][2] ="THE GREEN POINT REPRESENTS YOUR POSITION IN THE PARALLEL UNIVERSES";
-		titles[5][3] ="MOVE WITH W,A,S,D AND HOLD DOWN SHIFT BEFORE PRESSING THE KEYS TO MOVE FASTER";
-		titles[5][4] ="HIDE THE PARALLEL UNIVERSES WITH E";
+		titles[4][0] = "SUDOKU";
+		titles[4][1] ="USE YOUR MOUSE TO CLICK ON A BOX, THEN TYPE IN A NUMBER";
+		titles[4][2] ="S -- SOLVE SUDOKU | R -- RESET";
+		titles[4][3] ="+ -- INCREASE SIZE | - -- DECREASE SIZE";
 		
-		titles[6][0] = "INSECTS";
-		titles[6][1] ="OBSERVE AS THE INSECTS TRY TO SURVIVE IN THIS MAZE | R - RESTART";
-		titles[6][2] ="YOU CAN SEE THE AMOUNT OF INSECTS IN THE TOP LEFT CORNER";
-		titles[6][3] ="BLUE SQUARES ARE SOURCES OF WATER, RED SQUARES ARE FOOD. THE NUMBER OF";
-		titles[6][4] ="INSECTS CHANGES IN RELATION TO HOW MANY INSECTS ARE INSIDE THESE SOURCES";
-		titles[6][5] ="1 - LESS ANTS | 2 - MORE ANTS | 3 - LESS INCREASE PER PRESS | 4 - MORE";
+		titles[5][0] = "PATHFIND";
+		titles[5][1] ="USE W,A,S,D TO ESCAPE THE RED ENEMIES FOR AS MANY TURNS AS POSSIBLE";
+		titles[5][2] ="LOAD AND SAVE LEVELS WITH THE MENU BAR | SHIFT + CLICK ON TILES TO EDIT THEM";
+		titles[5][3] ="0 -- WIPE BOARD | R -- RESET BOARD";
+		titles[5][4] ="T -- NEW BOARD | +/- -- CHANGE SIZE";
 		
-		titles[7][0] = "PARTICLES";
-		titles[7][1] ="PRESS DOWN YOUR MOUSE TO DRAW ON THE PARTICLES";
-		titles[7][2] ="PRESS R TO RESET";
+		titles[6][0] = "PARALLEL UNIVERSES";
+		titles[6][1] ="THE RED POINT REPRESENTS YOUR POSTITION IN THE UNIVERSE";
+		titles[6][2] ="THE GREEN POINT REPRESENTS YOUR POSITION IN THE PARALLEL UNIVERSES";
+		titles[6][3] ="MOVE WITH W,A,S,D AND HOLD DOWN SHIFT BEFORE PRESSING THE KEYS TO MOVE FASTER";
+		titles[6][4] ="HIDE THE PARALLEL UNIVERSES WITH E";
 		
-		titles[8][0] = "3D COORDINATES";
-		titles[8][1] ="TYPE IN THE COORDINATES OF POINTS OF THE PLANE YOU WANT TO BE DISPLAYED";
-		titles[8][2] ="CLICK THE TOP LEFT BUTTON TO TURN IT INTO A CUBE, THE TOP RIGHT TO SPIN";
-		titles[8][3] ="CLICK THE BUTTONS AT THE BOTTOM TO REMOVE THE AXIS' OR TO MOVE THE PLANE";
-		titles[8][4] ="RECOMMENDED COORDINATES: 12,0,0   0,0,0   0,12,0";
+		titles[7][0] = "REFLECTION DEMO";
+		titles[7][1] ="MOVE THE ORIGIN WITH YOUR MOUSE HELD DOWN AND ROTATE WITH THE MOUSE WHEEL";
+		titles[7][2] ="1 - LESS REFLECTIONS  |  2 - MORE REFLECTIONS";
+		titles[7][3] ="3 - LESS ROTATION SPEED  |  4 - MORE ROTATION SPEED";
+		titles[7][4] ="5 - LOW ACCURACY | 6 - DEFAULT ACCURACY | 7 - ULTRA ACCURACY (DEMANDING)";
+		
+		titles[8][0] = "MOUSE DODGE";
+		titles[8][1] = "MOVE YOUR MOUSE TO DODGE THE ENEMIES";
+		titles[8][2] = "PRESS F TO SWITCH DARK MODE ON OR OFF";
+		titles[8][3] = "OTHER CONTROLS ARE DISPLAYED INGAME";
 		
 		titles[9][0] = "2D SIDESCROLLER";
 		titles[9][1] ="OUTRUN THE SCREEN AND DON'T FALL INTO THE LAVA";
