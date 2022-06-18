@@ -26,7 +26,7 @@ public class GravityVectorsPanel extends JPanel
 	private ArrowPoint[] arrowPoints;
 	
 	final private int PPOINT_SIZE = 12;
-	private int PPOINT_COUNT = 2;
+	private int PPOINT_COUNT = 1;
 	private int selectedPPOINT;
 	private PullPoint[] pullPoints = {new PullPoint(), new PullPoint()};
 	
@@ -87,7 +87,7 @@ public class GravityVectorsPanel extends JPanel
 	
 	public void changePPOINT_COUNT(int amount)
 	{
-		if (PPOINT_COUNT + amount < 2) {return;}
+		if (PPOINT_COUNT + amount < 1) {return;}
 		PPOINT_COUNT+= amount;
 		
 		//save the locations so they can be reset after clearing the old array
@@ -231,7 +231,7 @@ public class GravityVectorsPanel extends JPanel
 		if (PPOINT_COUNT != 0)
 		{
 			g2D.setPaint(PPOINT_COLOR);
-			for (int i = 0; i < pullPoints.length; i++)
+			for (int i = 0; i < PPOINT_COUNT; i++)
 			{
 				g2D.fillOval(pullPoints[i].locX, pullPoints[i].locY, PPOINT_SIZE, PPOINT_SIZE);
 			}
