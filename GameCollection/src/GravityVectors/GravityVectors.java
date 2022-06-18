@@ -24,6 +24,8 @@ public class GravityVectors extends JFrame
 				
 				if (code == 521) {panel.changeSize(30); pack();} //+
 				else if (code == 45) {panel.changeSize(-30); pack();} //-
+				else if (code == 49) {panel.changePPOINT_COUNT(-1);} //1
+				else if (code == 50) {panel.changePPOINT_COUNT(1);} //2
 			}
 			
 			
