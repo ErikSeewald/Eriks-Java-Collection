@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 
 import ClothSim.ClothSim;
 import Coordinates3D.Coordinates3D;
+import GravityVectors.GravityVectors;
 import Insects.Insects;
 import JumpAndRun.JumpAndRun;
 import MouseDodge.MouseDodge;
@@ -41,7 +42,7 @@ public class MainMenu extends JFrame implements MouseListener
 	JLabel gameButton11 = new JLabel("    Speedrun");
 	JLabel gameButton12 = new JLabel(" Pixel Collision");
 	JLabel gameButton13 = new JLabel("    Cloth Sim");
-	JLabel gameButton14 = new JLabel();
+	JLabel gameButton14 = new JLabel(" Gravity Vects");
 	JLabel gameButton15 = new JLabel("");
 	JLabel gameButton16 = new JLabel("");
 	JLabel gameButton17 = new JLabel("");
@@ -198,6 +199,8 @@ public class MainMenu extends JFrame implements MouseListener
 			case 11: PixelCollision pixelCollision = new PixelCollision(); pixelCollision.start(eventHandler);
 			break;
 			case 12: ClothSim clothSim = new ClothSim(); clothSim.start(eventHandler);
+			break;
+			case 13: GravityVectors gravityVectors = new GravityVectors(); gravityVectors.start(eventHandler);
 			break;
 		}
 		
