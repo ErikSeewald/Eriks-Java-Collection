@@ -31,7 +31,8 @@ public class GravityVectors extends JFrame
 				else if (code == 45) {panel.changeSize(-30); pack();} //-
 				else if (code == 49) {panel.changePPOINT_COUNT(-1);} //1
 				else if (code == 50) {panel.changePPOINT_COUNT(1);} //2
-				else if (code == 71) {panel.gradientMode = !panel.gradientMode; panel.repaint();} //G                                                
+				else if (code == 71) {panel.gradientMode = !panel.gradientMode; panel.repaint();} //G     
+				else if (code == 78) {panel.switchArrowNormalization(); panel.repaint();} //N              
 			}
 			
 			@Override
