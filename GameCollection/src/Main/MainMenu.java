@@ -88,7 +88,6 @@ public class MainMenu extends JFrame implements MouseListener
 	
 	public static final ImageIcon img = new ImageIcon("src\\Main\\logo.jpg");
 	
-	
 	MainMenu()
 	{
 		eventHandler = new WindowEventHandler();
