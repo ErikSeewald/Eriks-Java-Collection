@@ -43,6 +43,7 @@ public class GravityVectorsPanel extends JPanel
 	final private Color[] gradientColors = {PPOINT_COLOR, Color.green};
 	
 	boolean validDrag = false;
+	private boolean normalizeVector = true;
 	
 	GravityVectorsPanel()
 	{
@@ -123,7 +124,7 @@ public class GravityVectorsPanel extends JPanel
 			for (int i = 0; i < PPOINT_COUNT; i++)
 			{strengths[i] = Math.pow(0.99, distances[i]);}
 			
-			//NORMALIZE VECTORS
+			//NORMALIZE VECTORS SO "STRENGTHS" CAN ACTUALLY AFFECT THE VECTORS PROPORTIONALLY
 			for (int i = 0; i < PPOINT_COUNT; i++)
 			{
 				double[] temp = normalize(vectorsX[i], vectorsY[i], distances[i]);
@@ -134,20 +135,32 @@ public class GravityVectorsPanel extends JPanel
 			double arrowVectX = 0;
 			double arrowVectY = 0;
 			
+			//COMBINE ALL THE VECTORS MULTIPLIED BY THEIR STRENGTH
 			for (int i = 0; i < PPOINT_COUNT; i++)
 			{
 				arrowVectX+= vectorsX[i] * strengths[i];
 				arrowVectY+= vectorsY[i] * strengths[i];
 			}
 			
-			double length = Math.sqrt(Math.pow(arrowVectX, 2)+Math.pow(arrowVectY, 2));
-			double[] temp = normalize(arrowVectX, arrowVectY, length);
-			arrowVectX = temp[0];
-			arrowVectY = temp[1];
+			//NORMALIZE ONE FINAL TIME TO MULTIPLY WITH ARROW_LENGTH
+			if (normalizeVector)
+			{
+				double length = Math.sqrt(Math.pow(arrowVectX, 2)+Math.pow(arrowVectY, 2));
+				double[] temp = normalize(arrowVectX, arrowVectY, length);
+				arrowVectX = temp[0];
+				arrowVectY = temp[1];
+			}
 			
 			point.arrowX = (int) (point.locX + arrowVectX * ARROW_LENGTH);
 			point.arrowY = (int) (point.locY + arrowVectY * ARROW_LENGTH);
 		}
+	}
+	
+	public void switchArrowNormalization()
+	{
+		normalizeVector = !normalizeVector;
+		simulate();
+		repaint();
 	}
 	
 	public double[] normalize(double x , double y, double length)
