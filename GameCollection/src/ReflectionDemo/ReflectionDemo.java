@@ -3,6 +3,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 
+import Main.MainMenu;
 import Main.WindowEventHandler;
 
 public class ReflectionDemo extends JFrame
@@ -16,6 +17,7 @@ public class ReflectionDemo extends JFrame
 		panel = new ReflectionPanel();
 		
 		this.setTitle("Reflection Demo");
+		this.setIconImage(MainMenu.img.getImage());
 		this.setResizable(false);
 		this.add(panel);
 		this.pack();

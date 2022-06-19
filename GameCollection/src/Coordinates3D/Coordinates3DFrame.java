@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.Timer;
 
+import Main.MainMenu;
 import Main.WindowEventHandler;
 
 public class Coordinates3DFrame extends JFrame implements ActionListener,MouseListener
@@ -60,6 +61,7 @@ public class Coordinates3DFrame extends JFrame implements ActionListener,MouseLi
 		timer.addActionListener(this);
 		
 		this.addWindowListener(eventHandler);
+		this.setIconImage(MainMenu.img.getImage());
 		this.setTitle("3D Coordinates");
 		
 		panel = new Coordinates3DPanel(a,b,c); //Weitergabe der Daten der 3 Punkte

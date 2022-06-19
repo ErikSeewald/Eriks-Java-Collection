@@ -3,6 +3,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 
+import Main.MainMenu;
 import Main.WindowEventHandler;
 
 public class Sudoku
@@ -11,6 +12,7 @@ public class Sudoku
 	{
 		
 		JFrame frame = new JFrame("Sudoku");
+		frame.setIconImage(MainMenu.img.getImage());
 		frame.setResizable(false);
 		
 		SudokuPanel panel = new SudokuPanel();

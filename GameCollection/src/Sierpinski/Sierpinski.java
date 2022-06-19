@@ -1,6 +1,7 @@
 package Sierpinski;
 import javax.swing.JFrame;
 
+import Main.MainMenu;
 import Main.WindowEventHandler;
 
 public class Sierpinski{
@@ -23,6 +24,7 @@ public class Sierpinski{
 	public void start()
 	{
 		JFrame frame = new JFrame("Sierpinski");
+		frame.setIconImage(MainMenu.img.getImage());
 		
 		frame.setResizable(false);
 		frame.addWindowListener(eventHandler);

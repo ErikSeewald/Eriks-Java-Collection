@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
+import Main.MainMenu;
 import Main.WindowEventHandler;
 
 public class ParallelUniverses 
@@ -46,6 +47,7 @@ public class ParallelUniverses
 	public void start(WindowEventHandler eventHandler) 
 	{
 		JFrame frame = new JFrame("Parallel Universes");
+		frame.setIconImage(MainMenu.img.getImage());
 		panel = new ParallelUniversesPanel();
 		
 		timer.start();

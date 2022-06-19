@@ -3,21 +3,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-
 import Main.MainMenu;
+import Main.WindowEventHandler;
 
 
 public class Pathfind extends JFrame implements ActionListener
@@ -29,12 +26,13 @@ public class Pathfind extends JFrame implements ActionListener
 	
 	PathfindPanel panel;
 	
-	int gamemode;
+	static private int gamemode;
 	
-	public Pathfind(int gamemode)
+	public Pathfind(WindowEventHandler eventHandler, int gamemode)
 	{			
-		
-		this.gamemode = gamemode;
+		Pathfind.gamemode = gamemode;
+		this.setIconImage(MainMenu.img.getImage());
+		this.addWindowListener(eventHandler);
 		this.setTitle("Pathfind");
 		
 		switch(gamemode)
@@ -45,7 +43,6 @@ public class Pathfind extends JFrame implements ActionListener
 		}
 		
 		this.setResizable(false);
-		this.addWindowListener(new WindowEventHandler());
 		
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu =new JMenu("File");
@@ -228,14 +225,6 @@ public class Pathfind extends JFrame implements ActionListener
 			}
 		}
 	
-	class WindowEventHandler extends WindowAdapter 
-	{
-		  public void windowClosing(WindowEvent evt) 
-		  {
-			  MainMenu.hasWindowOpen[3] = false;
-			  
-			  try {MainMenu.restart();} 
-			  catch (IOException e1) {e1.printStackTrace();} catch (URISyntaxException e1) {e1.printStackTrace();}
-		  }
-	}
+	public static void stop()
+	{if (gamemode == 3) {if (PathfindDemo.timer.isRunning()) {PathfindDemo.timer.stop();}}}
 }
