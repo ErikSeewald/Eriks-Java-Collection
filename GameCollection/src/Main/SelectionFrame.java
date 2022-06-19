@@ -18,6 +18,7 @@ public class SelectionFrame
 		this.gameName = gameName;
 		
 		JFrame selection = new JFrame("Selection");
+		selection.setIconImage(MainMenu.img.getImage());
 		JLabel headline = new JLabel("PICK A GAMEMODE BY PRESSING THE CORRESPONDING KEY");
 		headline.setForeground(new Color(220,220,240));
 		JLabel mode1 = new JLabel();
@@ -43,7 +44,7 @@ public class SelectionFrame
 		{
 			case "Pathfind":  mode1.setText("1 - NORMAL"); mode2.setText("2 - TRAIL"); mode3.setText("3 - DEMO");
 			break;
-			case "Sierpinski":mode1.setText("1 - SLOW"); mode2.setText("2 - NORMAL"); mode3.setText("3 - FAST");
+			case "Sierpinski": mode1.setText("1 - SLOW"); mode2.setText("2 - NORMAL"); mode3.setText("3 - FAST");
 			break;
 			
 		}
@@ -59,7 +60,7 @@ public class SelectionFrame
 				
 				switch (gameName)
 				{
-					case "Pathfind": new Pathfind(mode); selection.dispatchEvent(new WindowEvent(selection, WindowEvent.WINDOW_CLOSING));
+					case "Pathfind": new Pathfind(eventHandler, mode); selection.dispatchEvent(new WindowEvent(selection, WindowEvent.WINDOW_CLOSING));
 					break;
 					case "Sierpinski": new Sierpinski(eventHandler, mode); selection.dispatchEvent(new WindowEvent(selection, WindowEvent.WINDOW_CLOSING));
 					break;

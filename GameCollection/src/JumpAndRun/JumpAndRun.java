@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
+import Main.MainMenu;
 import Main.WindowEventHandler;
 
 public class JumpAndRun 
@@ -23,6 +24,8 @@ public class JumpAndRun
 		
 		JFrame frame = new JFrame("Sidescroller");
 		if (fastMode) {frame.setTitle("Speedrun");}
+		
+		frame.setIconImage(MainMenu.img.getImage());
 		
 		if (fastMode) 
 		{scrollingSpeed = 0;}

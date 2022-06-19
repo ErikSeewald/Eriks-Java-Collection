@@ -11,6 +11,7 @@ import JumpAndRun.JumpAndRun;
 import MouseDodge.MouseDodgePanel;
 import ParallelUniverses.ParallelUniverses;
 import Particles.ParticlesPanel;
+import PathfindGame.Pathfind;
 import PixelCollision.PixelCollision;
 import Sierpinski.SierpinskiSlow;
 
@@ -39,7 +40,7 @@ public class WindowEventHandler extends WindowAdapter
 			case "Particles" : ParticlesPanel.stop();index = 2; break;
 			case "Sierpinski": SierpinskiSlow.stop();index = 3; break;
 			case "Sudoku": index = 4; break;
-			//case "Pathfind": PathfindDemo.stop(); index = 5; break;
+			case "Pathfind": Pathfind.stop(); index = 5; System.out.println("huh"); break;
 			case "Parallel Universes": ParallelUniverses.stop(); index = 6; break;
 			case "Reflection Demo": index = 7; break;
 			case "Mouse Dodge": MouseDodgePanel.stop(); index = 8; break; 

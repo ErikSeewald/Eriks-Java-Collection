@@ -3,6 +3,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 
+import Main.MainMenu;
 import Main.WindowEventHandler;
 
 public class Particles extends JFrame
@@ -16,6 +17,7 @@ public class Particles extends JFrame
 		panel = new ParticlesPanel();
 		
 		this.setTitle("Particles");
+		this.setIconImage(MainMenu.img.getImage());
 		
 		this.addKeyListener(new KeyListener() 
 		{

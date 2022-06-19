@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 
+import Main.MainMenu;
 import Main.WindowEventHandler;
 
 public class Insects
@@ -16,6 +17,7 @@ public class Insects
 		panel = new InsectsPanel();
 		
 		frame = new JFrame("Insects");
+		frame.setIconImage(MainMenu.img.getImage());
 		
 		frame.setResizable(false);
 		frame.add(panel);

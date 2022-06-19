@@ -18,6 +18,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.Timer;
 
+import Main.MainMenu;
 import Main.WindowEventHandler;
 
 public class ClothSim extends JFrame
@@ -37,6 +38,7 @@ public class ClothSim extends JFrame
 	{
 
 		panel = new ClothSimPanel();
+		this.setIconImage(MainMenu.img.getImage());
 		this.add(panel);
 		this.pack();
 		this.setTitle("Cloth Sim");

@@ -5,6 +5,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 
+import Main.MainMenu;
 import Main.WindowEventHandler;
 
 public class GravityVectors extends JFrame
@@ -16,8 +17,9 @@ public class GravityVectors extends JFrame
 		GravityVectorsPanel panel = new GravityVectorsPanel();
 		
 		this.addWindowListener(eventHandler);
+		this.setIconImage(MainMenu.img.getImage());
 		this.setTitle("Gravity Vectors");
-		
+	
 		this.addKeyListener(new KeyListener()
 		{
 			@Override
@@ -31,7 +33,6 @@ public class GravityVectors extends JFrame
 				else if (code == 50) {panel.changePPOINT_COUNT(1);} //2
 				else if (code == 71) {panel.gradientMode = !panel.gradientMode; panel.repaint();} //G                                                
 			}
-			
 			
 			@Override
 			public void keyTyped(KeyEvent e) 

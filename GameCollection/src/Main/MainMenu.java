@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
@@ -27,36 +28,36 @@ public class MainMenu extends JFrame implements MouseListener
 {
 	private static final long serialVersionUID = 1454253443346436L;
 
-	int resolution = 600;
+	private int resolution = 600;
 	
-	JLabel gameButton1 = new JLabel("   3D Coords");
-	JLabel gameButton2 = new JLabel("      Insects");
-	JLabel gameButton3 = new JLabel("     Particles");
-	JLabel gameButton4 = new JLabel("    Sierpinski");
-	JLabel gameButton5 = new JLabel("      Sudoku");
-	JLabel gameButton6 = new JLabel("      Pathfind");
-	JLabel gameButton7 = new JLabel("    Parallel U.");
-	JLabel gameButton8 = new JLabel("    Reflection");
-	JLabel gameButton9 = new JLabel(" Mouse Dodge");
-	JLabel gameButton10 = new JLabel("   Sidescroller");
-	JLabel gameButton11 = new JLabel("    Speedrun");
-	JLabel gameButton12 = new JLabel(" Pixel Collision");
-	JLabel gameButton13 = new JLabel("    Cloth Sim");
-	JLabel gameButton14 = new JLabel(" Gravity Vects");
-	JLabel gameButton15 = new JLabel("");
-	JLabel gameButton16 = new JLabel("");
-	JLabel gameButton17 = new JLabel("");
-	JLabel gameButton18 = new JLabel("");
-	JLabel gameButton19 = new JLabel("");
-	JLabel gameButton20 = new JLabel("");
-	JLabel gameButton21 = new JLabel("");
-	JLabel gameButton22 = new JLabel("");
-	JLabel gameButton23 = new JLabel("");
-	JLabel gameButton24 = new JLabel("");
-	int buttonSizeX;
-	int buttonSizeY;
+	private JLabel gameButton1 = new JLabel("   3D Coords");
+	private JLabel gameButton2 = new JLabel("      Insects");
+	private JLabel gameButton3 = new JLabel("     Particles");
+	private JLabel gameButton4 = new JLabel("    Sierpinski");
+	private JLabel gameButton5 = new JLabel("      Sudoku");
+	private JLabel gameButton6 = new JLabel("      Pathfind");
+	private JLabel gameButton7 = new JLabel("    Parallel U.");
+	private JLabel gameButton8 = new JLabel("    Reflection");
+	private JLabel gameButton9 = new JLabel(" Mouse Dodge");
+	private JLabel gameButton10 = new JLabel("   Sidescroller");
+	private JLabel gameButton11 = new JLabel("    Speedrun");
+	private JLabel gameButton12 = new JLabel(" Pixel Collision");
+	private JLabel gameButton13 = new JLabel("    Cloth Sim");
+	private JLabel gameButton14 = new JLabel(" Gravity Vects");
+	private JLabel gameButton15 = new JLabel("");
+	private JLabel gameButton16 = new JLabel("");
+	private JLabel gameButton17 = new JLabel("");
+	private JLabel gameButton18 = new JLabel("");
+	private JLabel gameButton19 = new JLabel("");
+	private JLabel gameButton20 = new JLabel("");
+	private JLabel gameButton21 = new JLabel("");
+	private JLabel gameButton22 = new JLabel("");
+	private JLabel gameButton23 = new JLabel("");
+	private JLabel gameButton24 = new JLabel("");
+	private int buttonSizeX;
+	private int buttonSizeY;
 	
-	JLabel[] gameButtons = 
+	private JLabel[] gameButtons = 
 	{
 			gameButton1, gameButton2, gameButton3, gameButton4, gameButton5, gameButton6, gameButton7, gameButton8, 
 			gameButton9, gameButton10, gameButton11, gameButton12, gameButton13, gameButton14, gameButton15, gameButton16, 
@@ -65,29 +66,34 @@ public class MainMenu extends JFrame implements MouseListener
 
 	public static boolean[] hasWindowOpen = new boolean[24]; //to check whether an instance of this game is already open
 	
-	Color textColor = new Color(210,210,230);
-	Color buttonColor1 = new Color(75,75,105);
-	Color buttonColor2 = new Color(110,110,130);
-	Color buttonColor3 = new Color(130,130,150);
+	private Color textColor = new Color(210,210,230);
+	private Color buttonColor1 = new Color(75,75,105);
+	private Color buttonColor2 = new Color(110,110,130);
+	private Color buttonColor3 = new Color(130,130,150);
 	
 	boolean insideButton = false;
-	boolean buttonSizeIncreased = false;
+	private boolean buttonSizeIncreased = false;
 	
-	JLabel headline = new JLabel("ERIK'S COLLECTION");
-	JLabel controls1 = new JLabel("");
-	JLabel controls2 = new JLabel("");
-	JLabel controls3 = new JLabel("");
-	JLabel controls4 = new JLabel("");
-	JLabel controls5 = new JLabel("");
+	private JLabel headline = new JLabel("ERIK'S COLLECTION");
+	private JLabel controls1 = new JLabel("");
+	private JLabel controls2 = new JLabel("");
+	private JLabel controls3 = new JLabel("");
+	private JLabel controls4 = new JLabel("");
+	private JLabel controls5 = new JLabel("");
 	
-	JLabel[] guideLabels = {headline, controls1, controls2, controls3, controls4, controls5};
+	private JLabel[] guideLabels = {headline, controls1, controls2, controls3, controls4, controls5};
 	
-	WindowEventHandler eventHandler;
-	static int closeTurn = 0;		//how many windows have been closed since the JVM has been launched
+	private WindowEventHandler eventHandler;
+	private static int closeTurn = 0;		//how many windows have been closed since the JVM has been launched
+	
+	public static final ImageIcon img = new ImageIcon("src\\Main\\logo.jpg");
+	
 	
 	MainMenu()
 	{
 		eventHandler = new WindowEventHandler();
+		
+		this.setIconImage(img.getImage());
 		
 		this.setTitle("Menu");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -184,7 +190,7 @@ public class MainMenu extends JFrame implements MouseListener
 			break;
 			case 4: Sudoku sudoku = new Sudoku(); sudoku.start(eventHandler);
 			break;
-			case 5: SelectionFrame pathfind = new SelectionFrame(); pathfind.start("Pathfind", null);
+			case 5: SelectionFrame pathfind = new SelectionFrame(); pathfind.start("Pathfind", eventHandler);
 			break;
 			case 6: ParallelUniverses parallelUniverses = new ParallelUniverses();parallelUniverses.start(eventHandler);
 			break;
@@ -205,7 +211,7 @@ public class MainMenu extends JFrame implements MouseListener
 		}
 		
 		hasWindowOpen[index] = !hasWindowOpen[index];
-		
+			
 	}
 	
 	@Override

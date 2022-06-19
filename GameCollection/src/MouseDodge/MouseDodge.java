@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 
+import Main.MainMenu;
 import Main.WindowEventHandler;
 
 public class MouseDodge
@@ -19,6 +20,7 @@ public class MouseDodge
 		panel = new MouseDodgePanel();
 
 		frame.addWindowListener(eventHandler);
+		frame.setIconImage(MainMenu.img.getImage());
 		
 		frame.addKeyListener(new KeyListener() 
 		{

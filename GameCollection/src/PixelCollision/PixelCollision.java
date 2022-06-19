@@ -12,6 +12,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.Timer;
 
+import Main.MainMenu;
 import Main.WindowEventHandler;
 
 public class PixelCollision 
@@ -99,6 +100,7 @@ public class PixelCollision
 	{
 		
 		JFrame frame = new JFrame("Pixel Collision");
+		frame.setIconImage(MainMenu.img.getImage());
 		panel = new PixelCollisionPanel();
 		
 		frame.addKeyListener(new KeyListener() 
