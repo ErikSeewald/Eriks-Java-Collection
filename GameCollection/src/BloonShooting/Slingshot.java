@@ -4,21 +4,53 @@ import java.awt.Color;
 
 public class Slingshot 
 {
-	final static Color LIGHTcol = new Color(110,125,170);
-	final static Color DARKcol = new Color(95,110,160);
-	final static Color BANDcol = new Color(75,75,110);
+	final static Color Color1 = new Color(110,125,170);
+	final static Color Color2 = new Color(95,110,160);
+	final static Color SlingColor = new Color(75,75,110);
 	
 	private int[] ORIGIN = new int[2];
 	
 	private int[] PULLPOINT = new int[2];
 	private int[] PULLPOINT_GOAL = new int[2];
 	
+	private int[] returnVect = new int[2];
+	
 	private boolean dragValid = false;
 	
-	Slingshot()
+	int slingReturnRounds = 0;
+
+	static final byte[] SPRITE = 
 	{
+			1,2,2,0,0,0,0,0,0,0,0,0,0,0,1,1,
+			1,1,1,2,0,0,0,0,0,0,0,0,0,1,1,2,
+			0,1,1,1,2,0,0,0,0,0,0,0,1,1,2,2,
+			0,0,1,1,1,2,0,0,0,0,0,1,1,2,2,0,
+			0,0,0,1,1,1,2,0,0,0,0,1,2,2,0,0,
+			0,0,0,0,1,1,2,2,0,0,1,1,2,0,0,0,
+			0,0,0,0,1,1,2,2,0,0,1,1,2,0,0,0,
+			0,0,0,0,0,1,1,1,2,1,1,2,2,0,0,0,
+			0,0,0,0,0,0,1,1,2,1,1,2,0,0,0,0,
+			0,0,0,0,0,0,1,1,1,1,2,2,0,0,0,0,
+			0,0,0,0,0,0,0,1,1,1,2,0,0,0,0,0,
+			0,0,0,0,0,0,0,1,1,1,2,0,0,0,0,0,
+			0,0,0,0,0,0,0,1,1,1,2,0,0,0,0,0,
+			0,0,0,0,0,0,2,1,1,1,2,0,0,0,0,0,
+			0,0,0,0,0,2,1,1,1,1,1,2,0,0,0,0,
+			0,0,0,0,2,2,2,2,2,2,2,2,2,0,0,0,
+	};
+	
+	public void moveSling()
+	{
+		if (slingReturnRounds == 5) {return;}
 		
+		PULLPOINT[0]+= returnVect[0]/5;
+		PULLPOINT[1]+= returnVect[1]/5;
+		
+		slingReturnRounds++;
 	}
+	
+	public void setReturnVect()
+	{returnVect[0] = PULLPOINT_GOAL[0] - PULLPOINT[0]; returnVect[1] = PULLPOINT_GOAL[1] - PULLPOINT[1];}
 	
 	public void initPoints(int PANEL_WIDTH, int PANEL_HEIGHT)
 	{
@@ -31,9 +63,6 @@ public class Slingshot
 		PULLPOINT[0] = PULLPOINT_GOAL[0];
 		PULLPOINT[1] = PULLPOINT_GOAL[1];
 	}
-	
-	public int[] getReturnVect()
-	{return new int[] {PULLPOINT_GOAL[0] - PULLPOINT[0], PULLPOINT_GOAL[1] - PULLPOINT[1]};}
 	
 	//PULL POINT
 	public void setPullPoint(int x, int y)
