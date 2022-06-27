@@ -31,10 +31,13 @@ public class BlS_Panel extends JPanel
 	private int SLING_ORIGINX = PANEL_WIDTH/10;
 	private int SLING_ORIGINY = PANEL_HEIGHT - (PANEL_HEIGHT/4);
 	
-	private int PULL_POINTX = PANEL_WIDTH/7;
+	private int PULL_POINTX = (int) (PANEL_WIDTH/7.3);
 	private int PULL_POINTY = PANEL_HEIGHT - (PANEL_HEIGHT/5);
 	
 	private boolean dragValid = false;
+	
+	//MAP & GRID
+	private boolean gridVisible = false;
 	
 
 	BlS_Panel()
@@ -43,9 +46,11 @@ public class BlS_Panel extends JPanel
 		
 		ClickListener clickListener = new ClickListener();
 		DragListener dragListener = new DragListener();
+		ReleaseListener releaseListener = new ReleaseListener();
 		
 		this.addMouseListener(clickListener);
 		this.addMouseMotionListener(dragListener);
+		this.addMouseListener(releaseListener);
 	}
 	
 	public void paint(Graphics g)
@@ -57,6 +62,16 @@ public class BlS_Panel extends JPanel
 		g2D.setPaint(BACKGROUND);
 		g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
 		
+		//GRID
+		if (gridVisible)
+		{
+			g2D.setPaint(Color.LIGHT_GRAY);
+			for (int i = 0; i < 30; i++)
+			{g2D.drawLine(i*30, 0, i*30, PANEL_HEIGHT);}
+			for (int i = 0; i < 20; i++)
+			{g2D.drawLine(0, i*30, PANEL_WIDTH, i*30);}
+		}
+		
 		//SLINGSHOT
 		paintSprite(new Color[] {SLING_LIGHT,SLING_DARK}, BlS_Databox.SLINGSHOT_SPRITE, g2D);
 		
@@ -64,6 +79,7 @@ public class BlS_Panel extends JPanel
 		g2D.setPaint(SLING_BAND);
 		g2D.drawLine(SLING_ORIGINX+PIXEL_SIZE, SLING_ORIGINY+PIXEL_SIZE, PULL_POINTX, PULL_POINTY);
 		g2D.drawLine(SLING_ORIGINX+PIXEL_SIZE*16, SLING_ORIGINY+PIXEL_SIZE, PULL_POINTX, PULL_POINTY);
+		
 	}
 	
 	private void paintSprite(Color[] colors, byte[] sprite, Graphics2D g2D)
@@ -107,4 +123,18 @@ public class BlS_Panel extends JPanel
 		}
 	}
 	
+	private class ReleaseListener extends MouseAdapter
+	{
+		public void mouseReleased(MouseEvent e) 
+		{
+			if (!dragValid) {return;}
+			
+			PULL_POINTX = (int) (PANEL_WIDTH/7.3);
+			PULL_POINTY = PANEL_HEIGHT - (PANEL_HEIGHT/5);
+			repaint();
+		}
+	}
+	
+	public void changeGridVisibility()
+	{gridVisible = !gridVisible; repaint();}
 }
