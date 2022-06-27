@@ -12,7 +12,7 @@ import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JPanel;
 
-public class BloonShootingPanel extends JPanel
+public class BlS_Panel extends JPanel
 {
 	private static final long serialVersionUID = 5219711456361037203L;
 	
@@ -28,26 +28,6 @@ public class BloonShootingPanel extends JPanel
 	private final Color SLING_DARK = new Color(95,110,160);
 	private final Color SLING_BAND = new Color(75,75,110);
 	
-	private final byte[] SLING_SPRITE = 
-	{
-			1,2,2,0,0,0,0,0,0,0,0,0,0,0,1,1,
-			1,1,1,2,0,0,0,0,0,0,0,0,0,1,1,2,
-			0,1,1,1,2,0,0,0,0,0,0,0,1,1,2,2,
-			0,0,1,1,1,2,0,0,0,0,0,1,1,2,2,0,
-			0,0,0,1,1,1,2,0,0,0,0,1,2,2,0,0,
-			0,0,0,0,1,1,2,2,0,0,1,1,2,0,0,0,
-			0,0,0,0,1,1,2,2,0,0,1,1,2,0,0,0,
-			0,0,0,0,0,1,1,1,2,1,1,2,2,0,0,0,
-			0,0,0,0,0,0,1,1,2,1,1,2,0,0,0,0,
-			0,0,0,0,0,0,1,1,1,1,2,2,0,0,0,0,
-			0,0,0,0,0,0,0,1,1,1,2,0,0,0,0,0,
-			0,0,0,0,0,0,0,1,1,1,2,0,0,0,0,0,
-			0,0,0,0,0,0,0,1,1,1,2,0,0,0,0,0,
-			0,0,0,0,0,0,2,1,1,1,2,0,0,0,0,0,
-			0,0,0,0,0,2,1,1,1,1,1,2,0,0,0,0,
-			0,0,0,0,2,2,2,2,2,2,2,2,2,0,0,0,
-	};
-	
 	private int SLING_ORIGINX = PANEL_WIDTH/10;
 	private int SLING_ORIGINY = PANEL_HEIGHT - (PANEL_HEIGHT/4);
 	
@@ -57,7 +37,7 @@ public class BloonShootingPanel extends JPanel
 	private boolean dragValid = false;
 	
 
-	BloonShootingPanel()
+	BlS_Panel()
 	{
 		this.setPreferredSize(new Dimension( PANEL_WIDTH, PANEL_HEIGHT));
 		
@@ -78,7 +58,7 @@ public class BloonShootingPanel extends JPanel
 		g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
 		
 		//SLINGSHOT
-		paintSprite(new Color[] {SLING_LIGHT,SLING_DARK}, SLING_SPRITE, g2D);
+		paintSprite(new Color[] {SLING_LIGHT,SLING_DARK}, BlS_Databox.SLINGSHOT_SPRITE, g2D);
 		
 		g2D.setStroke(new BasicStroke(PANEL_WIDTH/150));
 		g2D.setPaint(SLING_BAND);

@@ -9,11 +9,11 @@ public class BloonShooting extends JFrame
 {
 	private static final long serialVersionUID = -1952542729679771029L;
 	
-	BloonShootingPanel panel;
+	BlS_Panel panel;
 
 	public BloonShooting()
 	{
-		panel = new BloonShootingPanel();
+		panel = new BlS_Panel();
 		this.setIconImage(MainMenu.img.getImage());
 		this.add(panel);
 		this.pack();
