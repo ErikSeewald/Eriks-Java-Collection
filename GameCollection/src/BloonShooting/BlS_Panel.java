@@ -70,11 +70,11 @@ public class BlS_Panel extends JPanel implements ActionListener
 		
 		//SLINGSHOT
 		paintSprite
-		(new Color[] {Slingshot.LIGHTcol,Slingshot.DARKcol}, BlS_Databox.SLINGSHOT_SPRITE, slingshot.getOrigin(), g2D);
+		(new Color[] {Slingshot.Color1,Slingshot.Color2}, Slingshot.SPRITE, slingshot.getOrigin(), g2D);
 		
 		//slingshot band
 		g2D.setStroke(new BasicStroke(PANEL_WIDTH/150));
-		g2D.setPaint(Slingshot.BANDcol);
+		g2D.setPaint(Slingshot.SlingColor);
 		int[] paintOrigin = slingshot.getPaintOrigin(PIXEL_SIZE);
 		int[] pullPoint = slingshot.getPullPoint();
 		g2D.drawLine(paintOrigin[0], paintOrigin[1], pullPoint[0], pullPoint[1]);
@@ -105,14 +105,17 @@ public class BlS_Panel extends JPanel implements ActionListener
 	private class ClickListener extends MouseAdapter
 	{
 		public void mousePressed(MouseEvent e) 
-		{slingshot.setDragValid(e.getX(), e.getY());}
+		{
+			if(!shootTimer.isRunning())
+			slingshot.setDragValid(e.getX(), e.getY());
+		}
 	}
 	   
 	private class DragListener extends MouseMotionAdapter
 	{
 		public void mouseDragged(MouseEvent e) 
 		{
-			if (!slingshot.isDragValid()) {return;}
+			if (!slingshot.isDragValid() || shootTimer.isRunning()) {return;}
 			
 			slingshot.setPullPoint(e.getX(), e.getY());
 			repaint();
@@ -123,7 +126,8 @@ public class BlS_Panel extends JPanel implements ActionListener
 	{
 		public void mouseReleased(MouseEvent e) 
 		{
-			if (!slingshot.isDragValid()) {return;}
+			if (!slingshot.isDragValid() || shootTimer.isRunning()) {return;}
+			slingshot.setReturnVect(); slingshot.slingReturnRounds = 0;
 			shootTimer.start();
 		}
 	}
@@ -131,17 +135,12 @@ public class BlS_Panel extends JPanel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{	
-		moveSling();
+		slingshot.moveSling();
 		
-		
+		repaint();
 	}
 	
-	private void moveSling()
-	{
-		int[] returnVect = slingshot.getReturnVect();
-		
-		
-	}
+	
 	
 	public void changeGridVisibility()
 	{gridVisible = !gridVisible; repaint();}
