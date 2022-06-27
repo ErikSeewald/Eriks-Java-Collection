@@ -5,14 +5,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
-public class BlS_Panel extends JPanel
+public class BlS_Panel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 5219711456361037203L;
 	
@@ -24,21 +26,13 @@ public class BlS_Panel extends JPanel
 	private final Color BACKGROUND = new Color(50,50,60);
 	
 	//SLINGSHOT
-	private final Color SLING_LIGHT = new Color(110,125,170);
-	private final Color SLING_DARK = new Color(95,110,160);
-	private final Color SLING_BAND = new Color(75,75,110);
-	
-	private int SLING_ORIGINX = PANEL_WIDTH/10;
-	private int SLING_ORIGINY = PANEL_HEIGHT - (PANEL_HEIGHT/4);
-	
-	private int PULL_POINTX = (int) (PANEL_WIDTH/7.3);
-	private int PULL_POINTY = PANEL_HEIGHT - (PANEL_HEIGHT/5);
-	
-	private boolean dragValid = false;
+	private Slingshot slingshot = new Slingshot();
 	
 	//MAP & GRID
 	private boolean gridVisible = false;
 	
+	//SIMULATION
+	private final Timer shootTimer = new Timer(15,this);
 
 	BlS_Panel()
 	{
@@ -51,6 +45,8 @@ public class BlS_Panel extends JPanel
 		this.addMouseListener(clickListener);
 		this.addMouseMotionListener(dragListener);
 		this.addMouseListener(releaseListener);
+		
+		slingshot.initPoints(PANEL_WIDTH, PANEL_HEIGHT);
 	}
 	
 	public void paint(Graphics g)
@@ -73,16 +69,20 @@ public class BlS_Panel extends JPanel
 		}
 		
 		//SLINGSHOT
-		paintSprite(new Color[] {SLING_LIGHT,SLING_DARK}, BlS_Databox.SLINGSHOT_SPRITE, g2D);
+		paintSprite
+		(new Color[] {Slingshot.LIGHTcol,Slingshot.DARKcol}, BlS_Databox.SLINGSHOT_SPRITE, slingshot.getOrigin(), g2D);
 		
+		//slingshot band
 		g2D.setStroke(new BasicStroke(PANEL_WIDTH/150));
-		g2D.setPaint(SLING_BAND);
-		g2D.drawLine(SLING_ORIGINX+PIXEL_SIZE, SLING_ORIGINY+PIXEL_SIZE, PULL_POINTX, PULL_POINTY);
-		g2D.drawLine(SLING_ORIGINX+PIXEL_SIZE*16, SLING_ORIGINY+PIXEL_SIZE, PULL_POINTX, PULL_POINTY);
+		g2D.setPaint(Slingshot.BANDcol);
+		int[] paintOrigin = slingshot.getPaintOrigin(PIXEL_SIZE);
+		int[] pullPoint = slingshot.getPullPoint();
+		g2D.drawLine(paintOrigin[0], paintOrigin[1], pullPoint[0], pullPoint[1]);
+		g2D.drawLine(paintOrigin[0]+(PIXEL_SIZE*14), paintOrigin[1], pullPoint[0], pullPoint[1]);
 		
 	}
 	
-	private void paintSprite(Color[] colors, byte[] sprite, Graphics2D g2D)
+	private void paintSprite(Color[] colors, byte[] sprite, int [] origin, Graphics2D g2D)
 	{
 		int row = 0;
 		int column = 0;
@@ -94,7 +94,7 @@ public class BlS_Panel extends JPanel
 			if (sprite[i] != 0)
 			{
 				g2D.setPaint(colors[sprite[i]-1]);
-				g2D.fillRect(SLING_ORIGINX + column*PIXEL_SIZE, SLING_ORIGINY+ row*PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
+				g2D.fillRect(origin[0] + column*PIXEL_SIZE, origin[1]+ row*PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
 			}
 			
 			column++;
@@ -105,20 +105,16 @@ public class BlS_Panel extends JPanel
 	private class ClickListener extends MouseAdapter
 	{
 		public void mousePressed(MouseEvent e) 
-		{
-			int x = e.getX(), y = e.getY();
-			dragValid = (x > PULL_POINTX-10 && x < PULL_POINTX+10 && y > PULL_POINTY-10 && y < PULL_POINTY+10);
-		}
+		{slingshot.setDragValid(e.getX(), e.getY());}
 	}
 	   
 	private class DragListener extends MouseMotionAdapter
 	{
 		public void mouseDragged(MouseEvent e) 
 		{
-			if (!dragValid) {return;}
+			if (!slingshot.isDragValid()) {return;}
 			
-			PULL_POINTX = e.getX();
-			PULL_POINTY = e.getY();
+			slingshot.setPullPoint(e.getX(), e.getY());
 			repaint();
 		}
 	}
@@ -127,14 +123,27 @@ public class BlS_Panel extends JPanel
 	{
 		public void mouseReleased(MouseEvent e) 
 		{
-			if (!dragValid) {return;}
-			
-			PULL_POINTX = (int) (PANEL_WIDTH/7.3);
-			PULL_POINTY = PANEL_HEIGHT - (PANEL_HEIGHT/5);
-			repaint();
+			if (!slingshot.isDragValid()) {return;}
+			shootTimer.start();
 		}
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{	
+		moveSling();
+		
+		
+	}
+	
+	private void moveSling()
+	{
+		int[] returnVect = slingshot.getReturnVect();
+		
+		
 	}
 	
 	public void changeGridVisibility()
 	{gridVisible = !gridVisible; repaint();}
+
 }
