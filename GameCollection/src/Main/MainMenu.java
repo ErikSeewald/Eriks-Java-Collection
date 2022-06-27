@@ -12,7 +12,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import BloonShooting.BloonShooting;
 import ClothSim.ClothSim;
 import Coordinates3D.Coordinates3D;
 import GravityVectors.GravityVectors;
@@ -45,7 +44,7 @@ public class MainMenu extends JFrame implements MouseListener
 	private JLabel gameButton12 = new JLabel(" Pixel Collision");
 	private JLabel gameButton13 = new JLabel("    Cloth Sim");
 	private JLabel gameButton14 = new JLabel(" Gravity Vects");
-	private JLabel gameButton15 = new JLabel("Bloon Shooting");
+	private JLabel gameButton15 = new JLabel("");
 	private JLabel gameButton16 = new JLabel("");
 	private JLabel gameButton17 = new JLabel("");
 	private JLabel gameButton18 = new JLabel("");
@@ -207,8 +206,6 @@ public class MainMenu extends JFrame implements MouseListener
 			case 12: ClothSim clothSim = new ClothSim(); clothSim.start(eventHandler);
 			break;
 			case 13: GravityVectors gravityVectors = new GravityVectors(); gravityVectors.start(eventHandler);
-			break;
-			case 14: BloonShooting bloonShooting = new BloonShooting(); bloonShooting.start(eventHandler);
 			break;
 		}
 		
