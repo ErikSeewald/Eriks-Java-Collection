@@ -35,13 +35,8 @@ public class Projectile
 	
 	private float[] SPEED = new float[2];
 	
-	public void attachedMove(int[] origin)
-	{
-		ORIGIN[0] = origin[0] - PIXEL_SIZE*8;
-		ORIGIN[1] = origin[1] - PIXEL_SIZE*8;
-	}
 	
-	public boolean detachedMove(int PANEL_HEIGHT)
+	public boolean fly(int PANEL_HEIGHT)
 	{
 		if (ORIGIN[1] > PANEL_HEIGHT) {return false;}
 		
@@ -68,8 +63,8 @@ public class Projectile
 	public int[] getOrigin()
 	{return ORIGIN;}
 	
-	public void setOrigin(int x, int y)
-	{ORIGIN[0] = x;ORIGIN[1] = y;}
+	public void setNewOrigin(int[] origin)
+	{ORIGIN[0] = origin[0] - PIXEL_SIZE*8; ORIGIN[1] = origin[1] - PIXEL_SIZE*8;}
 	
 	//SIZE
 	public void setPixelSize(int size)
