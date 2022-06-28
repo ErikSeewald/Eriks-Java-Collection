@@ -2750,11 +2750,10 @@ public class ParallelUniversesPanel extends JPanel
 {
 	private static final long serialVersionUID = 9082922097976866954L;
 	
-	int PANEL_SIZE = 623;
+	int PANEL_SIZE = 423;
 	
 	int[] location = {313,313};			//LOCATION ON THE ENTIRE
 	int[] relativeLocation = {6,6};		//LOCATION WITHIN THE MAIN UNIVERSE
-	
 
 	int borderSize = 2; //BORDER BETWEEN UNIVERSES
 	
@@ -2983,7 +2982,7 @@ public class ParticlesPanel extends JPanel implements ActionListener{
 		          
 		this.addMouseMotionListener(dragListener);
 		
-		this.setPreferredSize(new Dimension(650,650));
+		this.setPreferredSize(new Dimension(450,450));
 		this.setLayout(null);
 		
 	}
@@ -3018,7 +3017,7 @@ public class ParticlesPanel extends JPanel implements ActionListener{
 		Graphics2D g2D = (Graphics2D) g;
 	
 		g2D.setPaint(new Color(60,60,95));
-		g2D.fillRect(0, 0, 650, 650); 		//background
+		g2D.fillRect(0, 0, 450, 450); 		//background
 		
 		for (int i = 0; i < length-1; i++) {	//all squares
 					
@@ -4800,12 +4799,12 @@ public class SierpinskiFast extends JPanel{
 		this.addMouseListener(clickListener);
 		this.addMouseMotionListener(dragListener);
 		
-		this.setPreferredSize(new Dimension(600,600));
+		this.setPreferredSize(new Dimension(400,400));
 		this.setLayout(null);
 		
-		ACorner = new Point(10,550);
-		BCorner = new Point(300,10);
-		CCorner = new Point(590,550);
+		ACorner = new Point(10,350);
+		BCorner = new Point(200,10);
+		CCorner = new Point(390,350);
 			
 		P[0] = 550;
 		P[1] = 550;
@@ -5367,184 +5366,6 @@ public class SudokuPanel extends JPanel
 
 }
 
-public class VectorChasers 
-{
-	public void start(WindowEventHandler eventHandler)
-	{
-		JFrame frame = new JFrame("Vector Chasers");
-		VectorChasersPanel panel = new VectorChasersPanel();
-		
-		frame.addWindowListener(eventHandler);
-		frame.setResizable(false);
-		
-		frame.addKeyListener(new KeyListener() 
-		{
-
-			@Override
-			public void keyTyped(KeyEvent e) 
-			{
-				if (e.getKeyChar() == 'r') {panel.reset();}
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {}
-			@Override
-			public void keyReleased(KeyEvent e) {}
-			
-		});
-		
-		frame.add(panel);
-		frame.pack();
-		
-		frame.setVisible(true);
-	}
-	
-}
-
-public class VectorChasersPanel extends JPanel implements ActionListener{
-
-	private static final long serialVersionUID = 9082922097976866954L;
-
-	Point prevPt;
-	boolean dragValid;
-	
-	int[] prey = {300,300};
-	
-	int total = 10000;
-	int[][] chaser = new int[total][2];
-	double[] speed = new double[total];
-	
-	int size = 20;
-	
-	static Timer timer;
-	Random random;
-	
-	boolean dragPaint = false;
-	
-	VectorChasersPanel()
-	{
-		this.setPreferredSize(new Dimension (900,700));
-		
-		ClickListener clickListener = new ClickListener();
-		DragListener dragListener = new DragListener();
-		this.addMouseListener(clickListener);
-		this.addMouseMotionListener(dragListener);
-		
-		random = new Random();
-		
-		for (int i = 0; i < total-1; i++)
-		{
-			chaser[i][0] = random.nextInt(1500)+5; chaser[i][1] = random.nextInt(1500)+5;
-			speed[i] = random.nextDouble(0.3)+0.1;
-		}
-		
-		timer = new Timer(15, this);
-		
-	}
-	
-	public static void stop()
-	{timer.stop();}
-	
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		move();
-	}
-	
-	public void reset()
-	{
-		for (int i = 0; i < total-1; i++)
-		{
-			chaser[i][0] = random.nextInt(1500)+5; chaser[i][1] = random.nextInt(1500)+5;
-			speed[i] = random.nextDouble(0.3)+0.1;
-		}
-	}
-	
-	
-	public void move()
-	{
-		for (int i = 0; i < total-1; i++)
-		{
-			int[] v = new int[2];
-			v[0] = prey[0]+5 - chaser[i][0];
-			v[1] = prey[1]+5 - chaser[i][1];
-		
-			double movelength = Math.sqrt(Math.pow(v[0], 2)+Math.pow(v[1], 2));
-			
-			v[0] /= movelength*speed[i]; v[1] /= movelength*speed[i];
-		
-			chaser[i][0]+= v[0];
-			chaser[i][1]+= v[1];
-		}
-		repaint();
-	}
-	
-	
-	public void paint (Graphics g)
-	{
-		Graphics2D g2D = (Graphics2D) g;
-		
-		if (!dragPaint) 
-		{super.paint(g);}
-		
-		
-		if (!dragPaint) 
-		{
-			g2D.setPaint(Color.DARK_GRAY);
-			g2D.fillRect(0, 0, 900, 700);
-			
-			g2D.setPaint(new Color (100,200,255));
-			
-			
-			for (int i = 0; i < total-1; i++)
-			{
-			g2D.fillRect(chaser[i][0], chaser[i][1], 4, 4);
-			}
-		}
-		
-		g2D.setPaint(new Color (250,250,250));
-		g2D.fillOval(prey[0], prey[1], size, size);
-		
-		dragPaint = false;
-		
-	}
-	
-	
-	private class ClickListener extends MouseAdapter
-	{
-	    public void mousePressed(MouseEvent e) 
-	    {  	
-	    		prevPt = e.getPoint(); 
-	            dragValid = (e.getPoint().getX() > prey[0]) && 
-	                    (e.getPoint().getX() < (prey[0] + size)) &&
-	                    (e.getPoint().getY() > prey[1]) &&
-	                    (e.getPoint().getY() < (prey[1] + size));
-	            
-	            if (!timer.isRunning() && dragValid) {timer.start();}
-	    }
-	}
-	
-	private class DragListener extends MouseMotionAdapter
-	{
-	    public void mouseDragged(MouseEvent e) 
-	    { 
-	            
-	    	if(dragValid)
-	    	{
-	    		
-	    	Point currentPt = e.getPoint();    
-	               
-	    	prey[0] = (int)(currentPt.getX()-15);
-	    	prey[1] = (int)(currentPt.getY()-15);
-	               
-	        prevPt = currentPt;
-	        
-	        dragPaint = true;
-	        repaint();
-	    	}
-	    }
-	}
-}
 
 public class PixelCollision 
 {
@@ -6556,7 +6377,7 @@ public class GravityVectorsPanel extends JPanel
 {
 	private static final long serialVersionUID = 3933829351442493815L;
 	
-	private int PANEL_WIDTH = 600;
+	private int PANEL_WIDTH = 400;
 	private int PANEL_HEIGHT = (int) (PANEL_WIDTH*(0.66));
 	
 	//ARROW VARIABLES
