@@ -26,6 +26,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 	//SLINGSHOT
 	private Slingshot slingshot = new Slingshot();
 	private Color[] slingshotColors = {Slingshot.Color1,Slingshot.Color2};
+	private boolean shiftMove = false;
 	
 	//PROJECTILE
 	private Projectile projectile = new Projectile();
@@ -120,8 +121,13 @@ public class BlS_Panel extends JPanel implements ActionListener
 		{
 			if (!slingshot.isDragValid() || shootTimer.isRunning()) {return;}
 			
-			slingshot.setPullPoint(e.getX(), e.getY());
-			projectile.attachedMove(slingshot.getPullPoint());
+			if (e.isShiftDown()) 
+			{slingshot.initOnNewCoords(e.getX(), e.getY()); shiftMove = true;}
+			
+			else 
+			{slingshot.setPullPoint(e.getX(), e.getY());}
+			
+			projectile.setNewOrigin(slingshot.getPullPoint());
 			repaint();
 		}
 	}
@@ -131,6 +137,8 @@ public class BlS_Panel extends JPanel implements ActionListener
 		public void mouseReleased(MouseEvent e) 
 		{
 			if (!slingshot.isDragValid() || shootTimer.isRunning()) {return;}
+			if (shiftMove) {shiftMove = false; return;}
+			
 			slingshot.setReturnVect(); slingshot.slingReturnRounds = 0;
 			projectile.setSpeed(slingshot.getReturnVect());
 			shootTimer.start();
@@ -141,11 +149,11 @@ public class BlS_Panel extends JPanel implements ActionListener
 	public void actionPerformed(ActionEvent e) 
 	{	
 		if (slingshot.moveSling()) //moves slingshot while also checking if the slingshot has stopped moving
-		{projectile.attachedMove(slingshot.getPullPoint());}
+		{projectile.setNewOrigin(slingshot.getPullPoint());}
 		
 		else
 		{
-			if (!projectile.detachedMove(PANEL_HEIGHT)) //moves projectile while also checking if the projectile is still in the air
+			if (!projectile.fly(PANEL_HEIGHT)) //moves projectile while also checking if the projectile is still in the air
 			{shootTimer.stop(); projectile.initialize(slingshot.getPullPoint(), PANEL_WIDTH/450);}
 		} 
 		repaint();

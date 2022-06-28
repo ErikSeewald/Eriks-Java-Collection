@@ -62,12 +62,15 @@ public class Slingshot
 	public void initialize(int PANEL_WIDTH, int PANEL_HEIGHT, int size)
 	{
 		PIXEL_SIZE = size;
+		initOnNewCoords(PANEL_WIDTH/10, PANEL_HEIGHT - (PANEL_HEIGHT/4));
+	}
+	
+	public void initOnNewCoords(int x, int y)
+	{
+		ORIGIN[0] = x; ORIGIN[1] = y;
 		
-		ORIGIN[0] = PANEL_WIDTH/10;
-		ORIGIN[1] = PANEL_HEIGHT - (PANEL_HEIGHT/4);
-		
-		PULLPOINT_GOAL[0] = (int) (PANEL_WIDTH/7.3);
-		PULLPOINT_GOAL[1] = PANEL_HEIGHT - (PANEL_HEIGHT/5);
+		PULLPOINT_GOAL[0] = ORIGIN[0] + PIXEL_SIZE*8;
+		PULLPOINT_GOAL[1] = ORIGIN[1] + PIXEL_SIZE*8;
 		
 		PULLPOINT[0] = PULLPOINT_GOAL[0];
 		PULLPOINT[1] = PULLPOINT_GOAL[1];
@@ -97,9 +100,6 @@ public class Slingshot
 	//ORIGIN
 	public int[] getOrigin()
 	{return ORIGIN;}
-	
-	public void setOrigin(int x, int y)
-	{ORIGIN[0] = x;ORIGIN[1] = y;}
 	
 	public int[] getPaintOrigin()
 	{return new int[] {ORIGIN[0] + PIXEL_SIZE, ORIGIN[1] + PIXEL_SIZE, ORIGIN[0] + PIXEL_SIZE*14};}
