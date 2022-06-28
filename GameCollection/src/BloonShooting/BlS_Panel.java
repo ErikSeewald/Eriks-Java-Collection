@@ -51,7 +51,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 		this.addMouseListener(releaseListener);
 		
 		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, PANEL_WIDTH/250);
-		projectile.initialize(slingshot.getPullPoint(), PANEL_WIDTH/450);
+		projectile.setPixelSize(PANEL_WIDTH/450); projectile.initialize(slingshot.getPullPoint());
 	}
 	
 	public void paint(Graphics g)
@@ -76,7 +76,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 		//SLINGSHOT
 		paintSprite(slingshotColors, Slingshot.SPRITE, slingshot.getOrigin(), slingshot.getPixelSize(), g2D);
 		
-		//slingshot band
+		//SLINGSHOT BAND
 		g2D.setStroke(new BasicStroke(PANEL_WIDTH/150));
 		g2D.setPaint(Slingshot.SlingColor);
 		int[] paintOrigin = slingshot.getPaintOrigin();
@@ -86,14 +86,13 @@ public class BlS_Panel extends JPanel implements ActionListener
 		
 		//PROJECTILE
 		paintSprite(projectileColors, Projectile.SPRITE, projectile.getOrigin(), projectile.getPixelSize(), g2D);
-		
 	}
 	
 	private void paintSprite(Color[] colors, byte[] sprite, int [] origin, int pixelSize, Graphics2D g2D)
 	{
 		int row = 0, column = 0;
 		
-		for (int i = 0; i < 16*16; i++)
+		for (int i = 0; i < 256; i++)
 		{
 			if (column == 16) {row++; column = 0;}
 			
@@ -111,7 +110,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 		public void mousePressed(MouseEvent e) 
 		{
 			if(!shootTimer.isRunning())
-			slingshot.setDragValid(e.getX(), e.getY());
+			slingshot.setDragValid(e.getX(), e.getY()); //CHECK IF MOUSE IS INSIDE DRAG AREA
 		}
 	}
 	   
@@ -119,11 +118,14 @@ public class BlS_Panel extends JPanel implements ActionListener
 	{
 		public void mouseDragged(MouseEvent e) 
 		{
-			if (!slingshot.isDragValid() || shootTimer.isRunning()) {return;}
+			//DON'T MOVE IF NOT INSIDE DRAG AREA OR IF A SHOT IS STILL OCCURRING
+			if (!slingshot.isDragValid() || shootTimer.isRunning()) {return;} 
 			
+			//MOVE WHOLE SLINGSHOT
 			if (e.isShiftDown()) 
 			{slingshot.initOnNewCoords(e.getX(), e.getY()); shiftMove = true;}
 			
+			//MOVE SLINGSHOT BAND
 			else 
 			{slingshot.setPullPoint(e.getX(), e.getY());}
 			
@@ -136,8 +138,9 @@ public class BlS_Panel extends JPanel implements ActionListener
 	{
 		public void mouseReleased(MouseEvent e) 
 		{
+			//DON'T DO IF NOT INSIDE DRAG AREA OR IF A SHOT IS STILL OCCURRING
 			if (!slingshot.isDragValid() || shootTimer.isRunning()) {return;}
-			if (shiftMove) {shiftMove = false; return;}
+			if (shiftMove) {shiftMove = false; return;} //IF WHOLE SLING IS BEING MOVED, DON'T RELEASE PROJECTILE
 			
 			slingshot.setReturnVect(); slingshot.slingReturnRounds = 0;
 			projectile.setSpeed(slingshot.getReturnVect());
@@ -148,13 +151,13 @@ public class BlS_Panel extends JPanel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{	
-		if (slingshot.moveSling()) //moves slingshot while also checking if the slingshot has stopped moving
+		if (slingshot.moveSling()) //MOVES SLINGSHOT WHILE ALSO CHECKING IF THE SLINGSHOT HAS STOPPED MOVING
 		{projectile.setNewOrigin(slingshot.getPullPoint());}
 		
 		else
 		{
-			if (!projectile.fly(PANEL_HEIGHT)) //moves projectile while also checking if the projectile is still in the air
-			{shootTimer.stop(); projectile.initialize(slingshot.getPullPoint(), PANEL_WIDTH/450);}
+			if (!projectile.fly(PANEL_HEIGHT)) //MOVES PROJECTILE WHILE ALSO CHECKING IF THE PROJECTILE HAS HIT THE FLOOR
+			{shootTimer.stop(); projectile.initialize(slingshot.getPullPoint());} //RESET PROJECTILE
 		} 
 		repaint();
 	}
