@@ -18,15 +18,18 @@ public class BlS_Panel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 5219711456361037203L;
 	
-	int PANEL_WIDTH = 900;
-	int PANEL_HEIGHT = 600;
-
-	int PIXEL_SIZE = PANEL_WIDTH / 200;
+	private int PANEL_WIDTH = 900;
+	private int PANEL_HEIGHT = 600;
 	
 	private final Color BACKGROUND = new Color(50,50,60);
 	
 	//SLINGSHOT
 	private Slingshot slingshot = new Slingshot();
+	private Color[] slingshotColors = {Slingshot.Color1,Slingshot.Color2};
+	
+	//PROJECTILE
+	private Projectile projectile = new Projectile();
+	private Color[] projectileColors = {Projectile.Color1,Projectile.Color2,Projectile.Color3,Projectile.Color4};
 	
 	//MAP & GRID
 	private boolean gridVisible = false;
@@ -46,7 +49,8 @@ public class BlS_Panel extends JPanel implements ActionListener
 		this.addMouseMotionListener(dragListener);
 		this.addMouseListener(releaseListener);
 		
-		slingshot.initPoints(PANEL_WIDTH, PANEL_HEIGHT);
+		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, PANEL_WIDTH/200);
+		projectile.initialize(slingshot.getPullPoint(), PANEL_WIDTH/400);
 	}
 	
 	public void paint(Graphics g)
@@ -69,23 +73,24 @@ public class BlS_Panel extends JPanel implements ActionListener
 		}
 		
 		//SLINGSHOT
-		paintSprite
-		(new Color[] {Slingshot.Color1,Slingshot.Color2}, Slingshot.SPRITE, slingshot.getOrigin(), g2D);
+		paintSprite(slingshotColors, Slingshot.SPRITE, slingshot.getOrigin(), slingshot.getPixelSize(), g2D);
 		
 		//slingshot band
 		g2D.setStroke(new BasicStroke(PANEL_WIDTH/150));
 		g2D.setPaint(Slingshot.SlingColor);
-		int[] paintOrigin = slingshot.getPaintOrigin(PIXEL_SIZE);
+		int[] paintOrigin = slingshot.getPaintOrigin();
 		int[] pullPoint = slingshot.getPullPoint();
 		g2D.drawLine(paintOrigin[0], paintOrigin[1], pullPoint[0], pullPoint[1]);
-		g2D.drawLine(paintOrigin[0]+(PIXEL_SIZE*14), paintOrigin[1], pullPoint[0], pullPoint[1]);
+		g2D.drawLine(paintOrigin[2], paintOrigin[1], pullPoint[0], pullPoint[1]);
+		
+		//PROJECTILE
+		paintSprite(projectileColors, Projectile.SPRITE, projectile.getOrigin(), projectile.getPixelSize(), g2D);
 		
 	}
 	
-	private void paintSprite(Color[] colors, byte[] sprite, int [] origin, Graphics2D g2D)
+	private void paintSprite(Color[] colors, byte[] sprite, int [] origin, int pixelSize, Graphics2D g2D)
 	{
-		int row = 0;
-		int column = 0;
+		int row = 0, column = 0;
 		
 		for (int i = 0; i < 16*16; i++)
 		{
@@ -94,12 +99,10 @@ public class BlS_Panel extends JPanel implements ActionListener
 			if (sprite[i] != 0)
 			{
 				g2D.setPaint(colors[sprite[i]-1]);
-				g2D.fillRect(origin[0] + column*PIXEL_SIZE, origin[1]+ row*PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
+				g2D.fillRect(origin[0] + column*pixelSize, origin[1]+ row*pixelSize, pixelSize, pixelSize);
 			}
-			
 			column++;
 		}
-		
 	}
 	
 	private class ClickListener extends MouseAdapter
@@ -118,6 +121,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 			if (!slingshot.isDragValid() || shootTimer.isRunning()) {return;}
 			
 			slingshot.setPullPoint(e.getX(), e.getY());
+			projectile.attachedMove(slingshot.getPullPoint());
 			repaint();
 		}
 	}
@@ -136,11 +140,10 @@ public class BlS_Panel extends JPanel implements ActionListener
 	public void actionPerformed(ActionEvent e) 
 	{	
 		slingshot.moveSling();
+		projectile.attachedMove(slingshot.getPullPoint());
 		
 		repaint();
 	}
-	
-	
 	
 	public void changeGridVisibility()
 	{gridVisible = !gridVisible; repaint();}
