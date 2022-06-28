@@ -8,6 +8,8 @@ public class Slingshot
 	final static Color Color2 = new Color(95,110,160);
 	final static Color SlingColor = new Color(75,75,110);
 	
+	private int PIXEL_SIZE;
+	
 	private int[] ORIGIN = new int[2];
 	
 	private int[] PULLPOINT = new int[2];
@@ -52,8 +54,10 @@ public class Slingshot
 	public void setReturnVect()
 	{returnVect[0] = PULLPOINT_GOAL[0] - PULLPOINT[0]; returnVect[1] = PULLPOINT_GOAL[1] - PULLPOINT[1];}
 	
-	public void initPoints(int PANEL_WIDTH, int PANEL_HEIGHT)
+	public void initialize(int PANEL_WIDTH, int PANEL_HEIGHT, int size)
 	{
+		PIXEL_SIZE = size;
+		
 		ORIGIN[0] = PANEL_WIDTH/10;
 		ORIGIN[1] = PANEL_HEIGHT - (PANEL_HEIGHT/4);
 		
@@ -78,6 +82,13 @@ public class Slingshot
 	public boolean isDragValid()
 	{return dragValid;}
 	
+	//SIZE
+	public void setPixelSize(int size)
+	{PIXEL_SIZE = size;}
+	
+	public int getPixelSize()
+	{return PIXEL_SIZE;}
+	
 	//ORIGIN
 	public int[] getOrigin()
 	{return ORIGIN;}
@@ -85,6 +96,6 @@ public class Slingshot
 	public void setOrigin(int x, int y)
 	{ORIGIN[0] = x;ORIGIN[1] = y;}
 	
-	public int[] getPaintOrigin(int PIXEL_SIZE)
-	{return new int[] {ORIGIN[0] + PIXEL_SIZE, ORIGIN[1] + PIXEL_SIZE};}
+	public int[] getPaintOrigin()
+	{return new int[] {ORIGIN[0] + PIXEL_SIZE, ORIGIN[1] + PIXEL_SIZE, ORIGIN[0] + PIXEL_SIZE*14};}
 }
