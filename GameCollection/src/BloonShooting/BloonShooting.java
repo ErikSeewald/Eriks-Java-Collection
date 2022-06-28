@@ -30,6 +30,8 @@ public class BloonShooting extends JFrame
 				int code = e.getKeyCode();
 				
 				if (code == 71) {panel.changeGridVisibility();} //G
+				else if (code == 45) {panel.changeSize(-10); pack();} //-
+				else if (code == 521) {panel.changeSize(10); pack();} //+
 				
 			}
 

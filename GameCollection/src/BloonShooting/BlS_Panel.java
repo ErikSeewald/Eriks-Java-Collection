@@ -18,8 +18,8 @@ public class BlS_Panel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 5219711456361037203L;
 	
-	private int PANEL_WIDTH = 1000;
-	private int PANEL_HEIGHT = 600;
+	private int PANEL_WIDTH = 1320;
+	private int PANEL_HEIGHT = (int) (PANEL_WIDTH *0.6);
 	
 	private final Color BACKGROUND = new Color(50,50,60);
 	
@@ -34,6 +34,9 @@ public class BlS_Panel extends JPanel implements ActionListener
 	
 	//MAP & GRID
 	private boolean gridVisible = false;
+	private final int CELL_COUNT_X = 44;
+	private final int CELL_COUNT_Y = 26;
+	private int CELL_SIZE = PANEL_WIDTH/CELL_COUNT_X;
 	
 	//SIMULATION
 	private final Timer shootTimer = new Timer(15,this);
@@ -67,10 +70,10 @@ public class BlS_Panel extends JPanel implements ActionListener
 		if (gridVisible)
 		{
 			g2D.setPaint(Color.LIGHT_GRAY);
-			for (int i = 0; i < 34; i++)
-			{g2D.drawLine(i*30, 0, i*30, PANEL_HEIGHT);}
-			for (int i = 0; i < 20; i++)
-			{g2D.drawLine(0, i*30, PANEL_WIDTH, i*30);}
+			for (int i = 0; i < CELL_COUNT_X; i++)
+			{g2D.drawLine(i*CELL_SIZE, 0, i*CELL_SIZE, PANEL_HEIGHT);}
+			for (int i = 0; i < CELL_COUNT_Y; i++)
+			{g2D.drawLine(0, i*CELL_SIZE, PANEL_WIDTH, i*CELL_SIZE);}
 		}
 		
 		//SLINGSHOT
@@ -164,5 +167,22 @@ public class BlS_Panel extends JPanel implements ActionListener
 	
 	public void changeGridVisibility()
 	{gridVisible = !gridVisible; repaint();}
+	
+	public void changeSize(int amount)
+	{
+		//PANEL
+		PANEL_WIDTH+=amount;
+		PANEL_HEIGHT = (int) (PANEL_WIDTH *0.6);
+		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+		
+		//GRID
+		CELL_SIZE = PANEL_WIDTH/CELL_COUNT_X;
+		
+		//OBJECTS
+		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, PANEL_WIDTH/250);
+		projectile.setPixelSize(PANEL_WIDTH/450); projectile.initialize(slingshot.getPullPoint());
+		
+		repaint();
+	}
 
 }
