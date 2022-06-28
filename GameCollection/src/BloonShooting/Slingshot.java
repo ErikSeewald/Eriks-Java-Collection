@@ -15,7 +15,7 @@ public class Slingshot
 	private int[] PULLPOINT = new int[2];
 	private int[] PULLPOINT_GOAL = new int[2];
 	
-	private int[] returnVect = new int[2];
+	private float[] returnVect = new float[2];
 	
 	private boolean dragValid = false;
 	
@@ -41,18 +41,23 @@ public class Slingshot
 			0,0,0,0,2,2,2,2,2,2,2,2,2,0,0,0,
 	};
 	
-	public void moveSling()
+	public boolean moveSling()
 	{
-		if (slingReturnRounds == 5) {return;}
+		if (slingReturnRounds > 4) {return false;}
 		
 		PULLPOINT[0]+= returnVect[0]/5;
 		PULLPOINT[1]+= returnVect[1]/5;
 		
 		slingReturnRounds++;
+		
+		return true;
 	}
 	
 	public void setReturnVect()
 	{returnVect[0] = PULLPOINT_GOAL[0] - PULLPOINT[0]; returnVect[1] = PULLPOINT_GOAL[1] - PULLPOINT[1];}
+	
+	public float[] getReturnVect()
+	{return returnVect;}
 	
 	public void initialize(int PANEL_WIDTH, int PANEL_HEIGHT, int size)
 	{
