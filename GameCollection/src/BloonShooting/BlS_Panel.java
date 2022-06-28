@@ -18,7 +18,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 5219711456361037203L;
 	
-	private int PANEL_WIDTH = 900;
+	private int PANEL_WIDTH = 1000;
 	private int PANEL_HEIGHT = 600;
 	
 	private final Color BACKGROUND = new Color(50,50,60);
@@ -49,8 +49,8 @@ public class BlS_Panel extends JPanel implements ActionListener
 		this.addMouseMotionListener(dragListener);
 		this.addMouseListener(releaseListener);
 		
-		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, PANEL_WIDTH/200);
-		projectile.initialize(slingshot.getPullPoint(), PANEL_WIDTH/400);
+		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, PANEL_WIDTH/250);
+		projectile.initialize(slingshot.getPullPoint(), PANEL_WIDTH/450);
 	}
 	
 	public void paint(Graphics g)
@@ -66,7 +66,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 		if (gridVisible)
 		{
 			g2D.setPaint(Color.LIGHT_GRAY);
-			for (int i = 0; i < 30; i++)
+			for (int i = 0; i < 34; i++)
 			{g2D.drawLine(i*30, 0, i*30, PANEL_HEIGHT);}
 			for (int i = 0; i < 20; i++)
 			{g2D.drawLine(0, i*30, PANEL_WIDTH, i*30);}
@@ -132,6 +132,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 		{
 			if (!slingshot.isDragValid() || shootTimer.isRunning()) {return;}
 			slingshot.setReturnVect(); slingshot.slingReturnRounds = 0;
+			projectile.setSpeed(slingshot.getReturnVect());
 			shootTimer.start();
 		}
 	}
@@ -139,9 +140,14 @@ public class BlS_Panel extends JPanel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{	
-		slingshot.moveSling();
-		projectile.attachedMove(slingshot.getPullPoint());
+		if (slingshot.moveSling()) //moves slingshot while also checking if the slingshot has stopped moving
+		{projectile.attachedMove(slingshot.getPullPoint());}
 		
+		else
+		{
+			if (!projectile.detachedMove(PANEL_HEIGHT)) //moves projectile while also checking if the projectile is still in the air
+			{shootTimer.stop(); projectile.initialize(slingshot.getPullPoint(), PANEL_WIDTH/450);}
+		} 
 		repaint();
 	}
 	

@@ -33,11 +33,29 @@ public class Projectile
 	
 	private int PIXEL_SIZE;
 	
+	private float[] SPEED = new float[2];
+	
 	public void attachedMove(int[] origin)
 	{
 		ORIGIN[0] = origin[0] - PIXEL_SIZE*8;
 		ORIGIN[1] = origin[1] - PIXEL_SIZE*8;
 	}
+	
+	public boolean detachedMove(int PANEL_HEIGHT)
+	{
+		if (ORIGIN[1] > PANEL_HEIGHT) {return false;}
+		
+		ORIGIN[0]+= SPEED[0]; ORIGIN[1]+= SPEED[1];
+		
+		if (SPEED[0] > 0) {SPEED[0]-= 0.1;}
+		
+		SPEED[1]+= 0.5; //gravity
+		
+		return true;
+	}
+	
+	public void setSpeed(float[] vector)
+	{SPEED[0] = vector[0]/5; SPEED[1] = vector[1]/5;}
 	
 	public void initialize(int[] origin, int size)
 	{
@@ -52,9 +70,6 @@ public class Projectile
 	
 	public void setOrigin(int x, int y)
 	{ORIGIN[0] = x;ORIGIN[1] = y;}
-	
-	public int[] getPaintOrigin(int PIXEL_SIZE)
-	{return new int[] {ORIGIN[0] + PIXEL_SIZE, ORIGIN[1] + PIXEL_SIZE};}
 	
 	//SIZE
 	public void setPixelSize(int size)
