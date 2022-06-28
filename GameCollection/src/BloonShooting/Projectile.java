@@ -4,10 +4,13 @@ import java.awt.Color;
 
 public class Projectile 
 {
+	//SPRITE
 	final static Color Color1 = new Color(145,170,234);
 	final static Color Color2 = new Color(138,154,194);
 	final static Color Color3 = new Color(94,111,157);
 	final static Color Color4 = new Color(89,101,133);
+	
+	private int PIXEL_SIZE;
 
 	static final byte[] SPRITE = 
 	{
@@ -29,22 +32,25 @@ public class Projectile
 			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 	};
 	
-	private int[] ORIGIN = new int[2];
 	
-	private int PIXEL_SIZE;
+	//COORDINATES & VECTORS
+	private int[] ORIGIN = new int[2];
 	
 	private float[] SPEED = new float[2];
 	
+	//INITIALIZATION
+	public void initialize(int[] origin)
+	{ORIGIN[0] = origin[0] - PIXEL_SIZE*8; ORIGIN[1] = origin[1] - PIXEL_SIZE*8;}
 	
+	//MOVEMENT
 	public boolean fly(int PANEL_HEIGHT)
 	{
-		if (ORIGIN[1] > PANEL_HEIGHT) {return false;}
+		if (ORIGIN[1] > PANEL_HEIGHT) {return false;} //HAS HIT FLOOR
 		
-		ORIGIN[0]+= SPEED[0]; ORIGIN[1]+= SPEED[1];
+		ORIGIN[0]+= SPEED[0]; ORIGIN[1]+= SPEED[1]; 
 		
-		if (SPEED[0] > 0) {SPEED[0]-= 0.1;}
-		
-		SPEED[1]+= 0.5; //gravity
+		if (SPEED[0] > 0) {SPEED[0]-= 0.1;} //SLOW DOWN HORIZONTAL SPEED
+		SPEED[1]+= 0.5; //GRAVITY
 		
 		return true;
 	}
@@ -52,12 +58,6 @@ public class Projectile
 	public void setSpeed(float[] vector)
 	{SPEED[0] = vector[0]/5; SPEED[1] = vector[1]/5;}
 	
-	public void initialize(int[] origin, int size)
-	{
-		PIXEL_SIZE = size;
-		ORIGIN[0] = origin[0] - PIXEL_SIZE*8;
-		ORIGIN[1] = origin[1] - PIXEL_SIZE*8;	
-	}
 	
 	//ORIGIN
 	public int[] getOrigin()
