@@ -36,6 +36,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import java.text.DecimalFormat;
+import java.awt.RadialGradientPaint;
 
 
 public class EriksCollection 
@@ -67,72 +69,76 @@ public class MainMenu extends JFrame implements MouseListener
 {
 	private static final long serialVersionUID = 1454253443346436L;
 
-	int resolution = 400;
+	private int resolution = 400;
 	
-	JLabel gameButton1 = new JLabel(" Mouse Dodge");
-	JLabel gameButton2 = new JLabel("    Reflection");
-	JLabel gameButton3 = new JLabel("      Sudoku");
-	JLabel gameButton4 = new JLabel("      Pathfind");
-	JLabel gameButton5 = new JLabel("    Sierpinski");
-	JLabel gameButton6 = new JLabel("    Parallel U.");
-	JLabel gameButton7 = new JLabel("      Insects");
-	JLabel gameButton8 = new JLabel("     Particles");
-	JLabel gameButton9 = new JLabel("   3D Coords");
-	JLabel gameButton10 = new JLabel("     Chasers");
-	JLabel gameButton11 = new JLabel("   Sidescroller");
-	JLabel gameButton12 = new JLabel("    Speedrun");
-	JLabel gameButton13 = new JLabel("");
-	JLabel gameButton14 = new JLabel("");
-	JLabel gameButton15 = new JLabel("");
-	JLabel gameButton16 = new JLabel("");
-	JLabel gameButton17 = new JLabel("");
-	JLabel gameButton18 = new JLabel("");
-	JLabel gameButton19 = new JLabel("");
-	JLabel gameButton20 = new JLabel("");
-	JLabel gameButton21 = new JLabel("");
-	JLabel gameButton22 = new JLabel("");
-	JLabel gameButton23 = new JLabel("");
-	JLabel gameButton24 = new JLabel("");
-	int buttonSizeX;
-	int buttonSizeY;
+	private JLabel gameButton1 = new JLabel("   3D Coords");
+	private JLabel gameButton2 = new JLabel("      Insects");
+	private JLabel gameButton3 = new JLabel("     Particles");
+	private JLabel gameButton4 = new JLabel("    Sierpinski");
+	private JLabel gameButton5 = new JLabel("      Sudoku");
+	private JLabel gameButton6 = new JLabel("      Pathfind");
+	private JLabel gameButton7 = new JLabel("    Parallel U.");
+	private JLabel gameButton8 = new JLabel("    Reflection");
+	private JLabel gameButton9 = new JLabel(" Mouse Dodge");
+	private JLabel gameButton10 = new JLabel("   Sidescroller");
+	private JLabel gameButton11 = new JLabel("    Speedrun");
+	private JLabel gameButton12 = new JLabel(" Pixel Collision");
+	private JLabel gameButton13 = new JLabel("    Cloth Sim");
+	private JLabel gameButton14 = new JLabel(" Gravity Vects");
+	private JLabel gameButton15 = new JLabel("Bloon Shooting");
+	private JLabel gameButton16 = new JLabel("");
+	private JLabel gameButton17 = new JLabel("");
+	private JLabel gameButton18 = new JLabel("");
+	private JLabel gameButton19 = new JLabel("");
+	private JLabel gameButton20 = new JLabel("");
+	private JLabel gameButton21 = new JLabel("");
+	private JLabel gameButton22 = new JLabel("");
+	private JLabel gameButton23 = new JLabel("");
+	private JLabel gameButton24 = new JLabel("");
+	private int buttonSizeX;
+	private int buttonSizeY;
 	
-	JLabel[] gameButtons = 
+	private JLabel[] gameButtons = 
 	{
 			gameButton1, gameButton2, gameButton3, gameButton4, gameButton5, gameButton6, gameButton7, gameButton8, 
 			gameButton9, gameButton10, gameButton11, gameButton12, gameButton13, gameButton14, gameButton15, gameButton16, 
 			gameButton17, gameButton18, gameButton19, gameButton20, gameButton21, gameButton22, gameButton23, gameButton24, 
 	};
 
-	static boolean[] hasWindowOpen = new boolean[24]; //to check whether an instance of this game is already open
+	public static boolean[] hasWindowOpen = new boolean[24]; //to check whether an instance of this game is already open
 	
-	Color textColor = new Color(210,210,230);
-	Color buttonColor1 = new Color(75,75,105);
-	Color buttonColor2 = new Color(110,110,130);
-	Color buttonColor3 = new Color(130,130,150);
+	private Color textColor = new Color(210,210,230);
+	private Color buttonColor1 = new Color(75,75,105);
+	private Color buttonColor2 = new Color(110,110,130);
+	private Color buttonColor3 = new Color(130,130,150);
 	
 	boolean insideButton = false;
-	boolean buttonSizeIncreased = false;
+	private boolean buttonSizeIncreased = false;
 	
-	JLabel headline = new JLabel("ERIK'S COLLECTION");
-	JLabel controls1 = new JLabel("");
-	JLabel controls2 = new JLabel("");
-	JLabel controls3 = new JLabel("");
-	JLabel controls4 = new JLabel("");
-	JLabel controls5 = new JLabel("");
+	private JLabel headline = new JLabel("ERIK'S COLLECTION");
+	private JLabel controls1 = new JLabel("");
+	private JLabel controls2 = new JLabel("");
+	private JLabel controls3 = new JLabel("");
+	private JLabel controls4 = new JLabel("");
+	private JLabel controls5 = new JLabel("");
 	
-	JLabel[] guideLabels = {controls1, controls2, controls3, controls4, controls5};
+	private JLabel[] guideLabels = {headline, controls1, controls2, controls3, controls4, controls5};
 	
-	WindowEventHandler eventHandler;
-	static int closeTurn = 0;			//how many windows have been closed since the JVM has been launched
+	private WindowEventHandler eventHandler;
+	private static int closeTurn = 0;		//how many windows have been closed since the JVM has been launched
+	
+	//public static final ImageIcon img = new ImageIcon("src\\Main\\logo.jpg");
 	
 	MainMenu()
 	{
 		eventHandler = new WindowEventHandler();
 		
+		//this.setIconImage(img.getImage());
+		
 		this.setTitle("Menu");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
-		this.getContentPane().setBackground(new Color(30,30,40));
+		this.getContentPane().setBackground(new Color(40,40,55));
 		
 		this.setLayout(null);
 		
@@ -147,16 +153,13 @@ public class MainMenu extends JFrame implements MouseListener
 		
 		headline.setBounds(resolution/40,resolution/60,resolution+100,resolution/15);
 		headline.setFont(new Font ("", Font.BOLD, resolution/26));
-		headline.setForeground(textColor);
-		this.add(headline);
-		
 		controls1.setBounds(resolution/40,resolution/15,resolution+100,resolution/15);
 		controls2.setBounds(resolution/40,resolution/10,resolution+100,resolution/15);
 		controls3.setBounds(resolution/40,(int)(resolution/7.5),resolution+100,resolution/15);
 		controls4.setBounds(resolution/40,resolution/6,resolution+100,resolution/15);
 		controls5.setBounds(resolution/40,resolution/5,resolution+100,resolution/15);
-		for (JLabel x : guideLabels)
-		{setTextBasics(x);}
+		for (int i = 0; i < guideLabels.length; i++)
+		{setTextBasics(guideLabels[i], i);}
 		
 		buttonSizeX = resolution/6;
 		buttonSizeY = resolution/15;
@@ -183,7 +186,7 @@ public class MainMenu extends JFrame implements MouseListener
 	public void setButtonBasics(JLabel x)
 	{
 		
-		if (x.getName() != "headline") {x.setFont(new Font ("", Font.PLAIN, resolution/42));}
+		x.setFont(new Font ("", Font.PLAIN, resolution/42));
 		x.setForeground(textColor);
 		x.setBackground(buttonColor1);
 		x.setOpaque(true);
@@ -192,10 +195,10 @@ public class MainMenu extends JFrame implements MouseListener
 		this.add(x);
 	}
 	
-	public void setTextBasics(JLabel x)
+	public void setTextBasics(JLabel x, int index)
 	{
 		x.setForeground(textColor);
-		x.setFont(new Font ("", Font.BOLD, resolution/50));
+		if (index != 0) {x.setFont(new Font ("", Font.BOLD, resolution/50));}
 		this.add(x);
 	}
 
@@ -217,37 +220,42 @@ public class MainMenu extends JFrame implements MouseListener
 		
 		switch (index)
 		{
-			case 0: MouseDodge mouseDodge = new MouseDodge(); mouseDodge.start(eventHandler);
+			case 0: Coordinates3D coordinates3D = new Coordinates3D(); coordinates3D.start(eventHandler);
 			break;
-			case 1: ReflectionDemo reflectionDemo = new ReflectionDemo(); reflectionDemo.start(eventHandler);
+			case 1: Insects insects = new Insects(); insects.start(eventHandler);
 			break;
-			case 2: Sudoku sudoku = new Sudoku(); sudoku.start(eventHandler);
+			case 2: Particles particles = new Particles(); particles.start(eventHandler);
 			break;
-			case 3: SelectionFrame pathfind = new SelectionFrame(); pathfind.start("Pathfind", null);
+			case 3: SelectionFrame sierpinski = new SelectionFrame(); sierpinski.start("Sierpinski", eventHandler);
 			break;
-			case 4: SelectionFrame sierpinski = new SelectionFrame(); sierpinski.start("Sierpinski", eventHandler);
+			case 4: Sudoku sudoku = new Sudoku(); sudoku.start(eventHandler);
 			break;
-			case 5: ParallelUniverses parallelUniverses = new ParallelUniverses();parallelUniverses.start(eventHandler);
+			case 5: SelectionFrame pathfind = new SelectionFrame(); pathfind.start("Pathfind", eventHandler);
 			break;
-			case 6: Insects insects = new Insects(); insects.start(eventHandler);
+			case 6: ParallelUniverses parallelUniverses = new ParallelUniverses();parallelUniverses.start(eventHandler);
 			break;
-			case 7: Particles particles = new Particles(); particles.start(eventHandler);
+			case 7: ReflectionDemo reflectionDemo = new ReflectionDemo(); reflectionDemo.start(eventHandler);
 			break;
-			case 8: Coordinates3D coordinates3D = new Coordinates3D();coordinates3D.start(eventHandler);
+			case 8: MouseDodge mouseDodge = new MouseDodge(); mouseDodge.start(eventHandler);
 			break;
-			case 9: VectorChasers vectorChasers = new VectorChasers();vectorChasers.start(eventHandler);
+			case 9: JumpAndRun jumpAndRun = new JumpAndRun(); jumpAndRun.start(eventHandler, false);
 			break;
-			case 10: JumpAndRun jumpAndRun = new JumpAndRun();jumpAndRun.start(eventHandler, false);
+			case 10: JumpAndRun jumpAndRun2 = new JumpAndRun(); jumpAndRun2.start(eventHandler, true);
 			break;
-			case 11: JumpAndRun jumpAndRun2 = new JumpAndRun();jumpAndRun2.start(eventHandler, true);
+			case 11: PixelCollision pixelCollision = new PixelCollision(); pixelCollision.start(eventHandler);
+			break;
+			case 12: ClothSim clothSim = new ClothSim(); clothSim.start(eventHandler);
+			break;
+			case 13: GravityVectors gravityVectors = new GravityVectors(); gravityVectors.start(eventHandler);
+			break;
+			case 14: BloonShooting bloonShooting = new BloonShooting(); bloonShooting.start(eventHandler);
 			break;
 		}
 		
 		hasWindowOpen[index] = !hasWindowOpen[index];
-		
+			
 	}
 	
-
 	@Override
 	public void mousePressed(MouseEvent e) 
 	{
@@ -306,74 +314,93 @@ public class MainMenu extends JFrame implements MouseListener
 	{
 		String[][] titles = new String[24][6];
 		
-		titles[0][0] = "MOUSE DODGE";
-		titles[0][1] = "MOVE YOUR MOUSE TO DODGE THE ENEMIES";
-		titles[0][2] = "PRESS F TO SWITCH DARK MODE ON OR OFF";
-		titles[0][3] = "OTHER CONTROLS ARE DISPLAYED INGAME";
 		
-		titles[1][0] = "REFLECTION DEMO";
-		titles[1][1] ="MOVE THE ORIGIN WITH YOUR MOUSE HELD DOWN AND ROTATE WITH THE MOUSE WHEEL";
-		titles[1][2] ="1 - LESS REFLECTIONS  |  2 - MORE REFLECTIONS";
-		titles[1][3] ="3 - LESS ROTATION SPEED  |  4 - MORE ROTATION SPEED";
+		titles[0][0] = "3D COORDINATES";
+		titles[0][1] ="TYPE IN THE COORDINATES OF POINTS OF THE PLANE YOU WANT TO BE DISPLAYED";
+		titles[0][2] ="CLICK THE TOP LEFT BUTTON TO TURN IT INTO A CUBE, THE TOP RIGHT TO SPIN";
+		titles[0][3] ="CLICK THE BUTTONS AT THE BOTTOM TO REMOVE THE AXIS' OR TO MOVE THE PLANE";
+		titles[0][4] ="RECOMMENDED COORDINATES: 12,0,0   0,0,0   0,12,0";
 		
-		titles[2][0] = "SUDOKU";
-		titles[2][1] ="USE YOUR MOUSE TO CLICK ON A BOX, THEN TYPE IN A NUMBER";
-		titles[2][2] ="S -- SOLVE SUDOKU | R -- RESET";
-		titles[2][3] ="+ -- INCREASE SIZE | - -- DECREASE SIZE";
+		titles[1][0] = "INSECTS";
+		titles[1][1] ="OBSERVE AS THE INSECTS TRY TO SURVIVE IN THIS MAZE | R - RESTART";
+		titles[1][2] ="YOU CAN SEE THE AMOUNT OF INSECTS IN THE TOP LEFT CORNER";
+		titles[1][3] ="BLUE SQUARES ARE SOURCES OF WATER, RED SQUARES ARE FOOD. THE NUMBER OF";
+		titles[1][4] ="INSECTS CHANGES IN RELATION TO HOW MANY INSECTS ARE INSIDE THESE SOURCES";
+		titles[1][5] ="1 - LESS ANTS | 2 - MORE ANTS | 3 - LESS INCREASE PER PRESS | 4 - MORE";
 		
-		titles[3][0] = "PATHFIND";
-		titles[3][1] ="USE W,A,S,D TO ESCAPE THE RED ENEMIES FOR AS MANY TURNS AS POSSIBLE";
-		titles[3][2] ="LOAD AND SAVE LEVELS WITH THE MENU BAR | SHIFT + CLICK ON TILES TO EDIT THEM";
-		titles[3][3] ="0 -- WIPE BOARD | R -- RESET BOARD";
-		titles[3][4] ="T -- NEW BOARD | +/- -- CHANGE SIZE";
+		titles[2][0] = "PARTICLES";
+		titles[2][1] ="PRESS DOWN YOUR MOUSE TO DRAW ON THE PARTICLES";
+		titles[2][2] ="PRESS R TO RESET";
 		
-		titles[4][0] = "SIERPINSKI";
-		titles[4][1] ="EVERY TURN THERE IS A RANDOM CHANCE FOR THE POINT TO MOVE TOWARDS ONE OF THE";
-		titles[4][2] ="3 POINTS OF THE TRIANGLE. THEN IT LEAVES A POINT HALFWAY ON THE PATH TO THE";
-		titles[4][3] ="CHOSEN POINT. REPEATING THIS WILL SLOWLY CREATE A SIERPINSKI TRIANGLE.";
-		titles[4][4] ="HOLD DOWN YOUR MOUSE OVER A TRIANGLE POINT AND HOLD SHIFT TO MOVE IT";
+		titles[3][0] = "SIERPINSKI";
+		titles[3][1] ="EVERY TURN THERE IS A RANDOM CHANCE FOR THE POINT TO MOVE TOWARDS ONE OF THE";
+		titles[3][2] ="3 POINTS OF THE TRIANGLE. THEN IT LEAVES A POINT HALFWAY ON THE PATH TO THE";
+		titles[3][3] ="CHOSEN POINT. REPEATING THIS WILL SLOWLY CREATE A SIERPINSKI TRIANGLE.";
+		titles[3][4] ="HOLD DOWN YOUR MOUSE OVER A TRIANGLE POINT AND HOLD SHIFT TO MOVE IT";
 		
-		titles[5][0] = "PARALLEL UNIVERSES";
-		titles[5][1] ="THE RED POINT REPRESENTS YOUR POSTITION IN THE UNIVERSE";
-		titles[5][2] ="THE GREEN POINT REPRESENTS YOUR POSITION IN THE PARALLEL UNIVERSES";
-		titles[5][3] ="MOVE WITH W,A,S,D AND HOLD DOWN SHIFT BEFORE PRESSING THE KEYS TO MOVE FASTER";
-		titles[5][4] ="HIDE THE PARALLEL UNIVERSES WITH E";
+		titles[4][0] = "SUDOKU";
+		titles[4][1] ="USE YOUR MOUSE TO CLICK ON A BOX, THEN TYPE IN A NUMBER";
+		titles[4][2] ="S -- SOLVE SUDOKU | R -- RESET";
+		titles[4][3] ="+ -- INCREASE SIZE | - -- DECREASE SIZE";
 		
-		titles[6][0] = "INSECTS";
-		titles[6][1] ="OBSERVE AS THE INSECTS TRY TO SURVIVE IN THIS MAZE | R - RESTART";
-		titles[6][2] ="YOU CAN SEE THE AMOUNT OF INSECTS IN THE TOP LEFT CORNER";
-		titles[6][3] ="BLUE SQUARES ARE SOURCES OF WATER, RED SQUARES ARE FOOD. THE NUMBER OF";
-		titles[6][4] ="INSECTS CHANGES IN RELATION TO HOW MANY INSECTS ARE INSIDE THESE SOURCES";
-		titles[6][5] ="1 - LESS ANTS | 2 - MORE ANTS | 3 - LESS INCREASE PER PRESS | 4 - MORE";
+		titles[5][0] = "PATHFIND";
+		titles[5][1] ="USE W,A,S,D TO ESCAPE THE RED ENEMIES FOR AS MANY TURNS AS POSSIBLE";
+		titles[5][2] ="LOAD AND SAVE LEVELS WITH THE MENU BAR | SHIFT + CLICK ON TILES TO EDIT THEM";
+		titles[5][3] ="0 -- WIPE BOARD | R -- RESET BOARD";
+		titles[5][4] ="T -- NEW BOARD | +/- -- CHANGE SIZE";
 		
-		titles[7][0] = "PARTICLES";
-		titles[7][1] ="PRESS DOWN YOUR MOUSE TO DRAW ON THE PARTICLES";
-		titles[7][2] ="PRESS R TO RESET";
+		titles[6][0] = "PARALLEL UNIVERSES";
+		titles[6][1] ="THE RED POINT REPRESENTS YOUR POSTITION IN THE UNIVERSE";
+		titles[6][2] ="THE GREEN POINT REPRESENTS YOUR POSITION IN THE PARALLEL UNIVERSES";
+		titles[6][3] ="MOVE WITH W,A,S,D AND HOLD DOWN SHIFT BEFORE PRESSING THE KEYS TO MOVE FASTER";
+		titles[6][4] ="HIDE THE PARALLEL UNIVERSES WITH E";
 		
-		titles[8][0] = "3D COORDINATES";
-		titles[8][1] ="TYPE IN THE COORDINATES OF POINTS OF THE PLANE YOU WANT TO BE DISPLAYED";
-		titles[8][2] ="CLICK THE TOP LEFT BUTTON TO TURN IT INTO A CUBE, THE TOP RIGHT TO SPIN";
-		titles[8][3] ="CLICK THE BUTTONS AT THE BOTTOM TO REMOVE THE AXIS' OR TO MOVE THE PLANE";
-		titles[8][4] ="RECOMMENDED COORDINATES: 12,0,0   0,0,0   0,12,0";
+		titles[7][0] = "REFLECTION DEMO";
+		titles[7][1] ="MOVE THE ORIGIN WITH YOUR MOUSE HELD DOWN AND ROTATE WITH THE MOUSE WHEEL";
+		titles[7][2] ="1 - LESS REFLECTIONS  |  2 - MORE REFLECTIONS";
+		titles[7][3] ="3 - LESS ROTATION SPEED  |  4 - MORE ROTATION SPEED";
+		titles[7][4] ="5 - LOW ACCURACY | 6 - DEFAULT ACCURACY | 7 - ULTRA ACCURACY (DEMANDING)";
 		
-		titles[9][0] = "VECTOR CHASERS";
-		titles[9][1] ="CLICK ON THE WHITE CIRCLE WITH YOUR MOUSE AND PRESS DOWN TO MOVE IT";
-		titles[9][2] ="PRESS R TO RESTART";
+		titles[8][0] = "MOUSE DODGE";
+		titles[8][1] = "MOVE YOUR MOUSE TO DODGE THE ENEMIES";
+		titles[8][2] = "PRESS F TO SWITCH DARK MODE ON OR OFF";
+		titles[8][3] = "OTHER CONTROLS ARE DISPLAYED INGAME";
 		
-		titles[10][0] = "2D SIDESCROLLER";
-		titles[10][1] ="OUTRUN THE SCREEN AND DON'T FALL INTO THE LAVA";
+		titles[9][0] = "2D SIDESCROLLER";
+		titles[9][1] ="OUTRUN THE SCREEN AND DON'T FALL INTO THE LAVA";
+		titles[9][2] ="USE W,A,S,D TO MOVE AND SPACE TO JUMP | ENTER FLYING MODE WITH F";
+		titles[9][3] ="R -- RESTART | T -- GENERATE NEW MAP | ESC -- PAUSE";
+		titles[9][4] ="CTRL + S -- SAVE | CTRL + L -- LOAD";
+		
+		titles[10][0] = "2D SPEEDRUN";
+		titles[10][1] ="MOVE AS FAST AS YOU CAN";
 		titles[10][2] ="USE W,A,S,D TO MOVE AND SPACE TO JUMP | ENTER FLYING MODE WITH F";
 		titles[10][3] ="R -- RESTART | T -- GENERATE NEW MAP | ESC -- PAUSE";
 		titles[10][4] ="CTRL + S -- SAVE | CTRL + L -- LOAD";
 		
-		titles[11][0] = "2D SPEEDRUN";
-		titles[11][1] ="MOVE AS FAST AS YOU CAN";
-		titles[11][2] ="USE W,A,S,D TO MOVE AND SPACE TO JUMP | ENTER FLYING MODE WITH F";
-		titles[11][3] ="R -- RESTART | T -- GENERATE NEW MAP | ESC -- PAUSE";
-		titles[11][4] ="CTRL + S -- SAVE | CTRL + L -- LOAD";
+		titles[11][0] = "PIXEL COLLISION";
+		titles[11][1] ="ANYTHING YOU DRAW ON SCREEN WILL BECOME A COLLISION OBJECT";
+		titles[11][2] ="USE THE OBJECT MENU IN THE TOP LEFT TO DRAW AN OBJECT INTO THE RECTANGLE THAT";
+		titles[11][3] ="APPEARS, SAVE IT AND THEN MOVE IT WITH W,A,S,D. USE SHIFT TO MOVE FASTER";
+		titles[11][4] ="USE THE PIXEL MENU TO CHANGE THE SIZE OF THE PIXELS YOU DRAW ";
+		titles[11][5] ="CHANGE SCREEN SIZE: + & - | FLY MODE: F | RESET: R | SHIFT CLICK TO ERASE";
 		
+		titles[12][0] = "CLOTH SIM";
+		titles[12][1] ="CLICK ANYWHERE ON SCREEN TO CREATE A POINT, CTRL CLICK TO LOCK IT IN PLACE";
+		titles[12][2] ="CLICK ON A POINT AGAIN TO SELECT IT, IF YOU HAVE TWO POINTS SELECTED, PRESS";
+		titles[12][3] ="C TO CONNECT THEM. START OR STOP THE SIMULATION WITH S AND RESET WITH R";
+		titles[12][4] ="MOVE POINT = PRESS DOWN AND MOVE | CUT POINT = HOLD SHIFT, PRESS DOWN AND MOVE";
+		titles[12][5] ="OVER IT | DELETE LAST CONNECTION = CTRL Z | SAVE/LOAD LAYOUTS WITH THE MENUBAR";
 		
-		headline.setText(titles [game][0]);
+		titles[13][0] = "GRAVITY VECTORS";
+		titles[13][1] ="THIS IS NOT REALLY A GRAVITY OR MAGNETIC FIELD SIMULATION, BUT I COULD NOT";
+		titles[13][2] ="FIND A PROPER NAME FOR IT. MOVE GRAVITY POINTS WITH THE MOUSE HELD DOWN";
+		titles[13][3] ="1 TO DECREASE THE AMOUNT OF GRAVITY POINTS | 2 TO INCREASE";
+		titles[13][4] ="+ TO INCREASE SCREEN SIZE | - TO DECREASE";
+		titles[13][5] ="G TO ACTIVATE GRADIENT RENDERING | N TO TURN OFF ARROW VECTOR NORMALIZATION";
+			
+			
+		headline.setText(titles[game][0]);
 		controls1.setText(titles[game][1]);
 		controls2.setText(titles[game][2]);
 		controls3.setText(titles[game][3]);
@@ -2643,12 +2670,12 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 
 public class ParallelUniverses 
 {
-
+	//pressedKeys List because keyPressed() has an annoying delay before it registers a key as held down
 	static ArrayList<Integer> pressedKeys = new ArrayList<>();
 	
 	static ParallelUniversesPanel panel;
 	
-	static Timer timer = new Timer(25, new ActionListener() 
+	static Timer timer = new Timer(25, new ActionListener()
 	{	@Override
 		public void actionPerformed(ActionEvent e) 
 		{
@@ -2665,27 +2692,26 @@ public class ParallelUniverses
 			
 			if (pressedKeys.contains(16)) {loop = 4;}	//SHIFT
 		
-			if(move) 
+			if(move) //don't do an unnecessary calculation
 			{
+				//handle speed thorugh loops instead of increasing x  or y because we need to calculate 1 pixel at a time
 				for (int i = 0; i < loop; i++) 
 				{panel.move(x,y);} 
-				
 				panel.repaint();
 			}
 		}	
 	});
 	
-	
 	public void start(WindowEventHandler eventHandler) 
 	{
-		
 		JFrame frame = new JFrame("Parallel Universes");
+		//frame.setIconImage(MainMenu.img.getImage());
 		panel = new ParallelUniversesPanel();
 		
 		timer.start();
 		
 		frame.addWindowListener(eventHandler);
-		frame.setResizable(false);
+		frame.setResizable(true);
 		frame.add(panel);
 		frame.pack();
 		
@@ -2720,90 +2746,89 @@ public class ParallelUniverses
 }
 
 
-public class ParallelUniversesPanel extends JPanel{
-
+public class ParallelUniversesPanel extends JPanel
+{
 	private static final long serialVersionUID = 9082922097976866954L;
-
-	Point prevPt;
-	boolean dragValid;
 	
-	int[] prey = {300,300};
+	int PANEL_SIZE = 623;
 	
-	int[] chaser = {0,0};
-	
-	
-	
-	Random random;
+	int[] location = {313,313};			//LOCATION ON THE ENTIRE
+	int[] relativeLocation = {6,6};		//LOCATION WITHIN THE MAIN UNIVERSE
 	
 
-	int bitSize = 64;
+	int borderSize = 2; //BORDER BETWEEN UNIVERSES
 	
-	int PANEL_SIZE = 600;
-	int size = PANEL_SIZE/120;
-	int constantAdd = PANEL_SIZE/2;
-	int rectStart = (PANEL_SIZE/2)-(bitSize/2);
-	int iterations = 9;
-	int[] prevprey = new int[2];
-	int offset = 3600 / PANEL_SIZE;
-	int oval1 = (int)(PANEL_SIZE * 0.025);
-	int ovalSize1 = (int)(PANEL_SIZE * 0.042);
-	int ovalSize2 = (int)(PANEL_SIZE * 0.025);
-	int oval2 = (int)(PANEL_SIZE * 0.0585);
-	int rectSize = (int) (PANEL_SIZE * 0.115);
+	// 64 --> BITS FOR THE RELATIVELOCATION (WHEN SHOULD AN OVERFLOW OCCUR)
+	//--> LOWER BOUND = -32 , UPPER BOUND = 31
+	//OFFSET +3 BECAUSE OF PLAYERSIZE - 1/2 BORDERSIZE = 3 (SEE MOVEMENT CALCULATION FOR FURTHER EXPLANATION)
+	int upperEdge = 34;
+	int lowerEdge = -29;
+		
+	int playerSize = 4;
+	int halfPlayerSize = 2;
+	
+	int constantAdd = 307;		//CONSTANT THAT NEEDS TO BE ADDED TO THE RELATIVELOCATION TO MAKE IT ABSOLUTE FOR DRAW()
+
+	int universesPerRow = 9;
+	
+	//OFFSETS NEEDED FOR THE PARALLELUNIVERSES TO LINE UP WITH THE MAIN UNIVERSE PROPERLY
+	int outlineOffset = 1;			
+	int rect1Offset = outlineOffset + 15;
+	int rect2Offset = outlineOffset + 35;
+	
+	int rect1Size = 25;
+	int rect2Size = 15;
+	
+	int universeSize = 69;
 	
 	boolean universesVisible = true;
 	
 	ParallelUniversesPanel()
-	{				
-		random = new Random();
-		
-		this.setPreferredSize(new Dimension (PANEL_SIZE,PANEL_SIZE));
-	}
-	
+	{this.setPreferredSize(new Dimension (PANEL_SIZE,PANEL_SIZE));}
 	
 	public void paint (Graphics g)
 	{
 		Graphics2D g2D = (Graphics2D) g;
-		
 		super.paint(g);
 		
-		g2D.setStroke(new BasicStroke(2));
-		g2D.setPaint(new Color (80,80,80));
+		//BACKGROUND
+		g2D.setPaint(new Color (80,80,80)); //DARK GRAY
 		g2D.fillRect(0, 0, PANEL_SIZE, PANEL_SIZE);
-		
-
-		g2D.setPaint(new Color (180,180,180));
 	
-		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		//SETTINGS FOR THE UNIVERSES
+		g2D.setPaint(new Color (180,180,180)); //GRAY
+		g2D.setStroke(new BasicStroke(borderSize));
 		
 		if (universesVisible)
 		{
-		
-		for (int i = 0; i < iterations; i++)
-		{
-			for (int j = 0; j < iterations; j++)
+			for (int i = 0; i < universesPerRow; i++)
 			{
-				if (!(i == 4 && j == 4))
+				for (int j = 0; j < universesPerRow; j++)
 				{
-				g2D.drawRect(-offset+(j*(rectSize)), -offset+(i*(rectSize)), rectSize, rectSize);
-				g2D.drawOval(-offset+oval1+(j*(rectSize)), -offset+oval1+(i*(rectSize)), ovalSize1, ovalSize1);
-				g2D.drawOval(-offset+oval2+(j*(rectSize)), -offset+oval2+(i*(rectSize)), ovalSize2, ovalSize2);
+					if (!(i == 4 && j == 4))
+					{
+						g2D.drawRect(outlineOffset+(j*(universeSize)), outlineOffset+(i*(universeSize)), universeSize, universeSize);
+						g2D.drawRect(rect1Offset+(j*(universeSize)), rect1Offset+(i*(universeSize)), rect1Size, rect1Size);
+						g2D.drawRect(rect2Offset+(j*(universeSize)), rect2Offset+(i*(universeSize)), rect2Size, rect2Size);
+					}
 				}
 			}
 		}
 		
-		}
+		//ORIGINAL UNIVERSE
+		g2D.setPaint(new Color (50,170,250)); //BLUE-ISH
+		g2D.drawRect(rect1Offset+(4*(universeSize)), rect1Offset+(4*(universeSize)), rect1Size, rect1Size);
+		g2D.drawRect(rect2Offset+(4*(universeSize)), rect2Offset+(4*(universeSize)), rect2Size, rect2Size);
+		g2D.drawRect(outlineOffset+(4*(universeSize)), outlineOffset+(4*(universeSize)), universeSize, universeSize);
 		
-		g2D.setPaint(new Color (50,170,250));
-		g2D.drawRect(-offset+(4*(rectSize)), -offset+(4*(rectSize)), rectSize, rectSize);
-		g2D.drawOval(-offset+oval1+(4*(rectSize)), -offset+oval1+(4*(rectSize)), ovalSize1, ovalSize1);
-		g2D.drawOval(-offset+oval2+(4*(rectSize)), -offset+oval2+(4*(rectSize)), ovalSize2, ovalSize2);
 		
-		g2D.setPaint(new Color (50,250,140));
-		g2D.fillRect(prey[0], prey[1], size, size);
+		//DRAW PLAYER LOCATION
+		g2D.setPaint(new Color (50,250,140)); //GREEN-ISH
+		g2D.fillRect(location[0], location[1], playerSize, playerSize);
 		
-		g2D.setPaint(new Color (255,80,80));
-		g2D.fillRect(chaser[0]+constantAdd, chaser[1]+constantAdd, size, size);
+		//DRAW RELATIVE PLAYER LOCATION
+		g2D.setPaint(new Color (255,80,80)); //RED
+		g2D.fillRect(relativeLocation[0]+constantAdd, relativeLocation[1]+constantAdd, playerSize, playerSize);
 		
 	}
 	
@@ -2813,24 +2838,40 @@ public class ParallelUniversesPanel extends JPanel{
 		repaint();
 	}
 	
-	public void move (int x, int y)
+	public void move(int x, int y)
 	{
-		prevprey[0] = prey[0];
-    	prevprey[1] = prey[1];
+		location[0]+=x;
+    	location[1]+=y;
     	
-    	int[] vector = {x,y};
-    	
-    	prey[0]+=x;
-    	prey[1]+=y;
-    	
-    	if (chaser[0]-2 + vector[0] > 31) {chaser[0] = -(bitSize/2)+2; chaser[0]+= vector[0]; prey[0]+=size+1;}
-    	else if (chaser[0]-3 + vector[0] < -32) {chaser[0] = (bitSize/2)+2; chaser[0]+= vector[0];prey[0]-=size+1;}
-    	else {chaser[0]+= vector[0];}
-    	
-    	if (chaser[1]-2 + vector[1] > 31) {chaser[1] = -(bitSize/2)+2; chaser[1]+= vector[1]; prey[1]+=size+1;}
-    	else if (chaser[1]-3 + vector[1] < -32) {chaser[1] = (bitSize/2)+2; chaser[1]+= vector[1];prey[1]-=size+1;}
-    	else {chaser[1]+= vector[1];}
-    	
+    	//SIMULATE THE INTEGER OVERFLOWS
+    	relativeLocation[0]+= x;
+		
+		if (relativeLocation[0] > upperEdge) 
+    	{
+    		relativeLocation[0] = lowerEdge; 
+    		location[0]+=playerSize + 1;
+    		//TO GO THROUGH THE BORDER TO THE RIGHT, FIRST PUT THE COORDINATE (LEFT CORNER) TO WHERE THE 
+    		//RIGHT CORNER WAS WITH +PLAYERSIZE, THEN, SINCE LOCATION HAS ALREADY BEEN INCREMENTED BY 1  
+    		//AND BORDERSIZE IS 2, INCREASE ONLY BY 1 MORE (1/2 BORDERSIZE) TO GO  THROUGH THE WALL
+    	}
+		
+    	else if (relativeLocation[0] < lowerEdge) 
+    	{
+    		relativeLocation[0] = upperEdge;
+    		location[0]-=playerSize + 1;
+    		//TO GO THROUGH THE BORDER TO THE LEFT, FIRST PUT THE RIGHT CORNER TO WHERE THE 
+    		//LEFT CORNER WAS WITH -PLAYERSIZE, THEN, SINCE LOCATION HAS ALREADY BEEN DECREMENTED BY 1 
+    		//AND BORDERSIZE IS 2, DECREASE ONLY BY 1 MORE (1/2 BORDERSIZE) TO GO THROUGH THE WALL
+    	}
+		
+		//SAME THING BUT FOR Y COORDINATES
+		relativeLocation[1]+= y;
+		
+		if (relativeLocation[1] > upperEdge) 
+    	{relativeLocation[1] = lowerEdge; location[1]+=playerSize + 1;}
+    	else if (relativeLocation[1] < lowerEdge) 
+    	{relativeLocation[1] = upperEdge;location[1]-=playerSize + 1;}
+		
 	}
 }
 
@@ -3066,13 +3107,13 @@ public class Pathfind extends JFrame implements ActionListener
 	
 	PathfindPanel panel;
 	
-	int gamemode;
+	static private int gamemode;
 	
-	Pathfind(int gamemode)
+	public Pathfind(WindowEventHandler eventHandler, int gamemode)
 	{			
-		
-		this.gamemode = gamemode;
-		
+		Pathfind.gamemode = gamemode;
+		//this.setIconImage(MainMenu.img.getImage());
+		this.addWindowListener(eventHandler);
 		this.setTitle("Pathfind");
 		
 		switch(gamemode)
@@ -3083,7 +3124,6 @@ public class Pathfind extends JFrame implements ActionListener
 		}
 		
 		this.setResizable(false);
-		this.addWindowListener(new WindowEventHandler());
 		
 		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu =new JMenu("File");
@@ -3110,8 +3150,8 @@ public class Pathfind extends JFrame implements ActionListener
 				if (key == '+') {panel.changeSize(10); pack();}
 				else if (key == '-') {panel.changeSize(-10); pack();}
 				else if (key == '0') {panel.wipeBoard();}
-				else if (key == 'r') {panel.start(false);}
-				else if (key == 't') {panel.start(true);}
+				else if (key == 'r') {panel.start(false);} //restart
+				else if (key == 't') {panel.start(true);}  //restart + new map
 					
 				else if (key == 'a' || key == 's' || key == 'd' || key == 'w')
 				{panel.movePlayer(key);}
@@ -3124,7 +3164,6 @@ public class Pathfind extends JFrame implements ActionListener
 		});
 		
 		this.add(panel);
-		
 		this.pack();
 		this.setVisible(true);
 	}
@@ -3146,7 +3185,6 @@ public class Pathfind extends JFrame implements ActionListener
 				
 				try
 				{
-				
 					BufferedReader reader = null;
 					reader = new BufferedReader(new FileReader(file));
 			
@@ -3176,7 +3214,6 @@ public class Pathfind extends JFrame implements ActionListener
 							board[i][j] = Integer.parseInt(text.substring(start,end));
 						}
 					}
-					
 					
 					end--;
 					int[][] chaser = new int[2][sizes[0]];
@@ -3269,14 +3306,8 @@ public class Pathfind extends JFrame implements ActionListener
 			}
 		}
 	
-	class WindowEventHandler extends WindowAdapter 
-	{
-		  public void windowClosing(WindowEvent evt) 
-		  {
-			  try {MainMenu.restart();} 
-			  catch (IOException e1) {e1.printStackTrace();} catch (URISyntaxException e1) {e1.printStackTrace();}
-		  }
-	}
+	public static void stop()
+	{if (gamemode == 3) {if (PathfindDemo.timer.isRunning()) {PathfindDemo.timer.stop();}}}
 }
 
 public class PathfindDemo extends PathfindPanel implements ActionListener
@@ -4642,6 +4673,7 @@ public class SelectionFrame
 		this.gameName = gameName;
 		
 		JFrame selection = new JFrame("Selection");
+		//selection.setIconImage(MainMenu.img.getImage());
 		JLabel headline = new JLabel("PICK A GAMEMODE BY PRESSING THE CORRESPONDING KEY");
 		headline.setForeground(new Color(220,220,240));
 		JLabel mode1 = new JLabel();
@@ -4667,7 +4699,7 @@ public class SelectionFrame
 		{
 			case "Pathfind":  mode1.setText("1 - NORMAL"); mode2.setText("2 - TRAIL"); mode3.setText("3 - DEMO");
 			break;
-			case "Sierpinski":mode1.setText("1 - SLOW"); mode2.setText("2 - NORMAL"); mode3.setText("3 - FAST");
+			case "Sierpinski": mode1.setText("1 - SLOW"); mode2.setText("2 - NORMAL"); mode3.setText("3 - FAST");
 			break;
 			
 		}
@@ -4683,7 +4715,7 @@ public class SelectionFrame
 				
 				switch (gameName)
 				{
-					case "Pathfind": new Pathfind(mode); selection.dispatchEvent(new WindowEvent(selection, WindowEvent.WINDOW_CLOSING));
+					case "Pathfind": new Pathfind(eventHandler, mode); selection.dispatchEvent(new WindowEvent(selection, WindowEvent.WINDOW_CLOSING));
 					break;
 					case "Sierpinski": new Sierpinski(eventHandler, mode); selection.dispatchEvent(new WindowEvent(selection, WindowEvent.WINDOW_CLOSING));
 					break;
@@ -4768,12 +4800,12 @@ public class SierpinskiFast extends JPanel{
 		this.addMouseListener(clickListener);
 		this.addMouseMotionListener(dragListener);
 		
-		this.setPreferredSize(new Dimension(400,400));
+		this.setPreferredSize(new Dimension(600,600));
 		this.setLayout(null);
 		
-		ACorner = new Point(10,350);
-		BCorner = new Point(200,10);
-		CCorner = new Point(390,350);
+		ACorner = new Point(10,550);
+		BCorner = new Point(300,10);
+		CCorner = new Point(590,550);
 			
 		P[0] = 550;
 		P[1] = 550;
@@ -4783,13 +4815,11 @@ public class SierpinskiFast extends JPanel{
 		    @Override
 		    public void run() 
 		    {
-		    while (true) 
-		    {rollDice();try {
-				Thread.sleep(0, 1);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}}
+		    	while (true) 
+		    	{
+		    		rollDice();
+		    		try {Thread.sleep(1);} catch (InterruptedException e) {e.printStackTrace();}
+		    	}
 		    }	 		    		
 		});
 		
@@ -4819,6 +4849,8 @@ public class SierpinskiFast extends JPanel{
 	public void rollDice() 
 	{
 	
+	if (points == null) {return;}
+		
 	switch (random.nextInt(3)) 
 	{
 	case 0: nextP[0] = (int)ACorner.getX(); nextP[1] = (int)ACorner.getY();
@@ -4848,9 +4880,7 @@ public class SierpinskiFast extends JPanel{
 	
 	private class ClickListener extends MouseAdapter{
 	    public void mousePressed(MouseEvent e) {  
-	    	
-	    	t1.suspend();
-	    	
+	   
 	    	prevPt = e.getPoint(); 
 	           if ((e.getPoint().getX() > ACorner.getX()) && 
 	              (e.getPoint().getX() < (ACorner.getX() + 50)) &&
@@ -4872,6 +4902,10 @@ public class SierpinskiFast extends JPanel{
 	           	
 	    	if (e.isShiftDown()) {	
 			
+	    	points = null;
+	    	System.gc();
+	    	points = new int[2][100000];
+	    		
 	    	moving = true;
 	    	
 	    	Point currentPt = e.getPoint(); 
@@ -4897,9 +4931,7 @@ public class SierpinskiFast extends JPanel{
 	private class ReleaseListener extends MouseAdapter
 	{
 	    public void mouseReleased(MouseEvent e) 
-	    {  	
-	    moving = false;	t1.resume();
-	    }
+	    {moving = false;}
 	}
 }
  
@@ -5514,6 +5546,1699 @@ public class VectorChasersPanel extends JPanel implements ActionListener{
 	}
 }
 
+public class PixelCollision 
+{
+	static ArrayList<Integer> pressedKeys = new ArrayList<>();
+	//use the ArrayList instead of the standard keyPressed to avoid delay when changing inputs
+	
+	static PixelCollisionPanel panel;
+	
+	static int fallingSpeed;
+	static int timeUntilFall;
+	static int timeUntilJumpAllowed;
+	static boolean jumpAllowed = true;
+	
+	JMenuItem objectNew  = new JMenuItem("New");		//create area in which a new object can be drawn
+	JMenuItem objectSave  = new JMenuItem("Save");		//save object in that box -> now controllable
+	
+	//Items for picking the size of a pixel (4 -> 4 by 4 real pixels for one pixel)
+	JMenuItem pix1  = new JMenuItem("1");
+	JMenuItem pix2  = new JMenuItem("2");
+	JMenuItem pix3  = new JMenuItem("3");
+	JMenuItem pix4  = new JMenuItem("4");
+	JMenuItem pix5  = new JMenuItem("5");
+	
+	JMenuItem[] pixelSizes = {pix1, pix2, pix3, pix4, pix5};
+	
+	ActionListener actionListener; //for MenuBar
+	
+	//static so it can only exist once and be called from other classes in GameCollection
+	static Timer timer = new Timer(20, new ActionListener() 
+	{	@Override
+		public void actionPerformed(ActionEvent e) 
+		{
+			int x = 0;
+			int y = 0;	
+			
+			boolean move = false; //don't do movement calculations if there has been no change in position
+			int loop = 1;		  //how many times should the movement calculation run
+			//(Can't just increase the movement speed because that would cause the collision detection to break)
+			
+			if (pressedKeys.contains(68)) {x = panel.PIXEL_SIZE;  move = true;} 	//D
+			if (pressedKeys.contains(65)) {x = -panel.PIXEL_SIZE; move = true;} 	//A
+			
+			if (panel.flyMode)
+			{
+				if (pressedKeys.contains(87)) {y = -panel.PIXEL_SIZE; move = true;} 		//W
+				if (pressedKeys.contains(83)) {y = panel.PIXEL_SIZE; move = true;} 			//S
+				
+				if (pressedKeys.contains(16)) //SHIFT
+				{loop = 4;}
+			
+				if(move) 
+				{
+					for (int i = 0; i < loop; i++) 
+					{panel.move(x,y,0);} 
+				}
+			}
+			
+			else 
+			{
+				if (panel.collision) {fallingSpeed = panel.PIXEL_SIZE;} //remove all upward speed when a roof is hit
+				
+				if (pressedKeys.contains(32) && jumpAllowed) //SPACE
+				{
+					fallingSpeed = -panel.PIXEL_SIZE; 
+					jumpAllowed = false; timeUntilFall = 20; 
+				}
+				 
+				if (timeUntilFall > 0) {timeUntilFall--;}	//counting down
+				
+				if (timeUntilFall == 5) {fallingSpeed = 0;}	//for a smoother transition in fallingSpeed
+				else if (timeUntilFall == 0) {fallingSpeed = panel.PIXEL_SIZE;} //back to normal
+				
+				if (panel.collision) {jumpAllowed = true;}
+				
+				loop = (5 - panel.PIXEL_SIZE)+1; //adjust the movement speed to pixelSize
+				
+				for (int i = 0; i < loop; i++) 
+				{panel.move(x,y,fallingSpeed);} 
+			}	
+		}	
+	});
+	
+	public void start(WindowEventHandler eventHandler) 
+	{
+		
+		JFrame frame = new JFrame("Pixel Collision");
+		//frame.setIconImage(MainMenu.img.getImage());
+		panel = new PixelCollisionPanel();
+		
+		frame.addKeyListener(new KeyListener() 
+		{
+			@Override
+			public void keyTyped(KeyEvent e) 
+			{}
+			
+			@Override
+			public void keyPressed(KeyEvent e) 
+			{
+				int code = e.getKeyCode();
+				if (!(pressedKeys.contains(code))) {pressedKeys.add(code);}
+					
+				if (code == 82) {panel.start();} 	//R
+				else if (code == 70) {panel.flyMode = !panel.flyMode;}		 //F
+				
+				else if (code == 45) {panel.saveObject(); panel.changeSize(-10); frame.pack();} 	//-
+				else if (code == 521) {panel.saveObject(); panel.changeSize(10); frame.pack();} 	//+
+				//saveObject to avoid dealing with object scaling -> just resets it	
+			}
+			@Override
+			public void keyReleased(KeyEvent e) 
+			{
+				int x = pressedKeys.indexOf(e.getKeyCode());
+				if (x > -1) {pressedKeys.remove(x);} //out of bounds exception for alt + key
+			}		
+		});
+		
+		JMenuBar menuBar = new JMenuBar();
+		JMenu objectMenu= new JMenu("Object");
+		JMenu pixelMenu = new JMenu ("Pixel Size");
+		
+		actionListener = new ActionListener()
+		{	@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				if (e.getSource() == objectNew)
+				{panel.newObject();}
+				
+				else if (e.getSource() == objectSave)
+				{panel.saveObject();}
+				
+				else
+				{
+					if (e.getSource() == pix1)
+					{panel.PIXEL_SIZE = 1; }
+					else if (e.getSource() == pix2)
+					{panel.PIXEL_SIZE = 2;}
+					else if (e.getSource() == pix3)
+					{panel.PIXEL_SIZE = 3;}
+					else if (e.getSource() == pix4)
+					{panel.PIXEL_SIZE = 4;}
+					else if (e.getSource() == pix5)
+					{panel.PIXEL_SIZE = 5;}
+					
+					panel.start(); panel.newObject();
+				}
+			}
+		};
+		
+		for (JMenuItem item : pixelSizes)
+		{setItemBasics(item,pixelMenu);}
+		
+		setItemBasics(objectNew, objectMenu);
+		setItemBasics(objectSave, objectMenu);
+		
+		setMenuBasics(objectMenu, menuBar);
+		setMenuBasics(pixelMenu, menuBar);
+			
+		menuBar.setBackground(new Color (100,100,120));
+		menuBar.setBorder(BorderFactory.createLineBorder(new Color (115,115,135), 2));
+		frame.setJMenuBar(menuBar);
+		
+		frame.addWindowListener(eventHandler);
+		frame.setResizable(false);
+		frame.add(panel);
+		frame.pack();
+			
+		frame.setVisible(true);
+		timer.start();
+	}
+	
+	public void setItemBasics(JMenuItem item, JMenu menu)
+	{
+		item.addActionListener(actionListener);
+		menu.add(item);
+	}
+	
+	public void setMenuBasics(JMenu menu, JMenuBar menuBar)
+	{
+		menu.setForeground(new Color (230,230,250));
+		menu.setBorder(BorderFactory.createLineBorder(new Color (100,100,120)));
+		menuBar.add(menu);
+	}
+	
+	public static void stop()
+	{if (timer.isRunning()) {timer.stop();}}
+}
+
+public class PixelCollisionPanel extends JPanel
+{
+	private static final long serialVersionUID = 9082942097976766954L;
+	
+	int PANEL_SIZE = 400;
+	int PIXEL_SIZE = 3;
+	int pixelsPerRow = PANEL_SIZE/PIXEL_SIZE;
+	
+	int[][] moveableObjects = new int[2][1];
+	int objectAmount = 1;
+	
+	int activeGRIDX = -1;	//column that has been clicked on - by default outside of screen
+	int activeGRIDY = -1;
+	
+	boolean flyMode = false;
+	boolean creationMode = false;
+	boolean collision = false;
+	
+	byte[][] grid = new byte[pixelsPerRow][pixelsPerRow]; //actual grid on screen
+	
+	int creationGridLength = pixelsPerRow/3;	//grid where user can draw their object
+		
+	PixelCollisionPanel()
+	{				
+		this.setPreferredSize(new Dimension (PANEL_SIZE,PANEL_SIZE));
+		
+		moveableObjects[0][0] = PIXEL_SIZE;
+		moveableObjects[1][0] = PIXEL_SIZE;
+		
+		DragListener dragListener = new DragListener();
+		this.addMouseMotionListener(dragListener);
+	}
+	
+	public void start()
+	{
+		pixelsPerRow = PANEL_SIZE/PIXEL_SIZE;
+		creationGridLength = pixelsPerRow/3;
+		
+		//memory management and also fitting the array sizes to the new values
+		grid = null;
+		System.gc();
+		grid = new byte[pixelsPerRow][pixelsPerRow];
+		
+		repaint();
+	}
+	
+	public void newObject()
+	{
+		creationMode = true; //for paint method (drawing the rectangle around the space for user input)
+		
+		//get rid of any filled out pixels within the area for user input (offset the grid by 2 for better look)
+		for (int i = 0; i < creationGridLength+2; i++)
+		{
+			for (int j = 0; j < creationGridLength+2; j++)
+			{grid[i+2][j+2] = 0;}
+		}
+		repaint();
+	}
+	
+	public void saveObject()
+	{
+		creationMode = false;
+		
+		//count the amount of pixels
+		objectAmount = 0;
+		for (int i = 2; i < creationGridLength+4; i++)
+		{
+			for (int j = 2; j < creationGridLength+4; j++)
+			{
+				if (grid[i][j] != 0)
+				{objectAmount++;}
+			}
+		}
+		
+		//reconstruct the array with the right size
+		moveableObjects = null;
+		System.gc();
+		moveableObjects = new int[2][objectAmount];
+		
+		//project the objects indices into screen coordinates
+		int index = 0;
+		for (int x = 2; x < creationGridLength+4; x++)
+		{
+			for (int y = 2; y < creationGridLength+4; y++)
+			{
+				if (grid[x][y] != 0)
+				{
+					moveableObjects[0][index] = x*PIXEL_SIZE;
+					moveableObjects[1][index] = y*PIXEL_SIZE;
+					index++;
+				}
+			}
+		}
+		
+		//now get rid of the drawn pixels
+		for (int i = 2; i < creationGridLength+4; i++)
+		{
+			for (int j = 2; j < creationGridLength+4; j++)
+			{grid[i+2][j+2] = 0;}
+		}
+		repaint();
+	}
+	
+	public void paint (Graphics g)
+	{
+		Graphics2D g2D = (Graphics2D) g;
+		super.paint(g);
+		
+		//background
+		g2D.setPaint(new Color (50,50,60));
+		g2D.fillRect(0, 0, PANEL_SIZE, PANEL_SIZE);
+		
+		if (creationMode)
+		{
+			g2D.setPaint(new Color (50,250,150));
+			g2D.setStroke(new BasicStroke(2));
+			g2D.drawRect(2*PIXEL_SIZE, 2*PIXEL_SIZE, (creationGridLength+2)*PIXEL_SIZE, (creationGridLength+2)*PIXEL_SIZE);
+		}
+		
+		//filling in the pixels
+		g2D.setPaint(new Color (50,180,250));
+		for (int i = 0; i < pixelsPerRow; i++)
+		{
+			for (int j = 0; j < pixelsPerRow; j++)
+			{
+				if (grid[i][j] != 0)
+				{
+					g2D.fillRect(i*PIXEL_SIZE, j*PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
+				}
+			}
+		}
+		
+		//drawing the moveableObjects
+		g2D.setPaint(Color.red);
+		for (int i = 0; i < objectAmount; i++)
+		{g2D.fillRect(moveableObjects[0][i], moveableObjects[1][i], PIXEL_SIZE, PIXEL_SIZE);}
+	}
+
+	private class DragListener extends MouseMotionAdapter
+	{
+	    public void mouseDragged(MouseEvent e) 
+	    {  
+	    	int x = e.getX();
+	    	int y = e.getY();
+	    	
+	    	//make sure the event occurred on screenspace
+	    	if (x > PANEL_SIZE-PIXEL_SIZE || x < 0 || y > PANEL_SIZE-PIXEL_SIZE || y < 0) {return;}
+	    	
+	    	activeGRIDX = x / PIXEL_SIZE;
+	    	activeGRIDY = y / PIXEL_SIZE;
+
+	    	if (e.isShiftDown()) 
+			{grid[activeGRIDX][activeGRIDY] = 0;}
+			else 
+			{grid[activeGRIDX][activeGRIDY] = 1;}
+	    	
+	    	repaint();
+	    }
+	}
+	
+	public void move (int x, int y, int fallingSpeed)
+	{
+		//grid indices of the objects
+		int objectGRIDX;
+		int objectGRIDY;
+		
+		for (int i = 0; i < objectAmount; i++)
+		{
+			moveableObjects[0][i]+=x; 
+			moveableObjects[1][i]+=y;
+			
+			collision = false;
+
+			//make sure no object exits screenspace + a few pixels buffer
+			if (moveableObjects[0][i] <= 0 || moveableObjects[1][i] <= 0 || moveableObjects[0][i] >= PANEL_SIZE-PIXEL_SIZE*2 || moveableObjects[1][i] >= PANEL_SIZE-PIXEL_SIZE*2)
+			{abortMove(x,y, i); collision = true;}
+			
+			objectGRIDX = moveableObjects[0][i] / PIXEL_SIZE;
+			objectGRIDY = moveableObjects[1][i] / PIXEL_SIZE;
+		
+			if (grid[objectGRIDX][objectGRIDY] != 0)
+			{abortMove(x,y, i); collision = true;}
+				
+			//THE FOLLOWING NEEDS TO BE CHECKED THOUGH IT BECOMES LESS IMPORTANT THE MORE OBJECTS
+			//THERE ARE, BUT SINCE PERFORMANCE IS SO GOOD, CHECK IT EVERY TIME
+			
+			int xCheck = 1;
+			int yCheck = 1;
+			
+			if (x > 0) {xCheck = -1;} 
+			if (y > 0) {yCheck = -1;}
+				
+			//DO THIS TO CHECK THE TWO PIXELS THAT ARE BETWEEN PREV AND CURRENT POSITION
+			//DURING DIAGONAL MOVEMENT
+			/* 0 IS PREVIOUS, P IS CURRENT POSITION
+			* CASES:
+			* 		[]P		 []0	 0[]	  P[]
+			* 		0[]		 P[]	 []P	  []0
+			* 		x+ y-	x- y+	x+ y+	 x- y-
+			*  ========================================= --> INVERSE X AND Y
+			*  	 [x-]P	    [y-]0	  0[y-]	 	P[x+]
+			* 	   0[y+]	  P[x+]	 [x-]P    [y+]0
+			*  =========================================  
+			*/
+				
+			if ((grid[objectGRIDX+xCheck][objectGRIDY] != 0) && (grid[objectGRIDX][objectGRIDY+yCheck] != 0))
+			{abortMove(x,y,i); collision = true;}
+			
+			if (collision) {break;} //no need to do more calculations if we about this rounds movement anyway	
+		}
+		
+		//do the checks for falling movement after so we can abort fall movement separately
+		if (fallingSpeed != 0)
+		{
+			for (int i = 0; i < objectAmount; i++)
+			{
+				//make sure it's in screenspace
+				if (moveableObjects[1][i]+fallingSpeed < PANEL_SIZE-PIXEL_SIZE && moveableObjects[1][i]+fallingSpeed >0)
+				{
+					moveableObjects[1][i]+=fallingSpeed;
+					objectGRIDX = moveableObjects[0][i] / PIXEL_SIZE;
+					objectGRIDY = moveableObjects[1][i] / PIXEL_SIZE;
+					
+					if (grid[objectGRIDX][objectGRIDY] != 0) 
+					{abortFall(fallingSpeed, i); collision = true; break;}
+				}
+			}
+		}
+		
+		repaint();	
+	}
+	
+	//don't need to abort beyond index, because those objects haven't been moved yet
+	public void abortFall(int fallingSpeed, int index)
+	{
+		for (int i = 0; i <= index; i++) 
+		{moveableObjects[1][i]-=fallingSpeed;}
+	}
+	
+	public void abortMove(int x, int y, int index)
+	{
+		for (int i = 0; i <= index; i++)
+		{moveableObjects[0][i]-=x; moveableObjects[1][i]-=y;}
+	}
+	
+	public void changeSize(int amount)
+	{
+		PANEL_SIZE+=amount;
+		pixelsPerRow = PANEL_SIZE/PIXEL_SIZE;
+		
+		grid = null;
+		System.gc();
+		grid = new byte[pixelsPerRow][pixelsPerRow];
+		
+		this.setPreferredSize(new Dimension (PANEL_SIZE,PANEL_SIZE));
+		repaint();
+	}
+}
+
+public class ClothSim extends JFrame
+{
+	private static final long serialVersionUID = -1946430738048947884L;
+	
+	ClothSimPanel panel;
+	
+	static Timer timer;
+	
+	ActionListener actionListener;
+	
+	JMenuItem fileLoad  = new JMenuItem("Load");
+	JMenuItem fileSave  = new JMenuItem("Save");
+
+	public ClothSim()
+	{
+
+		panel = new ClothSimPanel();
+		//this.setIconImage(MainMenu.img.getImage());
+		this.add(panel);
+		this.pack();
+		this.setTitle("Cloth Sim");
+		
+		timer = new Timer(30, new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{panel.simulation();}	
+		});
+		
+		this.addKeyListener(new KeyListener()
+		{
+			@Override
+			public void keyPressed(KeyEvent e) 
+			{
+				int code = e.getKeyCode();
+				
+				if (code == 67) {panel.connect(true);}	//C -> CONNECT
+				else if (code == 83) {if (timer.isRunning()) {timer.stop();} else {timer.start();}}	//S -> START
+				else if (code == 82) {panel.restart();} //R -> RESTART
+				else if (code == 90 && e.isControlDown()) {panel.removeLastConnector();} //CTRL Z (APPLIES TO CONNECTORS ONLY)	
+			}
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			@Override
+			public void keyReleased(KeyEvent e) {}
+		});
+		
+		actionListener = new ActionListener()
+		{	@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				if (e.getSource() == fileSave)
+				{saveLayout();}
+				else if  (e.getSource() == fileLoad)
+				{loadLayout();}
+			}
+		};
+		
+		JMenuBar menuBar = new JMenuBar();
+		JMenu fileMenu= new JMenu("Files");
+		
+		setItemBasics(fileLoad, fileMenu);
+		setItemBasics(fileSave, fileMenu);
+		
+		fileMenu.setForeground(new Color (230,230,250));
+		fileMenu.setBorder(BorderFactory.createLineBorder(new Color (100,100,120)));
+		menuBar.add(fileMenu);
+		
+		menuBar.setBackground(new Color (100,100,120));
+		menuBar.setBorder(BorderFactory.createLineBorder(new Color (115,115,135), 2));
+		this.setJMenuBar(menuBar);
+		
+		this.setVisible(true);
+	}
+	
+	public void setItemBasics(JMenuItem item, JMenu menu)
+	{item.addActionListener(actionListener); menu.add(item);}
+	
+	public void saveLayout()
+	{
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory(new File("C:\\Users\\Erik\\eclipse-workspace\\GameCollection\\ClothLayouts"));
+		
+		int response = fileChooser.showSaveDialog(null);
+		
+		File file = null;
+		
+		if (response == JFileChooser.APPROVE_OPTION) 
+		{
+			file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+		
+			try 
+			{
+				FileWriter fw = new FileWriter(file,false);
+				
+				fw.write(""+panel.pointAmount+"|");
+				
+				DecimalFormat df = new DecimalFormat("#.##");   //ROUND THE DOUBLES TO TWO DECIMAL PLACES    
+				
+				for (int i = 0; i < panel.pointAmount; i++)
+				{
+					double x = panel.points[i].positionX;
+					double y = panel.points[i].positionY;
+					
+					//"X,Y,ISLOCKED;"
+					fw.write(Double.valueOf(df.format(x))+","+ Double.valueOf(df.format(y))+ ","+ panel.points[i].isLocked+";");
+				}
+				
+				fw.write("|"+panel.connectorAmount+"|");
+				
+				for (int i = 0; i < panel.connectorAmount; i++)
+				{
+					//"I1,I2,ISALIVE;"
+					fw.write(panel.connectors[i].pointA.index+","+ panel.connectors[i].pointB.index + "," + panel.connectors[i].isAlive+";");
+				}
+				
+				fw.close();
+			}
+			catch (IOException e1) {e1.printStackTrace();}
+		}
+	}
+	
+	public void loadLayout()
+	{
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory(new File("C:\\Users\\Erik\\eclipse-workspace\\GameCollection\\ClothLayouts"));
+		
+		int response = fileChooser.showOpenDialog(null);
+		
+		if (response == JFileChooser.APPROVE_OPTION) 
+		{
+			File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+			
+			try
+			{
+				BufferedReader reader = null;
+				reader = new BufferedReader(new FileReader(file));
+		
+				String text = reader.readLine();
+				
+				panel.prevSelectedPoint = -1;
+				panel.selectedPoint = -1;
+				
+				int start = 0;
+				int end = 0;
+				while (text.charAt(end) != '|') {end++;}
+				
+				panel.pointAmount = Integer.parseInt(text.substring(start,end));
+				
+				for (int i = 0; i < panel.pointAmount; i++)
+				{
+					panel.newPoint(i);
+					
+					end++;
+					start = end;
+					while (text.charAt(end) != ',') {end++;}
+					panel.points[i].positionX = Float.parseFloat(text.substring(start,end));
+					panel.points[i].prevPositionX = panel.points[i].positionX;
+					
+					end++;
+					start = end;
+					while (text.charAt(end) != ',') {end++;}
+					panel.points[i].positionY = Float.parseFloat(text.substring(start,end));
+					panel.points[i].prevPositionY = panel.points[i].positionY;
+					
+					end++;
+					start = end;
+					while (text.charAt(end) != 'f' && text.charAt(end) != 't') {end++;}
+					panel.points[i].isLocked = text.charAt(end) == 't';
+					
+					while (text.charAt(end) != ';') {end++;}
+				}
+				
+				panel.connectorAmount = 0;
+				
+				end+=2;
+				start = end;
+				while (text.charAt(end) != '|') {end++;}
+				int iterationCount = Integer.parseInt(text.substring(start,end));
+				
+				for (int i = 0; i < iterationCount; i++)
+				{
+					end++;
+					start = end;
+					while (text.charAt(end) != ',') {end++;}
+					panel.prevSelectedPoint = Integer.parseInt(text.substring(start,end));
+					
+					end++;
+					start = end;
+					while (text.charAt(end) != ',') {end++;}
+					panel.selectedPoint = Integer.parseInt(text.substring(start,end));
+					
+					panel.connect(false); //FALSE -> CONNECT WITHOUT REPAINTING
+					
+					end++;
+					start = end;
+					while (text.charAt(end) != 'f' && text.charAt(end) != 't') {end++;}
+					panel.connectors[i].isAlive = text.charAt(end) == 't';
+					
+					while (text.charAt(end) != ';') {end++;}
+				}
+				
+				System.gc();
+				panel.repaint();
+				
+				reader.close();
+			}
+			catch (IOException e1) {e1.printStackTrace();}
+		}
+	}
+	
+	public void start(WindowEventHandler eventHandler)
+	{this.addWindowListener(eventHandler);}
+	
+	public static void stop()
+	{if (timer.isRunning()) {timer.stop();}}
+}
+
+public class ClothSimPanel extends JPanel
+{
+	private static final long serialVersionUID = -5643933341241043804L;
+	
+	int PANEL_SIZEY = 400;
+	int PANEL_SIZEX = (int)(PANEL_SIZEY *1.6);
+	
+	int pointAmount = 0;	//HOW MANY OF THE 200 PLACES IN THE ARRAY ARE IN USE
+	Point[] points = new Point[200];
+	
+	int connectorAmount = 0;
+	Connector[] connectors = new Connector[300];
+	
+	int pointSize = 10;
+	
+	int prevSelectedPoint;
+	int selectedPoint;
+	
+	int sizeBuffer = 10; //PREVENT SPAWNING POINTS TOO CLOSE TOGETHER
+	
+	boolean mouseHeld = false;
+	
+	ClothSimPanel()
+	{
+		this.setPreferredSize(new Dimension(PANEL_SIZEX,PANEL_SIZEY));
+		
+		ClickListener clickListener = new ClickListener();
+		DragListener dragListener = new DragListener();
+		ReleaseListener releaseListener = new ReleaseListener();
+		
+		this.addMouseListener(clickListener);
+		this.addMouseMotionListener(dragListener);
+		this.addMouseListener(releaseListener);
+	}
+	
+	public void paint(Graphics g)
+	{
+		Graphics2D g2D = (Graphics2D) g;
+		super.paint(g2D);
+		
+		//BACKGROUND
+		g2D.setPaint(new Color(50,50,60));
+		g2D.fillRect(0, 0,this.getWidth(), this.getHeight());
+		
+		if (pointAmount == 0) {return;}
+	
+		//POINTS
+		g2D.setPaint(new Color(230,230,235));
+		for (int i = 0; i < pointAmount; i++)
+		{
+			if (points[i].isLocked) 
+			{g2D.setPaint(new Color(255,150,150));}
+			else 
+			{g2D.setPaint(new Color(230,230,235));}
+			
+			g2D.fillRect((int)points[i].positionX-pointSize/2, (int)points[i].positionY-pointSize/2, pointSize, pointSize);	
+		}
+		
+		//SELECTED POINTS
+		g2D.setPaint(new Color(150,255,150));
+		if (selectedPoint != -1)
+		{
+			if (!points[selectedPoint].isLocked)
+			{g2D.fillRect((int)points[selectedPoint].positionX-pointSize/2, (int)points[selectedPoint].positionY-pointSize/2, pointSize, pointSize);}
+		}
+		
+		if (prevSelectedPoint != -1)
+		{
+			if (!points[prevSelectedPoint].isLocked)
+			{g2D.fillRect((int)points[prevSelectedPoint].positionX-pointSize/2, (int)points[prevSelectedPoint].positionY-pointSize/2, pointSize, pointSize);}
+		}
+		
+		//CONNECTORS
+		g2D.setPaint(new Color(230,230,235));
+		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		for (int i = 0; i < connectorAmount; i++)
+		{
+			if (connectors[i].isAlive)
+			{
+				g2D.drawLine
+				((int)connectors[i].pointA.positionX, (int)connectors[i].pointA.positionY, 
+				(int)connectors[i].pointB.positionX, (int)connectors[i].pointB.positionY);
+			}
+		}
+	}
+
+	public class Point
+	{
+		float positionX;
+		float positionY;
+		
+		float prevPositionX;
+		float prevPositionY;
+		
+		boolean isLocked;
+		
+		int index;
+		
+		Point(int index)
+		{this.index = index;}
+	}
+	
+	public class Connector
+	{
+		Point pointA;
+		Point pointB;
+		
+		float length;
+		
+		boolean isAlive = true;
+	}
+	
+	public void simulation()
+	{
+
+		for (int i = 0; i < pointAmount; i++)
+		{
+			if (!points[i].isLocked)
+			{	
+				float positionXbefore = points[i].positionX;
+				float positionYbefore = points[i].positionY;
+				
+				//VELOCITY
+				points[i].positionX+= points[i].positionX - points[i].prevPositionX;
+				points[i].positionY+= points[i].positionY - points[i].prevPositionY;
+				
+				points[i].positionY+= 1; //GRAVITY
+				
+				points[i].prevPositionX = positionXbefore;
+				points[i].prevPositionY = positionYbefore;
+				
+				//FLOOR COLLISION
+				if (points[i].positionY > this.getHeight()-pointSize/2) {points[i].positionY = this.getHeight()-pointSize/2;}
+			}
+		}
+	
+		for (int i = 0; i < connectorAmount; i++)
+		{	
+			if (connectors[i].isAlive)
+			{
+				float[] connectorCenter = {(connectors[i].pointA.positionX + connectors[i].pointB.positionX) / 2, 
+										  (connectors[i].pointA.positionY + connectors[i].pointB.positionY) / 2};
+					
+				float vectorX = connectors[i].pointA.positionX - connectors[i].pointB.positionX;
+				float vectorY = connectors[i].pointA.positionY - connectors[i].pointB.positionY;
+						
+				float[] connectorVector = normalize(vectorX, vectorY);
+					
+				//KEEP UP THE CONNECTORS LENGTH BY MOVING THE POINTS HALFWAY IT'S LENGTH IN THE CORRECT DIRECTION FROM IT'S CENTER	
+				if (!connectors[i].pointA.isLocked)
+				{
+					connectors[i].pointA.positionX =  connectorCenter[0] + connectorVector[0] * connectors[i].length/2;
+					connectors[i].pointA.positionY =  connectorCenter[1] + connectorVector[1] * connectors[i].length/2;
+				}
+						
+				if (!connectors[i].pointB.isLocked)
+				{
+					connectors[i].pointB.positionX =  connectorCenter[0] - connectorVector[0] * connectors[i].length/2;
+					connectors[i].pointB.positionY =  connectorCenter[1] - connectorVector[1] * connectors[i].length/2;
+				}	
+			}
+		}
+		repaint();
+	}
+	
+	public float[] normalize(float x , float y)
+	{	
+		float[] result = new float[2];
+		float length = (float)Math.sqrt(Math.pow(x, 2)+Math.pow(y, 2));
+		
+		result[0] = x/length;
+		result[1] = y/length;
+		
+		return result;
+	}
+	
+	public void connect(boolean repaint)
+	{
+		if (selectedPoint == -1 || prevSelectedPoint == -1 || pointAmount < 1 || selectedPoint == prevSelectedPoint) {return;}
+		
+		connectorAmount++;
+		
+		int cIndex = connectorAmount-1;
+    	connectors[cIndex] = new Connector();
+		
+		connectors[cIndex].pointA = points[prevSelectedPoint];
+		connectors[cIndex].pointB = points[selectedPoint];
+		
+		connectors[cIndex].length = (float)Math.sqrt
+		(Math.pow(connectors[cIndex].pointA.positionX - connectors[cIndex].pointB.positionX, 2) 
+		+ Math.pow(connectors[cIndex].pointA.positionY - connectors[cIndex].pointB.positionY, 2));
+		
+		if (repaint) {repaint();}
+	}
+	
+	public void newPoint(int index)
+	{points[index] = new Point(index);}
+	
+	public void removeLastConnector()
+	{connectorAmount--; repaint();}
+	
+	public void lockPoint()
+	{
+		if (selectedPoint == -1 || pointAmount < 1) {return;}
+		points[selectedPoint].isLocked = !points[selectedPoint].isLocked;
+		repaint();
+	}
+	
+	private class ClickListener extends MouseAdapter
+	{
+	    public void mousePressed(MouseEvent e) 
+	    {	
+	    	prevSelectedPoint = selectedPoint;
+			selectedPoint = getPointIndex(e.getX(), e.getY());
+			
+			if (e.isControlDown()) {lockPoint(); return;}
+		    		
+		    if (selectedPoint == -1) //= NULL -> ADD POINT THERE
+		    {
+		    	pointAmount++;
+				    	
+				int pIndex = pointAmount-1;
+				points[pIndex] = new Point(pIndex);
+				    
+				points[pIndex].positionX = e.getX();
+				points[pIndex].positionY = e.getY();
+						
+				points[pIndex].prevPositionX = points[pIndex].positionX;
+				points[pIndex].prevPositionY = points[pIndex].positionY;
+		    }	
+	    	repaint();	
+	    }
+	}
+	
+	private class DragListener extends MouseMotionAdapter
+	{
+	    public void mouseDragged(MouseEvent e) 
+	    {
+	    	if (!mouseHeld || e.isShiftDown()) //ONLY CHANGE THE SELECTED POINT WHEN CUTTING OR WHEN JUST STARTING TO PRESS
+	    	{selectedPoint = getPointIndex(e.getX(), e.getY());}
+	    	
+    		if (selectedPoint == -1 || pointAmount < 1) {return;}
+	    	
+	    	if (!e.isShiftDown()) //MOVE HELD POINT
+	    	{
+	    		points[selectedPoint].positionX = e.getX();
+	    		points[selectedPoint].positionY = e.getY();
+	    	}
+	    	
+	    	else //"CUT" POINT BY MOVING IT OFF SCREEN AND KILLING IT'S CONNECTOR
+	    	{
+	    		points[selectedPoint].positionX = -10;
+	    		points[selectedPoint].positionY = -10;
+	    		
+	    		for (int i = 0; i < connectorAmount; i++)
+	    		{
+	    			if (connectors[i].pointA == points[selectedPoint]) {connectors[i].isAlive = false;}
+	    			else if (connectors[i].pointB == points[selectedPoint]) {connectors[i].isAlive = false;}
+	    		}
+	    	}
+	    	
+	    	mouseHeld = true;
+	    	repaint();
+	    }
+	}
+	
+	private class ReleaseListener extends MouseAdapter	
+	{
+	    public void mouseReleased(MouseEvent e) 
+	    {mouseHeld = false;}
+	}
+	
+	public int getPointIndex(int x, int y)
+	{
+		int index = 0;
+		
+		x+= pointSize/2;
+		y+= pointSize/2;
+		
+		for (int i = 0; i < pointAmount; i++)
+		{
+			if (x > points[i].positionX-sizeBuffer && x < points[i].positionX+pointSize+sizeBuffer &&
+				y > points[i].positionY-sizeBuffer && y < points[i].positionY+pointSize+sizeBuffer)
+			{return index;}
+			index++;
+		}
+		return -1; //NO POINT FOUND
+	}
+	
+	public void restart()
+	{
+		pointAmount = 0;
+		connectorAmount = 0;
+		prevSelectedPoint = -1;
+		selectedPoint = -1;
+		
+		System.gc();
+		repaint();
+	}
+}
+
+public class GravityVectors extends JFrame
+{
+	private static final long serialVersionUID = -7941120893843254800L;
+
+	public void start(WindowEventHandler eventHandler) 
+	{
+		GravityVectorsPanel panel = new GravityVectorsPanel();
+		
+		this.addWindowListener(eventHandler);
+		//this.setIconImage(MainMenu.img.getImage());
+		this.setTitle("Gravity Vectors");
+	
+		this.addKeyListener(new KeyListener()
+		{
+			@Override
+			public void keyPressed(KeyEvent e) 
+			{
+				int code = e.getKeyCode();
+				
+				if (code == 521) {panel.changeSize(30); pack();} //+
+				else if (code == 45) {panel.changeSize(-30); pack();} //-
+				else if (code == 49) {panel.changePPOINT_COUNT(-1);} //1
+				else if (code == 50) {panel.changePPOINT_COUNT(1);} //2
+				else if (code == 71) {panel.gradientMode = !panel.gradientMode; panel.repaint();} //G     
+				else if (code == 78) {panel.switchArrowNormalization(); panel.repaint();} //N              
+			}
+			
+			@Override
+			public void keyTyped(KeyEvent e) 
+			{}
+			@Override
+			public void keyReleased(KeyEvent e) {}
+			
+		});
+		
+		this.setResizable(false);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+		this.add(panel);
+		this.pack();
+		this.setVisible(true);
+	}
+}
+
+public class GravityVectorsPanel extends JPanel
+{
+	private static final long serialVersionUID = 3933829351442493815L;
+	
+	private int PANEL_WIDTH = 600;
+	private int PANEL_HEIGHT = (int) (PANEL_WIDTH*(0.66));
+	
+	//ARROW VARIABLES
+	final private int APOINT_SIZE = 6;
+	final private int ARROW_LENGTH = 12;
+	final private int APOINT_DISTANCE = APOINT_SIZE * 5; //distance between arrows
+	private int APOINT_COUNT_X = 30; //how many arrows on x axis
+	private int APOINT_COUNT_Y = APOINT_COUNT_X * 2/3; //how many arrows on y axis
+	private ArrowPoint[] arrowPoints;
+	
+	//PULL/GRAVITY POINT VARIABLES
+	final private int PPOINT_SIZE = 12;
+	private int PPOINT_COUNT = 1;
+	private int selectedPPOINT = 0;
+	private PullPoint[] pullPoints = {new PullPoint()};
+	
+	//COLORS
+	final private Color BACKGROUND_COLOR = new Color(50,50,70);
+	final private Color ARROW_COLOR = new Color(180,180,200);
+	final private Color PPOINT_COLOR = new Color(255,80,80);
+	
+	//GRADIENT MODE
+	boolean gradientMode = false;
+	final private float[] gradientFractions = {0.0f, 1.0f};
+	final private Color[] gradientColors = {PPOINT_COLOR, Color.green};
+	
+	boolean validDrag = false;
+	private boolean normalizeVector = true;
+	
+	GravityVectorsPanel()
+	{
+		this.setPreferredSize(new Dimension(PANEL_WIDTH,PANEL_HEIGHT));
+		
+		ClickListener clickListener = new ClickListener();
+		DragListener dragListener = new DragListener();
+		this.addMouseListener(clickListener);
+		this.addMouseMotionListener(dragListener);
+		
+		start();
+	}
+	
+	public void start()
+	{
+		//CLEAR OLD ARRAY FROM MEMORY, SET UP NEW ONE WITH ADJUSTED SIZE
+		arrowPoints = null;
+		System.gc();
+		arrowPoints = new ArrowPoint[APOINT_COUNT_X * APOINT_COUNT_Y];
+		
+		//ARROWPOINTS
+		int index = 0;
+		for (int i = 0; i < APOINT_COUNT_X; i++)
+		{
+			for (int j = 0; j < APOINT_COUNT_Y; j++)
+			{
+				arrowPoints[index] = new ArrowPoint(i*APOINT_DISTANCE+(APOINT_DISTANCE / 3), j*APOINT_DISTANCE+(APOINT_DISTANCE / 3));
+				index++;
+			}
+		}
+		
+		simulate(); repaint();
+	}
+	
+	private class ArrowPoint
+	{
+		ArrowPoint(int locX, int locY)
+		{this.locX = locX; this.locY = locY; arrowX = locX + 15;  arrowY = locY;}
+		
+		//LOCATIONS OF THE ACTUAL POINTS
+		int locX;
+		int locY;
+		
+		//LOCATIONS OF THE ENDS OF THE ARROWS
+		int arrowX;
+		int arrowY;
+	}
+	
+	private class PullPoint
+	{
+		int locX = 30;
+		int locY = 30;
+	}
+	
+	private void simulate()
+	{
+		for (ArrowPoint point : arrowPoints)
+		{
+			double[] vectorsX = new double[PPOINT_COUNT];
+			double[] vectorsY = new double[PPOINT_COUNT];
+			
+			for (int i = 0; i < PPOINT_COUNT; i++)
+			{
+				vectorsX[i] = pullPoints[i].locX - point.locX;
+				vectorsY[i] = pullPoints[i].locY - point.locY;
+			}
+			
+			double[] distances = new double[PPOINT_COUNT];
+			
+			for (int i = 0; i < PPOINT_COUNT; i++)
+			{
+				distances[i] = Math.sqrt(Math.pow((vectorsX[i]),2) + Math.pow((vectorsY[i]),2));
+			}
+			
+			//HAVE THE PPOINTS EFFECT THE ARROWS EXPONENTIALLY MORE, THE SMALLER THE DISTANCE BETWEEN THEM IS (0.99^distance)
+			//-> HIGHER DISTANCE = SMALLER NUMBER WITH WHICH THE VECTOR WILL END UP BEING MULTIPLIED
+			double[] strengths = new double[PPOINT_COUNT];
+			for (int i = 0; i < PPOINT_COUNT; i++)
+			{strengths[i] = Math.pow(0.99, distances[i]);}
+			
+			//NORMALIZE VECTORS SO "STRENGTHS" CAN ACTUALLY AFFECT THE VECTORS PROPORTIONALLY
+			for (int i = 0; i < PPOINT_COUNT; i++)
+			{
+				double[] temp = normalize(vectorsX[i], vectorsY[i], distances[i]);
+				vectorsX[i] = temp[0];
+				vectorsY[i] = temp[1];
+			}
+			
+			double arrowVectX = 0;
+			double arrowVectY = 0;
+			
+			//COMBINE ALL THE VECTORS MULTIPLIED BY THEIR STRENGTH
+			for (int i = 0; i < PPOINT_COUNT; i++)
+			{
+				arrowVectX+= vectorsX[i] * strengths[i];
+				arrowVectY+= vectorsY[i] * strengths[i];
+			}
+			
+			//NORMALIZE ONE FINAL TIME TO MULTIPLY WITH ARROW_LENGTH
+			if (normalizeVector)
+			{
+				double length = Math.sqrt(Math.pow(arrowVectX, 2)+Math.pow(arrowVectY, 2));
+				double[] temp = normalize(arrowVectX, arrowVectY, length);
+				arrowVectX = temp[0];
+				arrowVectY = temp[1];
+			}
+			
+			point.arrowX = (int) (point.locX + arrowVectX * ARROW_LENGTH);
+			point.arrowY = (int) (point.locY + arrowVectY * ARROW_LENGTH);
+		}
+	}
+	
+	public void switchArrowNormalization()
+	{
+		normalizeVector = !normalizeVector;
+		simulate();
+		repaint();
+	}
+	
+	public double[] normalize(double x , double y, double length)
+	{	
+		double[] result = new double[2];
+		
+		result[0] = x/length;
+		result[1] = y/length;
+		
+		return result;
+	}
+	 
+	public void changeSize(int amount)
+	{
+		PANEL_WIDTH += amount;
+		PANEL_HEIGHT = (int) (PANEL_WIDTH*(0.66));
+		this.setPreferredSize(new Dimension(PANEL_WIDTH,PANEL_HEIGHT));
+		
+		APOINT_COUNT_X++;
+		APOINT_COUNT_Y = APOINT_COUNT_X * 2/3;
+		
+		start();
+	}
+	
+	public void changePPOINT_COUNT(int amount)
+	{
+		selectedPPOINT = 0; //make sure we don't keep having a point selected that is about to get deleted
+		
+		if (PPOINT_COUNT + amount < 1) {return;} //don't go below 1 PPOINT
+		
+		//save the locations so they can be reset after clearing the old array
+		int[][] pullPointLocations = new int[PPOINT_COUNT][2];	
+		for (int i = 0; i < PPOINT_COUNT; i++)
+		{
+			pullPointLocations[i][0] = pullPoints[i].locX;
+			pullPointLocations[i][1] = pullPoints[i].locY;
+		}
+		
+		PPOINT_COUNT+= amount;
+				
+		pullPoints = null;
+		System.gc();
+		pullPoints = new PullPoint[PPOINT_COUNT];
+		
+		//RESET TO OLD LOCATIONS
+		//IF POINTS DECREASED, GRAB OLD LOCATIONS OF ALL POINTS, IF INCREASED, GRAB LOCATIONS OF ALL POINTS -1,
+		//BECAUSE THE NEWEST DOES NOT HAVE AN OLD LOCATION
+		int incOrdecr = -1;
+		if (amount < 0) {incOrdecr = 0;}
+		
+		for (int i = 0; i < PPOINT_COUNT + incOrdecr; i++)
+		{
+			pullPoints[i] = new PullPoint();
+			pullPoints[i].locX = pullPointLocations[i][0];
+			pullPoints[i].locY = pullPointLocations[i][1];
+		}
+		
+		//set new PullPoint, if there is one
+		if (amount > 0)
+		{pullPoints[PPOINT_COUNT-1] = new PullPoint();}
+		
+		simulate(); repaint();
+	}	
+	
+	public void paint(Graphics g)
+	{
+		Graphics2D g2D = (Graphics2D) g;
+		super.paint(g2D);
+		
+		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		
+		//BACKGROUND
+		g2D.setPaint(BACKGROUND_COLOR);
+		g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
+		
+		//ARROW POINTS
+		if (gradientMode)
+		{
+			RadialGradientPaint distFromCenter = 
+			new RadialGradientPaint(pullPoints[selectedPPOINT].locX, pullPoints[selectedPPOINT].locY, 500, gradientFractions, gradientColors);
+			g2D.setPaint(distFromCenter);
+		}
+		
+		else 
+		{g2D.setPaint(ARROW_COLOR);}
+		
+		for (int i = 0; i < arrowPoints.length; i++)
+		{
+			//prevent trying to draw line when the mouse is exactly on the point
+			if (arrowPoints[i].arrowX != 0) 
+			{g2D.drawLine(arrowPoints[i].locX, arrowPoints[i].locY, arrowPoints[i].arrowX, arrowPoints[i].arrowY);}
+			
+			g2D.drawRect(arrowPoints[i].arrowX-1, arrowPoints[i].arrowY-1, 2, 2);
+		}
+		
+		//PULL POINTS
+		g2D.setPaint(PPOINT_COLOR);
+		for (int i = 0; i < PPOINT_COUNT; i++)
+		{g2D.fillOval(pullPoints[i].locX-6, pullPoints[i].locY-6, PPOINT_SIZE, PPOINT_SIZE);}
+		
+	}
+	
+	private class ClickListener extends MouseAdapter
+	{
+	    public void mousePressed(MouseEvent e)
+	    {selectGravityPoint(e.getX(), e.getY());} 
+	}
+	
+	private class DragListener extends MouseMotionAdapter
+	{
+	    public void mouseDragged(MouseEvent e) 
+	    {moveGravityPoint(e.getX(), e.getY()); simulate(); repaint();}  
+	}
+	
+	private void selectGravityPoint(int X, int Y)
+	{	
+		validDrag = false;
+		
+		for (int i = 0; i < PPOINT_COUNT; i++)
+		{
+			if 
+			(
+				X > pullPoints[i].locX-10 && X < pullPoints[i].locX+10 &&
+				Y > pullPoints[i].locY-10 && Y < pullPoints[i].locY+10 
+			)
+			{selectedPPOINT = i; validDrag = true; break;}
+		}
+	}
+	
+	private void moveGravityPoint(int X, int Y)
+	{
+		if (validDrag)
+		{
+			pullPoints[selectedPPOINT].locX = X;
+			pullPoints[selectedPPOINT].locY = Y;
+			
+			repaint();
+		}
+	}
+}
+
+public class BloonShooting extends JFrame
+{
+	private static final long serialVersionUID = -1952542729679771029L;
+	
+	BlS_Panel panel;
+
+	public BloonShooting()
+	{
+		panel = new BlS_Panel();
+		//this.setIconImage(MainMenu.img.getImage());
+		this.add(panel);
+		this.pack();
+		this.setTitle("Bloon Shooting");
+		
+		this.addKeyListener(new KeyListener() 
+		{
+			@Override
+			public void keyPressed(KeyEvent e) 
+			{
+				int code = e.getKeyCode();
+				
+				if (code == 71) {panel.changeGridVisibility();} //G
+				else if (code == 45) {panel.changeSize(-10); pack();} //-
+				else if (code == 521) {panel.changeSize(10); pack();} //+
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {}
+			@Override
+			public void keyTyped(KeyEvent e) {}
+			
+		});
+		
+		this.setResizable(false);
+		this.setVisible(true);
+	}
+	
+	public void start(WindowEventHandler eventHandler)
+	{this.addWindowListener(eventHandler);}
+}
+
+public class BlS_Panel extends JPanel implements ActionListener
+{
+	private static final long serialVersionUID = 5219711456361037203L;
+	
+	private int PANEL_WIDTH = 600;
+	private int PANEL_HEIGHT = (int) (PANEL_WIDTH *0.6);
+	
+	private final Color BACKGROUND = new Color(50,50,60);
+	
+	//SLINGSHOT
+	private Slingshot slingshot = new Slingshot();
+	private Color[] slingshotColors = {Slingshot.Color1,Slingshot.Color2};
+	private boolean shiftMove = false;
+	
+	//PROJECTILE
+	private Projectile projectile = new Projectile();
+	private Color[] projectileColors = {Projectile.Color1,Projectile.Color2,Projectile.Color3,Projectile.Color4};
+	
+	//MAP & GRID
+	private boolean gridVisible = false;
+	private final int CELL_COUNT_X = 44;
+	private final int CELL_COUNT_Y = 26;
+	private int CELL_SIZE = PANEL_WIDTH/CELL_COUNT_X;
+	
+	//SIMULATION
+	private final Timer shootTimer = new Timer(15,this);
+
+	BlS_Panel()
+	{
+		this.setPreferredSize(new Dimension( PANEL_WIDTH, PANEL_HEIGHT));
+		
+		ClickListener clickListener = new ClickListener();
+		DragListener dragListener = new DragListener();
+		ReleaseListener releaseListener = new ReleaseListener();
+		
+		this.addMouseListener(clickListener);
+		this.addMouseMotionListener(dragListener);
+		this.addMouseListener(releaseListener);
+		
+		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, PANEL_WIDTH/250);
+		projectile.setPixelSize(PANEL_WIDTH/450); projectile.initialize(slingshot.getPullPoint());
+	}
+	
+	public void paint(Graphics g)
+	{
+		Graphics2D g2D = (Graphics2D) g;
+		super.paint(g);
+		
+		//BACKGROUND
+		g2D.setPaint(BACKGROUND);
+		g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
+		
+		//GRID
+		if (gridVisible)
+		{
+			g2D.setPaint(Color.LIGHT_GRAY);
+			for (int i = 0; i < CELL_COUNT_X; i++)
+			{g2D.drawLine(i*CELL_SIZE, 0, i*CELL_SIZE, PANEL_HEIGHT);}
+			for (int i = 0; i < CELL_COUNT_Y; i++)
+			{g2D.drawLine(0, i*CELL_SIZE, PANEL_WIDTH, i*CELL_SIZE);}
+		}
+		
+		//SLINGSHOT
+		paintSprite(slingshotColors, Slingshot.SPRITE, slingshot.getOrigin(), slingshot.getPixelSize(), g2D);
+		
+		//SLINGSHOT BAND
+		g2D.setStroke(new BasicStroke(PANEL_WIDTH/150));
+		g2D.setPaint(Slingshot.SlingColor);
+		int[] paintOrigin = slingshot.getPaintOrigin();
+		int[] pullPoint = slingshot.getPullPoint();
+		g2D.drawLine(paintOrigin[0], paintOrigin[1], pullPoint[0], pullPoint[1]);
+		g2D.drawLine(paintOrigin[2], paintOrigin[1], pullPoint[0], pullPoint[1]);
+		
+		//PROJECTILE
+		paintSprite(projectileColors, Projectile.SPRITE, projectile.getOrigin(), projectile.getPixelSize(), g2D);
+	}
+	
+	private void paintSprite(Color[] colors, byte[] sprite, int [] origin, int pixelSize, Graphics2D g2D)
+	{
+		int row = 0, column = 0;
+		
+		for (int i = 0; i < 256; i++)
+		{
+			if (column == 16) {row++; column = 0;}
+			
+			if (sprite[i] != 0)
+			{
+				g2D.setPaint(colors[sprite[i]-1]);
+				g2D.fillRect(origin[0] + column*pixelSize, origin[1]+ row*pixelSize, pixelSize, pixelSize);
+			}
+			column++;
+		}
+	}
+	
+	private class ClickListener extends MouseAdapter
+	{
+		public void mousePressed(MouseEvent e) 
+		{
+			if(!shootTimer.isRunning())
+			slingshot.setDragValid(e.getX(), e.getY()); //CHECK IF MOUSE IS INSIDE DRAG AREA
+		}
+	}
+	   
+	private class DragListener extends MouseMotionAdapter
+	{
+		public void mouseDragged(MouseEvent e) 
+		{
+			//DON'T MOVE IF NOT INSIDE DRAG AREA OR IF A SHOT IS STILL OCCURRING
+			if (!slingshot.isDragValid() || shootTimer.isRunning()) {return;} 
+			
+			//MOVE WHOLE SLINGSHOT
+			if (e.isShiftDown()) 
+			{slingshot.initOnNewCoords(e.getX(), e.getY()); shiftMove = true;}
+			
+			//MOVE SLINGSHOT BAND
+			else 
+			{slingshot.setPullPoint(e.getX(), e.getY());}
+			
+			projectile.setNewOrigin(slingshot.getPullPoint());
+			repaint();
+		}
+	}
+	
+	private class ReleaseListener extends MouseAdapter
+	{
+		public void mouseReleased(MouseEvent e) 
+		{
+			//DON'T DO IF NOT INSIDE DRAG AREA OR IF A SHOT IS STILL OCCURRING
+			if (!slingshot.isDragValid() || shootTimer.isRunning()) {return;}
+			if (shiftMove) {shiftMove = false; return;} //IF WHOLE SLING IS BEING MOVED, DON'T RELEASE PROJECTILE
+			
+			slingshot.setReturnVect(); slingshot.slingReturnRounds = 0;
+			projectile.setSpeed(slingshot.getReturnVect());
+			shootTimer.start();
+		}
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{	
+		if (slingshot.moveSling()) //MOVES SLINGSHOT WHILE ALSO CHECKING IF THE SLINGSHOT HAS STOPPED MOVING
+		{projectile.setNewOrigin(slingshot.getPullPoint());}
+		
+		else
+		{
+			if (!projectile.fly(PANEL_HEIGHT)) //MOVES PROJECTILE WHILE ALSO CHECKING IF THE PROJECTILE HAS HIT THE FLOOR
+			{shootTimer.stop(); projectile.initialize(slingshot.getPullPoint());} //RESET PROJECTILE
+		} 
+		repaint();
+	}
+	
+	public void changeGridVisibility()
+	{gridVisible = !gridVisible; repaint();}
+	
+	public void changeSize(int amount)
+	{
+		//PANEL
+		PANEL_WIDTH+=amount;
+		PANEL_HEIGHT = (int) (PANEL_WIDTH *0.6);
+		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+		
+		//GRID
+		CELL_SIZE = PANEL_WIDTH/CELL_COUNT_X;
+		
+		//OBJECTS
+		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, PANEL_WIDTH/250);
+		projectile.setPixelSize(PANEL_WIDTH/450); projectile.initialize(slingshot.getPullPoint());
+		
+		repaint();
+	}
+
+}
+
+public class Slingshot 
+{
+	//SPRITE
+	final static Color Color1 = new Color(110,125,170);
+	final static Color Color2 = new Color(95,110,160);
+	final static Color SlingColor = new Color(75,75,110);
+	
+	private int PIXEL_SIZE;
+	
+	static final byte[] SPRITE = 
+	{
+			1,2,2,0,0,0,0,0,0,0,0,0,0,0,1,1,
+			1,1,1,2,0,0,0,0,0,0,0,0,0,1,1,2,
+			0,1,1,1,2,0,0,0,0,0,0,0,1,1,2,2,
+			0,0,1,1,1,2,0,0,0,0,0,1,1,2,2,0,
+			0,0,0,1,1,1,2,0,0,0,0,1,2,2,0,0,
+			0,0,0,0,1,1,2,2,0,0,1,1,2,0,0,0,
+			0,0,0,0,1,1,2,2,0,0,1,1,2,0,0,0,
+			0,0,0,0,0,1,1,1,2,1,1,2,2,0,0,0,
+			0,0,0,0,0,0,1,1,2,1,1,2,0,0,0,0,
+			0,0,0,0,0,0,1,1,1,1,2,2,0,0,0,0,
+			0,0,0,0,0,0,0,1,1,1,2,0,0,0,0,0,
+			0,0,0,0,0,0,0,1,1,1,2,0,0,0,0,0,
+			0,0,0,0,0,0,0,1,1,1,2,0,0,0,0,0,
+			0,0,0,0,0,0,2,1,1,1,2,0,0,0,0,0,
+			0,0,0,0,0,2,1,1,1,1,1,2,0,0,0,0,
+			0,0,0,0,2,2,2,2,2,2,2,2,2,0,0,0,
+	};
+		
+	//COORDINATES
+	private int[] ORIGIN = new int[2];
+	
+	private int[] PULLPOINT = new int[2]; //WHERE IS THE PULLPOINT CURRENTLY
+	private int[] PULLPOINT_ORIGIN = new int[2];
+	
+	private float[] returnVect = new float[2];
+	
+	//CONDITIONS
+	private boolean dragValid = false;
+	
+	int slingReturnRounds = 0;
+
+	
+	//INITIALIZATION
+	public void initialize(int PANEL_WIDTH, int PANEL_HEIGHT, int size)
+	{setPixelSize(size); initOnNewCoords(PANEL_WIDTH/10, PANEL_HEIGHT - (PANEL_HEIGHT/4));}
+		
+	public void initOnNewCoords(int x, int y)
+	{
+		ORIGIN[0] = x; ORIGIN[1] = y;
+			
+		PULLPOINT_ORIGIN[0] = ORIGIN[0] + PIXEL_SIZE*8;
+		PULLPOINT_ORIGIN[1] = ORIGIN[1] + PIXEL_SIZE*8;
+			
+		PULLPOINT[0] = PULLPOINT_ORIGIN[0];
+		PULLPOINT[1] = PULLPOINT_ORIGIN[1];
+	}
+	
+	//MOVEMENT
+	public boolean moveSling()
+	{
+		if (slingReturnRounds > 4) {return false;} //SLING HAS REACHED ORIGIN -> RETURN NO LONGER MOVING
+		
+		PULLPOINT[0]+= returnVect[0]/5;
+		PULLPOINT[1]+= returnVect[1]/5;
+		
+		slingReturnRounds++;
+		
+		return true; //-> STILL MOVING
+	}
+	
+	//RETURN VECTOR
+	public void setReturnVect()
+	{returnVect[0] = PULLPOINT_ORIGIN[0] - PULLPOINT[0]; returnVect[1] = PULLPOINT_ORIGIN[1] - PULLPOINT[1];}
+	
+	public float[] getReturnVect()
+	{return returnVect;}
+	
+	
+	//PULL POINT
+	public void setPullPoint(int x, int y)
+	{PULLPOINT[0] = x;PULLPOINT[1] = y;}
+	
+	public int[] getPullPoint()
+	{return PULLPOINT;}
+	
+	//DRAG VALID
+	public void setDragValid(int x, int y)
+	{dragValid = (x > PULLPOINT[0]-10 && x < PULLPOINT[0]+10 && y > PULLPOINT[1]-10 && y < PULLPOINT[1]+10);}
+	
+	public boolean isDragValid()
+	{return dragValid;}
+	
+	//SIZE
+	public void setPixelSize(int size)
+	{PIXEL_SIZE = size;}
+	
+	public int getPixelSize()
+	{return PIXEL_SIZE;}
+	
+	//ORIGIN
+	public int[] getOrigin()
+	{return ORIGIN;}
+	
+	public int[] getPaintOrigin()
+	{return new int[] {ORIGIN[0] + PIXEL_SIZE, ORIGIN[1] + PIXEL_SIZE, ORIGIN[0] + PIXEL_SIZE*14};}
+}
+
+public class Projectile 
+{
+	//SPRITE
+	final static Color Color1 = new Color(145,170,234);
+	final static Color Color2 = new Color(138,154,194);
+	final static Color Color3 = new Color(94,111,157);
+	final static Color Color4 = new Color(89,101,133);
+	
+	private int PIXEL_SIZE;
+
+	static final byte[] SPRITE = 
+	{
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,
+			0,0,0,3,2,0,2,4,4,2,0,2,3,0,0,0,
+			0,0,0,2,2,2,2,3,3,2,2,2,2,0,0,0,
+			0,0,0,0,2,2,1,3,3,1,2,2,0,0,0,0,
+			0,0,2,2,2,1,3,3,3,3,1,2,2,2,0,0,
+			0,3,2,4,3,3,3,4,4,3,3,3,4,2,3,0,
+			0,3,2,4,3,3,3,4,4,3,3,3,4,2,3,0,
+			0,0,2,2,2,1,3,3,3,3,1,2,2,2,0,0,
+			0,0,0,0,2,2,1,3,3,1,2,2,0,0,0,0,
+			0,0,0,2,2,2,2,3,3,2,2,2,2,0,0,0,
+			0,0,0,3,2,0,2,4,4,2,0,2,3,0,0,0,
+			0,0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+	};
+	
+	
+	//COORDINATES & VECTORS
+	private int[] ORIGIN = new int[2];
+	
+	private float[] SPEED = new float[2];
+	
+	//INITIALIZATION
+	public void initialize(int[] origin)
+	{ORIGIN[0] = origin[0] - PIXEL_SIZE*8; ORIGIN[1] = origin[1] - PIXEL_SIZE*8;}
+	
+	//MOVEMENT
+	public boolean fly(int PANEL_HEIGHT)
+	{
+		if (ORIGIN[1] > PANEL_HEIGHT) {return false;} //HAS HIT FLOOR
+		
+		ORIGIN[0]+= SPEED[0]; ORIGIN[1]+= SPEED[1]; 
+		
+		if (SPEED[0] > 0) {SPEED[0]-= 0.1;} //SLOW DOWN HORIZONTAL SPEED
+		SPEED[1]+= 0.5; //GRAVITY
+		
+		return true;
+	}
+	
+	public void setSpeed(float[] vector)
+	{SPEED[0] = vector[0]/5; SPEED[1] = vector[1]/5;}
+	
+	
+	//ORIGIN
+	public int[] getOrigin()
+	{return ORIGIN;}
+	
+	public void setNewOrigin(int[] origin)
+	{ORIGIN[0] = origin[0] - PIXEL_SIZE*8; ORIGIN[1] = origin[1] - PIXEL_SIZE*8;}
+	
+	//SIZE
+	public void setPixelSize(int size)
+	{PIXEL_SIZE = size;}
+		
+	public int getPixelSize()
+	{return PIXEL_SIZE;}
+}
+
+
 public class WindowEventHandler extends WindowAdapter
 {
 	public void windowClosing(WindowEvent evt) 
@@ -5534,18 +7259,21 @@ public class WindowEventHandler extends WindowAdapter
 		
 		switch(title)
 		{
-			case "Mouse Dodge": MouseDodgePanel.stop(); index = 0; break; 
-			case "Reflection Demo": index = 1; break;
-			case "Sudoku": index = 2; break;
-			case "Pathfind": PathfindDemo.stop(); index = 3; break;
-			case "Sierpinski": SierpinskiSlow.stop();index = 4; break;
-			case "Parallel Universes": ParallelUniverses.stop(); index = 5; break;
-			case "Insects": InsectsPanel.stop(); index = 6; break;
-			case "Particles" : ParticlesPanel.stop();index = 7; break;
-			case "3D Coordinates": Coordinates3DFrame.stop(); index = 8; break;
-			case "Vector Chasers": VectorChasersPanel.stop(); index = 9; break;
-			case "Sidescroller": JumpAndRun.stop(); index = 10; break;
+			case "3D Coordinates": Coordinates3DFrame.stop(); index = 0; break;	
+			case "Insects": InsectsPanel.stop(); index = 1; break;
+			case "Particles" : ParticlesPanel.stop();index = 2; break;
+			case "Sierpinski": SierpinskiSlow.stop();index = 3; break;
+			case "Sudoku": index = 4; break;
+			case "Pathfind": Pathfind.stop(); index = 5; break;
+			case "Parallel Universes": ParallelUniverses.stop(); index = 6; break;
+			case "Reflection Demo": index = 7; break;
+			case "Mouse Dodge": MouseDodgePanel.stop(); index = 8; break; 
+			case "Sidescroller": JumpAndRun.stop(); index = 9; break;
 			case "Speedrun": JumpAndRun.stop(); index = 10; break;
+			case "Pixel Collision": PixelCollision.stop(); index = 11; break;
+			case "Cloth Sim": ClothSim.stop(); index = 12; break;
+			case "Gravity Vectors": index = 13; break;
+			case "Bloon Shooting": index = 14; break;
 		}
 		
 		if (index != -1)
@@ -5556,4 +7284,3 @@ public class WindowEventHandler extends WindowAdapter
 	  }
 	
 }
-
