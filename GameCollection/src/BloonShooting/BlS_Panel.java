@@ -34,9 +34,19 @@ public class BlS_Panel extends JPanel implements ActionListener
 	
 	//MAP & GRID
 	private boolean gridVisible = false;
-	private final int CELL_COUNT_X = 44;
-	private final int CELL_COUNT_Y = 26;
-	private int CELL_SIZE = PANEL_WIDTH/CELL_COUNT_X;
+	
+	private final int LINE_COUNT_X = 44; //for calculations and drawing the grid
+	private final int LINE_COUNT_Y = 26;
+	
+	private final int CELL_COUNT_X = 42; //for the indices of the cells
+	private final int CELL_COUNT_Y = 24;
+	
+	private int CELL_SIZE = PANEL_WIDTH/LINE_COUNT_X;
+	
+	private int CELL_END_X = CELL_SIZE * (LINE_COUNT_Y-1);
+	private int CELL_END_Y = CELL_SIZE * (LINE_COUNT_X-1);
+	
+	//private Interactable[] level = new Interactable[CELL_COUNT_X*CELL_COUNT_Y];
 	
 	//SIMULATION
 	private final Timer shootTimer = new Timer(15,this);
@@ -57,6 +67,11 @@ public class BlS_Panel extends JPanel implements ActionListener
 		projectile.setPixelSize(PANEL_WIDTH/450); projectile.initialize(slingshot.getPullPoint());
 	}
 	
+	private void loadLevel(int levelNum)
+	{	
+		byte[] levelRAW = Levels_Databox.loadLevel(levelNum);
+	}
+	
 	public void paint(Graphics g)
 	{
 		Graphics2D g2D = (Graphics2D) g;
@@ -70,10 +85,10 @@ public class BlS_Panel extends JPanel implements ActionListener
 		if (gridVisible)
 		{
 			g2D.setPaint(Color.LIGHT_GRAY);
-			for (int i = 0; i < CELL_COUNT_X; i++)
-			{g2D.drawLine(i*CELL_SIZE, 0, i*CELL_SIZE, PANEL_HEIGHT);}
-			for (int i = 0; i < CELL_COUNT_Y; i++)
-			{g2D.drawLine(0, i*CELL_SIZE, PANEL_WIDTH, i*CELL_SIZE);}
+			for (int i = 0; i < LINE_COUNT_X; i++)
+			{g2D.drawLine(i*CELL_SIZE, CELL_SIZE, i*CELL_SIZE, CELL_END_X);}
+			for (int i = 0; i < LINE_COUNT_Y; i++)
+			{g2D.drawLine(CELL_SIZE, i*CELL_SIZE, CELL_END_Y, i*CELL_SIZE);}
 		}
 		
 		//SLINGSHOT
@@ -89,6 +104,9 @@ public class BlS_Panel extends JPanel implements ActionListener
 		
 		//PROJECTILE
 		paintSprite(projectileColors, Projectile.SPRITE, projectile.getOrigin(), projectile.getPixelSize(), g2D);
+		
+		//BALLOONS
+		//paintSprite(bloon.getColors(), Balloon.SPRITE, bloon.getOrigin(), bloon.getPixelSize(), g2D);
 	}
 	
 	private void paintSprite(Color[] colors, byte[] sprite, int [] origin, int pixelSize, Graphics2D g2D)
@@ -176,7 +194,9 @@ public class BlS_Panel extends JPanel implements ActionListener
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
 		//GRID
-		CELL_SIZE = PANEL_WIDTH/CELL_COUNT_X;
+		CELL_SIZE = PANEL_WIDTH/LINE_COUNT_X;
+		CELL_END_X = CELL_SIZE * (LINE_COUNT_Y-1);
+		CELL_END_Y = CELL_SIZE * (LINE_COUNT_X-1);
 		
 		//OBJECTS
 		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, PANEL_WIDTH/250);
