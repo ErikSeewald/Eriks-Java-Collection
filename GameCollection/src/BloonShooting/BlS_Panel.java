@@ -26,11 +26,13 @@ public class BlS_Panel extends JPanel implements ActionListener
 	//SLINGSHOT
 	private Slingshot slingshot = new Slingshot();
 	private Color[] slingshotColors = {Slingshot.Color1,Slingshot.Color2};
+	private int slingshotPixelSize = PANEL_WIDTH/250;
 	private boolean shiftMove = false;
 	
 	//PROJECTILE
 	private Projectile projectile = new Projectile();
 	private Color[] projectileColors = {Projectile.Color1,Projectile.Color2,Projectile.Color3,Projectile.Color4};
+	private int projectilePixelSize = PANEL_WIDTH/450;
 	
 	//MAP & GRID
 	private boolean gridVisible = false;
@@ -40,13 +42,17 @@ public class BlS_Panel extends JPanel implements ActionListener
 	
 	private final int CELL_COUNT_X = 42; //for the indices of the cells
 	private final int CELL_COUNT_Y = 24;
+	private final int CELL_COUNT = CELL_COUNT_X * CELL_COUNT_Y;
 	
 	private int CELL_SIZE = PANEL_WIDTH/LINE_COUNT_X;
 	
 	private int CELL_END_X = CELL_SIZE * (LINE_COUNT_Y-1);
 	private int CELL_END_Y = CELL_SIZE * (LINE_COUNT_X-1);
 	
-	//private Interactable[] level = new Interactable[CELL_COUNT_X*CELL_COUNT_Y];
+	byte[] levelRAW = new byte[CELL_COUNT];
+	
+	private Hittable[] level = new Hittable[CELL_COUNT_X*CELL_COUNT_Y];
+	private int levelPixelSize = PANEL_WIDTH/450;
 	
 	//SIMULATION
 	private final Timer shootTimer = new Timer(15,this);
@@ -63,13 +69,29 @@ public class BlS_Panel extends JPanel implements ActionListener
 		this.addMouseMotionListener(dragListener);
 		this.addMouseListener(releaseListener);
 		
-		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, PANEL_WIDTH/250);
-		projectile.setPixelSize(PANEL_WIDTH/450); projectile.initialize(slingshot.getPullPoint());
+		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, slingshotPixelSize);
+		projectile.setPixelSize(projectilePixelSize); projectile.initialize(slingshot.getPullPoint());
+		
+		loadLevel(1);
 	}
 	
 	private void loadLevel(int levelNum)
 	{	
-		byte[] levelRAW = Levels_Databox.loadLevel(levelNum);
+		levelRAW = Levels_Databox.loadLevel(levelNum);
+		
+		int column = 1, row = 1;
+		
+		for (int i = 0; i < CELL_COUNT; i++)
+		{
+			if (column > CELL_COUNT_X) {row++; column = 1;}
+			
+			switch (levelRAW[i])
+			{
+				case 1: level[i] = new Balloon(new int[] {column*CELL_SIZE,row*CELL_SIZE}, levelPixelSize);;
+				break;
+			}
+			column++;
+		}
 	}
 	
 	public void paint(Graphics g)
@@ -92,7 +114,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 		}
 		
 		//SLINGSHOT
-		paintSprite(slingshotColors, Slingshot.SPRITE, slingshot.getOrigin(), slingshot.getPixelSize(), g2D);
+		paintSprite(slingshotColors, Slingshot.SPRITE, slingshot.getOrigin(), slingshotPixelSize, g2D);
 		
 		//SLINGSHOT BAND
 		g2D.setStroke(new BasicStroke(PANEL_WIDTH/150));
@@ -103,10 +125,14 @@ public class BlS_Panel extends JPanel implements ActionListener
 		g2D.drawLine(paintOrigin[2], paintOrigin[1], pullPoint[0], pullPoint[1]);
 		
 		//PROJECTILE
-		paintSprite(projectileColors, Projectile.SPRITE, projectile.getOrigin(), projectile.getPixelSize(), g2D);
+		paintSprite(projectileColors, Projectile.SPRITE, projectile.getOrigin(), projectilePixelSize, g2D);
 		
-		//BALLOONS
-		//paintSprite(bloon.getColors(), Balloon.SPRITE, bloon.getOrigin(), bloon.getPixelSize(), g2D);
+		//LEVEl
+		for (int i = 0; i < CELL_COUNT; i++)
+		{
+			if (levelRAW[i] != 0)
+			{paintSprite(level[i].getColors(), level[i].getSprite(), level[i].getOrigin(), levelPixelSize, g2D);}
+		}	
 	}
 	
 	private void paintSprite(Color[] colors, byte[] sprite, int [] origin, int pixelSize, Graphics2D g2D)
@@ -199,8 +225,11 @@ public class BlS_Panel extends JPanel implements ActionListener
 		CELL_END_Y = CELL_SIZE * (LINE_COUNT_X-1);
 		
 		//OBJECTS
-		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, PANEL_WIDTH/250);
-		projectile.setPixelSize(PANEL_WIDTH/450); projectile.initialize(slingshot.getPullPoint());
+		slingshotPixelSize = PANEL_WIDTH/250;
+		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, slingshotPixelSize);
+		
+		projectilePixelSize = PANEL_WIDTH/450;
+		projectile.setPixelSize(projectilePixelSize); projectile.initialize(slingshot.getPullPoint());
 		
 		repaint();
 	}

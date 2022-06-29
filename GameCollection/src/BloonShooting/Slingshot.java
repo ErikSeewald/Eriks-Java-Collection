@@ -99,9 +99,6 @@ public class Slingshot
 	public void setPixelSize(int size)
 	{PIXEL_SIZE = size;}
 	
-	public int getPixelSize()
-	{return PIXEL_SIZE;}
-	
 	//ORIGIN
 	public int[] getOrigin()
 	{return ORIGIN;}
