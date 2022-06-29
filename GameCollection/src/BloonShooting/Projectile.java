@@ -49,7 +49,7 @@ public class Projectile
 		
 		ORIGIN[0]+= SPEED[0]; ORIGIN[1]+= SPEED[1]; 
 		
-		if (SPEED[0] > 0) {SPEED[0]-= 0.1;} //SLOW DOWN HORIZONTAL SPEED
+		if (SPEED[0] > 0) {SPEED[0]-= 0.03;} //SLOW DOWN HORIZONTAL SPEED
 		SPEED[1]+= 0.5; //GRAVITY
 		
 		return true;

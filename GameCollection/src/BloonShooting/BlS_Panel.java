@@ -34,7 +34,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 	private Color[] projectileColors = {Projectile.Color1,Projectile.Color2,Projectile.Color3,Projectile.Color4};
 	private int projectilePixelSize = PANEL_WIDTH/450;
 	
-	//MAP & GRID
+	//GRID
 	private boolean gridVisible = false;
 	
 	private final int LINE_COUNT_X = 44; //for calculations and drawing the grid
@@ -49,6 +49,8 @@ public class BlS_Panel extends JPanel implements ActionListener
 	private int CELL_END_X = CELL_SIZE * (LINE_COUNT_Y-1);
 	private int CELL_END_Y = CELL_SIZE * (LINE_COUNT_X-1);
 	
+	//LEVEL
+	int levelNum = 1;
 	byte[] levelRAW = new byte[CELL_COUNT];
 	
 	private Hittable[] level = new Hittable[CELL_COUNT_X*CELL_COUNT_Y];
@@ -72,7 +74,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, slingshotPixelSize);
 		projectile.setPixelSize(projectilePixelSize); projectile.initialize(slingshot.getPullPoint());
 		
-		loadLevel(1);
+		loadLevel(levelNum);
 	}
 	
 	private void loadLevel(int levelNum)
@@ -104,9 +106,11 @@ public class BlS_Panel extends JPanel implements ActionListener
 		g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
 		
 		//GRID
+		g2D.setPaint(Color.LIGHT_GRAY);
+		g2D.drawRect(CELL_SIZE, CELL_SIZE, CELL_END_Y-CELL_SIZE, CELL_END_X-CELL_SIZE);
+		
 		if (gridVisible)
 		{
-			g2D.setPaint(Color.LIGHT_GRAY);
 			for (int i = 0; i < LINE_COUNT_X; i++)
 			{g2D.drawLine(i*CELL_SIZE, CELL_SIZE, i*CELL_SIZE, CELL_END_X);}
 			for (int i = 0; i < LINE_COUNT_Y; i++)
@@ -170,7 +174,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 			
 			//MOVE WHOLE SLINGSHOT
 			if (e.isShiftDown()) 
-			{slingshot.initOnNewCoords(e.getX(), e.getY()); shiftMove = true;}
+			{slingshot.initOnNewCoords(e.getX()- slingshotPixelSize*8, e.getY()- slingshotPixelSize*8); shiftMove = true;}
 			
 			//MOVE SLINGSHOT BAND
 			else 
@@ -230,6 +234,10 @@ public class BlS_Panel extends JPanel implements ActionListener
 		
 		projectilePixelSize = PANEL_WIDTH/450;
 		projectile.setPixelSize(projectilePixelSize); projectile.initialize(slingshot.getPullPoint());
+		
+		//LEVEL
+		levelPixelSize = PANEL_WIDTH/450;
+		loadLevel(levelNum);
 		
 		repaint();
 	}
