@@ -2,24 +2,30 @@ package BloonShooting;
 
 public class Levels_Databox
 {
+	public static final int LEVEL_COUNT = 1;
+	public static final int CELL_COUNT = 1008;
 	
-	public static byte[] loadLevel(int levelNum)
+	public static byte[] loadLevel(int levelNum) //loadLevel(1) -> loads LEVELS[0] which is Level 1
 	{
-		short[] level = LEVELS[levelNum];
-		byte[] levelRAW = new byte[1008];
+		if (levelNum > 1 || levelNum > LEVEL_COUNT) {return null;}
 		
-		int levelIndex = 0, rawIndex = 0;
+		short[] level = LEVELS[levelNum-1];
+		byte[] levelRAW = new byte[CELL_COUNT];
+		
+		short rawIndex = 0;
 		
 		for (int i = 0; i < level.length; i++)
 		{
-			if (level[levelIndex] < 0)
+			if (level[i] < 0)
 			{
-				for (int j = rawIndex; j < rawIndex + level[levelIndex]; j++)
-				{levelRAW[j] = 0; rawIndex++;}
+				short tempIndex = rawIndex;
+				
+				while(rawIndex < (tempIndex + level[i]*-1))
+				{levelRAW[rawIndex] = 0; rawIndex++;}
 			}
 			
 			else
-			{levelRAW[rawIndex] = (byte) level[levelIndex]; rawIndex++;}
+			{levelRAW[rawIndex] = (byte) level[i]; rawIndex++;}
 		}
 		return levelRAW;
 	}
@@ -28,7 +34,7 @@ public class Levels_Databox
 	{
 		//LEVEL 1
 		{
-				-322, 1,1,1,1,1,1, -35, 1,1,1,1,1,1,1,1, -34, 1,1,1,1,1,1,1,1, -34, 1,1,1,1,1,1,1,1, -34, 1,1,1,1,1,1,1,1,
+				-270, 1,1,1,1,1,1, -35, 1,1,1,1,1,1,1,1, -34, 1,1,1,1,1,1,1,1, -34, 1,1,1,1,1,1,1,1, -34, 1,1,1,1,1,1,1,1,
 				-35,  1,1,1,1,1,1, -522
 		},	
 	};

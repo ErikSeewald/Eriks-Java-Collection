@@ -95,4 +95,8 @@ public class Balloon implements Hittable
 	
 	public void setPixelSize(int pixelSize)
 	{PIXEL_SIZE = pixelSize;}
+	
+	//SPRITE
+	public byte[] getSprite()
+	{return SPRITE;}
 }

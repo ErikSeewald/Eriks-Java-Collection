@@ -69,7 +69,4 @@ public class Projectile
 	//SIZE
 	public void setPixelSize(int size)
 	{PIXEL_SIZE = size;}
-		
-	public int getPixelSize()
-	{return PIXEL_SIZE;}
 }
