@@ -6,6 +6,9 @@ import java.util.Random;
 public class Balloon implements Hittable
 {
 	private int TYPE;
+	private boolean POPPING;
+	
+	private int popAnimationFrame;
 	
 	//SPRITE
 	final static Color Green1 = new Color(175,253,187);
@@ -27,6 +30,9 @@ public class Balloon implements Hittable
 	final static Color Blue2 = new Color(145,159,234);
 	final static Color Blue3 = new Color(108,125,211);
 	final static Color Blue4 = new Color(74,81,160);
+	
+	final static Color Pop1 = new Color(212,224,255);
+	final static Color Pop2 = new Color(34,36,44);
 	
 	private Color[] colors = new Color[4];
 		
@@ -51,6 +57,26 @@ public class Balloon implements Hittable
 			0,0,0,0,0,0,0,4,4,0,0,0,0,0,0,0,
 			0,0,0,0,0,0,0,0,4,4,0,0,0,0,0,0,
 	};
+	
+	static final byte[] POP_SPRITE = 
+	{
+			2,2,0,0,0,0,0,2,2,0,0,0,0,0,2,2,
+			2,1,2,2,0,0,2,1,1,2,0,0,2,2,1,2,
+			0,2,1,1,2,2,1,1,1,1,2,2,1,1,2,0,
+			0,2,1,1,1,1,1,1,2,1,1,1,1,1,2,0,
+			0,0,2,1,2,1,1,2,1,1,1,2,1,2,0,0,
+			0,0,2,1,1,2,2,1,1,2,2,1,1,2,0,0,
+			0,2,1,1,1,2,1,1,1,1,2,1,1,1,2,0,
+			2,1,1,2,1,1,1,2,2,1,1,2,1,1,1,2,
+			2,1,1,1,2,1,1,2,2,1,1,1,2,1,1,2,
+			0,2,1,1,1,2,1,1,1,1,2,1,1,1,2,0,
+			0,0,2,1,1,2,2,1,1,2,2,1,1,2,0,0,
+			0,0,2,1,2,1,1,1,2,1,1,2,1,2,0,0,
+			0,2,1,1,1,1,1,2,1,1,1,1,1,1,2,0,
+			0,2,1,1,2,2,1,1,1,1,2,2,1,1,2,0,
+			2,1,2,2,0,0,2,1,1,2,0,0,2,2,1,2,
+			2,2,0,0,0,0,0,2,2,0,0,0,0,0,2,2,
+	};
 		
 
 	Balloon(int[] origin, int pixelSize)
@@ -64,6 +90,8 @@ public class Balloon implements Hittable
 	{
 		ORIGIN[0] = origin[0]; ORIGIN[1] = origin[1];
 		TYPE = new Random().nextInt(4);
+		POPPING = false;
+		popAnimationFrame = 0;
 		setColorArray();	
 	}
 		
@@ -85,6 +113,9 @@ public class Balloon implements Hittable
 	public Color[] getColors()
 	{return colors;}
 	
+	public Color[] getPopColors()
+	{return new Color[] {Pop1, Pop2};}
+	
 	//ORIGIN
 	public int[] getOrigin()
 	{return ORIGIN;}
@@ -99,4 +130,18 @@ public class Balloon implements Hittable
 	//SPRITE
 	public byte[] getSprite()
 	{return SPRITE;}
+	
+	public byte[] getPopSprite()
+	{popAnimationFrame++; return POP_SPRITE; }
+	
+	//ALIVE
+	public boolean isAlive()
+	{return (popAnimationFrame < 15);}
+	
+	public boolean isPopping()
+	{return POPPING;}
+	
+	public void kill()
+	{POPPING = true;}
+	
 }

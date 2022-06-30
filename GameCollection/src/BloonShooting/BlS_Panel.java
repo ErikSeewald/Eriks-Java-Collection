@@ -25,13 +25,13 @@ public class BlS_Panel extends JPanel implements ActionListener
 	
 	//SLINGSHOT
 	private Slingshot slingshot = new Slingshot();
-	private Color[] slingshotColors = {Slingshot.Color1,Slingshot.Color2};
+	private Color[] slingshotColors = {Slingshot.Color1,Slingshot.Color2, Slingshot.Color3};
 	private int slingshotPixelSize = PANEL_WIDTH/250;
 	private boolean shiftMove = false;
 	
 	//PROJECTILE
 	private Projectile projectile = new Projectile();
-	private Color[] projectileColors = {Projectile.Color1,Projectile.Color2,Projectile.Color3,Projectile.Color4};
+	private Color[] projectileColors = {Projectile.Color1,Projectile.Color2,Projectile.Color3,Projectile.Color4,Projectile.Color5};
 	private int projectilePixelSize = PANEL_WIDTH/450;
 	
 	//GRID
@@ -51,7 +51,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 	
 	//LEVEL
 	int levelNum = 1;
-	byte[] levelRAW = new byte[CELL_COUNT];
+	private byte[] levelRAW = new byte[CELL_COUNT];
 	
 	private Hittable[] level = new Hittable[CELL_COUNT_X*CELL_COUNT_Y];
 	private int levelPixelSize = PANEL_WIDTH/450;
@@ -77,9 +77,14 @@ public class BlS_Panel extends JPanel implements ActionListener
 		loadLevel(2);
 	}
 	
-	private void loadLevel(int levelNum)
+	public void loadLevel(int levelNum)
 	{	
+		if(shot.isRunning()) {return;}
+		
 		levelRAW = Levels_Databox.loadLevel(levelNum);
+		if (levelRAW == null) {return;}
+		
+		this.levelNum = levelNum;
 		
 		int column = 1, row = 1;
 		
@@ -94,6 +99,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 			}
 			column++;
 		}
+		repaint();
 	}
 	
 	public void paint(Graphics g)
@@ -135,7 +141,15 @@ public class BlS_Panel extends JPanel implements ActionListener
 		for (int i = 0; i < CELL_COUNT; i++)
 		{
 			if (levelRAW[i] != 0)
-			{paintSprite(level[i].getColors(), level[i].getSprite(), level[i].getOrigin(), levelPixelSize, g2D);}
+			{
+				if (level[i].isAlive())
+				{
+					if (level[i].isPopping())
+					{paintSprite(level[i].getPopColors(), level[i].getPopSprite(), level[i].getOrigin(), levelPixelSize, g2D);}
+					else
+					{paintSprite(level[i].getColors(), level[i].getSprite(), level[i].getOrigin(), levelPixelSize, g2D);}
+				}
+			}
 		}	
 	}
 	
@@ -196,6 +210,8 @@ public class BlS_Panel extends JPanel implements ActionListener
 			slingshot.setReturnVect(); slingshot.slingReturnRounds = 0;
 			projectile.setSpeed(slingshot.getReturnVect());
 			shot.start();
+			
+			level[660].kill();
 		}
 	}
 	
