@@ -57,7 +57,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 	private int levelPixelSize = PANEL_WIDTH/450;
 	
 	//SIMULATION
-	private final Timer shootTimer = new Timer(15,this);
+	private final Timer shot = new Timer(15,this);
 
 	BlS_Panel()
 	{
@@ -74,7 +74,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, slingshotPixelSize);
 		projectile.setPixelSize(projectilePixelSize); projectile.initialize(slingshot.getPullPoint());
 		
-		loadLevel(levelNum);
+		loadLevel(2);
 	}
 	
 	private void loadLevel(int levelNum)
@@ -160,7 +160,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 	{
 		public void mousePressed(MouseEvent e) 
 		{
-			if(!shootTimer.isRunning())
+			if(!shot.isRunning())
 			slingshot.setDragValid(e.getX(), e.getY()); //CHECK IF MOUSE IS INSIDE DRAG AREA
 		}
 	}
@@ -170,7 +170,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 		public void mouseDragged(MouseEvent e) 
 		{
 			//DON'T MOVE IF NOT INSIDE DRAG AREA OR IF A SHOT IS STILL OCCURRING
-			if (!slingshot.isDragValid() || shootTimer.isRunning()) {return;} 
+			if (!slingshot.isDragValid() || shot.isRunning()) {return;} 
 			
 			//MOVE WHOLE SLINGSHOT
 			if (e.isShiftDown()) 
@@ -190,12 +190,12 @@ public class BlS_Panel extends JPanel implements ActionListener
 		public void mouseReleased(MouseEvent e) 
 		{
 			//DON'T DO IF NOT INSIDE DRAG AREA OR IF A SHOT IS STILL OCCURRING
-			if (!slingshot.isDragValid() || shootTimer.isRunning()) {return;}
+			if (!slingshot.isDragValid() || shot.isRunning()) {return;}
 			if (shiftMove) {shiftMove = false; return;} //IF WHOLE SLING IS BEING MOVED, DON'T RELEASE PROJECTILE
 			
 			slingshot.setReturnVect(); slingshot.slingReturnRounds = 0;
 			projectile.setSpeed(slingshot.getReturnVect());
-			shootTimer.start();
+			shot.start();
 		}
 	}
 	
@@ -208,7 +208,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 		else
 		{
 			if (!projectile.fly(PANEL_HEIGHT)) //MOVES PROJECTILE WHILE ALSO CHECKING IF THE PROJECTILE HAS HIT THE FLOOR
-			{shootTimer.stop(); projectile.initialize(slingshot.getPullPoint());} //RESET PROJECTILE
+			{shot.stop(); projectile.initialize(slingshot.getPullPoint());} //RESET PROJECTILE
 		} 
 		repaint();
 	}

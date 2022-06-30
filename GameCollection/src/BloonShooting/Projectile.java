@@ -48,8 +48,6 @@ public class Projectile
 		if (ORIGIN[1] > PANEL_HEIGHT) {return false;} //HAS HIT FLOOR
 		
 		ORIGIN[0]+= SPEED[0]; ORIGIN[1]+= SPEED[1]; 
-		
-		if (SPEED[0] > 0) {SPEED[0]-= 0.03;} //SLOW DOWN HORIZONTAL SPEED
 		SPEED[1]+= 0.5; //GRAVITY
 		
 		return true;
@@ -57,7 +55,6 @@ public class Projectile
 	
 	public void setSpeed(float[] vector)
 	{SPEED[0] = vector[0]/5; SPEED[1] = vector[1]/5;}
-	
 	
 	//ORIGIN
 	public int[] getOrigin()
