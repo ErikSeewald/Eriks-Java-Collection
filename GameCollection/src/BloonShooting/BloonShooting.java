@@ -32,6 +32,8 @@ public class BloonShooting extends JFrame
 				if (code == 71) {panel.changeGridVisibility();} //G
 				else if (code == 45) {panel.changeSize(-10); pack();} //-
 				else if (code == 521) {panel.changeSize(10); pack();} //+
+				else if (code == 37) {panel.loadLevel(panel.levelNum-1);} //LEFT
+				else if (code == 39) {panel.loadLevel(panel.levelNum+1);} //RIGHT
 				
 			}
 
