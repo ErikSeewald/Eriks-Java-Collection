@@ -41,7 +41,7 @@ public class Projectile
 	
 	//INITIALIZATION
 	public void initialize(int[] origin)
-	{ORIGIN[0] = origin[0] - PIXEL_SIZE*8; ORIGIN[1] = origin[1] - PIXEL_SIZE*8;}
+	{ORIGIN[0] = origin[0] - PIXEL_SIZE*8; ORIGIN[1] = origin[1] - PIXEL_SIZE*8; System.gc();}
 	
 	//MOVEMENT
 	public boolean fly(int PANEL_HEIGHT)

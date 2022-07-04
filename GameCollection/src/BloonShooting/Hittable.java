@@ -18,5 +18,5 @@ public interface Hittable
 	
 	public boolean isPopping();
 	
-	public void kill();
+	public void hit();
 }
