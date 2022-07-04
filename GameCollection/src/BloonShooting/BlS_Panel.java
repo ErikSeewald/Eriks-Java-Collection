@@ -74,7 +74,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, slingshotPixelSize);
 		projectile.setPixelSize(projectilePixelSize); projectile.initialize(slingshot.getPullPoint());
 		
-		loadLevel(2);
+		loadLevel(levelNum);
 	}
 	
 	public void loadLevel(int levelNum)
