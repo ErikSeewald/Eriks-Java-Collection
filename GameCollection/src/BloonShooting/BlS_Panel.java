@@ -81,7 +81,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 		if(shot.isRunning()) {return;}
 		
 		byte[] levelRAWTEMP = Levels_Databox.loadLevel(levelNum);
-		
+
 		if (levelRAWTEMP == null) {return;}
 		
 		levelRAW = levelRAWTEMP;
@@ -229,6 +229,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 			{shot.stop(); projectile.initialize(slingshot.getPullPoint());} //RESET PROJECTILE
 			
 			int[] gridEdges = getGridEdges(projectile.getOrigin());
+			
 			
 			if (gridEdges != null)
 			{
