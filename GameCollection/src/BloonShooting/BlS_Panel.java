@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -81,8 +80,11 @@ public class BlS_Panel extends JPanel implements ActionListener
 	{	
 		if(shot.isRunning()) {return;}
 		
-		levelRAW = Levels_Databox.loadLevel(levelNum);
-		if (levelRAW == null) {return;}
+		byte[] levelRAWTEMP = Levels_Databox.loadLevel(levelNum);
+		
+		if (levelRAWTEMP == null) {return;}
+		
+		levelRAW = levelRAWTEMP;
 		
 		this.levelNum = levelNum;
 		
@@ -99,6 +101,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 			}
 			column++;
 		}
+		System.gc();
 		repaint();
 	}
 	
@@ -134,8 +137,6 @@ public class BlS_Panel extends JPanel implements ActionListener
 		g2D.drawLine(paintOrigin[0], paintOrigin[1], pullPoint[0], pullPoint[1]);
 		g2D.drawLine(paintOrigin[2], paintOrigin[1], pullPoint[0], pullPoint[1]);
 		
-		//PROJECTILE
-		paintSprite(projectileColors, Projectile.SPRITE, projectile.getOrigin(), projectilePixelSize, g2D);
 		
 		//LEVEl
 		for (int i = 0; i < CELL_COUNT; i++)
@@ -150,7 +151,10 @@ public class BlS_Panel extends JPanel implements ActionListener
 					{paintSprite(level[i].getColors(), level[i].getSprite(), level[i].getOrigin(), levelPixelSize, g2D);}
 				}
 			}
-		}	
+		}
+		
+		//PROJECTILE
+		paintSprite(projectileColors, Projectile.SPRITE, projectile.getOrigin(), projectilePixelSize, g2D);
 	}
 	
 	private void paintSprite(Color[] colors, byte[] sprite, int [] origin, int pixelSize, Graphics2D g2D)
@@ -210,8 +214,6 @@ public class BlS_Panel extends JPanel implements ActionListener
 			slingshot.setReturnVect(); slingshot.slingReturnRounds = 0;
 			projectile.setSpeed(slingshot.getReturnVect());
 			shot.start();
-			
-			level[660].kill();
 		}
 	}
 	
@@ -225,8 +227,43 @@ public class BlS_Panel extends JPanel implements ActionListener
 		{
 			if (!projectile.fly(PANEL_HEIGHT)) //MOVES PROJECTILE WHILE ALSO CHECKING IF THE PROJECTILE HAS HIT THE FLOOR
 			{shot.stop(); projectile.initialize(slingshot.getPullPoint());} //RESET PROJECTILE
+			
+			int[] gridEdges = getGridEdges(projectile.getOrigin());
+			
+			if (gridEdges != null)
+			{
+				for (int i = 0; i < gridEdges.length; i++)
+				{
+					if (isHittable(gridEdges[i]))
+					{level[gridEdges[i]].hit();}
+				}
+			}
 		} 
 		repaint();
+	}
+	
+	private int[] getGridEdges(int[] origin)
+	{
+		if (origin[0] < 0 || origin[0] > PANEL_WIDTH || origin[1] < 0 || origin[1] > PANEL_HEIGHT) {return null;}
+		
+		int[] edges = new int[4];
+		
+		int column = (origin[0]-CELL_SIZE) / CELL_SIZE, row = (origin[1]-CELL_SIZE) / CELL_SIZE;
+		
+		edges[0] = row*CELL_COUNT_X + column; 				//  0_____1
+		edges[1] = row*CELL_COUNT_X + column+1;  			//  |	  |
+		edges[2] = (row+1)*CELL_COUNT_X + column;			//  |_____|
+		edges[3] = (row+1)*CELL_COUNT_X + column+1; 		//  2	  3
+														
+		return edges;
+	}
+	
+	private boolean isHittable(int gridNum)
+	{
+		if (gridNum >= 1008 || gridNum < 0) {return false;}
+		if (level[gridNum] == null) {return false;}
+		
+		return level[gridNum].isAlive();
 	}
 	
 	public void changeGridVisibility()

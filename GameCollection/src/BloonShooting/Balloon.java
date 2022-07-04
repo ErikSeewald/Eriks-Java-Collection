@@ -136,12 +136,14 @@ public class Balloon implements Hittable
 	
 	//ALIVE
 	public boolean isAlive()
-	{return (popAnimationFrame < 15);}
+	{return (popAnimationFrame < 5);}
 	
 	public boolean isPopping()
 	{return POPPING;}
 	
-	public void kill()
+	//HITTABLE
+	
+	public void hit()
 	{POPPING = true;}
 	
 }
