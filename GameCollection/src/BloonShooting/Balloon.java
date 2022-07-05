@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class Balloon implements Hittable
 {
-	private int TYPE;
+	private int COLOR_TYPE;
 	private boolean POPPING;
 	
 	private int popAnimationFrame;
@@ -77,28 +77,25 @@ public class Balloon implements Hittable
 			2,1,2,2,0,0,2,1,1,2,0,0,2,2,1,2,
 			2,2,0,0,0,0,0,2,2,0,0,0,0,0,2,2,
 	};
-		
-
-	Balloon(int[] origin, int pixelSize)
-	{initialize(origin); setPixelSize(pixelSize);}
-		
+	
 	//COORDINATES & VECTORS
 	private int[] ORIGIN = new int[2];
-		
+
 	//INITIALIZATION
+	Balloon(int[] origin, int pixelSize)
+	{initialize(origin); setPixelSize(pixelSize);}
+	
 	private void initialize(int[] origin)
 	{
 		ORIGIN[0] = origin[0]; ORIGIN[1] = origin[1];
-		TYPE = new Random().nextInt(4);
-		POPPING = false;
-		popAnimationFrame = 0;
+		COLOR_TYPE = new Random().nextInt(4);
 		setColorArray();	
 	}
 		
 	//COLORS
 	private void setColorArray()
 	{
-		switch (TYPE)
+		switch (COLOR_TYPE)
 		{
 			case 0: colors[0] = Green1; colors[1] = Green2; colors[2] = Green3; colors[3] = Green4;
 			break;
@@ -136,13 +133,12 @@ public class Balloon implements Hittable
 	
 	//ALIVE
 	public boolean isAlive()
-	{return (popAnimationFrame < 5);}
+	{return (popAnimationFrame < 3);}
 	
 	public boolean isPopping()
 	{return POPPING;}
 	
 	//HITTABLE
-	
 	public void hit()
 	{POPPING = true;}
 	

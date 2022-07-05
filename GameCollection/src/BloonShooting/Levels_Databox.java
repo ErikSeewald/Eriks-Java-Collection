@@ -16,12 +16,13 @@ public class Levels_Databox
 		
 		for (int i = 0; i < level.length; i++)
 		{
-			int insert = 0, amount = level[i], tempIndex = rawIndex;
+			int insert = 0, amount = level[i];
 			
 			if (level[i] < 0) {amount*=-1;}
 			else {insert = (level[i] / 100)+1;} //assigns the number to be inserted into levelRAW per the norm specified at the LEVELS array
 				
-			while(rawIndex < (tempIndex + amount)) //fill the levelRAW for the in level[i] specified amount of indices
+			int fillUpTo = rawIndex + amount;
+			while(rawIndex < fillUpTo ) //fill the levelRAW for the in level[i] specified amount of indices
 			{levelRAW[rawIndex] = (byte) insert; rawIndex++;}	
 		}
 		return levelRAW;
