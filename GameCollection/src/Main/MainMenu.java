@@ -101,7 +101,6 @@ public class MainMenu extends JFrame implements MouseListener
 		this.getContentPane().setBackground(new Color(40,40,55));
 		
 		this.setLayout(null);
-		
 		start();
 		
 		this.setVisible(true);
