@@ -102,7 +102,6 @@ public class MainMenu extends JFrame implements MouseListener
 		
 		this.setLayout(null);
 		start();
-		
 		this.setVisible(true);
 	}
 	
