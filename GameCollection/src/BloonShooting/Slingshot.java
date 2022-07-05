@@ -36,7 +36,7 @@ public class Slingshot
 	private int[] ORIGIN = new int[2];
 	
 	private int[] PULLPOINT = new int[2]; //WHERE IS THE PULLPOINT CURRENTLY
-	private int[] PULLPOINT_ORIGIN = new int[2];
+	private int[] PULLPOINT_ORIGIN = new int[2]; //WHERE WAS IT ORIGINALLY
 	
 	private float[] returnVect = new float[2];
 	
@@ -76,7 +76,11 @@ public class Slingshot
 	
 	//RETURN VECTOR
 	public void setReturnVect()
-	{returnVect[0] = PULLPOINT_ORIGIN[0] - PULLPOINT[0]; returnVect[1] = PULLPOINT_ORIGIN[1] - PULLPOINT[1];}
+	{
+		returnVect[0] = PULLPOINT_ORIGIN[0] - PULLPOINT[0]; 
+		returnVect[1] = PULLPOINT_ORIGIN[1] - PULLPOINT[1]; 
+		slingReturnRounds = 0;
+	}
 	
 	public float[] getReturnVect()
 	{return returnVect;}
@@ -84,7 +88,7 @@ public class Slingshot
 	
 	//PULL POINT
 	public void setPullPoint(int x, int y)
-	{PULLPOINT[0] = x;PULLPOINT[1] = y;}
+	{PULLPOINT[0] = x; PULLPOINT[1] = y;}
 	
 	public int[] getPullPoint()
 	{return PULLPOINT;}
@@ -104,6 +108,6 @@ public class Slingshot
 	public int[] getOrigin()
 	{return ORIGIN;}
 	
-	public int[] getPaintOrigin()
+	public int[] getPaintOrigin() //third element in the array is where the second band of the sling starts from
 	{return new int[] {ORIGIN[0] + PIXEL_SIZE, ORIGIN[1] + PIXEL_SIZE, ORIGIN[0] + PIXEL_SIZE*14};}
 }

@@ -26,7 +26,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 	private Slingshot slingshot = new Slingshot();
 	private Color[] slingshotColors = {Slingshot.Color1,Slingshot.Color2, Slingshot.Color3};
 	private int slingshotPixelSize = PANEL_WIDTH/250;
-	private boolean shiftMove = false;
+	private boolean shiftMove = false; //IS THE SLINGSHOT ITSELF BEING MOVED -> SHIFT HELD DOWN
 	
 	//PROJECTILE
 	private Projectile projectile = new Projectile();
@@ -45,14 +45,15 @@ public class BlS_Panel extends JPanel implements ActionListener
 	
 	private int CELL_SIZE = PANEL_WIDTH/LINE_COUNT_X;
 	
-	private int CELL_END_X = CELL_SIZE * (LINE_COUNT_Y-1);
+	//coordinates of where the cells end on screen
+	private int CELL_END_X = CELL_SIZE * (LINE_COUNT_Y-1); 
 	private int CELL_END_Y = CELL_SIZE * (LINE_COUNT_X-1);
 	
 	//LEVEL
 	int levelNum = 1;
-	private byte[] levelRAW = new byte[CELL_COUNT];
+	private byte[] levelRAW = new byte[CELL_COUNT]; //array containing the id of the element at each position
 	
-	private Hittable[] level = new Hittable[CELL_COUNT_X*CELL_COUNT_Y];
+	private Hittable[] level = new Hittable[CELL_COUNT_X*CELL_COUNT_Y]; //array containing the actual element at each position
 	private int levelPixelSize = PANEL_WIDTH/450;
 	
 	//SIMULATION
@@ -92,7 +93,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 		
 		for (int i = 0; i < CELL_COUNT; i++)
 		{
-			if (column > CELL_COUNT_X) {row++; column = 1;}
+			if (column > CELL_COUNT_X) {row++; column = 1;} //go to the next row, reset to the first column
 			
 			switch (levelRAW[i])
 			{
@@ -114,10 +115,12 @@ public class BlS_Panel extends JPanel implements ActionListener
 		g2D.setPaint(BACKGROUND);
 		g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
 		
-		//GRID
-		g2D.setPaint(Color.LIGHT_GRAY);
-		g2D.drawRect(CELL_SIZE, CELL_SIZE, CELL_END_Y-CELL_SIZE, CELL_END_X-CELL_SIZE);
 		
+		//SURROUNDING RECTANGLE
+		g2D.setPaint(Color.LIGHT_GRAY);
+		g2D.drawRect(CELL_SIZE, CELL_SIZE, CELL_END_Y-CELL_SIZE, CELL_END_X-CELL_SIZE); 
+		
+		//GRID
 		if (gridVisible)
 		{
 			for (int i = 0; i < LINE_COUNT_X; i++)
@@ -136,7 +139,6 @@ public class BlS_Panel extends JPanel implements ActionListener
 		int[] pullPoint = slingshot.getPullPoint();
 		g2D.drawLine(paintOrigin[0], paintOrigin[1], pullPoint[0], pullPoint[1]);
 		g2D.drawLine(paintOrigin[2], paintOrigin[1], pullPoint[0], pullPoint[1]);
-		
 		
 		//LEVEl
 		for (int i = 0; i < CELL_COUNT; i++)
@@ -165,7 +167,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 		{
 			if (column == 16) {row++; column = 0;}
 			
-			if (sprite[i] != 0)
+			if (sprite[i] != 0) //0 -> transparent
 			{
 				g2D.setPaint(colors[sprite[i]-1]);
 				g2D.fillRect(origin[0] + column*pixelSize, origin[1]+ row*pixelSize, pixelSize, pixelSize);
@@ -209,9 +211,9 @@ public class BlS_Panel extends JPanel implements ActionListener
 		{
 			//DON'T DO IF NOT INSIDE DRAG AREA OR IF A SHOT IS STILL OCCURRING
 			if (!slingshot.isDragValid() || shot.isRunning()) {return;}
-			if (shiftMove) {shiftMove = false; return;} //IF WHOLE SLING IS BEING MOVED, DON'T RELEASE PROJECTILE
+			if (shiftMove) {shiftMove = false; return;} //IF WHOLE SLING IS BEING MOVED, DON'T RELEASE PROJECTILE, JUST LET GO OF SLINGSHOT
 			
-			slingshot.setReturnVect(); slingshot.slingReturnRounds = 0;
+			slingshot.setReturnVect();
 			projectile.setSpeed(slingshot.getReturnVect());
 			shot.start();
 		}
@@ -228,8 +230,9 @@ public class BlS_Panel extends JPanel implements ActionListener
 			if (!projectile.fly(PANEL_HEIGHT)) //MOVES PROJECTILE WHILE ALSO CHECKING IF THE PROJECTILE HAS HIT THE FLOOR
 			{shot.stop(); projectile.initialize(slingshot.getPullPoint());} //RESET PROJECTILE
 			
-			int[] gridEdges = getGridEdges(projectile.getOrigin());
 			
+			//COLLISION DETECTION
+			int[] gridEdges = getGridEdges(projectile.getOrigin()); //gets the grid indices of the 4 edges of the projectile
 			
 			if (gridEdges != null)
 			{
