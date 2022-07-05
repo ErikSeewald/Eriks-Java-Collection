@@ -6667,12 +6667,10 @@ public class GravityVectorsPanel extends JPanel
 public class BloonShooting extends JFrame
 {
 	private static final long serialVersionUID = -1952542729679771029L;
-	
-	BlS_Panel panel;
 
 	public BloonShooting()
 	{
-		panel = new BlS_Panel();
+		BlS_Panel panel = new BlS_Panel();
 		//this.setIconImage(MainMenu.img.getImage());
 		this.add(panel);
 		this.pack();
@@ -6688,14 +6686,13 @@ public class BloonShooting extends JFrame
 				if (code == 71) {panel.changeGridVisibility();} //G
 				else if (code == 45) {panel.changeSize(-10); pack();} //-
 				else if (code == 521) {panel.changeSize(10); pack();} //+
-				
+				else if (code == 37) {panel.loadLevel(panel.levelNum-1);} //LEFT
+				else if (code == 39) {panel.loadLevel(panel.levelNum+1);} //RIGHT	
 			}
-
 			@Override
 			public void keyReleased(KeyEvent e) {}
 			@Override
 			public void keyTyped(KeyEvent e) {}
-			
 		});
 		
 		this.setResizable(false);
@@ -6710,28 +6707,47 @@ public class BlS_Panel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 5219711456361037203L;
 	
-	private int PANEL_WIDTH = 600;
+	private int PANEL_WIDTH = 660;
 	private int PANEL_HEIGHT = (int) (PANEL_WIDTH *0.6);
 	
 	private final Color BACKGROUND = new Color(50,50,60);
 	
 	//SLINGSHOT
 	private Slingshot slingshot = new Slingshot();
-	private Color[] slingshotColors = {Slingshot.Color1,Slingshot.Color2};
-	private boolean shiftMove = false;
+	private Color[] slingshotColors = {Slingshot.Color1,Slingshot.Color2, Slingshot.Color3};
+	private int slingshotPixelSize = PANEL_WIDTH/250;
+	private boolean shiftMove = false; //IS THE SLINGSHOT ITSELF BEING MOVED -> SHIFT HELD DOWN
 	
 	//PROJECTILE
 	private Projectile projectile = new Projectile();
-	private Color[] projectileColors = {Projectile.Color1,Projectile.Color2,Projectile.Color3,Projectile.Color4};
+	private Color[] projectileColors = {Projectile.Color1,Projectile.Color2,Projectile.Color3,Projectile.Color4,Projectile.Color5};
+	private int projectilePixelSize = PANEL_WIDTH/450;
 	
-	//MAP & GRID
+	//GRID
 	private boolean gridVisible = false;
-	private final int CELL_COUNT_X = 44;
-	private final int CELL_COUNT_Y = 26;
-	private int CELL_SIZE = PANEL_WIDTH/CELL_COUNT_X;
+	
+	private final int LINE_COUNT_X = 44; //for calculations and drawing the grid
+	private final int LINE_COUNT_Y = 26;
+	
+	private final int CELL_COUNT_X = 42; //for the indices of the cells
+	private final int CELL_COUNT_Y = 24;
+	private final int CELL_COUNT = CELL_COUNT_X * CELL_COUNT_Y;
+	
+	private int CELL_SIZE = PANEL_WIDTH/LINE_COUNT_X;
+	
+	//coordinates of where the cells end on screen
+	private int CELL_END_X = CELL_SIZE * (LINE_COUNT_Y-1); 
+	private int CELL_END_Y = CELL_SIZE * (LINE_COUNT_X-1);
+	
+	//LEVEL
+	int levelNum = 1;
+	private byte[] levelRAW = new byte[CELL_COUNT]; //array containing the id of the element at each position
+	
+	private Hittable[] level = new Hittable[CELL_COUNT_X*CELL_COUNT_Y]; //array containing the actual element at each position
+	private int levelPixelSize = PANEL_WIDTH/450;
 	
 	//SIMULATION
-	private final Timer shootTimer = new Timer(15,this);
+	private final Timer shot = new Timer(15,this);
 
 	BlS_Panel()
 	{
@@ -6745,8 +6761,39 @@ public class BlS_Panel extends JPanel implements ActionListener
 		this.addMouseMotionListener(dragListener);
 		this.addMouseListener(releaseListener);
 		
-		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, PANEL_WIDTH/250);
-		projectile.setPixelSize(PANEL_WIDTH/450); projectile.initialize(slingshot.getPullPoint());
+		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, slingshotPixelSize);
+		projectile.setPixelSize(projectilePixelSize); projectile.initialize(slingshot.getPullPoint());
+		
+		loadLevel(levelNum);
+	}
+	
+	public void loadLevel(int levelNum)
+	{	
+		if(shot.isRunning()) {return;}
+		
+		byte[] levelRAWTEMP = Levels_Databox.loadLevel(levelNum);
+
+		if (levelRAWTEMP == null) {return;}
+		
+		levelRAW = levelRAWTEMP;
+		
+		this.levelNum = levelNum;
+		
+		int column = 1, row = 1;
+		
+		for (int i = 0; i < CELL_COUNT; i++)
+		{
+			if (column > CELL_COUNT_X) {row++; column = 1;} //go to the next row, reset to the first column
+			
+			switch (levelRAW[i])
+			{
+				case 1: level[i] = new Balloon(new int[] {column*CELL_SIZE,row*CELL_SIZE}, levelPixelSize);;
+				break;
+			}
+			column++;
+		}
+		System.gc();
+		repaint();
 	}
 	
 	public void paint(Graphics g)
@@ -6758,18 +6805,22 @@ public class BlS_Panel extends JPanel implements ActionListener
 		g2D.setPaint(BACKGROUND);
 		g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
 		
+		
+		//SURROUNDING RECTANGLE
+		g2D.setPaint(Color.LIGHT_GRAY);
+		g2D.drawRect(CELL_SIZE, CELL_SIZE, CELL_END_Y-CELL_SIZE, CELL_END_X-CELL_SIZE); 
+		
 		//GRID
 		if (gridVisible)
 		{
-			g2D.setPaint(Color.LIGHT_GRAY);
-			for (int i = 0; i < CELL_COUNT_X; i++)
-			{g2D.drawLine(i*CELL_SIZE, 0, i*CELL_SIZE, PANEL_HEIGHT);}
-			for (int i = 0; i < CELL_COUNT_Y; i++)
-			{g2D.drawLine(0, i*CELL_SIZE, PANEL_WIDTH, i*CELL_SIZE);}
+			for (int i = 0; i < LINE_COUNT_X; i++)
+			{g2D.drawLine(i*CELL_SIZE, CELL_SIZE, i*CELL_SIZE, CELL_END_X);}
+			for (int i = 0; i < LINE_COUNT_Y; i++)
+			{g2D.drawLine(CELL_SIZE, i*CELL_SIZE, CELL_END_Y, i*CELL_SIZE);}
 		}
 		
 		//SLINGSHOT
-		paintSprite(slingshotColors, Slingshot.SPRITE, slingshot.getOrigin(), slingshot.getPixelSize(), g2D);
+		paintSprite(slingshotColors, Slingshot.SPRITE, slingshot.getOrigin(), slingshotPixelSize, g2D);
 		
 		//SLINGSHOT BAND
 		g2D.setStroke(new BasicStroke(PANEL_WIDTH/150));
@@ -6779,8 +6830,23 @@ public class BlS_Panel extends JPanel implements ActionListener
 		g2D.drawLine(paintOrigin[0], paintOrigin[1], pullPoint[0], pullPoint[1]);
 		g2D.drawLine(paintOrigin[2], paintOrigin[1], pullPoint[0], pullPoint[1]);
 		
+		//LEVEl
+		for (int i = 0; i < CELL_COUNT; i++)
+		{
+			if (levelRAW[i] != 0)
+			{
+				if (level[i].isAlive())
+				{
+					if (level[i].isPopping())
+					{paintSprite(level[i].getPopColors(), level[i].getPopSprite(), level[i].getOrigin(), levelPixelSize, g2D);}
+					else
+					{paintSprite(level[i].getColors(), level[i].getSprite(), level[i].getOrigin(), levelPixelSize, g2D);}
+				}
+			}
+		}
+		
 		//PROJECTILE
-		paintSprite(projectileColors, Projectile.SPRITE, projectile.getOrigin(), projectile.getPixelSize(), g2D);
+		paintSprite(projectileColors, Projectile.SPRITE, projectile.getOrigin(), projectilePixelSize, g2D);
 	}
 	
 	private void paintSprite(Color[] colors, byte[] sprite, int [] origin, int pixelSize, Graphics2D g2D)
@@ -6791,7 +6857,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 		{
 			if (column == 16) {row++; column = 0;}
 			
-			if (sprite[i] != 0)
+			if (sprite[i] != 0) //0 -> transparent
 			{
 				g2D.setPaint(colors[sprite[i]-1]);
 				g2D.fillRect(origin[0] + column*pixelSize, origin[1]+ row*pixelSize, pixelSize, pixelSize);
@@ -6804,7 +6870,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 	{
 		public void mousePressed(MouseEvent e) 
 		{
-			if(!shootTimer.isRunning())
+			if(!shot.isRunning())
 			slingshot.setDragValid(e.getX(), e.getY()); //CHECK IF MOUSE IS INSIDE DRAG AREA
 		}
 	}
@@ -6814,11 +6880,11 @@ public class BlS_Panel extends JPanel implements ActionListener
 		public void mouseDragged(MouseEvent e) 
 		{
 			//DON'T MOVE IF NOT INSIDE DRAG AREA OR IF A SHOT IS STILL OCCURRING
-			if (!slingshot.isDragValid() || shootTimer.isRunning()) {return;} 
+			if (!slingshot.isDragValid() || shot.isRunning()) {return;} 
 			
 			//MOVE WHOLE SLINGSHOT
 			if (e.isShiftDown()) 
-			{slingshot.initOnNewCoords(e.getX(), e.getY()); shiftMove = true;}
+			{slingshot.initOnNewCoords(e.getX()- slingshotPixelSize*8, e.getY()- slingshotPixelSize*8); shiftMove = true;}
 			
 			//MOVE SLINGSHOT BAND
 			else 
@@ -6834,12 +6900,12 @@ public class BlS_Panel extends JPanel implements ActionListener
 		public void mouseReleased(MouseEvent e) 
 		{
 			//DON'T DO IF NOT INSIDE DRAG AREA OR IF A SHOT IS STILL OCCURRING
-			if (!slingshot.isDragValid() || shootTimer.isRunning()) {return;}
-			if (shiftMove) {shiftMove = false; return;} //IF WHOLE SLING IS BEING MOVED, DON'T RELEASE PROJECTILE
+			if (!slingshot.isDragValid() || shot.isRunning()) {return;}
+			if (shiftMove) {shiftMove = false; return;} //IF WHOLE SLING IS BEING MOVED, DON'T RELEASE PROJECTILE, JUST LET GO OF SLINGSHOT
 			
-			slingshot.setReturnVect(); slingshot.slingReturnRounds = 0;
+			slingshot.setReturnVect();
 			projectile.setSpeed(slingshot.getReturnVect());
-			shootTimer.start();
+			shot.start();
 		}
 	}
 	
@@ -6852,9 +6918,46 @@ public class BlS_Panel extends JPanel implements ActionListener
 		else
 		{
 			if (!projectile.fly(PANEL_HEIGHT)) //MOVES PROJECTILE WHILE ALSO CHECKING IF THE PROJECTILE HAS HIT THE FLOOR
-			{shootTimer.stop(); projectile.initialize(slingshot.getPullPoint());} //RESET PROJECTILE
+			{shot.stop(); projectile.initialize(slingshot.getPullPoint());} //RESET PROJECTILE
+			
+			
+			//COLLISION DETECTION
+			int[] gridEdges = getGridEdges(projectile.getOrigin()); //gets the grid indices of the 4 edges of the projectile
+			
+			if (gridEdges != null)
+			{
+				for (int i = 0; i < gridEdges.length; i++)
+				{
+					if (isHittable(gridEdges[i]))
+					{level[gridEdges[i]].hit();}
+				}
+			}
 		} 
 		repaint();
+	}
+	
+	private int[] getGridEdges(int[] origin)
+	{
+		if (origin[0] < 0 || origin[0] > PANEL_WIDTH || origin[1] < 0 || origin[1] > PANEL_HEIGHT) {return null;}
+		
+		int[] edges = new int[4];
+		
+		int column = (origin[0]-CELL_SIZE) / CELL_SIZE, row = (origin[1]-CELL_SIZE) / CELL_SIZE;
+		
+		edges[0] = row*CELL_COUNT_X + column; 				//  0_____1
+		edges[1] = row*CELL_COUNT_X + column+1;  			//  |	  |
+		edges[2] = (row+1)*CELL_COUNT_X + column;			//  |_____|
+		edges[3] = (row+1)*CELL_COUNT_X + column+1; 		//  2	  3
+														
+		return edges;
+	}
+	
+	private boolean isHittable(int gridNum)
+	{
+		if (gridNum >= 1008 || gridNum < 0) {return false;}
+		if (level[gridNum] == null) {return false;}
+		
+		return level[gridNum].isAlive();
 	}
 	
 	public void changeGridVisibility()
@@ -6868,11 +6971,20 @@ public class BlS_Panel extends JPanel implements ActionListener
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
 		//GRID
-		CELL_SIZE = PANEL_WIDTH/CELL_COUNT_X;
+		CELL_SIZE = PANEL_WIDTH/LINE_COUNT_X;
+		CELL_END_X = CELL_SIZE * (LINE_COUNT_Y-1);
+		CELL_END_Y = CELL_SIZE * (LINE_COUNT_X-1);
 		
 		//OBJECTS
-		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, PANEL_WIDTH/250);
-		projectile.setPixelSize(PANEL_WIDTH/450); projectile.initialize(slingshot.getPullPoint());
+		slingshotPixelSize = PANEL_WIDTH/250;
+		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, slingshotPixelSize);
+		
+		projectilePixelSize = PANEL_WIDTH/450;
+		projectile.setPixelSize(projectilePixelSize); projectile.initialize(slingshot.getPullPoint());
+		
+		//LEVEL
+		levelPixelSize = PANEL_WIDTH/450;
+		loadLevel(levelNum);
 		
 		repaint();
 	}
@@ -6884,6 +6996,7 @@ public class Slingshot
 	//SPRITE
 	final static Color Color1 = new Color(110,125,170);
 	final static Color Color2 = new Color(95,110,160);
+	final static Color Color3 = new Color(132,148,188);
 	final static Color SlingColor = new Color(75,75,110);
 	
 	private int PIXEL_SIZE;
@@ -6891,28 +7004,28 @@ public class Slingshot
 	static final byte[] SPRITE = 
 	{
 			1,2,2,0,0,0,0,0,0,0,0,0,0,0,1,1,
-			1,1,1,2,0,0,0,0,0,0,0,0,0,1,1,2,
-			0,1,1,1,2,0,0,0,0,0,0,0,1,1,2,2,
-			0,0,1,1,1,2,0,0,0,0,0,1,1,2,2,0,
-			0,0,0,1,1,1,2,0,0,0,0,1,2,2,0,0,
-			0,0,0,0,1,1,2,2,0,0,1,1,2,0,0,0,
-			0,0,0,0,1,1,2,2,0,0,1,1,2,0,0,0,
-			0,0,0,0,0,1,1,1,2,1,1,2,2,0,0,0,
-			0,0,0,0,0,0,1,1,2,1,1,2,0,0,0,0,
-			0,0,0,0,0,0,1,1,1,1,2,2,0,0,0,0,
-			0,0,0,0,0,0,0,1,1,1,2,0,0,0,0,0,
-			0,0,0,0,0,0,0,1,1,1,2,0,0,0,0,0,
-			0,0,0,0,0,0,0,1,1,1,2,0,0,0,0,0,
-			0,0,0,0,0,0,2,1,1,1,2,0,0,0,0,0,
-			0,0,0,0,0,2,1,1,1,1,1,2,0,0,0,0,
-			0,0,0,0,2,2,2,2,2,2,2,2,2,0,0,0,
+			3,1,1,2,0,0,0,0,0,0,0,0,0,1,1,2,
+			0,3,1,1,2,0,0,0,0,0,0,0,1,1,2,2,
+			0,0,3,1,1,2,0,0,0,0,0,1,1,2,2,0,
+			0,0,0,3,1,1,2,0,0,0,0,1,2,2,0,0,
+			0,0,0,0,3,1,2,2,0,0,1,1,2,0,0,0,
+			0,0,0,0,3,1,2,2,0,0,1,1,2,0,0,0,
+			0,0,0,0,0,3,1,1,2,1,1,2,2,0,0,0,
+			0,0,0,0,0,0,3,1,2,1,1,2,0,0,0,0,
+			0,0,0,0,0,0,3,1,1,1,2,2,0,0,0,0,
+			0,0,0,0,0,0,0,3,1,1,2,0,0,0,0,0,
+			0,0,0,0,0,0,0,3,1,1,2,0,0,0,0,0,
+			0,0,0,0,0,0,0,3,1,1,2,0,0,0,0,0,
+			0,0,0,0,0,0,3,1,1,1,2,0,0,0,0,0,
+			0,0,0,0,0,3,1,1,1,1,1,2,0,0,0,0,
+			0,0,0,0,3,2,2,2,2,2,2,2,2,0,0,0,
 	};
 		
 	//COORDINATES
 	private int[] ORIGIN = new int[2];
 	
 	private int[] PULLPOINT = new int[2]; //WHERE IS THE PULLPOINT CURRENTLY
-	private int[] PULLPOINT_ORIGIN = new int[2];
+	private int[] PULLPOINT_ORIGIN = new int[2]; //WHERE WAS IT ORIGINALLY
 	
 	private float[] returnVect = new float[2];
 	
@@ -6952,7 +7065,11 @@ public class Slingshot
 	
 	//RETURN VECTOR
 	public void setReturnVect()
-	{returnVect[0] = PULLPOINT_ORIGIN[0] - PULLPOINT[0]; returnVect[1] = PULLPOINT_ORIGIN[1] - PULLPOINT[1];}
+	{
+		returnVect[0] = PULLPOINT_ORIGIN[0] - PULLPOINT[0]; 
+		returnVect[1] = PULLPOINT_ORIGIN[1] - PULLPOINT[1]; 
+		slingReturnRounds = 0;
+	}
 	
 	public float[] getReturnVect()
 	{return returnVect;}
@@ -6960,7 +7077,7 @@ public class Slingshot
 	
 	//PULL POINT
 	public void setPullPoint(int x, int y)
-	{PULLPOINT[0] = x;PULLPOINT[1] = y;}
+	{PULLPOINT[0] = x; PULLPOINT[1] = y;}
 	
 	public int[] getPullPoint()
 	{return PULLPOINT;}
@@ -6976,14 +7093,11 @@ public class Slingshot
 	public void setPixelSize(int size)
 	{PIXEL_SIZE = size;}
 	
-	public int getPixelSize()
-	{return PIXEL_SIZE;}
-	
 	//ORIGIN
 	public int[] getOrigin()
 	{return ORIGIN;}
 	
-	public int[] getPaintOrigin()
+	public int[] getPaintOrigin() //third element in the array is where the second band of the sling starts from
 	{return new int[] {ORIGIN[0] + PIXEL_SIZE, ORIGIN[1] + PIXEL_SIZE, ORIGIN[0] + PIXEL_SIZE*14};}
 }
 
@@ -6994,26 +7108,27 @@ public class Projectile
 	final static Color Color2 = new Color(138,154,194);
 	final static Color Color3 = new Color(94,111,157);
 	final static Color Color4 = new Color(89,101,133);
+	final static Color Color5 = new Color(212,224,255);
 	
 	private int PIXEL_SIZE;
 
 	static final byte[] SPRITE = 
 	{
 			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-			0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,
-			0,0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,
-			0,0,0,3,2,0,2,4,4,2,0,2,3,0,0,0,
+			0,5,0,0,0,0,0,3,3,0,0,0,0,0,5,0,
+			0,0,5,5,0,0,2,2,2,2,0,0,5,5,0,0,
+			0,0,5,3,2,5,2,4,4,2,5,2,3,5,0,0,
 			0,0,0,2,2,2,2,3,3,2,2,2,2,0,0,0,
-			0,0,0,0,2,2,1,3,3,1,2,2,0,0,0,0,
+			0,0,0,5,2,2,1,3,3,1,2,2,5,0,0,0,
 			0,0,2,2,2,1,3,3,3,3,1,2,2,2,0,0,
 			0,3,2,4,3,3,3,4,4,3,3,3,4,2,3,0,
 			0,3,2,4,3,3,3,4,4,3,3,3,4,2,3,0,
 			0,0,2,2,2,1,3,3,3,3,1,2,2,2,0,0,
-			0,0,0,0,2,2,1,3,3,1,2,2,0,0,0,0,
+			0,0,0,5,2,2,1,3,3,1,2,2,5,0,0,0,
 			0,0,0,2,2,2,2,3,3,2,2,2,2,0,0,0,
-			0,0,0,3,2,0,2,4,4,2,0,2,3,0,0,0,
-			0,0,0,0,0,0,2,2,2,2,0,0,0,0,0,0,
-			0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,
+			0,0,5,3,2,5,2,4,4,2,5,2,3,5,0,0,
+			0,0,5,5,0,0,2,2,2,2,0,0,5,5,0,0,
+			0,5,0,0,0,0,0,3,3,0,0,0,0,0,5,0,
 			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 	};
 	
@@ -7025,7 +7140,7 @@ public class Projectile
 	
 	//INITIALIZATION
 	public void initialize(int[] origin)
-	{ORIGIN[0] = origin[0] - PIXEL_SIZE*8; ORIGIN[1] = origin[1] - PIXEL_SIZE*8;}
+	{ORIGIN[0] = origin[0] - PIXEL_SIZE*8; ORIGIN[1] = origin[1] - PIXEL_SIZE*8; System.gc();}
 	
 	//MOVEMENT
 	public boolean fly(int PANEL_HEIGHT)
@@ -7033,8 +7148,6 @@ public class Projectile
 		if (ORIGIN[1] > PANEL_HEIGHT) {return false;} //HAS HIT FLOOR
 		
 		ORIGIN[0]+= SPEED[0]; ORIGIN[1]+= SPEED[1]; 
-		
-		if (SPEED[0] > 0) {SPEED[0]-= 0.1;} //SLOW DOWN HORIZONTAL SPEED
 		SPEED[1]+= 0.5; //GRAVITY
 		
 		return true;
@@ -7042,7 +7155,6 @@ public class Projectile
 	
 	public void setSpeed(float[] vector)
 	{SPEED[0] = vector[0]/5; SPEED[1] = vector[1]/5;}
-	
 	
 	//ORIGIN
 	public int[] getOrigin()
@@ -7054,11 +7166,224 @@ public class Projectile
 	//SIZE
 	public void setPixelSize(int size)
 	{PIXEL_SIZE = size;}
-		
-	public int getPixelSize()
-	{return PIXEL_SIZE;}
 }
 
+public class Balloon implements Hittable
+{
+	private int COLOR_TYPE;
+	private boolean POPPING;
+	
+	private int popAnimationFrame;
+	
+	//SPRITE
+	final static Color Green1 = new Color(175,253,187);
+	final static Color Green2 = new Color(145,234,159);
+	final static Color Green3 = new Color(108,211,125);
+	final static Color Green4 = new Color(64,169,73);
+	
+	final static Color Red1 = new Color(253,175,187);
+	final static Color Red2 = new Color(234,145,159);
+	final static Color Red3 = new Color(211,108,125);
+	final static Color Red4 = new Color(169,64,73);
+	
+	final static Color Yellow1 = new Color(255,233,167);
+	final static Color Yellow2 = new Color(240,220,139);
+	final static Color Yellow3 = new Color(220,200,100);
+	final static Color Yellow4 = new Color(191,167,68);
+	
+	final static Color Blue1 = new Color(175,187,253);
+	final static Color Blue2 = new Color(145,159,234);
+	final static Color Blue3 = new Color(108,125,211);
+	final static Color Blue4 = new Color(74,81,160);
+	
+	final static Color Pop1 = new Color(212,224,255);
+	final static Color Pop2 = new Color(34,36,44);
+	
+	private Color[] colors = new Color[4];
+		
+	private int PIXEL_SIZE;
+
+	static final byte[] SPRITE = 
+	{
+			0,0,0,0,0,0,4,4,4,4,0,0,0,0,0,0,
+			0,0,0,0,4,4,4,3,3,4,4,4,0,0,0,0,
+			0,0,0,4,4,3,3,3,2,3,3,4,4,0,0,0,
+			0,0,0,4,3,3,2,1,1,2,3,3,4,0,0,0,
+			0,0,0,4,3,2,1,1,1,1,2,3,4,0,0,0,
+			0,0,4,4,3,2,1,1,1,1,1,3,4,4,0,0,
+			0,0,4,3,3,2,2,1,1,1,1,2,3,4,0,0,
+			0,0,4,3,3,2,2,2,1,1,1,2,3,4,0,0,
+			0,0,4,4,3,3,2,2,1,1,2,3,4,4,0,0,
+			0,0,4,4,3,3,2,2,2,1,3,3,4,4,0,0,
+			0,0,0,4,3,3,3,2,2,2,3,3,4,0,0,0,
+			0,0,0,4,4,3,3,2,2,3,3,4,4,0,0,0,
+			0,0,0,0,4,3,3,3,3,3,3,4,0,0,0,0,
+			0,0,0,0,0,4,4,3,3,4,4,0,0,0,0,0,
+			0,0,0,0,0,0,0,4,4,0,0,0,0,0,0,0,
+			0,0,0,0,0,0,0,0,4,4,0,0,0,0,0,0,
+	};
+	
+	static final byte[] POP_SPRITE = 
+	{
+			2,2,0,0,0,0,0,2,2,0,0,0,0,0,2,2,
+			2,1,2,2,0,0,2,1,1,2,0,0,2,2,1,2,
+			0,2,1,1,2,2,1,1,1,1,2,2,1,1,2,0,
+			0,2,1,1,1,1,1,1,2,1,1,1,1,1,2,0,
+			0,0,2,1,2,1,1,2,1,1,1,2,1,2,0,0,
+			0,0,2,1,1,2,2,1,1,2,2,1,1,2,0,0,
+			0,2,1,1,1,2,1,1,1,1,2,1,1,1,2,0,
+			2,1,1,2,1,1,1,2,2,1,1,2,1,1,1,2,
+			2,1,1,1,2,1,1,2,2,1,1,1,2,1,1,2,
+			0,2,1,1,1,2,1,1,1,1,2,1,1,1,2,0,
+			0,0,2,1,1,2,2,1,1,2,2,1,1,2,0,0,
+			0,0,2,1,2,1,1,1,2,1,1,2,1,2,0,0,
+			0,2,1,1,1,1,1,2,1,1,1,1,1,1,2,0,
+			0,2,1,1,2,2,1,1,1,1,2,2,1,1,2,0,
+			2,1,2,2,0,0,2,1,1,2,0,0,2,2,1,2,
+			2,2,0,0,0,0,0,2,2,0,0,0,0,0,2,2,
+	};
+	
+	//COORDINATES & VECTORS
+	private int[] ORIGIN = new int[2];
+
+	//INITIALIZATION
+	Balloon(int[] origin, int pixelSize)
+	{initialize(origin); setPixelSize(pixelSize);}
+	
+	private void initialize(int[] origin)
+	{
+		ORIGIN[0] = origin[0]; ORIGIN[1] = origin[1];
+		COLOR_TYPE = new Random().nextInt(4);
+		setColorArray();	
+	}
+		
+	//COLORS
+	private void setColorArray()
+	{
+		switch (COLOR_TYPE)
+		{
+			case 0: colors[0] = Green1; colors[1] = Green2; colors[2] = Green3; colors[3] = Green4;
+			break;
+			case 1: colors[0] = Red1; colors[1] = Red2; colors[2] = Red3; colors[3] = Red4;
+			break;
+			case 2: colors[0] = Yellow1; colors[1] = Yellow2; colors[2] = Yellow3; colors[3] = Yellow4;
+			break;
+			case 3: colors[0] = Blue1; colors[1] = Blue2; colors[2] = Blue3; colors[3] = Blue4;
+		}
+	}
+		
+	public Color[] getColors()
+	{return colors;}
+	
+	public Color[] getPopColors()
+	{return new Color[] {Pop1, Pop2};}
+	
+	//ORIGIN
+	public int[] getOrigin()
+	{return ORIGIN;}
+	
+	//PIXEL SIZE
+	public int getPixelSize()
+	{return PIXEL_SIZE;}
+	
+	public void setPixelSize(int pixelSize)
+	{PIXEL_SIZE = pixelSize;}
+	
+	//SPRITE
+	public byte[] getSprite()
+	{return SPRITE;}
+	
+	public byte[] getPopSprite()
+	{popAnimationFrame++; return POP_SPRITE; }
+	
+	//ALIVE
+	public boolean isAlive()
+	{return (popAnimationFrame < 3);}
+	
+	public boolean isPopping()
+	{return POPPING;}
+	
+	//HITTABLE
+	public void hit()
+	{POPPING = true;}
+	
+}
+
+public interface Hittable 
+{
+	public byte[] getSprite();
+	
+	public byte[] getPopSprite();
+	
+	public Color[] getColors();
+	
+	public Color[] getPopColors();
+	
+	public int[] getOrigin();
+	
+	public boolean isAlive();
+	
+	public boolean isPopping();
+	
+	public void hit();
+}
+
+public class Levels_Databox
+{
+	public static final int LEVEL_COUNT = 4;
+	public static final int CELL_COUNT = 1008;
+	
+	public static byte[] loadLevel(int levelNum) //loadLevel(1) -> loads LEVELS[0] which is Level 1
+	{
+		if (levelNum < 1 || levelNum > LEVEL_COUNT) {return null;}
+		
+		short[] level = LEVELS[levelNum-1];		//compressed data
+		byte[] levelRAW = new byte[CELL_COUNT]; //raw data
+		
+		int rawIndex = 0;
+		
+		for (int i = 0; i < level.length; i++)
+		{
+			int insert = 0, amount = level[i];
+			
+			if (level[i] < 0) {amount*=-1;}
+			else {insert = (level[i] / 100)+1;} //assigns the number to be inserted into levelRAW per the norm specified at the LEVELS array
+				
+			int fillUpTo = rawIndex + amount;
+			while(rawIndex < fillUpTo ) //fill the levelRAW for the in level[i] specified amount of indices
+			{levelRAW[rawIndex] = (byte) insert; rawIndex++;}	
+		}
+		return levelRAW;
+	}
+	
+	//-30 -> 30 zeros | 30 -> 30 ones | 130 -> 30 twos
+	private static final short[][] LEVELS =
+	{
+		//LEVEL 1
+		{
+			-225, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25,
+		},
+			
+		//LEVEL 2
+		{
+			-265, 11, -31, 11, -31, 11, -31, 11, -31, 11, -31,  11, -80, 11, -31, 11, -31, 11, -31, 11, -31, 11, -31,  11,
+		},
+		
+		//LEVEL 3
+		{
+			-154, 3, -37, 7, -34, 9, -32, 11, -23, 3, -4, 13, -21, 5, -2, 15, -19, 7, -1, 15, -17, 1, -1, 24, -15, 27, -16, 1, -1, 
+			24, -18, 7, -1, 15, -20, 5, -2, 15, -21, 3, -4, 13, -30, 11, -32, 9, -34, 7, -37, 3
+				
+		},
+		
+		//LEVEL 4
+		{
+			-222, 7, -14, 2, -19, 7, -7, 1, -6, 2, -19, 2, -12, 1, -6, 2, -19, 2, -11, 3, -5, 2, -19, 2, -10, 5, -4, 2, -19, 2, -8, 9, 
+			-2, 2, -19, 2, -10, 5, -4, 2, -32, 3, -5, 2, -33, 1, -6, 2, -33, 1, -2, 6, -25, 2, -9, 6, -25, 2, -40, 2, -40, 2, -40, 2, 
+			-40, 6, -36, 6,
+		},
+	};
+}
 
 public class WindowEventHandler extends WindowAdapter
 {
