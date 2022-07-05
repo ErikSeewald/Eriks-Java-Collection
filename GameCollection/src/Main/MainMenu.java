@@ -45,7 +45,7 @@ public class MainMenu extends JFrame implements MouseListener
 	private JLabel gameButton12 = new JLabel(" Pixel Collision");
 	private JLabel gameButton13 = new JLabel("    Cloth Sim");
 	private JLabel gameButton14 = new JLabel(" Gravity Vects");
-	private JLabel gameButton15 = new JLabel("Bloon Shooting");
+	private JLabel gameButton15 = new JLabel("  Bloon Shoot");
 	private JLabel gameButton16 = new JLabel("");
 	private JLabel gameButton17 = new JLabel("");
 	private JLabel gameButton18 = new JLabel("");
