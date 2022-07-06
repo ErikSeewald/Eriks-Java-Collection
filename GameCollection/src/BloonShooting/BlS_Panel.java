@@ -168,19 +168,41 @@ public class BlS_Panel extends JPanel implements ActionListener
 	
 	private void paintSprite(Color[] colors, byte[] sprite, int [] origin, int pixelSize, Graphics2D g2D)
 	{
-		int row = 0, column = 0;
+		int index = 0, column = 0, row = 0;
 		
-		for (int i = 0; i < 256; i++)
+		while(index < 256)
 		{
-			if (column == 16) {row++; column = 0;}
+			byte paintID = sprite[index];
+			int amount = 1;
+	
+			while (index < 255 && sprite[index+1] == paintID)
+			{amount++; index++; column++; if (column == 16 && paintID == 0) {row++; column = 0;} else if  (column == 15) {break;}}
 			
-			if (sprite[i] != 0) //0 -> transparent
+			if (paintID != 0) //0 -> transparent
 			{
-				g2D.setPaint(colors[sprite[i]-1]);
-				g2D.fillRect(origin[0] + column*pixelSize, origin[1]+ row*pixelSize, pixelSize, pixelSize);
+				g2D.setPaint(colors[paintID-1]);
+				g2D.fillRect(origin[0] + (column-amount)*pixelSize, origin[1]+ row*pixelSize, pixelSize*amount, pixelSize);
 			}
+			
 			column++;
+			index++;
+			if (column >= 16) {row++; column = 0;}
 		}
+		
+		
+//		int row = 0, column = 0;
+//		
+//		for (int i = 0; i < 256; i++)
+//		{
+//			if (column == 16) {row++; column = 0;}
+//			
+//			if (sprite[i] != 0) //0 -> transparent
+//			{
+//				g2D.setPaint(colors[sprite[i]-1]);
+//				g2D.fillRect(origin[0] + column*pixelSize, origin[1]+ row*pixelSize, pixelSize, pixelSize);
+//			}
+//			column++;
+//		}
 	}
 	
 	private class ClickListener extends MouseAdapter
