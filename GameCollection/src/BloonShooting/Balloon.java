@@ -112,7 +112,7 @@ public class Balloon implements Hittable
 	public Color[] getColors()
 	{return colors;}
 	
-	public Color[] getPopColors()
+	public Color[] getReactColors()
 	{return new Color[] {Pop1, Pop2};}
 	
 	//ORIGIN
@@ -130,14 +130,14 @@ public class Balloon implements Hittable
 	public byte[] getSprite()
 	{return SPRITE;}
 	
-	public byte[] getPopSprite()
+	public byte[] getReactSprite()
 	{popAnimationFrame++; return POP_SPRITE; }
 	
 	//ALIVE
 	public boolean isAlive()
 	{return (popAnimationFrame < 3);}
 	
-	public boolean isPopping()
+	public boolean isReacting()
 	{return POPPING;}
 	
 	//HITTABLE
