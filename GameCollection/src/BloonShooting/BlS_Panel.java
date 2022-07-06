@@ -99,6 +99,8 @@ public class BlS_Panel extends JPanel implements ActionListener
 			{
 				case 1: level[i] = new Balloon(new int[] {column*CELL_SIZE,row*CELL_SIZE}, levelPixelSize);;
 				break;
+				case 2: level[i] = new Block(new int[] {column*CELL_SIZE,row*CELL_SIZE}, levelPixelSize);;
+				break;
 			}
 			column++;
 		}
@@ -239,7 +241,13 @@ public class BlS_Panel extends JPanel implements ActionListener
 				for (int i = 0; i < gridEdges.length; i++)
 				{
 					if (isHittable(gridEdges[i]))
-					{level[gridEdges[i]].hit();}
+					{
+						level[gridEdges[i]].hit(); 
+						
+						//projectile does hit calc and returns wether or not projectile is still alive
+						if (!projectile.hasHit(level[gridEdges[i]].getHittableID()))
+						{shot.stop(); projectile.initialize(slingshot.getPullPoint());} //RESET PROJECTILE
+					}
 				}
 			}
 		} 

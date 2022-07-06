@@ -19,4 +19,6 @@ public interface Hittable
 	public boolean isPopping();
 	
 	public void hit();
+	
+	public int getHittableID();
 }

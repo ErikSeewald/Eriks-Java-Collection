@@ -5,6 +5,8 @@ import java.util.Random;
 
 public class Balloon implements Hittable
 {
+	private final static int HITTABLE_ID = 1;
+	
 	private int COLOR_TYPE;
 	private boolean POPPING;
 	
@@ -141,5 +143,9 @@ public class Balloon implements Hittable
 	//HITTABLE
 	public void hit()
 	{POPPING = true;}
+
+	@Override
+	public int getHittableID() 
+	{return HITTABLE_ID;}
 	
 }
