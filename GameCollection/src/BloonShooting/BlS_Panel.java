@@ -126,6 +126,15 @@ public class BlS_Panel extends JPanel implements ActionListener
 		g2D.setPaint(Color.LIGHT_GRAY);
 		g2D.drawRect(CELL_SIZE, CELL_SIZE, CELL_END_Y-CELL_SIZE, CELL_END_X-CELL_SIZE); 
 		
+		//GRID
+		if (gridVisible)
+		{
+			for (int i = 0; i < LINE_COUNT_X; i++)
+			{g2D.drawLine(i*CELL_SIZE, CELL_SIZE, i*CELL_SIZE, CELL_END_X);}
+			for (int i = 0; i < LINE_COUNT_Y; i++)
+			{g2D.drawLine(CELL_SIZE, i*CELL_SIZE, CELL_END_Y, i*CELL_SIZE);}
+		}
+		
 		//LEVEl
 		for (int i = 0; i < CELL_COUNT; i++)
 		{
@@ -139,16 +148,6 @@ public class BlS_Panel extends JPanel implements ActionListener
 					{paintSprite(level[i].getColors(), level[i].getSprite(), level[i].getOrigin(), levelPixelSize, g2D);}
 				}
 			}
-		}
-		
-		//GRID
-		if (gridVisible)
-		{
-			g2D.setPaint(Color.LIGHT_GRAY);
-			for (int i = 0; i < LINE_COUNT_X; i++)
-			{g2D.drawLine(i*CELL_SIZE, CELL_SIZE, i*CELL_SIZE, CELL_END_X);}
-			for (int i = 0; i < LINE_COUNT_Y; i++)
-			{g2D.drawLine(CELL_SIZE, i*CELL_SIZE, CELL_END_Y, i*CELL_SIZE);}
 		}
 				
 		//SLINGSHOT
@@ -168,34 +167,45 @@ public class BlS_Panel extends JPanel implements ActionListener
 	
 	private void paintSprite(Color[] colors, byte[] sprite, int [] origin, int pixelSize, Graphics2D g2D)
 	{
-		int index = 0, column = 0, row = 0;
+		//MORE COMPLICATED, MORE PERFORMANT SPRITE RENDERER
+		//Instead of drawing each pixel individually, this one first checks if there are multiple of the same pixel in a row
+		//and then multiplies the length of g2D.fillRect by that amount and then jumps ahead to the next pixel after that
+		
+		short index = 0, column = 0, row = 0, amountInARow;
+		byte colorID;
 		
 		while(index < 256)
 		{
-			byte paintID = sprite[index];
-			int amount = 1;
+			colorID = sprite[index]; 
+			amountInARow = 1;
 	
-			while (index < 255 && sprite[index+1] == paintID)
-			{amount++; index++; column++; if (column == 16 && paintID == 0) {row++; column = 0;} else if  (column == 15) {break;}}
-			
-			if (paintID != 0) //0 -> transparent
+			//look at next pixel, see if it has the same color and if so, increase amountInARow and jump to that pixel
+			while (sprite[index+1] == colorID) 
 			{
-				g2D.setPaint(colors[paintID-1]);
-				g2D.fillRect(origin[0] + (column-amount)*pixelSize, origin[1]+ row*pixelSize, pixelSize*amount, pixelSize);
+				amountInARow++; index++; column++; 
+				if (column == 16 && colorID == 0) {row++; column = 0;} //next row only if the pixel is transparent
+				
+				//if it is a non transparent pixel, exit right now since you can't elongate a pixel beyond it's row
+				else if  (column == 15 || index == 255) {break;}	
 			}
 			
+			if (colorID != 0) //0 -> transparent
+			{
+				g2D.setPaint(colors[colorID-1]);
+				g2D.fillRect(origin[0] + (column-amountInARow)*pixelSize, origin[1]+ row*pixelSize, pixelSize*amountInARow, pixelSize);
+			}
+			
+			//move on to the next pixel (which is either in a new row or has a different color)
 			column++;
 			index++;
 			if (column >= 16) {row++; column = 0;}
 		}
 		
-		
+		//SIMPLER, LESS PERFORMANT SPRITE RENDERER
 //		int row = 0, column = 0;
-//		
 //		for (int i = 0; i < 256; i++)
 //		{
 //			if (column == 16) {row++; column = 0;}
-//			
 //			if (sprite[i] != 0) //0 -> transparent
 //			{
 //				g2D.setPaint(colors[sprite[i]-1]);
@@ -333,5 +343,4 @@ public class BlS_Panel extends JPanel implements ActionListener
 		
 		repaint();
 	}
-
 }
