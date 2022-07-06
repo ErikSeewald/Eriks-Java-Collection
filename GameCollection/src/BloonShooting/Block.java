@@ -48,7 +48,7 @@ public class Block implements Hittable
 	public Color[] getColors()
 	{return new Color[] {Color1, Color2, Color3};}
 	
-	public Color[] getPopColors()
+	public Color[] getReactColors()
 	{return null;}
 	
 	//ORIGIN
@@ -66,14 +66,14 @@ public class Block implements Hittable
 	public byte[] getSprite()
 	{return SPRITE;}
 	
-	public byte[] getPopSprite()
+	public byte[] getReactSprite()
 	{return null;}
 	
 	//ALIVE
 	public boolean isAlive()
 	{return true;}
 	
-	public boolean isPopping()
+	public boolean isReacting()
 	{return false;}
 	
 	//HITTABLE

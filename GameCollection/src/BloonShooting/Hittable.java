@@ -6,17 +6,17 @@ public interface Hittable
 {
 	public byte[] getSprite();
 	
-	public byte[] getPopSprite();
+	public byte[] getReactSprite();
 	
 	public Color[] getColors();
 	
-	public Color[] getPopColors();
+	public Color[] getReactColors();
 	
 	public int[] getOrigin();
 	
 	public boolean isAlive();
 	
-	public boolean isPopping();
+	public boolean isReacting();
 	
 	public void hit();
 	

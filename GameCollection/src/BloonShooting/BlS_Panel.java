@@ -89,6 +89,8 @@ public class BlS_Panel extends JPanel implements ActionListener
 		
 		this.levelNum = levelNum;
 		
+		level = new Hittable[CELL_COUNT_X*CELL_COUNT_Y];
+		
 		int column = 1, row = 1;
 		
 		for (int i = 0; i < CELL_COUNT; i++)
@@ -100,6 +102,8 @@ public class BlS_Panel extends JPanel implements ActionListener
 				case 1: level[i] = new Balloon(new int[] {column*CELL_SIZE,row*CELL_SIZE}, levelPixelSize);;
 				break;
 				case 2: level[i] = new Block(new int[] {column*CELL_SIZE,row*CELL_SIZE}, levelPixelSize);;
+				break;
+				case 3: level[i] = new BounceBlock(new int[] {column*CELL_SIZE,row*CELL_SIZE}, levelPixelSize);;
 				break;
 			}
 			column++;
@@ -122,26 +126,6 @@ public class BlS_Panel extends JPanel implements ActionListener
 		g2D.setPaint(Color.LIGHT_GRAY);
 		g2D.drawRect(CELL_SIZE, CELL_SIZE, CELL_END_Y-CELL_SIZE, CELL_END_X-CELL_SIZE); 
 		
-		//GRID
-		if (gridVisible)
-		{
-			for (int i = 0; i < LINE_COUNT_X; i++)
-			{g2D.drawLine(i*CELL_SIZE, CELL_SIZE, i*CELL_SIZE, CELL_END_X);}
-			for (int i = 0; i < LINE_COUNT_Y; i++)
-			{g2D.drawLine(CELL_SIZE, i*CELL_SIZE, CELL_END_Y, i*CELL_SIZE);}
-		}
-		
-		//SLINGSHOT
-		paintSprite(slingshotColors, Slingshot.SPRITE, slingshot.getOrigin(), slingshotPixelSize, g2D);
-		
-		//SLINGSHOT BAND
-		g2D.setStroke(new BasicStroke(PANEL_WIDTH/150));
-		g2D.setPaint(Slingshot.SlingColor);
-		int[] paintOrigin = slingshot.getPaintOrigin();
-		int[] pullPoint = slingshot.getPullPoint();
-		g2D.drawLine(paintOrigin[0], paintOrigin[1], pullPoint[0], pullPoint[1]);
-		g2D.drawLine(paintOrigin[2], paintOrigin[1], pullPoint[0], pullPoint[1]);
-		
 		//LEVEl
 		for (int i = 0; i < CELL_COUNT; i++)
 		{
@@ -149,13 +133,34 @@ public class BlS_Panel extends JPanel implements ActionListener
 			{
 				if (level[i].isAlive())
 				{
-					if (level[i].isPopping())
-					{paintSprite(level[i].getPopColors(), level[i].getPopSprite(), level[i].getOrigin(), levelPixelSize, g2D);}
+					if (level[i].isReacting())
+					{paintSprite(level[i].getReactColors(), level[i].getReactSprite(), level[i].getOrigin(), levelPixelSize, g2D);}
 					else
 					{paintSprite(level[i].getColors(), level[i].getSprite(), level[i].getOrigin(), levelPixelSize, g2D);}
 				}
 			}
 		}
+		
+		//GRID
+		if (gridVisible)
+		{
+			g2D.setPaint(Color.LIGHT_GRAY);
+			for (int i = 0; i < LINE_COUNT_X; i++)
+			{g2D.drawLine(i*CELL_SIZE, CELL_SIZE, i*CELL_SIZE, CELL_END_X);}
+			for (int i = 0; i < LINE_COUNT_Y; i++)
+			{g2D.drawLine(CELL_SIZE, i*CELL_SIZE, CELL_END_Y, i*CELL_SIZE);}
+		}
+				
+		//SLINGSHOT
+		paintSprite(slingshotColors, Slingshot.SPRITE, slingshot.getOrigin(), slingshotPixelSize, g2D);
+				
+		//SLINGSHOT BAND
+		g2D.setStroke(new BasicStroke(PANEL_WIDTH/150));
+		g2D.setPaint(Slingshot.SlingColor);
+		int[] paintOrigin = slingshot.getPaintOrigin();
+		int[] pullPoint = slingshot.getPullPoint();
+		g2D.drawLine(paintOrigin[0], paintOrigin[1], pullPoint[0], pullPoint[1]);
+		g2D.drawLine(paintOrigin[2], paintOrigin[1], pullPoint[0], pullPoint[1]);
 		
 		//PROJECTILE
 		paintSprite(projectileColors, Projectile.SPRITE, projectile.getOrigin(), projectilePixelSize, g2D);
@@ -244,7 +249,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 					{
 						level[gridEdges[i]].hit(); 
 						
-						//projectile does hit calc and returns wether or not projectile is still alive
+						//projectile does hit calculation and returns whether or not projectile is still alive
 						if (!projectile.hasHit(level[gridEdges[i]].getHittableID()))
 						{shot.stop(); projectile.initialize(slingshot.getPullPoint());} //RESET PROJECTILE
 					}
