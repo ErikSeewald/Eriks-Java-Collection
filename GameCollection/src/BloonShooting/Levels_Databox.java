@@ -20,8 +20,10 @@ public class Levels_Databox
 			
 			if (level[i] < 0) {amount*=-1;}
 			else {insert = (level[i] / 100)+1;} //assigns the number to be inserted into levelRAW per the norm specified at the LEVELS array
-				
+			
 			int fillUpTo = rawIndex + amount;
+			if (insert > 1) {fillUpTo-= (insert-1)*100;} //removes the ID indicator digit from the amount that should be filled in
+			
 			while(rawIndex < fillUpTo ) //fill the levelRAW for the in level[i] specified amount of indices
 			{levelRAW[rawIndex] = (byte) insert; rawIndex++;}	
 		}
@@ -50,9 +52,9 @@ public class Levels_Databox
 		
 		//LEVEL 4
 		{
-			-222, 7, -14, 2, -19, 7, -7, 1, -6, 2, -19, 2, -12, 1, -6, 2, -19, 2, -11, 3, -5, 2, -19, 2, -10, 5, -4, 2, -19, 2, -8, 9, 
-			-2, 2, -19, 2, -10, 5, -4, 2, -32, 3, -5, 2, -33, 1, -6, 2, -33, 1, -2, 6, -25, 2, -9, 6, -25, 2, -40, 2, -40, 2, -40, 2, 
-			-40, 6, -36, 6,
+			-222, 107, -14, 102, -19, 107, -7, 1, -6, 102, -19, 102, -12, 1, -6, 102, -19, 102, -11, 3, -5, 102, -19, 102, -10, 5, -4, 102, 
+			-19, 102, -8, 9, -2, 102, -19, 102, -10, 5, -4, 102, -32, 3, -5, 102, -33, 1, -6, 102, -33, 1, -2, 106, -25, 102, -9, 106, 
+			-25, 102, -40, 102, -40, 102, -40, 102, -40, 106, -36, 106,
 		},
 	};
 }
