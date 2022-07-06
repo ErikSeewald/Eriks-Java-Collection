@@ -67,7 +67,7 @@ public class Projectile
 		return true;
 	}
 	
-	public boolean hasHit(int hittableID)
+	public boolean hitReaction(int hittableID)
 	{
 		boolean isAlive = true;
 		

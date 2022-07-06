@@ -250,7 +250,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 						level[gridEdges[i]].hit(); 
 						
 						//projectile does hit calculation and returns whether or not projectile is still alive
-						if (!projectile.hasHit(level[gridEdges[i]].getHittableID()))
+						if (!projectile.hitReaction(level[gridEdges[i]].getHittableID()))
 						{shot.stop(); projectile.initialize(slingshot.getPullPoint());} //RESET PROJECTILE
 					}
 				}
