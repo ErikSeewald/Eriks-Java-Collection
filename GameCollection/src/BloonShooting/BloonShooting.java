@@ -32,6 +32,7 @@ public class BloonShooting extends JFrame
 				else if (code == 521) {panel.changeSize(10); pack();} //+
 				else if (code == 37) {panel.loadLevel(panel.levelNum-1);} //LEFT
 				else if (code == 39) {panel.loadLevel(panel.levelNum+1);} //RIGHT	
+				else if (code == 82) {panel.loadLevel(panel.levelNum);} //R	
 			}
 			@Override
 			public void keyReleased(KeyEvent e) {}
