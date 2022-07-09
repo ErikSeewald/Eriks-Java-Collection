@@ -77,6 +77,8 @@ public class Projectile
 			break;
 			case 3: if (timeSinceLastBounce > 20) {SPEED[0] = -(SPEED[0]/2); SPEED[1] = -(SPEED[1]/2); timeSinceLastBounce = 0;}
 			break;
+			case 4: if (timeSinceLastBounce > 20) {SPEED[0] = -(SPEED[0]/4); SPEED[1] = -(SPEED[1]/4); timeSinceLastBounce = 0;}
+			break;
 		}
 		
 		return isAlive;
