@@ -108,6 +108,8 @@ public class BlS_Panel extends JPanel implements ActionListener
 				break;
 				case 4: level[i] = new WoodBlock(new int[] {column*CELL_SIZE,row*CELL_SIZE}, levelPixelSize);;
 				break;
+				case 5: level[i] = new BoomBalloon(new int[] {column*CELL_SIZE,row*CELL_SIZE}, levelPixelSize);;
+				break;
 			}
 			column++;
 		}
@@ -252,6 +254,14 @@ public class BlS_Panel extends JPanel implements ActionListener
 					if (isHittable(gridEdges[i]))
 					{
 						level[gridEdges[i]].hit(); 
+						
+						if (level[gridEdges[i]].getHittableID() == 5) //BoomBalloon
+						{
+							int[] edges = BoomBalloon.getHitEdges(gridEdges[i]);
+							
+							for (int edge : edges)
+							{if (level[edge] != null) {level[edge].hit();}}
+						}
 						
 						//projectile does hit calculation and returns whether or not projectile is still alive
 						if (!projectile.hitReaction(level[gridEdges[i]].getHittableID()))
