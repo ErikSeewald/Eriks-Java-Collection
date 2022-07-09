@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -105,6 +106,8 @@ public class BlS_Panel extends JPanel implements ActionListener
 				break;
 				case 3: level[i] = new BounceBlock(new int[] {column*CELL_SIZE,row*CELL_SIZE}, levelPixelSize);;
 				break;
+				case 4: level[i] = new WoodBlock(new int[] {column*CELL_SIZE,row*CELL_SIZE}, levelPixelSize);;
+				break;
 			}
 			column++;
 		}
@@ -114,8 +117,11 @@ public class BlS_Panel extends JPanel implements ActionListener
 	
 	public void paint(Graphics g)
 	{
+		
 		Graphics2D g2D = (Graphics2D) g;
 		super.paint(g);
+		
+		g2D.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
 		
 		//BACKGROUND
 		g2D.setPaint(BACKGROUND);
@@ -167,52 +173,18 @@ public class BlS_Panel extends JPanel implements ActionListener
 	
 	private void paintSprite(Color[] colors, byte[] sprite, int [] origin, int pixelSize, Graphics2D g2D)
 	{
-		//MORE COMPLICATED, MORE PERFORMANT SPRITE RENDERER
-		//Instead of drawing each pixel individually, this one first checks if there are multiple of the same pixel in a row
-		//and then multiplies the length of g2D.fillRect by that amount and then jumps ahead to the next pixel after that
 		
-		short index = 0, column = 0, row = 0, amountInARow;
-		byte colorID;
-		
-		while(index < 256)
+		int row = 0, column = 0;
+		for (int i = 0; i < 256; i++)
 		{
-			colorID = sprite[index]; 
-			amountInARow = 1;
-	
-			//look at next pixel, see if it has the same color and if so, increase amountInARow and jump to that pixel
-			while (sprite[index+1] == colorID) 
+			if (column == 16) {row++; column = 0;}
+			if (sprite[i] != 0) //0 -> transparent
 			{
-				amountInARow++; index++; column++; 
-				if (column == 16 && colorID == 0) {row++; column = 0;} //next row only if the pixel is transparent
-				
-				//if it is a non transparent pixel, exit right now since you can't elongate a pixel beyond it's row
-				else if  (column == 15 || index == 255) {break;}	
+				g2D.setPaint(colors[sprite[i]-1]);
+				g2D.fillRect(origin[0] + column*pixelSize, origin[1]+ row*pixelSize, pixelSize, pixelSize);
 			}
-			
-			if (colorID != 0) //0 -> transparent
-			{
-				g2D.setPaint(colors[colorID-1]);
-				g2D.fillRect(origin[0] + (column-amountInARow)*pixelSize, origin[1]+ row*pixelSize, pixelSize*amountInARow, pixelSize);
-			}
-			
-			//move on to the next pixel (which is either in a new row or has a different color)
 			column++;
-			index++;
-			if (column >= 16) {row++; column = 0;}
 		}
-		
-		//SIMPLER, LESS PERFORMANT SPRITE RENDERER
-//		int row = 0, column = 0;
-//		for (int i = 0; i < 256; i++)
-//		{
-//			if (column == 16) {row++; column = 0;}
-//			if (sprite[i] != 0) //0 -> transparent
-//			{
-//				g2D.setPaint(colors[sprite[i]-1]);
-//				g2D.fillRect(origin[0] + column*pixelSize, origin[1]+ row*pixelSize, pixelSize, pixelSize);
-//			}
-//			column++;
-//		}
 	}
 	
 	private class ClickListener extends MouseAdapter
