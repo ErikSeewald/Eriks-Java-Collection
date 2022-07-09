@@ -2,7 +2,7 @@ package BloonShooting;
 
 public class Levels_Databox
 {
-	public static final int LEVEL_COUNT = 9;
+	public static final int LEVEL_COUNT = 10;
 	public static final int CELL_COUNT = 1008;
 	
 	public static byte[] loadLevel(int levelNum) //loadLevel(1) -> loads LEVELS[0] which is Level 1
@@ -85,6 +85,11 @@ public class Levels_Databox
 			-182, 116, -67, 301, -15, 201, -25, 301, -1, 3, -11, 201, -25, 301, -1, 3, -11, 201, -25, 301, -1, 3, -7, 3, -1, 201, -25, 301,
 			-11, 3, -1, 201, -25, 301, -5, 3, -3, 3, -1, 201, -26, -5, 3, -7, 201, -26, 204, 305, 206, -29, 201, -41, 201, -41, 201, -1, 4,
 			-36, 201, -1, 4, -36, 201, -1, 4, -36, 206
+		},
+		
+		//LEVEL 9
+		{
+			-310, 5, -37, 5, -37, 2, 401, 2, -37, 5, -37, 5, -46, 5, -37, 5, -37, 2, 401, 2, -37, 5, -37, 5
 		},
 
 	};
