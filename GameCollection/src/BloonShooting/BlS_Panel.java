@@ -257,10 +257,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 						
 						if (level[gridEdges[i]].getHittableID() == 5) //BoomBalloon
 						{
-							int[] edges = BoomBalloon.getHitEdges(gridEdges[i]);
-							
-							for (int edge : edges)
-							{if (level[edge] != null) {level[edge].hit();}}
+							boomHit(gridEdges[i]);
 						}
 						
 						//projectile does hit calculation and returns whether or not projectile is still alive
@@ -271,6 +268,22 @@ public class BlS_Panel extends JPanel implements ActionListener
 			}
 		} 
 		repaint();
+	}
+	
+	private void boomHit(int gridEdge)
+	{
+		int[] edges = BoomBalloon.getHitEdges(gridEdge);
+		
+		for (int edge : edges)
+		{
+			if (level[edge] != null)
+			{
+				if (level[edge].getHittableID() == 5 && !level[edge].isReacting())
+				{level[edge].hit(); boomHit(edge);}
+				level[edge].hit();
+			}		
+		}
+		
 	}
 	
 	private int[] getGridEdges(int[] origin)
