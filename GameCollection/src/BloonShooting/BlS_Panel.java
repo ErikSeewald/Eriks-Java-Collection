@@ -119,7 +119,6 @@ public class BlS_Panel extends JPanel implements ActionListener
 	
 	public void paint(Graphics g)
 	{
-		
 		Graphics2D g2D = (Graphics2D) g;
 		super.paint(g);
 		
@@ -175,7 +174,6 @@ public class BlS_Panel extends JPanel implements ActionListener
 	
 	private void paintSprite(Color[] colors, byte[] sprite, int [] origin, int pixelSize, Graphics2D g2D)
 	{
-		
 		int row = 0, column = 0;
 		for (int i = 0; i < 256; i++)
 		{
