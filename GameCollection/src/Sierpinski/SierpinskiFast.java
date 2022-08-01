@@ -16,7 +16,7 @@ public class SierpinskiFast extends JPanel{
 	int[] v = new int[2];
 	int[] nextP = new int[2];
 	
-	int[][] points = new int[2][100000];
+	int[][] points = new int[2][1000000];
 	int pointIndex = 0;
 	
 	Point ACorner;
@@ -61,7 +61,10 @@ public class SierpinskiFast extends JPanel{
 		    	while (true) 
 		    	{
 		    		rollDice();
-		    		try {Thread.sleep(1);} catch (InterruptedException e) {e.printStackTrace();}
+		    		if (random.nextInt(20) == 1) 
+		    		{
+		    			try {Thread.sleep(1);} catch (InterruptedException e) {e.printStackTrace();}
+		    		}
 		    	}
 		    }	 		    		
 		});
@@ -147,7 +150,7 @@ public class SierpinskiFast extends JPanel{
 			
 	    	points = null;
 	    	System.gc();
-	    	points = new int[2][100000];
+	    	points = new int[2][1000000];
 	    		
 	    	moving = true;
 	    	
