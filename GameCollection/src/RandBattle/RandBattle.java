@@ -12,9 +12,11 @@ public class RandBattle extends JFrame
 {
 	private static final long serialVersionUID = 411705531616331949L;
 	
+	static RB_Panel panel;
+	
 	public RandBattle()
 	{
-		RB_Panel panel = new RB_Panel();
+		panel = new RB_Panel();
 		this.setIconImage(MainMenu.img.getImage());
 		this.add(panel);
 		this.pack();
@@ -25,14 +27,9 @@ public class RandBattle extends JFrame
 			@Override
 			public void keyPressed(KeyEvent e) 
 			{
-//				int code = e.getKeyCode();
-//				
-//				if (code == 71) {panel.changeGridVisibility();} //G
-//				else if (code == 45) {panel.changeSize(-10); pack();} //-
-//				else if (code == 521) {panel.changeSize(10); pack();} //+
-//				else if (code == 37) {panel.loadLevel(panel.levelNum-1);} //LEFT
-//				else if (code == 39) {panel.loadLevel(panel.levelNum+1);} //RIGHT	
-//				else if (code == 82) {panel.loadLevel(panel.levelNum);} //R	
+				int code = e.getKeyCode();
+				
+				if (code == 82) {panel.start();} //R	
 			}
 			@Override
 			public void keyReleased(KeyEvent e) {}
@@ -43,6 +40,9 @@ public class RandBattle extends JFrame
 		this.setResizable(false);
 		this.setVisible(true);
 	}
+	
+	public static void stop()
+	{panel.stopTimer();}
 	
 	public void start(WindowEventHandler eventHandler)
 	{this.addWindowListener(eventHandler);}
