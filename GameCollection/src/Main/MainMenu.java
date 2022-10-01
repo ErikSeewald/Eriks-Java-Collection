@@ -22,6 +22,7 @@ import MouseDodge.MouseDodge;
 import ParallelUniverses.ParallelUniverses;
 import Particles.Particles;
 import PixelCollision.PixelCollision;
+import RandBattle.RandBattle;
 import ReflectionDemo.ReflectionDemo;
 import Sudoku.Sudoku;
 
@@ -46,7 +47,7 @@ public class MainMenu extends JFrame implements MouseListener
 	private JLabel gameButton13 = new JLabel("    Cloth Sim");
 	private JLabel gameButton14 = new JLabel(" Gravity Vects");
 	private JLabel gameButton15 = new JLabel("  Bloon Shoot");
-	private JLabel gameButton16 = new JLabel("");
+	private JLabel gameButton16 = new JLabel("  Rand Battle");
 	private JLabel gameButton17 = new JLabel("");
 	private JLabel gameButton18 = new JLabel("");
 	private JLabel gameButton19 = new JLabel("");
@@ -209,6 +210,8 @@ public class MainMenu extends JFrame implements MouseListener
 			break;
 			case 14: BloonShooting bloonShooting = new BloonShooting(); bloonShooting.start(eventHandler);
 			break;
+			case 15: RandBattle randBattle = new RandBattle(); randBattle.start(eventHandler);
+			break;
 		}
 		
 		hasWindowOpen[index] = !hasWindowOpen[index];
@@ -364,6 +367,9 @@ public class MainMenu extends JFrame implements MouseListener
 		titles[14][3] ="MOUSE HELD DOWN. RIGHT ARROW TO LOAD THE NEXT LEVEL, LEFT ARROW FOR THE";
 		titles[14][4] ="PREVIOUS LEVEL. R TO RESTART THE LEVEL | G TO SHOW THE LEVEL GRID | USE";
 		titles[14][5] ="SHIFT PRESS ON THE SLING TO MOVE THE ENTIRE THING, NOT JUST THE PROJECTILE";
+		
+		titles[15][0] = "RAND BATTLE";
+		
 			
 			
 		headline.setText(titles[game][0]);
