@@ -5,6 +5,8 @@ import java.util.Random;
 
 public class NPC 
 {
+	public boolean isAlive = true;
+	
 	private double LOC_X;
 	private double LOC_Y;
 	
@@ -15,6 +17,8 @@ public class NPC
 	private int GOAL_Y;
 	
 	private NPC TARGET;
+	
+	private double[] SHOOT_VECT = new double[2];
 	
 	private int SIZE;
 	private double MOVE_SPEED;
@@ -59,24 +63,21 @@ public class NPC
 	
 	public void shoot()
 	{
-		double[] v = new double[2];
-		v[0] = TARGET.getX() - PROJECTILE_LOC_X;
-		v[1] = TARGET.getY() - PROJECTILE_LOC_Y;
-	
-		double movelength = Math.sqrt(Math.pow(v[0], 2)+Math.pow(v[1], 2));
-		
-		
-		v[0] /= movelength/PROJECTILE_SPEED; 
-		v[1] /= movelength/PROJECTILE_SPEED;
-		
-		PROJECTILE_LOC_X+= v[0];
-		PROJECTILE_LOC_Y+= v[1];
+		PROJECTILE_LOC_X+= SHOOT_VECT[0];
+		PROJECTILE_LOC_Y+= SHOOT_VECT[1];
 	}
 	
-//	private boolean hasProjectileHit()
-//	{
-//		if Projectile()
-//	}
+	private void setShootVect()
+	{
+		SHOOT_VECT[0] = TARGET.getX() - PROJECTILE_LOC_X;
+		SHOOT_VECT[1] = TARGET.getY() - PROJECTILE_LOC_Y;
+	
+		double movelength = Math.sqrt(Math.pow(SHOOT_VECT[0], 2)+Math.pow(SHOOT_VECT[1], 2));
+		
+		
+		SHOOT_VECT[0] /= movelength/PROJECTILE_SPEED; 
+		SHOOT_VECT[1] /= movelength/PROJECTILE_SPEED;
+	}
 	
 	//INITIALIZATION
 	private void initStats()
@@ -92,7 +93,7 @@ public class NPC
 		
 		SIZE = random.nextInt(20)+15;
 		MOVE_SPEED = random.nextDouble(2.0)+0.2;
-		PROJECTILE_SPEED = random.nextDouble(10)+10;
+		PROJECTILE_SPEED = random.nextDouble(5)+5;
 		DAMAGE = random.nextInt(90)+10;
 		HEALTH = random.nextInt(9000)+1000;
 		COLOR = new Color(100,100, random.nextInt(50)+120);
@@ -147,7 +148,7 @@ public class NPC
 	public NPC getTarget()
 	{return TARGET;}
 	public void setTarget(NPC TARGET)
-	{this.TARGET = TARGET;}
+	{this.TARGET = TARGET; setShootVect();}
 	
 	
 	
