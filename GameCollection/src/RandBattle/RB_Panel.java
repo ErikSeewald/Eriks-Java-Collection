@@ -71,17 +71,23 @@ public class RB_Panel extends JPanel implements ActionListener
 		//NPCs
 		for (int i = 0; i < NPC_COUNT; i++)
 		{
-			g2D.setColor(NPCs[i].getColor());
-			
-			int size = NPCs[i].getSize();
-			g2D.fillRect((int)NPCs[i].getX(), (int)NPCs[i].getY(), size, size);
+			if (NPCs[i].isAlive)
+			{
+				g2D.setColor(NPCs[i].getColor());
+				
+				int size = NPCs[i].getSize();
+				g2D.fillRect((int)NPCs[i].getX(), (int)NPCs[i].getY(), size, size);
+			}
 		}
 		
 		//PROJECTILES
 		for (int i = 0; i < NPC_COUNT; i++)
 		{
-			g2D.setColor(Color.red);
-			g2D.fillRect((int)NPCs[i].getProjectileX(), (int)NPCs[i].getProjectileY(), 5, 5);
+			if (NPCs[i].isAlive)
+			{
+				g2D.setColor(Color.red);
+				g2D.fillRect((int)NPCs[i].getProjectileX()+2, (int)NPCs[i].getProjectileY()+2, 5, 5);
+			}
 		}
 		
 	}
@@ -91,11 +97,32 @@ public class RB_Panel extends JPanel implements ActionListener
 	{
 		for (int i = 0; i < NPC_COUNT; i++)
 		{
-			NPCs[i].move();
-			NPCs[i].shoot();
+			if (NPCs[i].isAlive)
+			{
+				NPCs[i].move();
+				NPCs[i].shoot();
+				
+				int hitNum = getHitNum(i);
+				if (hitNum != -1)
+				{NPCs[hitNum].isAlive = false;}
+			}
 		}
 		
 		repaint();
+	}
+	
+	public int getHitNum(int NPCnum)
+	{
+		double PROJECTILE_X = NPCs[NPCnum].getProjectileX();
+		double PROJECTILE_Y = NPCs[NPCnum].getProjectileY();
+		
+		for (int i = 0; i < NPC_COUNT; i++)
+		{
+			if (PROJECTILE_X > NPCs[i].getX() && PROJECTILE_X < NPCs[i].getX()+NPCs[i].getSize()
+			&& PROJECTILE_Y > NPCs[i].getY() && PROJECTILE_Y < NPCs[i].getY()+NPCs[i].getSize())
+			{return i;}
+		}
+		return -1;
 	}
 	
 	public void stopTimer()
