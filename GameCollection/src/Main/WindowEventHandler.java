@@ -50,6 +50,7 @@ public class WindowEventHandler extends WindowAdapter
 			case "Cloth Sim": ClothSim.stop(); index = 12; break;
 			case "Gravity Vectors": index = 13; break;
 			case "Bloon Shooting": index = 14; break;
+			case "Rand Battle": index = 15; break;
 		}
 		
 		if (index != -1)
