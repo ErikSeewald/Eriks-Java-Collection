@@ -142,7 +142,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 			{g2D.drawLine(CELL_SIZE, i*CELL_SIZE, CELL_END_Y, i*CELL_SIZE);}
 		}
 		
-		//LEVEl
+		//LEVEL
 		for (int i = 0; i < CELL_COUNT; i++)
 		{
 			if (levelRAW[i] != 0)
