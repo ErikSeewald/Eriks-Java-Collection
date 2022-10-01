@@ -6,6 +6,7 @@ import java.util.Random;
 public class NPC 
 {
 	public boolean isAlive = true;
+	public int damageAnimation = 0;
 	
 	private double LOC_X;
 	private double LOC_Y;
@@ -59,12 +60,21 @@ public class NPC
 		
 		LOC_X+= v[0];
 		LOC_Y+= v[1];
+		
+		if (damageAnimation > 0) {damageAnimation--;}
 	}
 	
 	public void shoot()
 	{
 		PROJECTILE_LOC_X+= SHOOT_VECT[0];
 		PROJECTILE_LOC_Y+= SHOOT_VECT[1];
+		
+		if (PROJECTILE_LOC_X > PANEL_WIDTH || PROJECTILE_LOC_X < 0 || PROJECTILE_LOC_Y > PANEL_HEIGHT || PROJECTILE_LOC_Y < 0) 
+		{
+			PROJECTILE_LOC_X = LOC_X;
+			PROJECTILE_LOC_Y = LOC_Y;
+			setShootVect();
+		}
 	}
 	
 	private void setShootVect()
@@ -77,6 +87,14 @@ public class NPC
 		
 		SHOOT_VECT[0] /= movelength/PROJECTILE_SPEED; 
 		SHOOT_VECT[1] /= movelength/PROJECTILE_SPEED;
+	}
+	
+	public void takeDamage(int DAMAGE)
+	{	
+		HEALTH -= DAMAGE;
+		if (HEALTH < 1) {isAlive = false;}
+		
+		damageAnimation = 10;
 	}
 	
 	//INITIALIZATION
@@ -95,7 +113,7 @@ public class NPC
 		MOVE_SPEED = random.nextDouble(2.0)+0.2;
 		PROJECTILE_SPEED = random.nextDouble(5)+5;
 		DAMAGE = random.nextInt(90)+10;
-		HEALTH = random.nextInt(9000)+1000;
+		HEALTH = random.nextInt(900)+100;
 		COLOR = new Color(100,100, random.nextInt(50)+120);
 	}
 	
@@ -148,7 +166,12 @@ public class NPC
 	public NPC getTarget()
 	{return TARGET;}
 	public void setTarget(NPC TARGET)
-	{this.TARGET = TARGET; setShootVect();}
+	{
+		this.TARGET = TARGET;
+		PROJECTILE_LOC_X = LOC_X;
+		PROJECTILE_LOC_Y = LOC_Y;
+		setShootVect();
+	}
 	
 	
 	

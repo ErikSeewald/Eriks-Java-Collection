@@ -20,15 +20,17 @@ public class RB_Panel extends JPanel implements ActionListener
 	
 	private final Color BACKGROUND = new Color(50,50,60);
 	
-	private int NPC_COUNT = 20;
+	private int NPC_COUNT = 30;
 	private NPC[] NPCs;
 	
 	Timer timer;
 	
+	Random random;
 	
 	RB_Panel()
 	{
 		this.setPreferredSize(new Dimension( PANEL_WIDTH, PANEL_HEIGHT));
+		random = new Random();
 		start();
 	}
 	
@@ -39,7 +41,6 @@ public class RB_Panel extends JPanel implements ActionListener
 		System.gc();
 		NPCs = new NPC[NPC_COUNT];
 		
-		Random random = new Random();
 		for (int i = 0; i < NPC_COUNT; i++)
 		{NPCs[i] = new NPC(PANEL_WIDTH,PANEL_HEIGHT);}
 		
@@ -73,7 +74,8 @@ public class RB_Panel extends JPanel implements ActionListener
 		{
 			if (NPCs[i].isAlive)
 			{
-				g2D.setColor(NPCs[i].getColor());
+				if (NPCs[i].damageAnimation == 0) {g2D.setColor(NPCs[i].getColor());}
+				else {g2D.setColor(new Color (220, 100, 100));}
 				
 				int size = NPCs[i].getSize();
 				g2D.fillRect((int)NPCs[i].getX(), (int)NPCs[i].getY(), size, size);
@@ -86,7 +88,7 @@ public class RB_Panel extends JPanel implements ActionListener
 			if (NPCs[i].isAlive)
 			{
 				g2D.setColor(Color.red);
-				g2D.fillRect((int)NPCs[i].getProjectileX()+2, (int)NPCs[i].getProjectileY()+2, 5, 5);
+				g2D.fillRect((int)NPCs[i].getProjectileX()+2, (int)NPCs[i].getProjectileY()+2, 4, 4);
 			}
 		}
 		
@@ -95,6 +97,8 @@ public class RB_Panel extends JPanel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
+		if (NPC_COUNT == 1) {timer.stop();}
+		
 		for (int i = 0; i < NPC_COUNT; i++)
 		{
 			if (NPCs[i].isAlive)
@@ -104,7 +108,20 @@ public class RB_Panel extends JPanel implements ActionListener
 				
 				int hitNum = getHitNum(i);
 				if (hitNum != -1)
-				{NPCs[hitNum].isAlive = false;}
+				{NPCs[hitNum].takeDamage(NPCs[i].getDamage());}
+				
+				//new target if old one died
+				if (!NPCs[i].getTarget().isAlive) 
+				{
+					int target = i, controlSum = 0;
+					while (i == target || !NPCs[target].isAlive) 
+					{
+						target = random.nextInt(NPC_COUNT);
+						controlSum++;
+						if (controlSum > 50) {timer.stop(); break;}
+					}
+					NPCs[i].setTarget(NPCs[target]);
+				}
 			}
 		}
 		
@@ -118,9 +135,12 @@ public class RB_Panel extends JPanel implements ActionListener
 		
 		for (int i = 0; i < NPC_COUNT; i++)
 		{
-			if (PROJECTILE_X > NPCs[i].getX() && PROJECTILE_X < NPCs[i].getX()+NPCs[i].getSize()
-			&& PROJECTILE_Y > NPCs[i].getY() && PROJECTILE_Y < NPCs[i].getY()+NPCs[i].getSize())
-			{return i;}
+			if (i != NPCnum)
+			{
+				if (PROJECTILE_X > NPCs[i].getX() && PROJECTILE_X < NPCs[i].getX()+NPCs[i].getSize()
+					&& PROJECTILE_Y > NPCs[i].getY() && PROJECTILE_Y < NPCs[i].getY()+NPCs[i].getSize())
+				{return i;}
+			}
 		}
 		return -1;
 	}
