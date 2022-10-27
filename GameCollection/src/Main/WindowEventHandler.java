@@ -14,6 +14,7 @@ import Particles.ParticlesPanel;
 import PathfindGame.Pathfind;
 import PixelCollision.PixelCollision;
 import RandBattle.RandBattle;
+import RandGrowth.RandGrowth;
 import Sierpinski.SierpinskiSlow;
 
 public class WindowEventHandler extends WindowAdapter
@@ -52,6 +53,7 @@ public class WindowEventHandler extends WindowAdapter
 			case "Gravity Vectors": index = 13; break;
 			case "Bloon Shooting": index = 14; break;
 			case "Rand Battle": RandBattle.stop(); index = 15; break;
+			case "Rand Growth": RandGrowth.stop(); index = 16; break;
 		}
 		
 		if (index != -1)

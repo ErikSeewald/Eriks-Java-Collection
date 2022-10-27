@@ -23,6 +23,7 @@ import ParallelUniverses.ParallelUniverses;
 import Particles.Particles;
 import PixelCollision.PixelCollision;
 import RandBattle.RandBattle;
+import RandGrowth.RandGrowth;
 import ReflectionDemo.ReflectionDemo;
 import Sudoku.Sudoku;
 
@@ -48,7 +49,7 @@ public class MainMenu extends JFrame implements MouseListener
 	private JLabel gameButton14 = new JLabel(" Gravity Vects");
 	private JLabel gameButton15 = new JLabel("  Bloon Shoot");
 	private JLabel gameButton16 = new JLabel("  Rand Battle");
-	private JLabel gameButton17 = new JLabel("");
+	private JLabel gameButton17 = new JLabel(" Rand Growth");
 	private JLabel gameButton18 = new JLabel("");
 	private JLabel gameButton19 = new JLabel("");
 	private JLabel gameButton20 = new JLabel("");
@@ -73,7 +74,7 @@ public class MainMenu extends JFrame implements MouseListener
 	private Color buttonColor2 = new Color(110,110,130);
 	private Color buttonColor3 = new Color(130,130,150);
 	
-	boolean insideButton = false;
+	
 	private boolean buttonSizeIncreased = false;
 	
 	private JLabel headline = new JLabel("ERIK'S COLLECTION");
@@ -174,7 +175,8 @@ public class MainMenu extends JFrame implements MouseListener
 			
 		int index = 0;
 		for (int i = 0; i < gameButtons.length; i++)
-		{if (button != gameButtons[i] && button.getText() != "") {index++;} else {break;}}
+		{if (button != gameButtons[i]) {index++;} else {break;}}
+		if (button.getText() == "") {return;}
 		
 		if (hasWindowOpen[index]) {return;} //don't open another instance of the same game
 		
@@ -212,6 +214,8 @@ public class MainMenu extends JFrame implements MouseListener
 			break;
 			case 15: RandBattle randBattle = new RandBattle(); randBattle.start(eventHandler);
 			break;
+			case 16: RandGrowth randGrowth = new RandGrowth(); randGrowth.start(eventHandler);
+			break;
 		}
 		
 		hasWindowOpen[index] = !hasWindowOpen[index];
@@ -233,15 +237,14 @@ public class MainMenu extends JFrame implements MouseListener
 	@Override
 	public void mouseEntered(MouseEvent e) 
 	{
-		insideButton = true;
-		
 		JLabel button = (JLabel)e.getSource();
 		buttonAnimation(button, (buttonSizeX /25));
 		button.setBackground(buttonColor2);
 		
 		int index = 0;
 		for (int i = 0; i < gameButtons.length; i++)
-		{if (button != gameButtons[i] && button.getText() != "") {index++;} else {break;}}
+		{if (button != gameButtons[i]) {index++;} else {break;}}
+		if (button.getText() == "") {return;}
 		
 		changeInformation(index);
 		
@@ -250,8 +253,6 @@ public class MainMenu extends JFrame implements MouseListener
 	@Override
 	public void mouseExited(MouseEvent e) 
 	{
-		insideButton = false;
-		
 		JLabel button = (JLabel)e.getSource();
 		if (buttonSizeIncreased) {buttonAnimation(button, -(buttonSizeX /25));}
 		button.setBackground(buttonColor1);
@@ -369,6 +370,11 @@ public class MainMenu extends JFrame implements MouseListener
 		titles[14][5] ="SHIFT PRESS ON THE SLING TO MOVE THE ENTIRE THING, NOT JUST THE PROJECTILE";
 		
 		titles[15][0] = "RAND BATTLE";
+		
+		titles[16][0] = "RAND GROWTH";
+		titles[16][1] = "ONCE YOU HAVE PRESSED THE START BUTTON, PRESS AND DRAG YOUR MOUSE ACROSS";
+		titles[16][2] = "THE SCREEN TO SPAWN PIXELS AND WATCH THEM TRY TO SURVIVE AND GROW";
+		titles[16][3] = "ACCORDING TO THE RULES YOU SET WITH THE UI INCLUDED IN THE PROGRAM";
 		
 			
 			
