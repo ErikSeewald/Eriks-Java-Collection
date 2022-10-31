@@ -18,7 +18,7 @@ public class RandGrowthPanel extends JPanel implements ActionListener
 	private static final long serialVersionUID = 1327414797331813387L;
 	
 	static final int PANEL_WIDTH = 1200;
-	static final int PANEL_HEIGHT = 900;
+	static final int PANEL_HEIGHT = 800;
 	
 	private int gPixelSize = 2;
 	private int gPAmountX = PANEL_WIDTH/gPixelSize;

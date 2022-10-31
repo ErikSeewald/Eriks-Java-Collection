@@ -17,7 +17,7 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 	private static final long serialVersionUID = -5876435514501823550L;
 	
 	private static final int PANEL_WIDTH = 300;
-	private static final int PANEL_HEIGHT = 900;
+	private static final int PANEL_HEIGHT = 800;
 	
 	private boolean buttonSizeIncreased = false;
 	
@@ -35,7 +35,6 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 	private final Color borderColor = new Color(120,120,150);
 	
 	private JLabel startButton;
-	private JLabel stopButton;
 	
 	private final Color buttonColor1 = new Color(170, 170, 210);
 	private final Color buttonColor2 = new Color(200, 200, 240);
@@ -93,10 +92,6 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 		startButton = new JLabel("    Start");
 		startButton.setBounds(73, 60, buttonSizeX, buttonSizeY);
 		setButtonSettings(startButton);
-		
-		stopButton = new JLabel("    Stop");
-		stopButton.setBounds(73, 775, buttonSizeX , buttonSizeY);
-		setButtonSettings(stopButton);
 		
 	}
 	
@@ -156,14 +151,6 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 			
 			panel.reset(deathChance, reviveChance, pixelSize, simSpeed);
 		}
-		
-		else if (e.getSource()==stopButton) 
-		{	
-			buttonAnimation(stopButton, -(buttonSizeX /30));
-			stopButton.setBackground(buttonColor2);
-			
-			if (panel.timer.isRunning()) {panel.timer.stop();} else if (panel.hasStarted == true){panel.timer.start();}
-		}
 	}
 	
 	@Override
@@ -174,13 +161,6 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 			if (buttonSizeIncreased) {buttonAnimation(startButton, -(buttonSizeX /30));}
 			startButton.setBackground(buttonColor3);
 		}
-		
-		else if (e.getSource()==stopButton) 
-		{
-			if (buttonSizeIncreased) {buttonAnimation(stopButton, -(buttonSizeX /30));}
-			stopButton.setBackground(buttonColor3);
-		}
-		
 	}
 	
 	@Override
@@ -191,12 +171,6 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 			buttonAnimation(startButton, (buttonSizeX /30));
 			startButton.setBackground(buttonColor2);
 		}
-		
-		if (e.getSource()==stopButton) 
-		{
-			buttonAnimation(stopButton, (buttonSizeX /30));
-			stopButton.setBackground(buttonColor2);
-		}
 	}
 
 	@Override
@@ -206,12 +180,6 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 		{
 			if (buttonSizeIncreased) {buttonAnimation(startButton, -(buttonSizeX /30));}
 			startButton.setBackground(buttonColor1);
-		}
-		
-		if (e.getSource()==stopButton) 
-		{
-			if (buttonSizeIncreased) {buttonAnimation(stopButton, -(buttonSizeX /30));}
-			stopButton.setBackground(buttonColor1);
 		}
 	}
 	
