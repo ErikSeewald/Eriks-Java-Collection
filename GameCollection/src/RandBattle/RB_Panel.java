@@ -2,12 +2,12 @@ package RandBattle;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
-
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -22,10 +22,12 @@ public class RB_Panel extends JPanel implements ActionListener
 	
 	private int NPC_COUNT = 30;
 	private NPC[] NPCs;
+	private boolean showStats = false;
+	private boolean onlyShowHealth = false;
 	
 	Timer timer;
 	
-	Random random;
+	private Random random;
 	
 	RB_Panel()
 	{
@@ -92,13 +94,39 @@ public class RB_Panel extends JPanel implements ActionListener
 			}
 		}
 		
+		//STATS
+		if (!showStats && !onlyShowHealth) {return;}
+		
+		g2D.setPaint(Color.white);
+		g2D.setFont(new Font("", Font.BOLD, 9));
+		for (int i = 0; i <NPC_COUNT; i++)
+		{
+			if (NPCs[i].isAlive)
+			{
+				g2D.drawString(NPCs[i].getHealth()+ "hp", (int)NPCs[i].getX(), (int)NPCs[i].getY());
+				
+				if (!onlyShowHealth)
+				{
+					g2D.drawString(NPCs[i].getDamage()+ "dmg", (int)NPCs[i].getX(), (int)NPCs[i].getY()-10);
+					g2D.drawString(round(NPCs[i].getMoveSpeed(),2)+ "speed", (int)NPCs[i].getX(), (int)NPCs[i].getY()-20);
+					g2D.drawString(round(NPCs[i].getProjectileSpeed(),2)+ "dmg speed", (int)NPCs[i].getX(), (int)NPCs[i].getY()-30);
+				}
+			}
+		}	
+		
+	}
+	
+	public static double round(double value, int places) 
+	{
+	    long factor = (long) Math.pow(10, places);
+	    value = value * factor;
+	    long tmp = Math.round(value);
+	    return (double) tmp / factor;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		if (NPC_COUNT == 1) {timer.stop();}
-		
 		for (int i = 0; i < NPC_COUNT; i++)
 		{
 			if (NPCs[i].isAlive)
@@ -118,7 +146,8 @@ public class RB_Panel extends JPanel implements ActionListener
 					{
 						target = random.nextInt(NPC_COUNT);
 						controlSum++;
-						if (controlSum > 50) {timer.stop(); break;}
+						if (controlSum > 50) 
+						{timer.stop(); break;}
 					}
 					NPCs[i].setTarget(NPCs[target]);
 				}
@@ -128,7 +157,7 @@ public class RB_Panel extends JPanel implements ActionListener
 		repaint();
 	}
 	
-	public int getHitNum(int NPCnum)
+	private int getHitNum(int NPCnum)
 	{
 		double PROJECTILE_X = NPCs[NPCnum].getProjectileX();
 		double PROJECTILE_Y = NPCs[NPCnum].getProjectileY();
@@ -147,5 +176,9 @@ public class RB_Panel extends JPanel implements ActionListener
 	
 	public void stopTimer()
 	{timer.stop();}
-
+	
+	public void showStats()
+	{showStats = !showStats;}
+	public void onlyShowHealth()
+	{onlyShowHealth = !onlyShowHealth;}
 }

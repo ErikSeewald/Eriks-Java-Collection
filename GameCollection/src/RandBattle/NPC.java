@@ -26,6 +26,7 @@ public class NPC
 	private double PROJECTILE_SPEED;
 	private int DAMAGE;
 	private int HEALTH;
+	public int STARTING_HEALTH;
 	private Color COLOR;
 	
 	private int PANEL_WIDTH;
@@ -38,6 +39,8 @@ public class NPC
 		this.PANEL_WIDTH = PANEL_WIDTH;
 		this.PANEL_HEIGHT = PANEL_HEIGHT;
 		initStats();
+		
+		STARTING_HEALTH = HEALTH;
 	}
 	
 	public void move()
