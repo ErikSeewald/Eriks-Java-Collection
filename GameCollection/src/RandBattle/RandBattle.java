@@ -29,7 +29,9 @@ public class RandBattle extends JFrame
 			{
 				int code = e.getKeyCode();
 				
-				if (code == 82) {panel.start();} //R	
+				if (code == 82) {panel.start();} //R
+				if (code == 83) {panel.showStats();} //S
+				if (code == 72) {panel.onlyShowHealth();} //H
 			}
 			@Override
 			public void keyReleased(KeyEvent e) {}
