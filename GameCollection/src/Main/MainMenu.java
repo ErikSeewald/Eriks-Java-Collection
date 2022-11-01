@@ -370,14 +370,17 @@ public class MainMenu extends JFrame implements MouseListener
 		titles[14][5] ="SHIFT PRESS ON THE SLING TO MOVE THE ENTIRE THING, NOT JUST THE PROJECTILE";
 		
 		titles[15][0] = "RAND BATTLE";
+		titles[15][1] = "NPCS WITH RANDOM SIZES, HP, DAMAGE, MOVEMENT SPEED AND PROJECTILE SPEED";
+		titles[15][2] = "ARE GENERATED. THEY PICK A RANDOM TARGET AND TRY TO SHOOT IT UNTIL IT IS";
+		titles[15][3] = "DEAD, THEN THEY PICK A NEW ONE. WHO WILL BE THE LAST SURVIVOR?";
+		titles[15][4] = "R - RESTART | S - SHOW STATS | H - ONLY SHOW HEALTH";
 		
 		titles[16][0] = "RAND GROWTH";
 		titles[16][1] = "ONCE YOU HAVE PRESSED THE START BUTTON, PRESS AND DRAG YOUR MOUSE ACROSS";
 		titles[16][2] = "THE SCREEN TO SPAWN PIXELS AND WATCH THEM TRY TO SURVIVE AND GROW";
 		titles[16][3] = "ACCORDING TO THE RULES YOU SET WITH THE UI INCLUDED IN THE PROGRAM";
 		
-			
-			
+		
 		headline.setText(titles[game][0]);
 		controls1.setText(titles[game][1]);
 		controls2.setText(titles[game][2]);
