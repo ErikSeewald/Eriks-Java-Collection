@@ -99,9 +99,6 @@ public class RandGrowthPanel extends JPanel implements ActionListener
 		gPAmountY = PANEL_HEIGHT/gPixelSize;
 		gPixels = new GPixel[gPAmountX][gPAmountY];
 		
-		timer = new Timer(simulationSpeed, this);
-		timer.start();
-		
 		for (int i = 0; i < gPAmountX; i++)
 		{
 			for (int j = 0; j < gPAmountY; j++)
@@ -111,6 +108,10 @@ public class RandGrowthPanel extends JPanel implements ActionListener
 				gPixels[i][j].locY = j*gPixelSize;
 			}	 
 		}
+		
+		timer = new Timer(simulationSpeed, this);
+		timer.start();
+		
 		System.gc();
 		hasStarted = true;
 		repaint();

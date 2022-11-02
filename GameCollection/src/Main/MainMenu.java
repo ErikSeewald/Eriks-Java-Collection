@@ -33,23 +33,23 @@ public class MainMenu extends JFrame implements MouseListener
 
 	private int resolution = 700;
 	
-	private JLabel gameButton1 = new JLabel("   3D Coords");
-	private JLabel gameButton2 = new JLabel("      Insects");
-	private JLabel gameButton3 = new JLabel("     Particles");
-	private JLabel gameButton4 = new JLabel("    Sierpinski");
-	private JLabel gameButton5 = new JLabel("      Sudoku");
-	private JLabel gameButton6 = new JLabel("      Pathfind");
-	private JLabel gameButton7 = new JLabel("    Parallel U.");
-	private JLabel gameButton8 = new JLabel("    Reflection");
-	private JLabel gameButton9 = new JLabel(" Mouse Dodge");
-	private JLabel gameButton10 = new JLabel("   Sidescroller");
-	private JLabel gameButton11 = new JLabel("    Speedrun");
-	private JLabel gameButton12 = new JLabel(" Pixel Collision");
-	private JLabel gameButton13 = new JLabel("    Cloth Sim");
-	private JLabel gameButton14 = new JLabel(" Gravity Vects");
-	private JLabel gameButton15 = new JLabel("  Bloon Shoot");
-	private JLabel gameButton16 = new JLabel("  Rand Battle");
-	private JLabel gameButton17 = new JLabel(" Rand Growth");
+	private JLabel gameButton1 = new JLabel("      Insects");
+	private JLabel gameButton2 = new JLabel("     Particles");
+	private JLabel gameButton3 = new JLabel("    Sierpinski");
+	private JLabel gameButton4 = new JLabel("      Sudoku");
+	private JLabel gameButton5 = new JLabel("      Pathfind");
+	private JLabel gameButton6 = new JLabel("    Parallel U.");
+	private JLabel gameButton7 = new JLabel("    Reflection");
+	private JLabel gameButton8 = new JLabel(" Mouse Dodge");
+	private JLabel gameButton9 = new JLabel("   Sidescroller");
+	private JLabel gameButton10 = new JLabel("    Speedrun");
+	private JLabel gameButton11 = new JLabel(" Pixel Collision");
+	private JLabel gameButton12 = new JLabel("    Cloth Sim");
+	private JLabel gameButton13 = new JLabel(" Gravity Vects");
+	private JLabel gameButton14 = new JLabel("  Bloon Shoot");
+	private JLabel gameButton15 = new JLabel("  Rand Battle");
+	private JLabel gameButton16 = new JLabel(" Rand Growth");
+	private JLabel gameButton17 = new JLabel("");
 	private JLabel gameButton18 = new JLabel("");
 	private JLabel gameButton19 = new JLabel("");
 	private JLabel gameButton20 = new JLabel("");
@@ -182,44 +182,41 @@ public class MainMenu extends JFrame implements MouseListener
 		
 		switch (index)
 		{
-			case 0: Coordinates3D coordinates3D = new Coordinates3D(); coordinates3D.start(eventHandler);
+			case 0: Insects insects = new Insects(); insects.start(eventHandler);
 			break;
-			case 1: Insects insects = new Insects(); insects.start(eventHandler);
+			case 1: Particles particles = new Particles(); particles.start(eventHandler);
 			break;
-			case 2: Particles particles = new Particles(); particles.start(eventHandler);
+			case 2: SelectionFrame sierpinski = new SelectionFrame(); sierpinski.start("Sierpinski", eventHandler);
 			break;
-			case 3: SelectionFrame sierpinski = new SelectionFrame(); sierpinski.start("Sierpinski", eventHandler);
+			case 3: Sudoku sudoku = new Sudoku(); sudoku.start(eventHandler);
 			break;
-			case 4: Sudoku sudoku = new Sudoku(); sudoku.start(eventHandler);
+			case 4: SelectionFrame pathfind = new SelectionFrame(); pathfind.start("Pathfind", eventHandler);
 			break;
-			case 5: SelectionFrame pathfind = new SelectionFrame(); pathfind.start("Pathfind", eventHandler);
+			case 5: ParallelUniverses parallelUniverses = new ParallelUniverses();parallelUniverses.start(eventHandler);
 			break;
-			case 6: ParallelUniverses parallelUniverses = new ParallelUniverses();parallelUniverses.start(eventHandler);
+			case 6: ReflectionDemo reflectionDemo = new ReflectionDemo(); reflectionDemo.start(eventHandler);
 			break;
-			case 7: ReflectionDemo reflectionDemo = new ReflectionDemo(); reflectionDemo.start(eventHandler);
+			case 7: MouseDodge mouseDodge = new MouseDodge(); mouseDodge.start(eventHandler);
 			break;
-			case 8: MouseDodge mouseDodge = new MouseDodge(); mouseDodge.start(eventHandler);
+			case 8: JumpAndRun jumpAndRun = new JumpAndRun(); jumpAndRun.start(eventHandler, false);
 			break;
-			case 9: JumpAndRun jumpAndRun = new JumpAndRun(); jumpAndRun.start(eventHandler, false);
+			case 9: JumpAndRun jumpAndRun2 = new JumpAndRun(); jumpAndRun2.start(eventHandler, true);
 			break;
-			case 10: JumpAndRun jumpAndRun2 = new JumpAndRun(); jumpAndRun2.start(eventHandler, true);
+			case 10: PixelCollision pixelCollision = new PixelCollision(); pixelCollision.start(eventHandler);
 			break;
-			case 11: PixelCollision pixelCollision = new PixelCollision(); pixelCollision.start(eventHandler);
+			case 11: ClothSim clothSim = new ClothSim(); clothSim.start(eventHandler);
 			break;
-			case 12: ClothSim clothSim = new ClothSim(); clothSim.start(eventHandler);
+			case 12: GravityVectors gravityVectors = new GravityVectors(); gravityVectors.start(eventHandler);
 			break;
-			case 13: GravityVectors gravityVectors = new GravityVectors(); gravityVectors.start(eventHandler);
+			case 13: BloonShooting bloonShooting = new BloonShooting(); bloonShooting.start(eventHandler);
 			break;
-			case 14: BloonShooting bloonShooting = new BloonShooting(); bloonShooting.start(eventHandler);
+			case 14: RandBattle randBattle = new RandBattle(); randBattle.start(eventHandler);
 			break;
-			case 15: RandBattle randBattle = new RandBattle(); randBattle.start(eventHandler);
-			break;
-			case 16: RandGrowth randGrowth = new RandGrowth(); randGrowth.start(eventHandler);
+			case 15: RandGrowth randGrowth = new RandGrowth(); randGrowth.start(eventHandler);
 			break;
 		}
 		
-		hasWindowOpen[index] = !hasWindowOpen[index];
-			
+		hasWindowOpen[index] = !hasWindowOpen[index];		
 	}
 	
 	@Override
@@ -276,111 +273,103 @@ public class MainMenu extends JFrame implements MouseListener
 	public void changeInformation(int game)
 	{
 		String[][] titles = new String[24][6];
+			
+		titles[0][0] = "INSECTS";
+		titles[0][1] ="Observe as the insects try to survive in this maze | R - Restart";
+		titles[0][2] ="You can see the current amount of insects in the top left corner.";
+		titles[0][3] ="Blue areas are sources of water, red ones are food. The number of insects";
+		titles[0][4] ="changes each round in relation to how many are within these sources.";
+		titles[0][5] ="1 - Less insects | 2 - More insects | 3 - Less increase per press | 4 - More";
 		
+		titles[1][0] = "PARTICLES";
+		titles[1][1] ="Press down on your mouse to draw on the particles.";
+		titles[1][2] ="R - Reset";
 		
-		titles[0][0] = "3D COORDINATES";
-		titles[0][1] ="Type in the coordinates of the points of the plane you want to be displayed.";
-		titles[0][2] ="Click the top left button to turn it into a cube, top right to make it spin.";
-		titles[0][3] ="Click the buttons at the bottom to remove the axis' or to move the plane.";
-		titles[0][4] ="Recommended Coordinates: 12,0,0   0,0,0   0,12,0";
+		titles[2][0] = "SIERPINSKI";
+		titles[2][1] ="Every turn there is a random chance for the point to move towards one of the";
+		titles[2][2] ="3 points of the triangle. Then it leaves a new point halfway on the path to the";
+		titles[2][3] ="chosen point. Repeating this will slowly create a sierpinski triangle.";
 		
-		titles[1][0] = "INSECTS";
-		titles[1][1] ="Observe as the insects try to survive in this maze | R - Restart";
-		titles[1][2] ="You can see the current amount of insects in the top left corner.";
-		titles[1][3] ="Blue areas are sources of water, red ones are food. The number of insects";
-		titles[1][4] ="changes each round in relation to how many are within these sources.";
-		titles[1][5] ="1 - Less insects | 2 - More insects | 3 - Less increase per press | 4 - More";
+		titles[3][0] = "SUDOKU";
+		titles[3][1] ="Use your mouse to click on a square, then type in a number.";
+		titles[3][2] ="S -- Solve | R -- Reset";
+		titles[3][3] ="+/- -- Change screen size";
 		
-		titles[2][0] = "PARTICLES";
-		titles[2][1] ="Press down on your mouse to draw on the particles.";
-		titles[2][2] ="R - Reset";
+		titles[4][0] = "PATHFIND";
+		titles[4][1] ="Use W,A,S,D to escape the red enemies for as many turns as possible.";
+		titles[4][2] ="Load and save levels with the menu bar. Shift + click on tiles to edit them.";
+		titles[4][3] ="0 -- Wipe board | R -- Reset board";
+		titles[4][4] ="T -- Generate new board | +/- -- Change screen size";
 		
-		titles[3][0] = "SIERPINSKI";
-		titles[3][1] ="Every turn there is a random chance for the point to move towards one of the";
-		titles[3][2] ="3 points of the triangle. Then it leaves a new point halfway on the path to the";
-		titles[3][3] ="chosen point. Repeating this will slowly create a sierpinski triangle.";
-		titles[3][4] ="Press down on your mouse over a triangle point and hold shift to move it.";
+		titles[5][0] = "PARALLEL UNIVERSES";
+		titles[5][1] ="The red point represents your position in the universe.";
+		titles[5][2] ="The green point represents your position in the parallel universes.";
+		titles[5][3] ="Move with W,A,S,D and hold down shift before pressing the keys to move faster.";
+		titles[5][4] ="Hide the parallel universes with E";
 		
-		titles[4][0] = "SUDOKU";
-		titles[4][1] ="Use your mouse to click on a square, then type in a number.";
-		titles[4][2] ="S -- Solve | R -- Reset";
-		titles[4][3] ="+/- -- Change screen size";
+		titles[6][0] = "REFLECTION DEMO";
+		titles[6][1] ="Move the ray origin with your mouse held down and rotate it with the mouse wheel.";
+		titles[6][2] ="1 - Less reflections  |  2 - More reflections";
+		titles[6][3] ="3 - Less rotation speed  |  4 - More rotation speed";
+		titles[6][4] ="5 - Low accuracy | 6 - Default accuracy | 7 - Ultra accuracy";
 		
-		titles[5][0] = "PATHFIND";
-		titles[5][1] ="Use W,A,S,D to escape the red enemies for as many turns as possible.";
-		titles[5][2] ="Load and save levels with the menu bar. Shift + click on tiles to edit them.";
-		titles[5][3] ="0 -- Wipe board | R -- Reset board";
-		titles[5][4] ="T -- Generate new board | +/- -- Change screen size";
+		titles[7][0] = "MOUSE DODGE";
+		titles[7][1] = "Move your mouse to dodge the enemies.";
+		titles[7][2] = "Press F to switch dark mode on or off.";
+		titles[7][3] = "Other controls are displayed ingame.";
 		
-		titles[6][0] = "PARALLEL UNIVERSES";
-		titles[6][1] ="The red point represents your position in the universe.";
-		titles[6][2] ="The green point represents your position in the parallel universes.";
-		titles[6][3] ="Move with W,A,S,D and hold down shift before pressing the keys to move faster.";
-		titles[6][4] ="Hide the parallel universes with E";
+		titles[8][0] = "2D SIDESCROLLER";
+		titles[8][1] ="Outrun the screen and don't fall into the lava.";
+		titles[8][2] ="Use W,A,S,D to move and press space to jump. | F -- Flying mode";
+		titles[8][3] ="R -- Restart | T -- Generate new map | ESC -- Pause";
+		titles[8][4] ="CTRL + S -- Save | CTRL + L -- Load";
 		
-		titles[7][0] = "REFLECTION DEMO";
-		titles[7][1] ="Move the ray origin with your mouse held down and rotate it with the mouse wheel.";
-		titles[7][2] ="1 - Less reflections  |  2 - More reflections";
-		titles[7][3] ="3 - Less rotation speed  |  4 - More rotation speed";
-		titles[7][4] ="5 - Low accuracy | 6 - Default accuracy | 7 - Ultra accuracy";
-		
-		titles[8][0] = "MOUSE DODGE";
-		titles[8][1] = "Move your mouse to dodge the enemies.";
-		titles[8][2] = "Press F to switch dark mode on or off.";
-		titles[8][3] = "Other controls are displayed ingame.";
-		
-		titles[9][0] = "2D SIDESCROLLER";
-		titles[9][1] ="Outrun the screen and don't fall into the lava.";
+		titles[9][0] = "2D SPEEDRUN";
+		titles[9][1] ="Move as fast as you can.";
 		titles[9][2] ="Use W,A,S,D to move and press space to jump. | F -- Flying mode";
 		titles[9][3] ="R -- Restart | T -- Generate new map | ESC -- Pause";
 		titles[9][4] ="CTRL + S -- Save | CTRL + L -- Load";
 		
-		titles[10][0] = "2D SPEEDRUN";
-		titles[10][1] ="Move as fast as you can.";
-		titles[10][2] ="Use W,A,S,D to move and press space to jump. | F -- Flying mode";
-		titles[10][3] ="R -- Restart | T -- Generate new map | ESC -- Pause";
-		titles[10][4] ="CTRL + S -- Save | CTRL + L -- Load";
+		titles[10][0] = "PIXEL COLLISION";
+		titles[10][1] ="Anything you drawn on screen will become a collision object.";
+		titles[10][2] ="USe the Object Menu in the top left to drawn an object into the rectangle that";
+		titles[10][3] ="appears, save it and then move it with W,A,S,D. Use shift to move faster.";
+		titles[10][4] ="Use the Pixel Menu to change the size of the pixel grid";
+		titles[10][5] ="+/- - Change screen size| F - Fly mode | R - Reset | Shift click - Erase pixel";
 		
-		titles[11][0] = "PIXEL COLLISION";
-		titles[11][1] ="Anything you drawn on screen will become a collision object.";
-		titles[11][2] ="USe the Object Menu in the top left to drawn an object into the rectangle that";
-		titles[11][3] ="appears, save it and then move it with W,A,S,D. Use shift to move faster.";
-		titles[11][4] ="Use the Pixel Menu to change the size of the pixel grid";
-		titles[11][5] ="+/- - Change screen size| F - Fly mode | R - Reset | Shift click - Erase pixel";
+		titles[11][0] = "CLOTH SIM";
+		titles[11][1] ="Click anywhere on screen to create a point, CTRL click to lock it in place.";
+		titles[11][2] ="Click on a point again to select it. When you have two points selected, press";
+		titles[11][3] ="C to connect them. Start or stop the simulation with S and reset it with R.";
+		titles[11][4] ="Move point = Press mouse down and move | Cut point = Hold shift, press down and then move";
+		titles[11][5] ="over it | Delete last connection = CTRL Z | Save/load layouts with the menu bar";
 		
-		titles[12][0] = "CLOTH SIM";
-		titles[12][1] ="Click anywhere on screen to create a point, CTRL click to lock it in place.";
-		titles[12][2] ="Click on a point again to select it. When you have two points selected, press";
-		titles[12][3] ="C to connect them. Start or stop the simulation with S and reset it with R.";
-		titles[12][4] ="Move point = Press mouse down and move | Cut point = Hold shift, press down and then move";
-		titles[12][5] ="over it | Delete last connection = CTRL Z | Save/load layouts with the menu bar";
+		titles[12][0] = "GRAVITY VECTORS";
+		titles[12][1] ="This is not really a gravity or magnetic field simulation, but I could not";
+		titles[12][2] ="find a good name for it. Move gravity points with the mouse held down";
+		titles[12][3] ="1 - Add another gravity point | 2 - Remove last gravity point";
+		titles[12][4] ="+/- - Change screen size";
+		titles[12][5] ="G - Activate gradient rendering | N - Turn off arrow normalization";
 		
-		titles[13][0] = "GRAVITY VECTORS";
-		titles[13][1] ="This is not really a gravity or magnetic field simulation, but I could not";
-		titles[13][2] ="find a good name for it. Move gravity points with the mouse held down";
-		titles[13][3] ="1 - Add another gravity point | 2 - Remove last gravity point";
-		titles[13][4] ="+/- - Change screen size";
-		titles[13][5] ="G - Activate gradient rendering | N - Turn off arrow normalization";
+		titles[13][0] = "BALLOON SHOOTING";
+		titles[13][1] ="I wanted to recreate some aspects of the original bloons game in Java with";
+		titles[13][2] ="my own sprite renderer. Shoot the balloons using the slingshot with the";
+		titles[13][3] ="mouse held down. Press the right arrow key to load the next level,";
+		titles[13][4] ="PREVIOUS LEVEL. R TO RESTART THE LEVEL | G TO SHOW THE LEVEL GRID | USE";
+		titles[13][4] ="left for the previous level. R - Restart level | G - Show level grid";
+		titles[13][5] ="Use shift press to move the entire slingshot, not just the projectile.";
 		
-		titles[14][0] = "BALLOON SHOOTING";
-		titles[14][1] ="I wanted to recreate some aspects of the original bloons game in Java with";
-		titles[14][2] ="my own sprite renderer. Shoot the balloons using the slingshot with the";
-		titles[14][3] ="mouse held down. Press the right arrow key to load the next level,";
-		titles[14][4] ="PREVIOUS LEVEL. R TO RESTART THE LEVEL | G TO SHOW THE LEVEL GRID | USE";
-		titles[14][4] ="left for the previous level. R - Restart level | G - Show level grid";
-		titles[14][5] ="Use shift press to move the entire slingshot, not just the projectile.";
+		titles[14][0] = "RAND BATTLE";
+		titles[14][1] = "NPCs with random sizes, hp, damage, movement speed and projectile speed";
+		titles[14][2] = "are generated. They pick a random target and try to shoot it until it is";
+		titles[14][3] = "DEAD, THEN THEY PICK A NEW ONE. WHO WILL BE THE LAST SURVIVOR?";
+		titles[14][3] = "dead, then they pick a new one. Who will be victorious?";
+		titles[14][4] = "R - Restart | S - Show stats | H - Only show Health";
 		
-		titles[15][0] = "RAND BATTLE";
-		titles[15][1] = "NPCs with random sizes, hp, damage, movement speed and projectile speed";
-		titles[15][2] = "are generated. They pick a random target and try to shoot it until it is";
-		titles[15][3] = "DEAD, THEN THEY PICK A NEW ONE. WHO WILL BE THE LAST SURVIVOR?";
-		titles[15][3] = "dead, then they pick a new one. Who will be victorious?";
-		titles[15][4] = "R - Restart | S - Show stats | H - Only show Health";
-		
-		titles[16][0] = "RAND GROWTH";
-		titles[16][1] = "Once you have pressed the start button, press and move your mouse";
-		titles[16][2] = "across the screen to spawn pixels and watch them try to survive and grow";
-		titles[16][3] = "according to the rules you set with the UI included in the program.";
+		titles[15][0] = "RAND GROWTH";
+		titles[15][1] = "Once you have pressed the start button, press and move your mouse";
+		titles[15][2] = "across the screen to spawn pixels and watch them try to survive and grow";
+		titles[15][3] = "according to the rules you set with the UI included in the program.";
 		
 		
 		headline.setText(titles[game][0]);

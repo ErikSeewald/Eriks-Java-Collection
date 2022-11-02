@@ -37,23 +37,22 @@ public class WindowEventHandler extends WindowAdapter
 		
 		switch(title)
 		{
-			case "3D Coordinates": Coordinates3DFrame.stop(); index = 0; break;	
-			case "Insects": InsectsPanel.stop(); index = 1; break;
-			case "Particles" : ParticlesPanel.stop();index = 2; break;
-			case "Sierpinski": SierpinskiSlow.stop();index = 3; break;
-			case "Sudoku": index = 4; break;
-			case "Pathfind": Pathfind.stop(); index = 5; break;
-			case "Parallel Universes": ParallelUniverses.stop(); index = 6; break;
-			case "Reflection Demo": index = 7; break;
-			case "Mouse Dodge": MouseDodgePanel.stop(); index = 8; break; 
-			case "Sidescroller": JumpAndRun.stop(); index = 9; break;
-			case "Speedrun": JumpAndRun.stop(); index = 10; break;
-			case "Pixel Collision": PixelCollision.stop(); index = 11; break;
-			case "Cloth Sim": ClothSim.stop(); index = 12; break;
-			case "Gravity Vectors": index = 13; break;
-			case "Bloon Shooting": index = 14; break;
-			case "Rand Battle": RandBattle.stop(); index = 15; break;
-			case "Rand Growth": RandGrowth.stop(); index = 16; break;
+			case "Insects": InsectsPanel.stop(); index = 0; break;
+			case "Particles" : ParticlesPanel.stop();index = 1; break;
+			case "Sierpinski": SierpinskiSlow.stop();index = 2; break;
+			case "Sudoku": index = 3; break;
+			case "Pathfind": Pathfind.stop(); index = 4; break;
+			case "Parallel Universes": ParallelUniverses.stop(); index = 5; break;
+			case "Reflection Demo": index = 6; break;
+			case "Mouse Dodge": MouseDodgePanel.stop(); index = 7; break; 
+			case "Sidescroller": JumpAndRun.stop(); index = 8; break;
+			case "Speedrun": JumpAndRun.stop(); index = 9; break;
+			case "Pixel Collision": PixelCollision.stop(); index = 10; break;
+			case "Cloth Sim": ClothSim.stop(); index = 11; break;
+			case "Gravity Vectors": index = 12; break;
+			case "Bloon Shooting": index = 13; break;
+			case "Rand Battle": RandBattle.stop(); index = 14; break;
+			case "Rand Growth": RandGrowth.stop(); index = 15; break;
 		}
 		
 		if (index != -1)

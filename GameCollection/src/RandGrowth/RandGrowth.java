@@ -35,5 +35,4 @@ public class RandGrowth extends JFrame
 	
 	public void start(WindowEventHandler eventHandler)
 	{this.addWindowListener(eventHandler);}
-
 }

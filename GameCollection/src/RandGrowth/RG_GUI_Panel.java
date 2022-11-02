@@ -50,12 +50,17 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 		this.panel = panel;
 		
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		
 		this.setBackground(new Color(220,220,250));
 		this.setBorder(BorderFactory.createLineBorder(borderColor, 8));
 
 		this.setLayout(null);
 		
+		//BUTTONS
+		startButton = new JLabel("    Start");
+		startButton.setBounds(73, 60, buttonSizeX, buttonSizeY);
+		setButtonSettings(startButton);
+		
+		//INPUTS
 		pixelSizeInput = new JTextField("3");
 		setTextFieldSettings(pixelSizeInput);
 		pixelSizeInput.setBounds(93, 210, 110, 45);
@@ -72,7 +77,7 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 		setTextFieldSettings(reviveChanceInput);
 		reviveChanceInput.setBounds(93, 660, 110, 45);
 		
-		
+		//LABELS
 		dieRateLabel = new JLabel("Chance for a pixel to die each frame");
 		setLabelSettings(dieRateLabel);
 		dieRateLabel.setBounds(35, 470, 250, 45);
@@ -87,12 +92,7 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 		
 		speedLabel = new JLabel("Simulation Speed");
 		setLabelSettings(speedLabel);
-		speedLabel.setBounds(90, 320, 130, 45);
-		
-		startButton = new JLabel("    Start");
-		startButton.setBounds(73, 60, buttonSizeX, buttonSizeY);
-		setButtonSettings(startButton);
-		
+		speedLabel.setBounds(90, 320, 130, 45);	
 	}
 	
 	private void setTextFieldSettings(JTextField textField)

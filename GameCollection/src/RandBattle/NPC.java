@@ -175,7 +175,5 @@ public class NPC
 		PROJECTILE_LOC_Y = LOC_Y;
 		setShootVect();
 	}
-	
-	
-	
+
 }

@@ -18,7 +18,6 @@ public class SudokuPanel extends JPanel
 	int PANEL_SIZE = 600;
 	int BOX_SIZE = (PANEL_SIZE /GRID_SIZE)+1;
 	
-	
 	int[][] board = new int [GRID_SIZE][GRID_SIZE];			//row, column
 	int oldboard[][] = new int [GRID_SIZE][GRID_SIZE];		//state of board before "solve" method
 		
@@ -46,7 +45,6 @@ public class SudokuPanel extends JPanel
 		ClickListener clickListener = new ClickListener();
 		this.addMouseListener(clickListener);
 	}
-	
 	
 	private class ClickListener extends MouseAdapter
 	{
