@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import ClothSim.ClothSim;
-import Coordinates3D.Coordinates3DFrame;
 import Insects.InsectsPanel;
 import JumpAndRun.JumpAndRun;
 import MouseDodge.MouseDodgePanel;

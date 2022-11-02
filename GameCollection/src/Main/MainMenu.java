@@ -14,7 +14,6 @@ import javax.swing.JLabel;
 
 import BloonShooting.BloonShooting;
 import ClothSim.ClothSim;
-import Coordinates3D.Coordinates3D;
 import GravityVectors.GravityVectors;
 import Insects.Insects;
 import JumpAndRun.JumpAndRun;
