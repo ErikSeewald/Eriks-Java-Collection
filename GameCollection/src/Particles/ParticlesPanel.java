@@ -12,14 +12,14 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 
-public class ParticlesPanel extends JPanel implements ActionListener{
+public class ParticlesPanel extends JPanel implements ActionListener
+{
 	private static final long serialVersionUID = 6395869615896081681L;
 		
 	int xloc = 0; 		//x location of the mouse
 	int prevloc = 0; 	//previous x location of the mouse
 	int yloc = 0;		//y location of the mouse
 	int size = 20;		//size of mouse influence
-	
 	
 	int length = 6000;	//length of array of squares
 	
@@ -44,7 +44,8 @@ public class ParticlesPanel extends JPanel implements ActionListener{
 	Color color2 = (new Color (245,170,245));
 	
 	
-	ParticlesPanel(){
+	ParticlesPanel()
+	{
 		
 		random = new Random();
 		
@@ -90,7 +91,8 @@ public class ParticlesPanel extends JPanel implements ActionListener{
 		}
 	}
 	
-	public void paint(Graphics g) {
+	public void paint(Graphics g) 
+	{
 		
 		Graphics2D g2D = (Graphics2D) g;
 	
@@ -150,7 +152,6 @@ public class ParticlesPanel extends JPanel implements ActionListener{
 		
 		else 
 		{
-		
 			switch (random.nextInt(2)) //changes colors
 			{	
 				case 0: color1 = (new Color (170,245,245)); color2 = (new Color (170,170,245));
@@ -168,6 +169,5 @@ public class ParticlesPanel extends JPanel implements ActionListener{
 				{colors[i] = (new Color ((int) (Math.abs(color2.getRed()-(dist[i] / 5))),(int) (Math.abs(color2.getGreen()-(dist[i] / 5))),(int) (Math.abs(color2.getBlue()-(dist[i] / 5)))));}	
 			}
 		}
-	
 	}
 }
