@@ -39,13 +39,9 @@ public class Particles extends JFrame
 		this.add(panel);
 		this.pack();
 		
-		this.setVisible(true);
-		
+		this.setVisible(true);	
 	}
 	
 	public void start(WindowEventHandler eventHandler)
-	{
-		this.addWindowListener(eventHandler);
-	}
-	
+	{this.addWindowListener(eventHandler);}
 }
