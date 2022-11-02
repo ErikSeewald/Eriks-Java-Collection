@@ -24,6 +24,7 @@ public class RB_Panel extends JPanel implements ActionListener
 	private NPC[] NPCs;
 	private boolean showStats = false;
 	private boolean onlyShowHealth = false;
+	private boolean finished;
 	
 	Timer timer;
 	
@@ -60,6 +61,7 @@ public class RB_Panel extends JPanel implements ActionListener
 		timer = new Timer(16, this);
 		timer.start();
 		
+		finished = false;
 		repaint();
 	}
 	
@@ -94,6 +96,13 @@ public class RB_Panel extends JPanel implements ActionListener
 			}
 		}
 		
+
+		if (finished) 
+		{
+			g2D.setFont(new Font("", Font.BOLD, 144));
+			g2D.drawString("FINISHED", PANEL_WIDTH/4, PANEL_HEIGHT/4);
+		}
+		
 		//STATS
 		if (!showStats && !onlyShowHealth) {return;}
 		
@@ -112,7 +121,7 @@ public class RB_Panel extends JPanel implements ActionListener
 					g2D.drawString(round(NPCs[i].getProjectileSpeed(),2)+ "dmg speed", (int)NPCs[i].getX(), (int)NPCs[i].getY()-30);
 				}
 			}
-		}	
+		}
 		
 	}
 	
@@ -147,7 +156,11 @@ public class RB_Panel extends JPanel implements ActionListener
 						target = random.nextInt(NPC_COUNT);
 						controlSum++;
 						if (controlSum > 50) 
-						{timer.stop(); break;}
+						{
+							timer.stop(); 	
+							finished = true;
+							break;
+						}
 					}
 					NPCs[i].setTarget(NPCs[target]);
 				}

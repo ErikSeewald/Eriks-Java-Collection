@@ -31,7 +31,7 @@ public class MainMenu extends JFrame implements MouseListener
 {
 	private static final long serialVersionUID = 1454253443346436L;
 
-	private int resolution = 600;
+	private int resolution = 700;
 	
 	private JLabel gameButton1 = new JLabel("   3D Coords");
 	private JLabel gameButton2 = new JLabel("      Insects");
@@ -159,7 +159,7 @@ public class MainMenu extends JFrame implements MouseListener
 	public void setTextBasics(JLabel x, int index)
 	{
 		x.setForeground(textColor);
-		if (index != 0) {x.setFont(new Font ("", Font.BOLD, resolution/50));}
+		if (index != 0) {x.setFont(new Font ("", Font.BOLD, resolution/42));}
 		this.add(x);
 	}
 
@@ -279,106 +279,108 @@ public class MainMenu extends JFrame implements MouseListener
 		
 		
 		titles[0][0] = "3D COORDINATES";
-		titles[0][1] ="TYPE IN THE COORDINATES OF POINTS OF THE PLANE YOU WANT TO BE DISPLAYED";
-		titles[0][2] ="CLICK THE TOP LEFT BUTTON TO TURN IT INTO A CUBE, THE TOP RIGHT TO SPIN";
-		titles[0][3] ="CLICK THE BUTTONS AT THE BOTTOM TO REMOVE THE AXIS' OR TO MOVE THE PLANE";
-		titles[0][4] ="RECOMMENDED COORDINATES: 12,0,0   0,0,0   0,12,0";
+		titles[0][1] ="Type in the coordinates of the points of the plane you want to be displayed.";
+		titles[0][2] ="Click the top left button to turn it into a cube, top right to make it spin.";
+		titles[0][3] ="Click the buttons at the bottom to remove the axis' or to move the plane.";
+		titles[0][4] ="Recommended Coordinates: 12,0,0   0,0,0   0,12,0";
 		
 		titles[1][0] = "INSECTS";
-		titles[1][1] ="OBSERVE AS THE INSECTS TRY TO SURVIVE IN THIS MAZE | R - RESTART";
-		titles[1][2] ="YOU CAN SEE THE AMOUNT OF INSECTS IN THE TOP LEFT CORNER";
-		titles[1][3] ="BLUE SQUARES ARE SOURCES OF WATER, RED SQUARES ARE FOOD. THE NUMBER OF";
-		titles[1][4] ="INSECTS CHANGES IN RELATION TO HOW MANY INSECTS ARE INSIDE THESE SOURCES";
-		titles[1][5] ="1 - LESS ANTS | 2 - MORE ANTS | 3 - LESS INCREASE PER PRESS | 4 - MORE";
+		titles[1][1] ="Observe as the insects try to survive in this maze | R - Restart";
+		titles[1][2] ="You can see the current amount of insects in the top left corner.";
+		titles[1][3] ="Blue areas are sources of water, red ones are food. The number of insects";
+		titles[1][4] ="changes each round in relation to how many are within these sources.";
+		titles[1][5] ="1 - Less insects | 2 - More insects | 3 - Less increase per press | 4 - More";
 		
 		titles[2][0] = "PARTICLES";
-		titles[2][1] ="PRESS DOWN YOUR MOUSE TO DRAW ON THE PARTICLES";
-		titles[2][2] ="PRESS R TO RESET";
+		titles[2][1] ="Press down on your mouse to draw on the particles.";
+		titles[2][2] ="R - Reset";
 		
 		titles[3][0] = "SIERPINSKI";
-		titles[3][1] ="EVERY TURN THERE IS A RANDOM CHANCE FOR THE POINT TO MOVE TOWARDS ONE OF THE";
-		titles[3][2] ="3 POINTS OF THE TRIANGLE. THEN IT LEAVES A POINT HALFWAY ON THE PATH TO THE";
-		titles[3][3] ="CHOSEN POINT. REPEATING THIS WILL SLOWLY CREATE A SIERPINSKI TRIANGLE.";
-		titles[3][4] ="HOLD DOWN YOUR MOUSE OVER A TRIANGLE POINT AND HOLD SHIFT TO MOVE IT";
+		titles[3][1] ="Every turn there is a random chance for the point to move towards one of the";
+		titles[3][2] ="3 points of the triangle. Then it leaves a new point halfway on the path to the";
+		titles[3][3] ="chosen point. Repeating this will slowly create a sierpinski triangle.";
+		titles[3][4] ="Press down on your mouse over a triangle point and hold shift to move it.";
 		
 		titles[4][0] = "SUDOKU";
-		titles[4][1] ="USE YOUR MOUSE TO CLICK ON A BOX, THEN TYPE IN A NUMBER";
-		titles[4][2] ="S -- SOLVE SUDOKU | R -- RESET";
-		titles[4][3] ="+ -- INCREASE SIZE | - -- DECREASE SIZE";
+		titles[4][1] ="Use your mouse to click on a square, then type in a number.";
+		titles[4][2] ="S -- Solve | R -- Reset";
+		titles[4][3] ="+/- -- Change screen size";
 		
 		titles[5][0] = "PATHFIND";
-		titles[5][1] ="USE W,A,S,D TO ESCAPE THE RED ENEMIES FOR AS MANY TURNS AS POSSIBLE";
-		titles[5][2] ="LOAD AND SAVE LEVELS WITH THE MENU BAR | SHIFT + CLICK ON TILES TO EDIT THEM";
-		titles[5][3] ="0 -- WIPE BOARD | R -- RESET BOARD";
-		titles[5][4] ="T -- NEW BOARD | +/- -- CHANGE SIZE";
+		titles[5][1] ="Use W,A,S,D to escape the red enemies for as many turns as possible.";
+		titles[5][2] ="Load and save levels with the menu bar. Shift + click on tiles to edit them.";
+		titles[5][3] ="0 -- Wipe board | R -- Reset board";
+		titles[5][4] ="T -- Generate new board | +/- -- Change screen size";
 		
 		titles[6][0] = "PARALLEL UNIVERSES";
-		titles[6][1] ="THE RED POINT REPRESENTS YOUR POSTITION IN THE UNIVERSE";
-		titles[6][2] ="THE GREEN POINT REPRESENTS YOUR POSITION IN THE PARALLEL UNIVERSES";
-		titles[6][3] ="MOVE WITH W,A,S,D AND HOLD DOWN SHIFT BEFORE PRESSING THE KEYS TO MOVE FASTER";
-		titles[6][4] ="HIDE THE PARALLEL UNIVERSES WITH E";
+		titles[6][1] ="The red point represents your position in the universe.";
+		titles[6][2] ="The green point represents your position in the parallel universes.";
+		titles[6][3] ="Move with W,A,S,D and hold down shift before pressing the keys to move faster.";
+		titles[6][4] ="Hide the parallel universes with E";
 		
 		titles[7][0] = "REFLECTION DEMO";
-		titles[7][1] ="MOVE THE ORIGIN WITH YOUR MOUSE HELD DOWN AND ROTATE WITH THE MOUSE WHEEL";
-		titles[7][2] ="1 - LESS REFLECTIONS  |  2 - MORE REFLECTIONS";
-		titles[7][3] ="3 - LESS ROTATION SPEED  |  4 - MORE ROTATION SPEED";
-		titles[7][4] ="5 - LOW ACCURACY | 6 - DEFAULT ACCURACY | 7 - ULTRA ACCURACY (DEMANDING)";
+		titles[7][1] ="Move the ray origin with your mouse held down and rotate it with the mouse wheel.";
+		titles[7][2] ="1 - Less reflections  |  2 - More reflections";
+		titles[7][3] ="3 - Less rotation speed  |  4 - More rotation speed";
+		titles[7][4] ="5 - Low accuracy | 6 - Default accuracy | 7 - Ultra accuracy";
 		
 		titles[8][0] = "MOUSE DODGE";
-		titles[8][1] = "MOVE YOUR MOUSE TO DODGE THE ENEMIES";
-		titles[8][2] = "PRESS F TO SWITCH DARK MODE ON OR OFF";
-		titles[8][3] = "OTHER CONTROLS ARE DISPLAYED INGAME";
+		titles[8][1] = "Move your mouse to dodge the enemies.";
+		titles[8][2] = "Press F to switch dark mode on or off.";
+		titles[8][3] = "Other controls are displayed ingame.";
 		
 		titles[9][0] = "2D SIDESCROLLER";
-		titles[9][1] ="OUTRUN THE SCREEN AND DON'T FALL INTO THE LAVA";
-		titles[9][2] ="USE W,A,S,D TO MOVE AND SPACE TO JUMP | ENTER FLYING MODE WITH F";
-		titles[9][3] ="R -- RESTART | T -- GENERATE NEW MAP | ESC -- PAUSE";
-		titles[9][4] ="CTRL + S -- SAVE | CTRL + L -- LOAD";
+		titles[9][1] ="Outrun the screen and don't fall into the lava.";
+		titles[9][2] ="Use W,A,S,D to move and press space to jump. | F -- Flying mode";
+		titles[9][3] ="R -- Restart | T -- Generate new map | ESC -- Pause";
+		titles[9][4] ="CTRL + S -- Save | CTRL + L -- Load";
 		
 		titles[10][0] = "2D SPEEDRUN";
-		titles[10][1] ="MOVE AS FAST AS YOU CAN";
-		titles[10][2] ="USE W,A,S,D TO MOVE AND SPACE TO JUMP | ENTER FLYING MODE WITH F";
-		titles[10][3] ="R -- RESTART | T -- GENERATE NEW MAP | ESC -- PAUSE";
-		titles[10][4] ="CTRL + S -- SAVE | CTRL + L -- LOAD";
+		titles[10][1] ="Move as fast as you can.";
+		titles[10][2] ="Use W,A,S,D to move and press space to jump. | F -- Flying mode";
+		titles[10][3] ="R -- Restart | T -- Generate new map | ESC -- Pause";
+		titles[10][4] ="CTRL + S -- Save | CTRL + L -- Load";
 		
 		titles[11][0] = "PIXEL COLLISION";
-		titles[11][1] ="ANYTHING YOU DRAW ON SCREEN WILL BECOME A COLLISION OBJECT";
-		titles[11][2] ="USE THE OBJECT MENU IN THE TOP LEFT TO DRAW AN OBJECT INTO THE RECTANGLE THAT";
-		titles[11][3] ="APPEARS, SAVE IT AND THEN MOVE IT WITH W,A,S,D. USE SHIFT TO MOVE FASTER";
-		titles[11][4] ="USE THE PIXEL MENU TO CHANGE THE SIZE OF THE PIXELS YOU DRAW ";
-		titles[11][5] ="CHANGE SCREEN SIZE: + & - | FLY MODE: F | RESET: R | SHIFT CLICK TO ERASE";
+		titles[11][1] ="Anything you drawn on screen will become a collision object.";
+		titles[11][2] ="USe the Object Menu in the top left to drawn an object into the rectangle that";
+		titles[11][3] ="appears, save it and then move it with W,A,S,D. Use shift to move faster.";
+		titles[11][4] ="Use the Pixel Menu to change the size of the pixel grid";
+		titles[11][5] ="+/- - Change screen size| F - Fly mode | R - Reset | Shift click - Erase pixel";
 		
 		titles[12][0] = "CLOTH SIM";
-		titles[12][1] ="CLICK ANYWHERE ON SCREEN TO CREATE A POINT, CTRL CLICK TO LOCK IT IN PLACE";
-		titles[12][2] ="CLICK ON A POINT AGAIN TO SELECT IT, IF YOU HAVE TWO POINTS SELECTED, PRESS";
-		titles[12][3] ="C TO CONNECT THEM. START OR STOP THE SIMULATION WITH S AND RESET WITH R";
-		titles[12][4] ="MOVE POINT = PRESS DOWN AND MOVE | CUT POINT = HOLD SHIFT, PRESS DOWN AND MOVE";
-		titles[12][5] ="OVER IT | DELETE LAST CONNECTION = CTRL Z | SAVE/LOAD LAYOUTS WITH THE MENUBAR";
+		titles[12][1] ="Click anywhere on screen to create a point, CTRL click to lock it in place.";
+		titles[12][2] ="Click on a point again to select it. When you have two points selected, press";
+		titles[12][3] ="C to connect them. Start or stop the simulation with S and reset it with R.";
+		titles[12][4] ="Move point = Press mouse down and move | Cut point = Hold shift, press down and then move";
+		titles[12][5] ="over it | Delete last connection = CTRL Z | Save/load layouts with the menu bar";
 		
 		titles[13][0] = "GRAVITY VECTORS";
-		titles[13][1] ="THIS IS NOT REALLY A GRAVITY OR MAGNETIC FIELD SIMULATION, BUT I COULD NOT";
-		titles[13][2] ="FIND A PROPER NAME FOR IT. MOVE GRAVITY POINTS WITH THE MOUSE HELD DOWN";
-		titles[13][3] ="1 TO DECREASE THE AMOUNT OF GRAVITY POINTS | 2 TO INCREASE";
-		titles[13][4] ="+ TO INCREASE SCREEN SIZE | - TO DECREASE";
-		titles[13][5] ="G TO ACTIVATE GRADIENT RENDERING | N TO TURN OFF ARROW VECTOR NORMALIZATION";
+		titles[13][1] ="This is not really a gravity or magnetic field simulation, but I could not";
+		titles[13][2] ="find a good name for it. Move gravity points with the mouse held down";
+		titles[13][3] ="1 - Add another gravity point | 2 - Remove last gravity point";
+		titles[13][4] ="+/- - Change screen size";
+		titles[13][5] ="G - Activate gradient rendering | N - Turn off arrow normalization";
 		
 		titles[14][0] = "BALLOON SHOOTING";
-		titles[14][1] ="I WANTED TO RECREATE SOME ASPECTS OF THE ORIGINAL BLOONS GAME IN JAVA WITH";
-		titles[14][2] ="MY OWN SPRITE RENDERER. SHOOT THE BALLOONS USING THE SLINGSHOT WITH THE";
-		titles[14][3] ="MOUSE HELD DOWN. RIGHT ARROW TO LOAD THE NEXT LEVEL, LEFT ARROW FOR THE";
+		titles[14][1] ="I wanted to recreate some aspects of the original bloons game in Java with";
+		titles[14][2] ="my own sprite renderer. Shoot the balloons using the slingshot with the";
+		titles[14][3] ="mouse held down. Press the right arrow key to load the next level,";
 		titles[14][4] ="PREVIOUS LEVEL. R TO RESTART THE LEVEL | G TO SHOW THE LEVEL GRID | USE";
-		titles[14][5] ="SHIFT PRESS ON THE SLING TO MOVE THE ENTIRE THING, NOT JUST THE PROJECTILE";
+		titles[14][4] ="left for the previous level. R - Restart level | G - Show level grid";
+		titles[14][5] ="Use shift press to move the entire slingshot, not just the projectile.";
 		
 		titles[15][0] = "RAND BATTLE";
-		titles[15][1] = "NPCS WITH RANDOM SIZES, HP, DAMAGE, MOVEMENT SPEED AND PROJECTILE SPEED";
-		titles[15][2] = "ARE GENERATED. THEY PICK A RANDOM TARGET AND TRY TO SHOOT IT UNTIL IT IS";
+		titles[15][1] = "NPCs with random sizes, hp, damage, movement speed and projectile speed";
+		titles[15][2] = "are generated. They pick a random target and try to shoot it until it is";
 		titles[15][3] = "DEAD, THEN THEY PICK A NEW ONE. WHO WILL BE THE LAST SURVIVOR?";
-		titles[15][4] = "R - RESTART | S - SHOW STATS | H - ONLY SHOW HEALTH";
+		titles[15][3] = "dead, then they pick a new one. Who will be victorious?";
+		titles[15][4] = "R - Restart | S - Show stats | H - Only show Health";
 		
 		titles[16][0] = "RAND GROWTH";
-		titles[16][1] = "ONCE YOU HAVE PRESSED THE START BUTTON, PRESS AND DRAG YOUR MOUSE ACROSS";
-		titles[16][2] = "THE SCREEN TO SPAWN PIXELS AND WATCH THEM TRY TO SURVIVE AND GROW";
-		titles[16][3] = "ACCORDING TO THE RULES YOU SET WITH THE UI INCLUDED IN THE PROGRAM";
+		titles[16][1] = "Once you have pressed the start button, press and move your mouse";
+		titles[16][2] = "across the screen to spawn pixels and watch them try to survive and grow";
+		titles[16][3] = "according to the rules you set with the UI included in the program.";
 		
 		
 		headline.setText(titles[game][0]);
