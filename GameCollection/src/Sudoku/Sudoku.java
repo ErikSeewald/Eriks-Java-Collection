@@ -30,8 +30,8 @@ public class Sudoku
 				
 				else 
 				{
-						int x =  e.getKeyChar() - '0'; // gives the int value
-						try{panel.changeValue(x);} catch (Exception ex) {}
+					int x =  e.getKeyChar() - '0'; //gives the int value
+					try{panel.changeValue(x);} catch (Exception ex) {}
 				}
 			}
 			@Override
