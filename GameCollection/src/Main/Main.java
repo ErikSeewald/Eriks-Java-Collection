@@ -4,7 +4,6 @@ import java.awt.event.KeyListener;
 
 public class Main 
 {
-
 	public static void main(String[] args) 
 	{
 		MainMenu menu = new MainMenu();
@@ -23,7 +22,6 @@ public class Main
 
 			@Override
 			public void keyReleased(KeyEvent e) {}
-			
 		});
 	}
 }
