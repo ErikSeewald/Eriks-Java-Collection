@@ -22,8 +22,6 @@ private static final long serialVersionUID = -587643554501823550L;
 	
 	private boolean buttonSizeIncreased = false;
 	
-	private JTextField playerCountInput;
-	
 	private JLabel playerCountLabel;
 	private JLabel currentPlayerLabel;
 	
@@ -31,6 +29,8 @@ private static final long serialVersionUID = -587643554501823550L;
 	private final Color borderColor = new Color(120,120,150);
 	
 	private JLabel startButton;
+	private JLabel autoMoveButton;
+	private JLabel playerCountButton;
 	
 	private final Color buttonColor1 = new Color(170, 170, 210);
 	private final Color buttonColor2 = new Color(200, 200, 240);
@@ -39,10 +39,10 @@ private static final long serialVersionUID = -587643554501823550L;
 	private int buttonSizeX = 150;
 	private int buttonSizeY = 70;
 	
-	SnL_Panel panel;
+	private SnL_Panel panel;
 	
-	SpinDie die;
-	JLabel dieButton;
+	private SpinDie die;
+	private JLabel dieButton;
 	
 	public interface Animatable
 	{
@@ -68,23 +68,26 @@ private static final long serialVersionUID = -587643554501823550L;
 		startButton.setBounds(73, 60, buttonSizeX, buttonSizeY);
 		setButtonSettings(startButton);
 		
-		//INPUTS
-		playerCountInput = new JTextField("1");
-		setTextFieldSettings(playerCountInput);
-		playerCountInput.setBounds(93, 210, 110, 45);
+		autoMoveButton = new JLabel(" Auto Move");
+		autoMoveButton.setBounds(60, 650,180,60);
+		setButtonSettings(autoMoveButton);
+		enableAutoMoveButton(false);
 		
+		playerCountButton = new JLabel("  1");
+		playerCountButton.setBounds(120, 220, 60, 60);
+		setButtonSettings(playerCountButton);
 		
 		//LABELS
 		playerCountLabel = new JLabel("Player count");
 		setLabelSettings(playerCountLabel);
-		playerCountLabel.setBounds(85, 170, 250, 45);
+		playerCountLabel.setBounds(87, 170, 250, 45);
 		
 		currentPlayerLabel = new JLabel("Player 1");
 		setLabelSettings(currentPlayerLabel);
 		currentPlayerLabel.setBounds(112, 420, 270, 45);
 		
 		//DIE
-		die = new SpinDie();
+		die = new SpinDie(this);
 		die.setBounds(100, 500, die.SIZE, die.SIZE);
 		
 		dieButton = new JLabel("  Roll");
@@ -93,27 +96,6 @@ private static final long serialVersionUID = -587643554501823550L;
 		
 		this.add(die);
 		
-	}
-	
-	private void setTextFieldSettings(JTextField textField)
-	{
-		textField.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 170), 3));
-		textField.setFont(new Font("", Font.PLAIN, 20));
-		this.add(textField);
-		
-		textField.addKeyListener(new KeyAdapter() 
-		{
-			public void keyPressed(KeyEvent e) 
-			{
-				if ((e.getKeyChar() >= '1' && e.getKeyChar() <= '9') || e.getKeyChar() == '') //-> Delete
-				{textField.setEditable(true);} 
-				else 
-				{textField.setEditable(false);}
-				
-				if (textField.getText().length() >= 1 && e.getKeyChar() != '') // limit to 1 character
-				{textField.setEditable(false);}
-			}
-		});
 	}
 	
 	private void setLabelSettings(JLabel label)
@@ -138,68 +120,58 @@ private static final long serialVersionUID = -587643554501823550L;
 	public void mouseClicked(MouseEvent e) 
 	{
 		
+		JLabel button = (JLabel) e.getSource();
+		
+		buttonAnimation(button, -(buttonSizeX /30));
+		button.setBackground(buttonColor2);
+		
 		if (e.getSource()==startButton) 
+		{}
+		
+		else if (e.getSource()==autoMoveButton) 
 		{	
-			buttonAnimation(startButton, -(buttonSizeX /30));
-			startButton.setBackground(buttonColor2);
+			enableAutoMoveButton(false);
+		}
+		
+		else if (e.getSource()==playerCountButton)
+		{
+			int playerCount = (Integer.parseInt(playerCountButton.getText().trim())+1);
+			if (playerCount == 7) {playerCount = 1;}
+			playerCountButton.setText("  " + playerCount);
 		}
 		
 		else if (e.getSource()==dieButton) 
 		{	
-			buttonAnimation(dieButton, -(buttonSizeX /30));
-			dieButton.setBackground(buttonColor2);
-			
 			dieButton.setVisible(false);
 			die.roll();
-		}
+		}		
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e) 
 	{
-		if (e.getSource()==startButton) 
-		{
-			if (buttonSizeIncreased) {buttonAnimation(startButton, -(buttonSizeX /30));}
-			startButton.setBackground(buttonColor3);
-		}
+		JLabel button = (JLabel) e.getSource();
 		
-		else if (e.getSource()==dieButton) 
-		{
-			if (buttonSizeIncreased) {buttonAnimation(dieButton, -(buttonSizeX /30));}
-			dieButton.setBackground(buttonColor3);
-		}
+		buttonAnimation(button, -(buttonSizeX /30));
+		button.setBackground(buttonColor3);
 	}
 	
 	@Override
 	public void mouseEntered(MouseEvent e) 
 	{
-		if (e.getSource()==startButton) 
-		{
-			buttonAnimation(startButton, (buttonSizeX /30));
-			startButton.setBackground(buttonColor2);
-		}
+		JLabel button = (JLabel) e.getSource();
 		
-		else if (e.getSource()==dieButton) 
-		{
-			buttonAnimation(dieButton, (buttonSizeX /30));
-			dieButton.setBackground(buttonColor2);
-		}
+		buttonAnimation(button, (buttonSizeX /30));
+		button.setBackground(buttonColor2);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) 
 	{
-		if (e.getSource()==startButton) 
-		{
-			if (buttonSizeIncreased) {buttonAnimation(startButton, -(buttonSizeX /30));}
-			startButton.setBackground(buttonColor1);
-		}
+		JLabel button = (JLabel) e.getSource();
 		
-		else if (e.getSource()==dieButton) 
-		{
-			if (buttonSizeIncreased) {buttonAnimation(dieButton, -(buttonSizeX /30));}
-			dieButton.setBackground(buttonColor1);
-		}
+		if (buttonSizeIncreased) {buttonAnimation(button, -(buttonSizeX /30));}
+		button.setBackground(buttonColor1);
 	}
 	
 	@Override
@@ -218,4 +190,7 @@ private static final long serialVersionUID = -587643554501823550L;
 		 button.getWidth()+change, button.getHeight()+change
 		);
 	}
+	
+	public void enableAutoMoveButton(boolean enable)
+	{autoMoveButton.setVisible(enable);}
 }

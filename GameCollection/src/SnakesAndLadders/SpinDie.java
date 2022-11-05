@@ -27,9 +27,13 @@ public class SpinDie extends JPanel implements ActionListener
 	private Random random;
 	
 	private final Color borderColor = new Color(120,120,150);
+	
+	private SnL_GUI GUI;
 
-	SpinDie()
+	SpinDie(SnL_GUI GUI)
 	{
+		this.GUI = GUI;
+		
 		this.setPreferredSize(new Dimension(SIZE,SIZE));
 		
 		rollTimer = new Timer(150, this);
@@ -78,7 +82,7 @@ public class SpinDie extends JPanel implements ActionListener
 	
 	public int roll()
 	{
-		spinTime = random.nextInt(15)+5;
+		spinTime = random.nextInt(5)+12;
 		currentState = random.nextInt(6);
 		rollTimer.start();
 		
@@ -90,11 +94,14 @@ public class SpinDie extends JPanel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		++currentState; 
+		if (spinTime >= 0)
+		{
+			++currentState; 
+			if (currentState == 7) {currentState = 1;}
+		}
 		--spinTime;
-		if (spinTime == 0) {rollTimer.stop();}
-		if (currentState == 7) {currentState = 1;}
 		
 		repaint();
+		if (spinTime == -5) {rollTimer.stop(); GUI.enableAutoMoveButton(true);}
 	}
 }
