@@ -1,16 +1,18 @@
 package SnakesAndLadders;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
-public class SnL_Panel extends JPanel
+public class SnL_Panel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 7284705418024953236L;
 	
@@ -22,52 +24,33 @@ public class SnL_Panel extends JPanel
 	
 	private final int gridSize = 130;
 	
-	private class Player
-	{
-		int playerNum;
-		
-		int screenX;
-		int screenY;
-		
-		int gridPos = 0;
-		
-		Player(int playerNum)
-		{this.playerNum = playerNum; setPosition();}
-		
-		public void setPosition()
-		{
-			int screenGridX;
-			if (gridPos % 18 >= 9) {screenGridX = 8 - gridPos % 9;}
-			else {screenGridX = gridPos % 9;}
-		
-			screenX = 35 + gridSize * screenGridX;
-			screenY = PANEL_HEIGHT - 95 - gridSize * (gridPos / 9);
-		}
-	}
+	private Timer autoMoveTimer;
+	public boolean hasStarted = false;
 	
-	public void changePlayerPos(int x)
-	{players[0].gridPos+=x;players[0].setPosition(); repaint();}
-	
+	//PLAYERS
 	private int playerCount;
-	private Player[] players = new Player[playerCount];
-	
 	private final int playerSize = 60;
 	private final Color[] playerColors = 
 	{
 			new Color(255,80, 80), 
 			new Color(120,120, 240),
-			new Color(240,140, 240), 
 			new Color(80,180, 80),
 			new Color(220,130, 60),  
 			new Color(240,140, 240),
 	};
+	private int currentPlayer;
+	private Player[] players = new Player[playerCount];
+	
+	private SnL_GUI GUI;
 	
 	SnL_Panel()
 	{
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		
-		start(1);
+		autoMoveTimer = new Timer(500, this);
 	}
+	
+	public void addGUI(SnL_GUI GUI)
+	{this.GUI = GUI;}
 
 	public void paint(Graphics g)
 	{
@@ -121,10 +104,8 @@ public class SnL_Panel extends JPanel
 			if (player.playerNum == 1 || player.playerNum == 4)
 			{xOffset = 18;}
 			
-			g2D.drawString(""+player.playerNum, player.screenX+xOffset, player.screenY+44);
-			
-		}
-		
+			g2D.drawString(""+player.playerNum, player.screenX+xOffset, player.screenY+44);	
+		}	
 	}
 	
 	public void start(int playerCount)
@@ -135,6 +116,67 @@ public class SnL_Panel extends JPanel
 		for (int i = 0; i < playerCount; i++)
 		{players[i] = new Player(i+1);}
 		
+		setCurrentPlayer(0);
 		repaint();
+		
+		hasStarted = true;
+	}
+	
+	public void setRolledGridPosition(int pos)
+	{players[currentPlayer].rolledGridPos+= pos;}
+	
+	private void setCurrentPlayer(int x)
+	{
+		currentPlayer = x;
+		
+		if (currentPlayer >= playerCount) {currentPlayer = 0;}
+		
+		GUI.currentPlayerLabel.setText("Player "+(currentPlayer+1));
+	}
+	
+	public void autoMove()
+	{
+		if (!autoMoveTimer.isRunning()) {autoMoveTimer.start();}
+		
+		else if (players[currentPlayer].gridPos == players[currentPlayer].rolledGridPos)
+		{
+			autoMoveTimer.stop(); 
+			setCurrentPlayer(currentPlayer+1);
+			GUI.enableDieButton(true); 
+			GUI.enableStartButton(true);
+			return;
+		}
+		
+		++players[currentPlayer].gridPos;
+		players[currentPlayer].setScreenPosition();
+		repaint();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{autoMove();}
+	
+	private class Player
+	{
+		int playerNum;
+		
+		int screenX;
+		int screenY;
+		
+		int gridPos = 0;
+		int rolledGridPos = 0;
+		
+		Player(int playerNum)
+		{this.playerNum = playerNum; setScreenPosition();}
+		
+		public void setScreenPosition()
+		{
+			int screenGridX;
+			if (gridPos % 18 >= 9) {screenGridX = 8 - gridPos % 9;}
+			else {screenGridX = gridPos % 9;}
+		
+			screenX = 35 + gridSize * screenGridX;
+			screenY = PANEL_HEIGHT - 95 - gridSize * (gridPos / 9);
+		}
 	}
 }

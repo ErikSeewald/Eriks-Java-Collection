@@ -83,7 +83,7 @@ public class SpinDie extends JPanel implements ActionListener
 	public int roll()
 	{
 		spinTime = random.nextInt(5)+12;
-		currentState = random.nextInt(6);
+		currentState = random.nextInt(6)+1;
 		rollTimer.start();
 		
 		int result = (spinTime+currentState) % 6;
@@ -94,7 +94,7 @@ public class SpinDie extends JPanel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		if (spinTime >= 0)
+		if (spinTime > 0)
 		{
 			++currentState; 
 			if (currentState == 7) {currentState = 1;}
