@@ -1,4 +1,5 @@
-package RandGrowth;
+package SnakesAndLadders;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -12,24 +13,19 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class RG_GUI_Panel extends JPanel implements MouseListener
+public class SnL_GUI extends JPanel implements MouseListener
 {
-	private static final long serialVersionUID = -5876435514501823550L;
+private static final long serialVersionUID = -587643554501823550L;
 	
 	private static final int PANEL_WIDTH = 300;
 	private static final int PANEL_HEIGHT = 780;
 	
 	private boolean buttonSizeIncreased = false;
 	
-	private JTextField pixelSizeInput;
-	private JTextField simSpeedInput;
-	private JTextField deathChanceInput;
-	private JTextField reviveChanceInput;
+	private JTextField playerCountInput;
 	
-	private JLabel dieRateLabel;
-	private JLabel reviveRateLabel;
-	private JLabel sizeLabel;
-	private JLabel speedLabel;
+	private JLabel playerCountLabel;
+	private JLabel currentPlayerLabel;
 	
 	private final Color textColor = new Color(90, 90, 110);
 	private final Color borderColor = new Color(120,120,150);
@@ -43,9 +39,21 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 	private int buttonSizeX = 150;
 	private int buttonSizeY = 70;
 	
-	RandGrowthPanel panel;
+	SnL_Panel panel;
 	
-	RG_GUI_Panel(RandGrowthPanel panel)
+	SpinDie die;
+	JLabel dieButton;
+	
+	public interface Animatable
+	{
+		public int getX();
+		public int getY();
+		public int getWidth();
+		public int getHeight();
+		public void setBounds(int a, int b, int c, int d);
+	}
+	
+	SnL_GUI(SnL_Panel panel)
 	{
 		this.panel = panel;
 		
@@ -61,56 +69,48 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 		setButtonSettings(startButton);
 		
 		//INPUTS
-		pixelSizeInput = new JTextField("3");
-		setTextFieldSettings(pixelSizeInput);
-		pixelSizeInput.setBounds(93, 210, 110, 45);
+		playerCountInput = new JTextField("1");
+		setTextFieldSettings(playerCountInput);
+		playerCountInput.setBounds(93, 210, 110, 45);
 		
-		simSpeedInput = new JTextField("15");
-		setTextFieldSettings(simSpeedInput);
-		simSpeedInput.setBounds(93, 360, 110, 45);
-		
-		deathChanceInput = new JTextField("25");
-		setTextFieldSettings(deathChanceInput);
-		deathChanceInput.setBounds(93, 510, 110, 45);
-		
-		reviveChanceInput = new JTextField("35");
-		setTextFieldSettings(reviveChanceInput);
-		reviveChanceInput.setBounds(93, 660, 110, 45);
 		
 		//LABELS
-		dieRateLabel = new JLabel("Chance for a pixel to die each frame");
-		setLabelSettings(dieRateLabel);
-		dieRateLabel.setBounds(35, 470, 250, 45);
+		playerCountLabel = new JLabel("Player count");
+		setLabelSettings(playerCountLabel);
+		playerCountLabel.setBounds(85, 170, 250, 45);
 		
-		reviveRateLabel = new JLabel("Chance to bring a surrounding pixel to life");
-		setLabelSettings(reviveRateLabel);
-		reviveRateLabel.setBounds(17, 620, 270, 45);
+		currentPlayerLabel = new JLabel("Player 1");
+		setLabelSettings(currentPlayerLabel);
+		currentPlayerLabel.setBounds(112, 420, 270, 45);
 		
-		sizeLabel = new JLabel("Pixel size");
-		setLabelSettings(sizeLabel);
-		sizeLabel.setBounds(115, 170, 130, 45);
+		//DIE
+		die = new SpinDie();
+		die.setBounds(100, 500, die.SIZE, die.SIZE);
 		
-		speedLabel = new JLabel("Simulation Speed");
-		setLabelSettings(speedLabel);
-		speedLabel.setBounds(90, 320, 130, 45);	
+		dieButton = new JLabel("  Roll");
+		dieButton.setBounds(100, 500, die.SIZE, die.SIZE);
+		setButtonSettings(dieButton);
+		
+		this.add(die);
+		
 	}
 	
 	private void setTextFieldSettings(JTextField textField)
 	{
 		textField.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 170), 3));
-		textField.setFont(new Font("", Font.PLAIN, 15));
+		textField.setFont(new Font("", Font.PLAIN, 20));
 		this.add(textField);
 		
 		textField.addKeyListener(new KeyAdapter() 
 		{
 			public void keyPressed(KeyEvent e) 
 			{
-				if ((e.getKeyChar() >= '0' && e.getKeyChar() <= '9') || e.getKeyChar() == '') //-> Delete
+				if ((e.getKeyChar() >= '1' && e.getKeyChar() <= '9') || e.getKeyChar() == '') //-> Delete
 				{textField.setEditable(true);} 
 				else 
 				{textField.setEditable(false);}
 				
-				if (textField.getText().length() >= 5 && e.getKeyChar() != '') // limit to 5 characters
+				if (textField.getText().length() >= 1 && e.getKeyChar() != '') // limit to 1 character
 				{textField.setEditable(false);}
 			}
 		});
@@ -119,7 +119,7 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 	private void setLabelSettings(JLabel label)
 	{
 		label.setForeground(textColor);
-		label.setFont(new Font("", Font.BOLD, 13));
+		label.setFont(new Font("", Font.BOLD, 20));
 		this.add(label);
 	}
 	
@@ -137,19 +137,20 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 	@Override
 	public void mouseClicked(MouseEvent e) 
 	{
+		
 		if (e.getSource()==startButton) 
 		{	
 			buttonAnimation(startButton, -(buttonSizeX /30));
 			startButton.setBackground(buttonColor2);
+		}
+		
+		else if (e.getSource()==dieButton) 
+		{	
+			buttonAnimation(dieButton, -(buttonSizeX /30));
+			dieButton.setBackground(buttonColor2);
 			
-			int deathChance = Integer.parseInt(deathChanceInput.getText());
-			int reviveChance = Integer.parseInt(reviveChanceInput.getText());
-			int pixelSize = Integer.parseInt(pixelSizeInput.getText());
-			int simSpeed = Integer.parseInt(simSpeedInput.getText());
-			if (simSpeed != 0) {simSpeed = 1000/simSpeed;}
-			else {simSpeed = 1000000;}
-			
-			panel.reset(deathChance, reviveChance, pixelSize, simSpeed);
+			dieButton.setVisible(false);
+			die.roll();
 		}
 	}
 	
@@ -161,6 +162,12 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 			if (buttonSizeIncreased) {buttonAnimation(startButton, -(buttonSizeX /30));}
 			startButton.setBackground(buttonColor3);
 		}
+		
+		else if (e.getSource()==dieButton) 
+		{
+			if (buttonSizeIncreased) {buttonAnimation(dieButton, -(buttonSizeX /30));}
+			dieButton.setBackground(buttonColor3);
+		}
 	}
 	
 	@Override
@@ -171,6 +178,12 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 			buttonAnimation(startButton, (buttonSizeX /30));
 			startButton.setBackground(buttonColor2);
 		}
+		
+		else if (e.getSource()==dieButton) 
+		{
+			buttonAnimation(dieButton, (buttonSizeX /30));
+			dieButton.setBackground(buttonColor2);
+		}
 	}
 
 	@Override
@@ -180,6 +193,12 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 		{
 			if (buttonSizeIncreased) {buttonAnimation(startButton, -(buttonSizeX /30));}
 			startButton.setBackground(buttonColor1);
+		}
+		
+		else if (e.getSource()==dieButton) 
+		{
+			if (buttonSizeIncreased) {buttonAnimation(dieButton, -(buttonSizeX /30));}
+			dieButton.setBackground(buttonColor1);
 		}
 	}
 	

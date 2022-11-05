@@ -52,7 +52,7 @@ public class WindowEventHandler extends WindowAdapter
 			case "Bloon Shooting": index = 13; break;
 			case "Rand Battle": RandBattle.stop(); index = 14; break;
 			case "Rand Growth": RandGrowth.stop(); index = 15; break;
-		}
+			case "Snakes and Ladders": index = 16; break;}
 		
 		if (index != -1)
 		{MainMenu.hasWindowOpen[index] = false;}

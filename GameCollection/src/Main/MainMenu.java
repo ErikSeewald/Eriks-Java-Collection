@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -24,6 +25,7 @@ import PixelCollision.PixelCollision;
 import RandBattle.RandBattle;
 import RandGrowth.RandGrowth;
 import ReflectionDemo.ReflectionDemo;
+import SnakesAndLadders.SnakesAndLadders;
 import Sudoku.Sudoku;
 
 public class MainMenu extends JFrame implements MouseListener
@@ -48,7 +50,7 @@ public class MainMenu extends JFrame implements MouseListener
 	private JLabel gameButton14 = new JLabel("  Bloon Shoot");
 	private JLabel gameButton15 = new JLabel("  Rand Battle");
 	private JLabel gameButton16 = new JLabel(" Rand Growth");
-	private JLabel gameButton17 = new JLabel("");
+	private JLabel gameButton17 = new JLabel("     Ladders");
 	private JLabel gameButton18 = new JLabel("");
 	private JLabel gameButton19 = new JLabel("");
 	private JLabel gameButton20 = new JLabel("");
@@ -213,6 +215,8 @@ public class MainMenu extends JFrame implements MouseListener
 			break;
 			case 15: RandGrowth randGrowth = new RandGrowth(); randGrowth.start(eventHandler);
 			break;
+			case 16: SnakesAndLadders snakesAndLadders = new SnakesAndLadders(); snakesAndLadders.start(eventHandler);
+			break;
 		}
 		
 		hasWindowOpen[index] = !hasWindowOpen[index];		
@@ -369,6 +373,8 @@ public class MainMenu extends JFrame implements MouseListener
 		titles[15][1] = "Once you have pressed the start button, press and move your mouse";
 		titles[15][2] = "across the screen to spawn pixels and watch them try to survive and grow";
 		titles[15][3] = "according to the rules you set with the UI included in the program.";
+		
+		titles[16][0] = "SNAKES AND LADDERS";
 		
 		
 		headline.setText(titles[game][0]);
