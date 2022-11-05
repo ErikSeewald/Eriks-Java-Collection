@@ -3,15 +3,11 @@ package SnakesAndLadders;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 public class SnL_GUI extends JPanel implements MouseListener
 {
@@ -23,7 +19,7 @@ private static final long serialVersionUID = -587643554501823550L;
 	private boolean buttonSizeIncreased = false;
 	
 	private JLabel playerCountLabel;
-	private JLabel currentPlayerLabel;
+	JLabel currentPlayerLabel;
 	
 	private final Color textColor = new Color(90, 90, 110);
 	private final Color borderColor = new Color(120,120,150);
@@ -84,7 +80,8 @@ private static final long serialVersionUID = -587643554501823550L;
 		
 		currentPlayerLabel = new JLabel("Player 1");
 		setLabelSettings(currentPlayerLabel);
-		currentPlayerLabel.setBounds(112, 420, 270, 45);
+		currentPlayerLabel.setBounds(85, 420, 270, 45);
+		currentPlayerLabel.setFont(new Font("", Font.BOLD, 35));
 		
 		//DIE
 		die = new SpinDie(this);
@@ -126,24 +123,31 @@ private static final long serialVersionUID = -587643554501823550L;
 		button.setBackground(buttonColor2);
 		
 		if (e.getSource()==startButton) 
-		{}
+		{
+			panel.start(Integer.parseInt(playerCountButton.getText().trim()));
+		}
 		
 		else if (e.getSource()==autoMoveButton) 
 		{	
 			enableAutoMoveButton(false);
+			panel.autoMove();
 		}
 		
 		else if (e.getSource()==playerCountButton)
 		{
 			int playerCount = (Integer.parseInt(playerCountButton.getText().trim())+1);
-			if (playerCount == 7) {playerCount = 1;}
+			if (playerCount == 6) {playerCount = 1;}
 			playerCountButton.setText("  " + playerCount);
 		}
 		
 		else if (e.getSource()==dieButton) 
 		{	
-			dieButton.setVisible(false);
-			die.roll();
+			if (panel.hasStarted)
+			{
+				dieButton.setVisible(false);
+				panel.setRolledGridPosition(die.roll());
+				enableStartButton(false);
+			}
 		}		
 	}
 	
@@ -193,4 +197,10 @@ private static final long serialVersionUID = -587643554501823550L;
 	
 	public void enableAutoMoveButton(boolean enable)
 	{autoMoveButton.setVisible(enable);}
+	
+	public void enableDieButton(boolean enable)
+	{dieButton.setVisible(enable);}
+	
+	public void enableStartButton(boolean enable)
+	{startButton.setVisible(enable);}
 }
