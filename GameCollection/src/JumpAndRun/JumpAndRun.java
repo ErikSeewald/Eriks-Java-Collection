@@ -132,5 +132,5 @@ public class JumpAndRun
 	}
 	
 	public static void stop()
-	{ if (timer.isRunning()) {timer.stop();}}
+	{timer.stop();}
 }

@@ -58,7 +58,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 	private int levelPixelSize = PANEL_WIDTH/450;
 	
 	//SIMULATION
-	private final Timer shot = new Timer(15,this);
+	final Timer shot = new Timer(15,this);
 
 	BlS_Panel()
 	{

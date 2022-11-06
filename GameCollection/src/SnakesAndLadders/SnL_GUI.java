@@ -205,4 +205,7 @@ private static final long serialVersionUID = -587643554501823550L;
 	
 	public void enableManualMove()
 	{panel.moveAvailable = true;}
+	
+	public void stopRollTimer()
+	{die.rollTimer.stop();}
 }

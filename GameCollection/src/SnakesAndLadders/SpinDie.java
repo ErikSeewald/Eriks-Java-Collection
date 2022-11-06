@@ -23,7 +23,7 @@ public class SpinDie extends JPanel implements ActionListener
 	
 	final int SIZE = 100;
 	
-	private Timer rollTimer;
+	Timer rollTimer;
 	private Random random;
 	
 	private final Color borderColor = new Color(120,120,150);

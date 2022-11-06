@@ -12,9 +12,11 @@ public class BloonShooting extends JFrame
 {
 	private static final long serialVersionUID = -1952542729679771029L;
 
+	static BlS_Panel panel;
+	
 	public BloonShooting()
 	{
-		BlS_Panel panel = new BlS_Panel();
+		panel = new BlS_Panel();
 		this.setIconImage(MainMenu.img.getImage());
 		this.add(panel);
 		this.pack();
@@ -46,4 +48,7 @@ public class BloonShooting extends JFrame
 	
 	public void start(WindowEventHandler eventHandler)
 	{this.addWindowListener(eventHandler);}
+	
+	public static void stop()
+	{panel.shot.stop();}
 }
