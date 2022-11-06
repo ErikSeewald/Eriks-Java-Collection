@@ -484,20 +484,17 @@ public class SnL_Panel extends JPanel implements ActionListener
 			if (i == 0 || snakeNladderCount > 16 || i == 53) {continue;} 
 			
 			//SNAKES
-			if (random.nextInt(10) == 1) //else if so there cannot be both a ladder and a snake going out from a square
+			if (i > 9 && random.nextInt(10) == 1) //i > 9 -> no snake going out from a square in the bottom row
 			{
-				if (i > 9) {squares[i].snakeEnd = random.nextInt(i-9);} //no snake going out from a square in the bottom row
+				squares[i].snakeEnd = random.nextInt(i-9); 
 				++snakeNladderCount;
 			}
 			
 			//LADDERS
-			else if (random.nextInt(10) == 1)
+			else if (i < 44 && random.nextInt(10) == 1)//i < 44 -> no ladders going up from the highest row
 			{
-				if (i < 44) //no ladders going up from the highest row
-				{
-					squares[i].ladderEnd = random.nextInt(53-i-9)+i+9; //difference of 9 so the ladder/snake is definitely in another row
-					++snakeNladderCount;
-				}
+				squares[i].ladderEnd = random.nextInt(53-i-9)+i+9; //difference of 9 so the ladder/snake is definitely in another row
+				++snakeNladderCount;
 			}
 		}
 	}
