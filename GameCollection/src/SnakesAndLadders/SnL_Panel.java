@@ -53,6 +53,7 @@ public class SnL_Panel extends JPanel implements ActionListener
 	
 	//SNAKES AND LADDERS
 	private Square[] squares = new Square[54];
+	private int snakeAndLadderIterations = 0;
 	
 	SnL_Panel()
 	{
@@ -114,25 +115,33 @@ public class SnL_Panel extends JPanel implements ActionListener
 		}
 		
 		//SNAKES AND LADDERS
+		Color ladderColor = Color.green;
+		Color snakeColor = new Color(255,80,80);
+		
 		for (int i = 0; i < 54; i++) 
 		{
-			
 			//LADDERS
 			int ladderEnd = squares[i].ladderEnd;
 			if (ladderEnd > -1)
 			{
-				g2D.setPaint(Color.ORANGE);
+				g2D.setPaint(ladderColor);
 				g2D.drawLine(squares[i].centerX, squares[i].centerY, squares[ladderEnd].centerX, squares[ladderEnd].centerY);
-				g2D.fillRect(squares[ladderEnd].centerX-5, squares[ladderEnd].centerY-5, 10, 10);
+				paintArrow(g2D, ladderColor, squares[i], squares[ladderEnd]);
+				
+				paintNormalofArrow
+				(g2D, squares[i].centerX-squares[ladderEnd].centerX, squares[i].centerY-squares[ladderEnd].centerY, squares[i], ladderColor);
 			}
 				
 			//SNAKES
 			int snakeEnd = squares[i].snakeEnd;
 			if (snakeEnd > -1)
 			{
-				g2D.setPaint(Color.GREEN);
+				g2D.setPaint(snakeColor);
 				g2D.drawLine(squares[i].centerX, squares[i].centerY, squares[snakeEnd].centerX, squares[snakeEnd].centerY);
-				g2D.fillRect(squares[snakeEnd].centerX-5, squares[snakeEnd].centerY-5, 10, 10);
+				paintArrow(g2D, snakeColor, squares[i], squares[snakeEnd]);
+				
+				paintNormalofArrow
+				(g2D, squares[i].centerX-squares[snakeEnd].centerX, squares[i].centerY-squares[snakeEnd].centerY, squares[i], snakeColor);
 			}
 		}
 		
@@ -161,6 +170,36 @@ public class SnL_Panel extends JPanel implements ActionListener
 		}	
 	}
 	
+	private void paintArrow(Graphics2D g2D, Color color, Square square1, Square square2)
+	{
+		int Bx = square2.centerX;
+		int By = square2.centerY;
+		 
+		double offs = 30 * Math.PI / 180.0;
+		double angle = Math.atan2(square1.centerY - By, square1.centerX - Bx);
+		int[] xs = { Bx + (int) (18 * Math.cos(angle + offs)), (int) Bx, Bx + (int) (18 * Math.cos(angle - offs)) };
+		int[] ys = { By + (int) (18 * Math.sin(angle + offs)), (int) By, By + (int) (18 * Math.sin(angle - offs)) };
+		
+		g2D.setColor(color);
+		g2D.drawPolyline(xs, ys, 3);
+	}
+	
+	private void paintNormalofArrow(Graphics2D g2D, int x, int y, Square square, Color color)
+	{
+		double x1 = y, y1 = -x;
+		double length1 = Math.sqrt(x1*x1 + y1*y1);
+		x1 /= length1/12;
+		y1 /= length1/12;
+		
+		double x2 = -y, y2 = x;
+		double length2 = Math.sqrt(x2*x2 + y2*y2);
+		x2 /= length2/12;
+		y2 /= length2/12;
+		
+		g2D.setPaint(color);
+		g2D.drawLine((int)x1+square.centerX, (int)y1+square.centerY, (int)x2+square.centerX, (int)y2+square.centerY);
+	}
+
 	public void start(int playerCount)
 	{
 		this.playerCount = playerCount;
@@ -178,7 +217,6 @@ public class SnL_Panel extends JPanel implements ActionListener
 		generateSnakesAndLadders();
 		repaint();
 	}
-	
 	
 	
 	//PLAYER IMPLEMENTATION
@@ -206,7 +244,7 @@ public class SnL_Panel extends JPanel implements ActionListener
 			autoMoveTimer.stop();
 			
 			if (players[currentPlayer].gridPos == 53)
-			{finished = true; GUI.enableDieButton(false); repaint(); return;}
+			{finish(); return;}
 			
 			snakeNladderCheck();
 			return;
@@ -304,7 +342,7 @@ public class SnL_Panel extends JPanel implements ActionListener
 				moveAvailable = false;
 				
 				if (releaseGridPos == 53)
-				{finished = true; GUI.enableDieButton(false); repaint(); clickInside = false; return;}
+				{clickInside = false; finish(); return;}
 				
 				snakeNladderCheck();
 	    	}
@@ -315,7 +353,13 @@ public class SnL_Panel extends JPanel implements ActionListener
 	    }
 	}
 	
-	
+	private void finish()
+	{
+		finished = true; 
+		GUI.enableDieButton(false);  
+		GUI.enableStartButton(true); 
+		repaint(); 
+	}
 	
 	//SNAKES AND LADDERS IMPLEMENTATION
 	
@@ -343,18 +387,33 @@ public class SnL_Panel extends JPanel implements ActionListener
 	{
 		int playerPos = players[currentPlayer].gridPos;
 		
-		
-		if (squares[playerPos].snakeEnd > -1)
+		if (snakeAndLadderIterations < 6) //prevent infinite loops
 		{
-			SnakeEvent(players[currentPlayer]);
+			if (squares[playerPos].snakeEnd > -1)
+			{
+				SnakeEvent(players[currentPlayer]);
+			}
+			
+			else if (squares[playerPos].ladderEnd > -1)
+			{
+				LadderEvent(players[currentPlayer]);
+			}
+			
+			else
+			{nextTurn();}
 		}
 		
-		else if (squares[playerPos].ladderEnd > -1)
-		{
-			LadderEvent(players[currentPlayer]);
-		}
-		
-		else {setCurrentPlayer(currentPlayer+1); GUI.enableDieButton(true); GUI.enableStartButton(true);}
+		else
+		{nextTurn();}
+	}
+	
+	private void nextTurn()
+	{
+		GUI.enableDieButton(true); 
+		GUI.enableStartButton(true);
+		moveAvailable = false;
+		snakeAndLadderIterations = 0;
+		setCurrentPlayer(currentPlayer+1); 
 	}
 	
 	private void SnakeEvent(Player player)
@@ -362,6 +421,7 @@ public class SnL_Panel extends JPanel implements ActionListener
 		player.gridPos = squares[player.gridPos].snakeEnd;
 		player.rolledGridPos = player.gridPos;
 		GUI.enableDieButton(false);
+		++snakeAndLadderIterations;
 		SnLMoveTimer.start();
 	}
 	
@@ -370,6 +430,7 @@ public class SnL_Panel extends JPanel implements ActionListener
 		player.gridPos = squares[player.gridPos].ladderEnd;
 		player.rolledGridPos = player.gridPos;
 		GUI.enableDieButton(false);
+		++snakeAndLadderIterations;
 		SnLMoveTimer.start();
 	}
 	
@@ -450,4 +511,7 @@ public class SnL_Panel extends JPanel implements ActionListener
 		else if (e.getSource() == SnLMoveTimer)
 		{moveAlongConnection(players[currentPlayer]);}
 	}
+	
+	public void stopAllTimers()
+	{autoMoveTimer.stop(); SnLMoveTimer.stop(); GUI.stopRollTimer();}
 }

@@ -21,6 +21,7 @@ public class MouseDodge
 
 		frame.addWindowListener(eventHandler);
 		frame.setIconImage(MainMenu.img.getImage());
+		frame.setResizable(false);
 		
 		frame.addKeyListener(new KeyListener() 
 		{

@@ -236,5 +236,5 @@ public class ClothSim extends JFrame
 	{this.addWindowListener(eventHandler);}
 	
 	public static void stop()
-	{if (timer.isRunning()) {timer.stop();}}
+	{timer.stop();}
 }

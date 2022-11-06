@@ -378,6 +378,7 @@ public class MainMenu extends JFrame implements MouseListener
 		titles[16][1] = "A classic game of Snakes And Ladders. Set the amount of players and press 'Start'.";
 		titles[16][2] = "Once you have pressed on the roll button you can either move your player piece with";
 		titles[16][3] = "the mouse, or you can press on Auto Move and have the piece move for you.";
+		titles[16][4] = "Try to reach square 53!";
 		
 		
 		headline.setText(titles[game][0]);

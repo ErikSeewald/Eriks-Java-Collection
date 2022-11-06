@@ -437,6 +437,6 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 	}
 	
 	public static void stop()
-	{if (moveTimer.isRunning()) {moveTimer.stop();} if (timer.isRunning()) {timer.stop();}}
+	{moveTimer.stop(); timer.stop();}
 
 }

@@ -9,7 +9,7 @@ public class SnakesAndLadders extends JFrame
 {
 	private static final long serialVersionUID = 7284705718024953236L;
 	
-	private SnL_Panel panel;
+	private static SnL_Panel panel;
 	private SnL_GUI GUI;
 	
 	public SnakesAndLadders()
@@ -30,5 +30,8 @@ public class SnakesAndLadders extends JFrame
 	
 	public void start(WindowEventHandler eventHandler)
 	{this.addWindowListener(eventHandler);}
+	
+	public static void stop()
+	{panel.stopAllTimers();}
 
 }

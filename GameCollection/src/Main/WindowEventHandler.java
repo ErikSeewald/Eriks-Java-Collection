@@ -4,6 +4,7 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import BloonShooting.BloonShooting;
 import ClothSim.ClothSim;
 import Insects.InsectsPanel;
 import JumpAndRun.JumpAndRun;
@@ -15,6 +16,7 @@ import PixelCollision.PixelCollision;
 import RandBattle.RandBattle;
 import RandGrowth.RandGrowth;
 import Sierpinski.SierpinskiSlow;
+import SnakesAndLadders.SnakesAndLadders;
 
 public class WindowEventHandler extends WindowAdapter
 {
@@ -49,10 +51,11 @@ public class WindowEventHandler extends WindowAdapter
 			case "Pixel Collision": PixelCollision.stop(); index = 10; break;
 			case "Cloth Sim": ClothSim.stop(); index = 11; break;
 			case "Gravity Vectors": index = 12; break;
-			case "Bloon Shooting": index = 13; break;
+			case "Bloon Shooting": BloonShooting.stop(); index = 13; break;
 			case "Rand Battle": RandBattle.stop(); index = 14; break;
 			case "Rand Growth": RandGrowth.stop(); index = 15; break;
-			case "Snakes and Ladders": index = 16; break;}
+			case "Snakes and Ladders": SnakesAndLadders.stop(); index = 16; break;
+		}
 		
 		if (index != -1)
 		{MainMenu.hasWindowOpen[index] = false;}
