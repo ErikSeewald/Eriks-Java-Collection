@@ -116,7 +116,6 @@ private static final long serialVersionUID = -587643554501823550L;
 	@Override
 	public void mouseClicked(MouseEvent e) 
 	{
-		
 		JLabel button = (JLabel) e.getSource();
 		
 		buttonAnimation(button, -(buttonSizeX /30));
@@ -203,4 +202,7 @@ private static final long serialVersionUID = -587643554501823550L;
 	
 	public void enableStartButton(boolean enable)
 	{startButton.setVisible(enable);}
+	
+	public void enableManualMove()
+	{panel.moveAvailable = true;}
 }

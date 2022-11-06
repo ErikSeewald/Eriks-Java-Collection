@@ -33,7 +33,6 @@ public class SpinDie extends JPanel implements ActionListener
 	SpinDie(SnL_GUI GUI)
 	{
 		this.GUI = GUI;
-		
 		this.setPreferredSize(new Dimension(SIZE,SIZE));
 		
 		rollTimer = new Timer(150, this);
@@ -50,14 +49,14 @@ public class SpinDie extends JPanel implements ActionListener
 		g2D.setStroke(new BasicStroke(8));
 		g2D.drawRect(0, 0, SIZE, SIZE);
 		
-		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		//NUMBERS
-		setResultArray();
+		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
+		setResultArray();
 		int yOffset = -16;
 		for (int i = 0; i < 9; i++)
 	    {
-	        if (i % 3 == 0) {yOffset+=30;}
+	        if (i % 3 == 0) {yOffset+=30;} //move into next row
 
 	        if (resultArray[i] == 1) 
 	        {g2D.fillOval(12+ (i%3)*30, yOffset, 15, 15);}
@@ -102,6 +101,6 @@ public class SpinDie extends JPanel implements ActionListener
 		--spinTime;
 		
 		repaint();
-		if (spinTime == -5) {rollTimer.stop(); GUI.enableAutoMoveButton(true);}
+		if (spinTime == -5) {rollTimer.stop(); GUI.enableAutoMoveButton(true); GUI.enableManualMove();}
 	}
 }
