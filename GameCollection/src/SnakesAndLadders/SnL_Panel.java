@@ -44,6 +44,7 @@ public class SnL_Panel extends JPanel implements ActionListener
 	
 	private SnL_GUI GUI;
 	private Timer autoMoveTimer;
+	private Timer SnLMoveTimer;
 	
 	boolean moveAvailable = false;
 	private boolean clickInside = false;
@@ -57,6 +58,7 @@ public class SnL_Panel extends JPanel implements ActionListener
 	{
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		autoMoveTimer = new Timer(500, this);
+		SnLMoveTimer = new Timer(20,this);
 		
 		ClickListener clickListener = new ClickListener();
 		DragListener dragListener = new DragListener();
@@ -114,8 +116,6 @@ public class SnL_Panel extends JPanel implements ActionListener
 		//SNAKES AND LADDERS
 		for (int i = 0; i < 54; i++) 
 		{
-//			g2D.setPaint(gridColor);
-//			g2D.fillRect(squares[i].centerX, squares[i].centerY, 10, 10);
 			
 			//LADDERS
 			int ladderEnd = squares[i].ladderEnd;
@@ -123,6 +123,7 @@ public class SnL_Panel extends JPanel implements ActionListener
 			{
 				g2D.setPaint(Color.ORANGE);
 				g2D.drawLine(squares[i].centerX, squares[i].centerY, squares[ladderEnd].centerX, squares[ladderEnd].centerY);
+				g2D.fillRect(squares[ladderEnd].centerX-5, squares[ladderEnd].centerY-5, 10, 10);
 			}
 				
 			//SNAKES
@@ -131,9 +132,9 @@ public class SnL_Panel extends JPanel implements ActionListener
 			{
 				g2D.setPaint(Color.GREEN);
 				g2D.drawLine(squares[i].centerX, squares[i].centerY, squares[snakeEnd].centerX, squares[snakeEnd].centerY);
+				g2D.fillRect(squares[snakeEnd].centerX-5, squares[snakeEnd].centerY-5, 10, 10);
 			}
 		}
-		
 		
 		//PLAYERS
 		for (Player player : players)
@@ -202,14 +203,12 @@ public class SnL_Panel extends JPanel implements ActionListener
 		
 		else if (players[currentPlayer].gridPos == players[currentPlayer].rolledGridPos)
 		{
-			autoMoveTimer.stop(); 
-			GUI.enableDieButton(true); 
-			GUI.enableStartButton(true);
+			autoMoveTimer.stop();
 			
 			if (players[currentPlayer].gridPos == 53)
 			{finished = true; GUI.enableDieButton(false); repaint(); return;}
 			
-			setCurrentPlayer(currentPlayer+1);
+			snakeNladderCheck();
 			return;
 		}
 		
@@ -217,10 +216,7 @@ public class SnL_Panel extends JPanel implements ActionListener
 		players[currentPlayer].setScreenPosition();
 		repaint();
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) 
-	{autoMove();}
+	
 	
 	private class Player
 	{
@@ -245,7 +241,6 @@ public class SnL_Panel extends JPanel implements ActionListener
 			screenY = PANEL_HEIGHT - 95 - gridSize * (gridPos / 9);
 		}
 	}
-	
 	
 	
 	//MANUAL MOVING IMPLEMENTATION
@@ -306,14 +301,12 @@ public class SnL_Panel extends JPanel implements ActionListener
 	    		players[currentPlayer].gridPos = releaseGridPos;
 	    		
 	    		players[currentPlayer].setScreenPosition();
-				GUI.enableDieButton(true); 
-				GUI.enableStartButton(true);
 				moveAvailable = false;
 				
 				if (releaseGridPos == 53)
 				{finished = true; GUI.enableDieButton(false); repaint(); clickInside = false; return;}
 				
-				setCurrentPlayer(currentPlayer+1);
+				snakeNladderCheck();
 	    	}
 	    	
 	    	clickInside = false;
@@ -346,6 +339,74 @@ public class SnL_Panel extends JPanel implements ActionListener
 		}
 	}
 	
+	private void snakeNladderCheck()
+	{
+		int playerPos = players[currentPlayer].gridPos;
+		
+		
+		if (squares[playerPos].snakeEnd > -1)
+		{
+			SnakeEvent(players[currentPlayer]);
+		}
+		
+		else if (squares[playerPos].ladderEnd > -1)
+		{
+			LadderEvent(players[currentPlayer]);
+		}
+		
+		else {setCurrentPlayer(currentPlayer+1); GUI.enableDieButton(true); GUI.enableStartButton(true);}
+	}
+	
+	private void SnakeEvent(Player player)
+	{
+		player.gridPos = squares[player.gridPos].snakeEnd;
+		player.rolledGridPos = player.gridPos;
+		GUI.enableDieButton(false);
+		SnLMoveTimer.start();
+	}
+	
+	private void LadderEvent(Player player)
+	{
+		player.gridPos = squares[player.gridPos].ladderEnd;
+		player.rolledGridPos = player.gridPos;
+		GUI.enableDieButton(false);
+		SnLMoveTimer.start();
+	}
+	
+	private void moveAlongConnection(Player player)
+	{
+		//save cur position so you can generate and save goal position and then move the player back to cur position
+		int curPlayerX = player.screenX, curPlayerY = player.screenY;
+		
+		player.setScreenPosition();
+		int goalX = player.screenX, goalY = player.screenY;
+		
+		player.screenX = curPlayerX;
+		player.screenY = curPlayerY;
+		
+		
+		double[] v = new double[2];
+		v[0] = goalX - player.screenX;
+		v[1] = goalY - player.screenY;
+	
+		double movelength = Math.sqrt(Math.pow(v[0], 2)+Math.pow(v[1], 2));
+		
+		v[0] /= movelength*0.1; v[1] /= movelength*0.1;
+		
+		player.screenX+= v[0];
+		player.screenY+= v[1];
+		
+		
+		if (player.screenX > goalX-10 &&  player.screenX < goalX+10 && player.screenY > goalY-10 &&  player.screenY < goalY+10)
+		{
+			player.setScreenPosition();//if its somewhat there, snap into position
+			SnLMoveTimer.stop();
+			snakeNladderCheck();
+		} 
+		
+		repaint();
+	}
+	
 	private void generateSnakesAndLadders()
 	{
 		Random random = new Random();
@@ -357,25 +418,36 @@ public class SnL_Panel extends JPanel implements ActionListener
 			squares[i].gridPos = i;
 			squares[i].calculateCenterPoint();
 			
-			//skip 0 to make sure no ladder is going out from the starting point, skip after 10 connections so it doesnt get clustered
-			if (i == 0 || snakeNladderCount > 10) {continue;} 
-			
-			//LADDERS
-			if (random.nextInt(10) == 1)
-			{
-				if (i < 45) //no ladders going up from the highest row
-				{
-					squares[i].ladderEnd = random.nextInt(54-i-9)+i+9; //difference of 9 so the ladder/snake is definitely in another row
-					++snakeNladderCount;
-				}
-			}
+			//skip 0 to make sure no ladder is going out from the starting point, skip after 16 connections so it doesnt get too clustered
+			//No connections to final square
+			if (i == 0 || snakeNladderCount > 16 || i == 53) {continue;} 
 			
 			//SNAKES
-			else if (random.nextInt(10) == 1) //else if so there cannot be both a ladder and a snake going out from a square
+			if (random.nextInt(10) == 1) //else if so there cannot be both a ladder and a snake going out from a square
 			{
 				if (i > 9) {squares[i].snakeEnd = random.nextInt(i-9);} //no snake going out from a square in the bottom row
 				++snakeNladderCount;
 			}
+			
+			//LADDERS
+			else if (random.nextInt(10) == 1)
+			{
+				if (i < 44) //no ladders going up from the highest row
+				{
+					squares[i].ladderEnd = random.nextInt(53-i-9)+i+9; //difference of 9 so the ladder/snake is definitely in another row
+					++snakeNladderCount;
+				}
+			}
 		}
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{
+		if (e.getSource() == autoMoveTimer)
+		{autoMove();}
+
+		else if (e.getSource() == SnLMoveTimer)
+		{moveAlongConnection(players[currentPlayer]);}
 	}
 }
