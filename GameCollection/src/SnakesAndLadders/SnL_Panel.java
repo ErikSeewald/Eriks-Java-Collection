@@ -237,6 +237,8 @@ public class SnL_Panel extends JPanel implements ActionListener
 	
 	public void autoMove()
 	{
+		moveAvailable = false;
+		
 		if (!autoMoveTimer.isRunning()) {autoMoveTimer.start();}
 		
 		else if (players[currentPlayer].gridPos == players[currentPlayer].rolledGridPos)
