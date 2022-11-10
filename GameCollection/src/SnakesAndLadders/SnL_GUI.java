@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 
 public class SnL_GUI extends JPanel implements MouseListener
 {
-private static final long serialVersionUID = -587643554501823550L;
+	private static final long serialVersionUID = -587643554501823550L;
 	
 	private static final int PANEL_WIDTH = 300;
 	private static final int PANEL_HEIGHT = 780;
@@ -40,19 +40,8 @@ private static final long serialVersionUID = -587643554501823550L;
 	private SpinDie die;
 	private JLabel dieButton;
 	
-	public interface Animatable
+	SnL_GUI()
 	{
-		public int getX();
-		public int getY();
-		public int getWidth();
-		public int getHeight();
-		public void setBounds(int a, int b, int c, int d);
-	}
-	
-	SnL_GUI(SnL_Panel panel)
-	{
-		this.panel = panel;
-		
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		this.setBackground(new Color(220,220,250));
 		this.setBorder(BorderFactory.createLineBorder(borderColor, 8));
@@ -92,8 +81,10 @@ private static final long serialVersionUID = -587643554501823550L;
 		setButtonSettings(dieButton);
 		
 		this.add(die);
-		
 	}
+	
+	public void addPanel(SnL_Panel panel)
+	{this.panel = panel;}
 	
 	private void setLabelSettings(JLabel label)
 	{
@@ -141,12 +132,9 @@ private static final long serialVersionUID = -587643554501823550L;
 		
 		else if (e.getSource()==dieButton) 
 		{	
-			if (panel.hasStarted)
-			{
-				dieButton.setVisible(false);
-				panel.setRolledGridPosition(die.roll());
-				enableStartButton(false);
-			}
+			dieButton.setVisible(false);
+			panel.setRolledGridPosition(die.roll());
+			enableStartButton(false);
 		}		
 	}
 	

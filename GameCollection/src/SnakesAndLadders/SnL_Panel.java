@@ -25,6 +25,9 @@ public class SnL_Panel extends JPanel implements ActionListener
 	
 	private final Color backgroundColor = new Color(50,50,70);
 	private final Color gridColor = new Color(120,120,140);
+
+	private final Color ladderColor = Color.green;
+	private final Color snakeColor = new Color(255,80,80);
 	
 	private final int gridSize = 130;
 	
@@ -48,15 +51,16 @@ public class SnL_Panel extends JPanel implements ActionListener
 	
 	boolean moveAvailable = false;
 	private boolean clickInside = false;
-	boolean finished = false;
-	public boolean hasStarted = false;
+	private boolean finished = false;
 	
 	//SNAKES AND LADDERS
 	private Square[] squares = new Square[54];
 	private int snakeAndLadderIterations = 0;
 	
-	SnL_Panel()
+	SnL_Panel(SnL_GUI GUI)
 	{
+		this.GUI = GUI;
+		
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		autoMoveTimer = new Timer(500, this);
 		SnLMoveTimer = new Timer(20,this);
@@ -69,16 +73,12 @@ public class SnL_Panel extends JPanel implements ActionListener
 		this.addMouseMotionListener(dragListener);
 		this.addMouseListener(releaseListener);
 		
-		generateSnakesAndLadders();
+		start(1);
 	}
-	
-	public void addGUI(SnL_GUI GUI)
-	{this.GUI = GUI;}
 
 	public void paint(Graphics g)
 	{
 		Graphics2D g2D = (Graphics2D) g;
-		super.paint(g2D);
 		
 		//BACKGROUND
 		g2D.setPaint(backgroundColor);
@@ -86,7 +86,6 @@ public class SnL_Panel extends JPanel implements ActionListener
 		
 		//GRID
 		g2D.setPaint(gridColor);
-		
 		for (int i = 0; i < 9; i++) //columns
 		{g2D.drawLine(i*gridSize, 0, i*gridSize, PANEL_HEIGHT);}
 		
@@ -98,26 +97,23 @@ public class SnL_Panel extends JPanel implements ActionListener
 		
 		g2D.setFont(new Font("", Font.BOLD, 20));
 		int gridNum = 0;
-		for (int i = 6; i >= 0; i--) 
+		for (int row = 6; row >= 0; row--) 
 		{
 			//Make the numbers go up the grid in "S" order (First go 8 right, then up a row, then go 8 left, then up, then 8 right ...)
-			if (i % 2 == 0) 
+			if (row % 2 == 0) 
 			{
-				for (int j = 0; j < 9; j++)
-				{g2D.drawString(""+gridNum, j*gridSize + 5, i*gridSize -5); ++gridNum;}
+				for (int column = 0; column < 9; column++)
+				{g2D.drawString(""+gridNum, column*gridSize + 5, row*gridSize -5); ++gridNum;}
 			}
 			
 			else 
 			{
-				for (int j = 8; j >= 0; j--)
-				{g2D.drawString(""+gridNum, j*130 + 5, i*130 -5);++gridNum;}
+				for (int column = 8; column >= 0; column--)
+				{g2D.drawString(""+gridNum, column*gridSize + 5, row*gridSize -5);++gridNum;}
 			}
 		}
 		
 		//SNAKES AND LADDERS
-		Color ladderColor = Color.green;
-		Color snakeColor = new Color(255,80,80);
-		
 		for (int i = 0; i < 54; i++) 
 		{
 			//LADDERS
@@ -154,6 +150,7 @@ public class SnL_Panel extends JPanel implements ActionListener
 			g2D.setPaint(Color.white);
 			g2D.setFont(new Font("", Font.BOLD, 40));
 			
+			//1 and 4 don't look like they are in the middle with offset 19, the others do
 			int xOffset = 19;
 			if (player.playerNum == 1 || player.playerNum == 4)
 			{xOffset = 18;}
@@ -210,7 +207,6 @@ public class SnL_Panel extends JPanel implements ActionListener
 		
 		setCurrentPlayer(0);
 		
-		hasStarted = true;
 		finished = false;
 		GUI.enableDieButton(true);
 		
@@ -248,7 +244,7 @@ public class SnL_Panel extends JPanel implements ActionListener
 			if (players[currentPlayer].gridPos == 53)
 			{finish(); return;}
 			
-			snakeNladderCheck();
+			snakeNladderCheck(players[currentPlayer].gridPos);
 			return;
 		}
 		
@@ -267,6 +263,10 @@ public class SnL_Panel extends JPanel implements ActionListener
 		
 		int gridPos = 0;
 		int rolledGridPos = 0;
+		
+		//goals when moving along a snake or ladder
+		int goalX;
+		int goalY;
 		
 		Player(int playerNum)
 		{this.playerNum = playerNum; setScreenPosition();}
@@ -322,13 +322,14 @@ public class SnL_Panel extends JPanel implements ActionListener
 	    public void mouseReleased(MouseEvent e) 
 	    {
 	    	if (!moveAvailable || !clickInside) {return;}
+	    	clickInside = false;
 	    	
 	    	int releaseGridPos;
 	    	
 	    	if ((e.getY()/gridSize) % 2 == 0)
 	    	{
 	    		//same as below but column starting from the right instead
-	    		releaseGridPos = ( (PANEL_WIDTH - e.getX()) / gridSize) +9*( (PANEL_HEIGHT - e.getY() )/ gridSize );
+	    		releaseGridPos = ( (PANEL_WIDTH - e.getX()) / gridSize) +9	*( (PANEL_HEIGHT - e.getY() )/ gridSize );
 	    	}
 	    	else 
 	    	{
@@ -339,18 +340,14 @@ public class SnL_Panel extends JPanel implements ActionListener
 	    	if (players[currentPlayer].rolledGridPos == releaseGridPos)
 	    	{
 	    		players[currentPlayer].gridPos = releaseGridPos;
-	    		
 	    		players[currentPlayer].setScreenPosition();
 				moveAvailable = false;
 				
 				if (releaseGridPos == 53)
-				{clickInside = false; finish(); return;}
+				{finish(); return;}
 				
-				snakeNladderCheck();
+				snakeNladderCheck(players[currentPlayer].gridPos);
 	    	}
-	    	
-	    	clickInside = false;
-	    	
 	    	repaint();
 	    }
 	}
@@ -367,7 +364,7 @@ public class SnL_Panel extends JPanel implements ActionListener
 	
 	private class Square
 	{
-		//-1 means there is no ladder/snake, int >= 0 will indicate the square the ladder/snake is connected to
+		//-1 means there is no ladder/snake, int >= 0 will point to the square the ladder/snake is connected to
 		int ladderEnd = -1;
 		int snakeEnd  = -1;
 		
@@ -385,28 +382,18 @@ public class SnL_Panel extends JPanel implements ActionListener
 		}
 	}
 	
-	private void snakeNladderCheck()
+	private void snakeNladderCheck(int playerPos)
 	{
-		int playerPos = players[currentPlayer].gridPos;
-		
 		if (snakeAndLadderIterations < 6) //prevent infinite loops
 		{
 			if (squares[playerPos].snakeEnd > -1)
-			{
-				SnakeEvent(players[currentPlayer]);
-			}
-			
+			{SnLEvent(players[currentPlayer], false); return;}
+				
 			else if (squares[playerPos].ladderEnd > -1)
-			{
-				LadderEvent(players[currentPlayer]);
-			}
-			
-			else
-			{nextTurn();}
+			{SnLEvent(players[currentPlayer], true); return;}
 		}
-		
-		else
-		{nextTurn();}
+				
+		nextTurn();
 	}
 	
 	private void nextTurn()
@@ -418,39 +405,38 @@ public class SnL_Panel extends JPanel implements ActionListener
 		setCurrentPlayer(currentPlayer+1); 
 	}
 	
-	private void SnakeEvent(Player player)
+	private void SnLEvent(Player player, boolean ladder)
 	{
-		player.gridPos = squares[player.gridPos].snakeEnd;
+		if (ladder) 
+		{player.gridPos = squares[player.gridPos].ladderEnd;}
+		else
+		{player.gridPos = squares[player.gridPos].snakeEnd;}
+		
+		++snakeAndLadderIterations;
 		player.rolledGridPos = player.gridPos;
 		GUI.enableDieButton(false);
-		++snakeAndLadderIterations;
+		setPlayerGoal(player);
 		SnLMoveTimer.start();
 	}
 	
-	private void LadderEvent(Player player)
-	{
-		player.gridPos = squares[player.gridPos].ladderEnd;
-		player.rolledGridPos = player.gridPos;
-		GUI.enableDieButton(false);
-		++snakeAndLadderIterations;
-		SnLMoveTimer.start();
-	}
-	
-	private void moveAlongConnection(Player player)
+	private void setPlayerGoal(Player player)
 	{
 		//save cur position so you can generate and save goal position and then move the player back to cur position
 		int curPlayerX = player.screenX, curPlayerY = player.screenY;
 		
 		player.setScreenPosition();
-		int goalX = player.screenX, goalY = player.screenY;
+		player.goalX = player.screenX;
+		player.goalY = player.screenY;
 		
 		player.screenX = curPlayerX;
 		player.screenY = curPlayerY;
-		
-		
+	}
+	
+	private void moveAlongConnection(Player player)
+	{
 		double[] v = new double[2];
-		v[0] = goalX - player.screenX;
-		v[1] = goalY - player.screenY;
+		v[0] = player.goalX - player.screenX;
+		v[1] = player.goalY - player.screenY;
 	
 		double movelength = Math.sqrt(Math.pow(v[0], 2)+Math.pow(v[1], 2));
 		
@@ -459,12 +445,11 @@ public class SnL_Panel extends JPanel implements ActionListener
 		player.screenX+= v[0];
 		player.screenY+= v[1];
 		
-		
-		if (player.screenX > goalX-10 &&  player.screenX < goalX+10 && player.screenY > goalY-10 &&  player.screenY < goalY+10)
+		if (player.screenX > player.goalX-10 &&  player.screenX < player.goalX+10 && player.screenY > player.goalY-10 &&  player.screenY < player.goalY+10)
 		{
 			player.setScreenPosition();//if its somewhat there, snap into position
 			SnLMoveTimer.stop();
-			snakeNladderCheck();
+			snakeNladderCheck(players[currentPlayer].gridPos);
 		} 
 		
 		repaint();
@@ -481,7 +466,7 @@ public class SnL_Panel extends JPanel implements ActionListener
 			squares[i].gridPos = i;
 			squares[i].calculateCenterPoint();
 			
-			//skip 0 to make sure no ladder is going out from the starting point, skip after 16 connections so it doesnt get too clustered
+			//skip 0 to make sure no ladder is going out from the starting point, skip after 16 connections so it doesn't get too clustered
 			//No connections to final square
 			if (i == 0 || snakeNladderCount > 16 || i == 53) {continue;} 
 			

@@ -14,9 +14,9 @@ public class SnakesAndLadders extends JFrame
 	
 	public SnakesAndLadders()
 	{
-		panel = new SnL_Panel();
-		GUI = new SnL_GUI(panel);
-		panel.addGUI(GUI);
+		GUI = new SnL_GUI();
+		panel = new SnL_Panel(GUI);
+		GUI.addPanel(panel);
 		
 		this.add(panel, BorderLayout.WEST);
 		this.add(GUI, BorderLayout.EAST);
@@ -33,5 +33,4 @@ public class SnakesAndLadders extends JFrame
 	
 	public static void stop()
 	{panel.stopAllTimers();}
-
 }
