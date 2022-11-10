@@ -96,11 +96,11 @@ public class SpinDie extends JPanel implements ActionListener
 		if (spinTime > 0)
 		{
 			++currentState; 
-			if (currentState == 7) {currentState = 1;}
+			if (currentState > 6) {currentState = 1;}
+			repaint();
 		}
 		--spinTime;
 		
-		repaint();
 		if (spinTime == -5) {rollTimer.stop(); GUI.enableAutoMoveButton(true); GUI.enableManualMove();}
 	}
 }
