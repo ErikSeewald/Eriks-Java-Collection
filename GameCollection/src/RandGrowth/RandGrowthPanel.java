@@ -32,6 +32,7 @@ public class RandGrowthPanel extends JPanel implements ActionListener
 	boolean hasStarted;
 	
 	Timer timer;
+	private Random random;
 	
 	RandGrowthPanel()
 	{
@@ -43,12 +44,11 @@ public class RandGrowthPanel extends JPanel implements ActionListener
 		this.addMouseMotionListener(dragListener);
 		
 		timer = new Timer(simulationSpeed, this);
+		random = new Random();
 	}
 	
 	private void growthSim()
 	{
-		Random random = new Random();
-		
 		for (int i = 0; i < gPAmountX; i++)
 		{
 			for (int j = 0; j < gPAmountY; j++)
@@ -93,8 +93,9 @@ public class RandGrowthPanel extends JPanel implements ActionListener
 		this.gPixelSize = pixelSize;
 		this.simulationSpeed = simulationSpeed;
 		
-		if(gPixelSize < 1) {gPixelSize = 1;}
+		if (gPixelSize < 1) {gPixelSize = 1;}
 		else if (gPixelSize > 100) {gPixelSize = 100;}
+		
 		gPAmountX = PANEL_WIDTH/gPixelSize;
 		gPAmountY = PANEL_HEIGHT/gPixelSize;
 		gPixels = new GPixel[gPAmountX][gPAmountY];

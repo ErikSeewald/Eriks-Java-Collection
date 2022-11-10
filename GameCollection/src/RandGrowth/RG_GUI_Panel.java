@@ -43,7 +43,7 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 	private int buttonSizeX = 150;
 	private int buttonSizeY = 70;
 	
-	RandGrowthPanel panel;
+	private RandGrowthPanel panel;
 	
 	RG_GUI_Panel(RandGrowthPanel panel)
 	{
