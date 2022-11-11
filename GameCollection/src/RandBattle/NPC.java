@@ -20,6 +20,7 @@ public class NPC
 	private NPC TARGET;
 	
 	private double[] SHOOT_VECT = new double[2];
+	private double[] MOVE_VECT = new double[2];
 	
 	private int SIZE;
 	private double MOVE_SPEED;
@@ -44,27 +45,31 @@ public class NPC
 	}
 	
 	public void move()
-	{
-		double[] v = new double[2];
-		v[0] = GOAL_X - LOC_X;
-		v[1] = GOAL_Y - LOC_Y;
-	
-		double movelength = Math.sqrt(Math.pow(v[0], 2)+Math.pow(v[1], 2));
-		
+	{	
 		//has the NPC reached its goal? -> new goal
-		if (Math.abs(v[0]) < 10 && Math.abs(v[1]) < 10) 
+		if (LOC_X > GOAL_X-10 && LOC_X < GOAL_X+10 && LOC_Y > GOAL_Y-10 && LOC_Y < GOAL_Y+10) 
 		{
 			GOAL_X = random.nextInt(PANEL_WIDTH);
 			GOAL_Y = random.nextInt(PANEL_HEIGHT);
+			setMoveVect();
 		}
 		
-		v[0] /= movelength/MOVE_SPEED; 
-		v[1] /= movelength/MOVE_SPEED;
-		
-		LOC_X+= v[0];
-		LOC_Y+= v[1];
+		LOC_X+= MOVE_VECT[0];
+		LOC_Y+= MOVE_VECT[1];
 		
 		if (damageAnimation > 0) {damageAnimation--;}
+	}
+	
+	private void setMoveVect()
+	{
+		MOVE_VECT[0] = GOAL_X - LOC_X;
+		MOVE_VECT[1] = GOAL_Y - LOC_Y;
+	
+		double movelength = Math.sqrt(Math.pow(MOVE_VECT[0], 2)+Math.pow(MOVE_VECT[1], 2));
+		
+		MOVE_VECT[0] /= movelength/MOVE_SPEED; 
+		MOVE_VECT[1] /= movelength/MOVE_SPEED;
+		
 	}
 	
 	public void shoot()
@@ -86,7 +91,6 @@ public class NPC
 		SHOOT_VECT[1] = TARGET.getY() - PROJECTILE_LOC_Y;
 	
 		double movelength = Math.sqrt(Math.pow(SHOOT_VECT[0], 2)+Math.pow(SHOOT_VECT[1], 2));
-		
 		
 		SHOOT_VECT[0] /= movelength/PROJECTILE_SPEED; 
 		SHOOT_VECT[1] /= movelength/PROJECTILE_SPEED;
@@ -118,6 +122,8 @@ public class NPC
 		DAMAGE = random.nextInt(90)+10;
 		HEALTH = random.nextInt(900)+100;
 		COLOR = new Color(100,100, random.nextInt(50)+120);
+		
+		setMoveVect();
 	}
 	
 	//GET-SET
