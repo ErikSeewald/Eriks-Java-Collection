@@ -37,6 +37,7 @@ public class RB_Panel extends JPanel implements ActionListener
 		start();
 	}
 	
+	
 	public void start()
 	{
 		//init NPCs
@@ -57,7 +58,7 @@ public class RB_Panel extends JPanel implements ActionListener
 		
 		//timer
 		if (timer != null)
-		{if (timer.isRunning()) {timer.stop();}}
+		{timer.stop();}
 		timer = new Timer(16, this);
 		timer.start();
 		
@@ -96,7 +97,6 @@ public class RB_Panel extends JPanel implements ActionListener
 			}
 		}
 		
-
 		if (finished) 
 		{
 			g2D.setFont(new Font("", Font.BOLD, 144));
@@ -136,39 +136,48 @@ public class RB_Panel extends JPanel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
+		if (hasFinished())
+		{timer.stop(); repaint(); return;}
+		
 		for (int i = 0; i < NPC_COUNT; i++)
 		{
 			if (NPCs[i].isAlive)
-			{
+			{	
+				//new target if old one died
+				if (!NPCs[i].getTarget().isAlive) 
+				{
+					int target = i;
+					while (i == target || !NPCs[target].isAlive) 
+					{
+						target = random.nextInt(NPC_COUNT);
+					}
+					NPCs[i].setTarget(NPCs[target]);
+				}
+				
 				NPCs[i].move();
 				NPCs[i].shoot();
 				
 				int hitNum = getHitNum(i);
 				if (hitNum != -1)
-				{NPCs[hitNum].takeDamage(NPCs[i].getDamage());}
-				
-				//new target if old one died
-				if (!NPCs[i].getTarget().isAlive) 
-				{
-					int target = i, controlSum = 0;
-					while (i == target || !NPCs[target].isAlive) 
-					{
-						target = random.nextInt(NPC_COUNT);
-						controlSum++;
-						if (controlSum > 50) 
-						{
-							timer.stop(); 	
-							finished = true;
-							break;
-						}
-					}
-					NPCs[i].setTarget(NPCs[target]);
-				}
+				{NPCs[hitNum].takeDamage(NPCs[i].getDamage());}		
 			}
 		}
-		
 		repaint();
 	}
+	
+	private boolean hasFinished()
+	{
+		int aliveCount = 0;
+		for (NPC npc : NPCs)
+		{
+			if (npc.isAlive)
+			{++aliveCount;}
+		}
+		
+		finished = aliveCount == 1;		
+		return finished;
+	}
+		
 	
 	private int getHitNum(int NPCnum)
 	{
