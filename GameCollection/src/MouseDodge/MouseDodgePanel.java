@@ -32,6 +32,7 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 	int enemyCount = 25;
 	double[][] enemies = new double[enemyCount][4];		//enemy coordinates
 	double[][] enemyGoals = new double [enemyCount][2];	//enemy vector goals
+	double[][] enemyVects = new double [enemyCount][2]; //normalized vectors for enemies to move along
 	int[] enemySize = new int[enemyCount];
 	int[] sizeDivider = new int[enemyCount];		//divider that decides the ratio of screen size to enemy size
 	boolean[] fillOrDraw = new boolean[enemyCount];	//g2D.fillRect or g2D.drawRect
@@ -98,6 +99,7 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 			enemyGoals[i][0] = random.nextInt((int)(PANEL_SIZE*1.7));
 			enemyGoals[i][1] = random.nextInt(PANEL_SIZE);
 			
+			generateVectors(i);
 		}
 		
 		this.setPreferredSize(new Dimension((int)(PANEL_SIZE*1.7),PANEL_SIZE));
@@ -250,31 +252,33 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 	public void move()
 	{
 		for (int i = 0; i < enemyCount; i++)
-		{
-			double[] v = new double[2];
-			v[0] = enemyGoals[i][0] - enemies[i][0];
-			v[1] = enemyGoals[i][1] - enemies[i][1];
-		
-			double movelength = Math.sqrt(Math.pow(v[0], 2)+Math.pow(v[1], 2));
-			
+		{	
 			//has the enemy reached its goal -> new goal
-			if (Math.abs(v[0]) < (PANEL_SIZE/200) && Math.abs(v[1]) < (PANEL_SIZE/200)) 
+			if (enemies[i][0] > enemyGoals[i][0]-(PANEL_SIZE/200) && enemies[i][0] < enemyGoals[i][0]+(PANEL_SIZE/200)
+				&& enemies[i][1] > enemyGoals[i][1]-(PANEL_SIZE/200) && enemies[i][1] < enemyGoals[i][1]+(PANEL_SIZE/200)) 
 			{
 				enemyGoals[i][0] = random.nextInt((int)(PANEL_SIZE*1.5));
 				enemyGoals[i][1] = random.nextInt(PANEL_SIZE);
+				generateVectors(i);
 			}
 			
-			v[0] /= movelength*speedMultiplier; v[1] /= movelength*speedMultiplier;
-			
-			enemies[i][0]+= v[0];
-			enemies[i][1]+= v[1];
-			
+			enemies[i][0]+= enemyVects[i][0];
+			enemies[i][1]+= enemyVects[i][1];
 		}
 		
 		if (isInside(player[0],player[1]))
 		{end();}		
 		
 		repaint();
+	}
+	
+	private void generateVectors(int i)
+	{
+		enemyVects[i][0] = enemyGoals[i][0] - enemies[i][0];
+		enemyVects[i][1] = enemyGoals[i][1] - enemies[i][1];
+	
+		double movelength = Math.sqrt(Math.pow(enemyVects[i][0], 2)+Math.pow(enemyVects[i][1], 2));
+		enemyVects[i][0] /= movelength*speedMultiplier; enemyVects[i][1] /= movelength*speedMultiplier;
 	}
 
 	
