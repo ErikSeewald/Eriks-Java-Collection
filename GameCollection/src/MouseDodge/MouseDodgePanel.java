@@ -414,6 +414,8 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 			enemies[i][0] = enemyLocRatio[i][0] * PANEL_SIZE*1.7; 
 			enemies[i][1] = enemyLocRatio[i][1] * PANEL_SIZE;
 			enemies[i][2] = enemySize[i];enemies[i][3] = enemySize[i];
+
+			generateVectors(i);
 		}
 		
 		calcBoardData();
