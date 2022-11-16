@@ -22,7 +22,7 @@ public class InsectsPanel extends JPanel implements ActionListener
 	private int water = 0;
 	
 	private int antAmount = 1000; //amount of ants at start
-	private int antBuffer = 50000;
+	private int antBuffer = 100000;
 	private Ant[] Ants = new Ant[antAmount+antBuffer];
 	private double lengthvar = 100 / (double)antAmount;
 	
@@ -69,6 +69,7 @@ public class InsectsPanel extends JPanel implements ActionListener
 	{
 		int loc[] = {325,325};
 		int size;
+		Color color;
 		
 		Ant(int size)
 		{
@@ -87,7 +88,10 @@ public class InsectsPanel extends JPanel implements ActionListener
 		antColor = new Color(random.nextInt(135)+120,random.nextInt(135)+120,random.nextInt(135)+120);
 		
 		for (int i = 0; i < Ants.length; i++) 
-		{Ants[i] = new Ant(random.nextInt(3)+3);}	
+		{
+			Ants[i] = new Ant(random.nextInt(3)+3);
+		}
+		setColors();
 	}
 	
 	public void paint(Graphics g) 
@@ -122,12 +126,9 @@ public class InsectsPanel extends JPanel implements ActionListener
 		}
 		
 		//ANTS
-		lengthvar = 100 / (double)antAmount;
 		for (int i = 0; i <=antAmount-1; i++) //drawing each ant
 		{ 
-			g2D.setPaint(new Color 
-			((int) (antColor.getRed()-(lengthvar*i)),(int) (antColor.getGreen()-(lengthvar*i)),(int) (antColor.getBlue()-(lengthvar*i))));
-			
+			g2D.setPaint(Ants[i].color);
 			g2D.fillRect(Ants[i].loc[0], Ants[i].loc[1], Ants[i].size, Ants[i].size);
 		}
 		
@@ -195,6 +196,19 @@ public class InsectsPanel extends JPanel implements ActionListener
 			
 			//decreases ant amount by 0.001 times the ants not in resource areas divided by the length/10 minus 1/2 the
 			//amount of ants in food and in water
+			
+			setColors();
+		}
+	}
+	
+	private void setColors()
+	{
+		lengthvar = 100 / (double)antAmount;
+		
+		for (int i = 0; i < antAmount; i++) 
+		{
+			Ants[i].color = new Color
+			((int) (antColor.getRed()-(lengthvar*i)),(int) (antColor.getGreen()-(lengthvar*i)),(int) (antColor.getBlue()-(lengthvar*i)));
 		}
 	}
 	
@@ -219,6 +233,7 @@ public class InsectsPanel extends JPanel implements ActionListener
 		{antAmount+=changeAmount;}
 		else
 		{antAmount-=changeAmount;}
+		setColors();
 	}
 	
 	public void changeAddAmount(boolean increase)
