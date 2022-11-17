@@ -15,41 +15,30 @@ public class InsectsPanel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 4974460083826443803L;
 	
-	static Timer timer; 	//movement
-	Timer timer2;			//recolor
-	static Timer survive;	//increasing or decreasing amount of ants
+	private static Timer timer; 	//movement
+	private static Timer survive;	//increasing or decreasing amount of ants
 	
+	private int food = 0;	//how many are in which area
+	private int water = 0;
 	
-	int food = 0;	//how many are in which area
-	int water = 0;
+	private int antAmount = 1000; //amount of ants at start
+	private int antBuffer = 100000;
+	private Ant[] Ants = new Ant[antAmount+antBuffer];
+	private double lengthvar = 100 / (double)antAmount;
 	
-	int antAmount = 1000; //amount of ants at start
-	double lengthvar = 100 / (double)antAmount;
+	private Color antColor;
+	private int changeAmount = 10;	//amount by which antAmount is changed in changeAntAmount()
 	
-	int antBuffer = 50000;
+	private static final int wallamount = 11;
+	private int[][] walls = new int [wallamount][4];
 	
-	int[] x = new int[antAmount+antBuffer];	//ants x and y numbers, the added number is how far the ants can increase
-	int[] y = new int[antAmount+antBuffer];
-	
-	Color color1;	//changing ant color
-	
-	
-	int[][] ants = {x, y};	//current ant locations
-	int[][] prev = new int[2][antAmount+antBuffer];	//previous ant locations for resetting at walls
-	
-	
-	Random random;
-	
-	int[] size;
-	
-	int wallamount = 11;
-	int[][] walls = new int [wallamount][4];
-	
-	int changeAmount = 10;		//amount by which antAmount is changed in changeAntAmount()
+	private Random random;
 	
 	InsectsPanel()
 	{
-	
+		this.setPreferredSize(new Dimension(650,650));
+		this.setLayout(null);
+		
 		walls[0][0] = 245; walls[0][1] = 250; walls[0][2] = 245; walls[0][3] = 300;
 		walls[1][0] = 245; walls[1][1] = 0; walls[1][2] = 245; walls[1][3] = 220;
 		walls[2][0] = 0; walls[2][1] = 305; walls[2][2] = 245; walls[2][3] = 305;
@@ -70,34 +59,160 @@ public class InsectsPanel extends JPanel implements ActionListener
 		survive.setInitialDelay(10000000/antAmount);
 		survive.start();
 		
-		start();
-			
+		start();	
 	}
 	
 	public static void stop()
 	{timer.stop(); survive.stop();}
 	
+	private class Ant
+	{
+		int loc[] = {325,325};
+		int size;
+		Color color;
+		
+		Ant(int size)
+		{
+			this.size = size;
+		}
+	}
+	
 	public void start()
 	{
-		for (int i = 0; i < x.length; i++)//setting the ants starting points
-		{ 
-			x[i]=325;y[i]=325;
-		}
+		antAmount = 1000;
 
-		color1 = new Color(random.nextInt(135)+120,random.nextInt(135)+120,random.nextInt(135)+120);
+		Ants = null;
+		System.gc();
+		Ants = new Ant[antAmount+antBuffer];
 		
-		this.setPreferredSize(new Dimension(650,650));
-		this.setLayout(null);
+		antColor = new Color(random.nextInt(135)+120,random.nextInt(135)+120,random.nextInt(135)+120);
 		
-		size = new int[antAmount+50000];
-		
-		for (int i = 0; i <antAmount+50000; i++) 
+		for (int i = 0; i < Ants.length; i++) 
 		{
-		size[i] = random.nextInt(4)+2;
-		}	
+			Ants[i] = new Ant(random.nextInt(3)+3);
+		}
+		setColors();
 	}
-
-	public boolean isInside(int x, int y, int size)
+	
+	public void paint(Graphics g) 
+	{
+		Graphics2D g2D = (Graphics2D) g;
+		
+		//BACKGROUND
+		g2D.setPaint(new Color (60,60,75));
+		g2D.fillRect(0, 0, 650, 650);
+		
+		//FOOD
+		g2D.setPaint(new Color (100,70,70));
+		g2D.fillRect(0, 145, 100, 460);
+	
+		//WATER
+		g2D.setPaint(new Color (80,80,110));
+		g2D.fillRect(600, 155, 50, 480);
+		g2D.fillRect(45, 0, 200, 80);
+		
+		//SPAWN AREA
+		g2D.setPaint(new Color (80,80,90));
+		g2D.fillRect(250, 135, 278, 175);
+		g2D.fillRect(205, 310,320, 215); 
+		
+		//WALLS
+		g2D.setPaint(new Color (40,40,40));	
+		g2D.setStroke(new BasicStroke(10));
+		
+		for (int i = 0; i < wallamount; i++)
+		{
+			g2D.drawLine(walls[i][0],walls[i][1],walls[i][2],walls[i][3]);
+		}
+		
+		//ANTS
+		for (int i = 0; i <=antAmount-1; i++) //drawing each ant
+		{ 
+			g2D.setPaint(Ants[i].color);
+			g2D.fillRect(Ants[i].loc[0], Ants[i].loc[1], Ants[i].size, Ants[i].size);
+		}
+		
+		//COUNTER
+		g2D.setPaint(Color.LIGHT_GRAY);
+		g2D.fillRect(3, 4, 38, 15);
+		
+		g2D.setPaint(Color.BLACK);
+		g2D.drawString(""+antAmount,5,15);
+	}	
+	
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		if (e.getSource()==timer) 
+		{
+			for (int i = antAmount-1; i >=0; i--) 
+			{
+				int locX = Ants[i].loc[0];
+				int locY = Ants[i].loc[1];
+				
+				switch (random.nextInt(5)) //choose from 5 different kinds of movements, at 10 different speeds
+				{ 
+				case 0:
+				break;
+				case 1: locX+=random.nextInt(10); 
+				break;
+				case 2: locX-=random.nextInt(10);
+				break;
+				case 3: locY+=random.nextInt(10);
+				break;
+				case 4: locY-=random.nextInt(10);
+				break;
+				}
+	
+				//wall detection
+				if (locX > 0 && locX < 650 && locY > 0 && locY < 650)  // Is inside panel
+				{
+					if (!isInside(locX, locY, Ants[i].size)) //Not intersecting any wall
+					{Ants[i].loc[0] = locX; Ants[i].loc[1] = locY;} 
+				}
+			}
+			repaint();
+		}
+	
+		else if (e.getSource()==survive) 
+		{
+			for (int i = 0; i < antAmount-1; i++)
+			{
+				int locX = Ants[i].loc[0];
+				int locY = Ants[i].loc[1];
+				
+				//add number of ants in each area
+				if ((locX > 0 && locX < 100 && locY > 145 && locY < 605)) 
+				{food++;}
+				
+				else if ((locX > 45 && locX < 245 && locY > 0 && locY < 80)
+						||locX > 600 && locX < 650 && locY > 155 && locY < 635) 
+				{water++;}
+			}
+	
+			int tempAntAmount = (int) (antAmount - (0.001*(((antAmount-food-water)/(antAmount/10)) - (food/2 + water))));
+			if (tempAntAmount < Ants.length)
+			{antAmount = tempAntAmount;}
+			
+			//decreases ant amount by 0.001 times the ants not in resource areas divided by the length/10 minus 1/2 the
+			//amount of ants in food and in water
+			
+			setColors();
+		}
+	}
+	
+	private void setColors()
+	{
+		lengthvar = 100 / (double)antAmount;
+		
+		for (int i = 0; i < antAmount; i++) 
+		{
+			Ants[i].color = new Color
+			((int) (antColor.getRed()-(lengthvar*i)),(int) (antColor.getGreen()-(lengthvar*i)),(int) (antColor.getBlue()-(lengthvar*i)));
+		}
+	}
+	
+	private boolean isInside(int x, int y, int size)
 	{
 		for (int i = 0; i < wallamount; i++)
 		{
@@ -106,128 +221,19 @@ public class InsectsPanel extends JPanel implements ActionListener
 		return false;
 	}
 	
-	public boolean wallBounds(int a, int b,  int a2,int b2,  int x, int y, int size)
+	private boolean wallBounds(int a, int b,  int a2,int b2,  int x, int y, int size)
 	{
-		if((x > a-6 &&  x < a2+6 && y > b-6 &&  y < b2+6) 
-		|| (x+size > a-5 &&  x+size < a2+5 && y+size > b-5 &&  y+size < b2+5))
-		{return true;}
-		
-		else return false;	
+		return((x > a-6 &&  x < a2+6 && y > b-6 &&  y < b2+6) || (x+size > a-5 &&  x+size < a2+5 && y+size > b-5 &&  y+size < b2+5));
 	}
-	
-	
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-	
-		if (e.getSource()==timer) 
-		{
-			for (int i = antAmount-1; i >=0; i--) 
-			{
-		
-				prev[0][i] = ants[0][i]; //setting the new previous position
-				prev[1][i] = ants[1][i];	
-				
-				switch (random.nextInt(5)) //chooses from 5 different kinds of movements, at 10 different speeds
-				{ 
-				case 0:
-				break;
-				case 1: ants[0][i]+=random.nextInt(10); 
-				break;
-				case 2: ants[0][i]-=random.nextInt(10);
-				break;
-				case 3: ants[1][i]+=random.nextInt(10);
-				break;
-				case 4: ants[1][i]-=random.nextInt(10);
-				break;
-				}
-	
-				//wall detection
-				if (ants[0][i]>0 && ants[0][i]<650 && ants[1][i]>0 && ants[1][i]<650)  // Is inside panel
-				{
-					if (isInside(ants[0][i], ants[1][i], size[i]))
-					{ants[0][i]= prev[0][i]; ants[1][i]=prev[1][i];} //resetting if at wall
-				}
-	
-				else {ants[0][i]= prev[0][i];ants[1][i]=prev[1][i];} //resetting if outside frame
-	
-				
-			}
-			repaint();
-		}
-	
-		else if (e.getSource()==survive) 
-		{
-		
-			for (int i = 0; i < antAmount-1; i++)
-			{
-			//add number of ants in each area
-			if ((ants[0][i] > 0 && ants[0][i] < 100 && ants[1][i] > 145 && ants[1][i] < 605)) {food++;}
-			else if ((ants[0][i] > 45 && ants[0][i] < 245 && ants[1][i] > 0 && ants[1][i] < 80)
-			||ants[0][i] > 600 && ants[0][i] < 650 && ants[1][i] > 155 && ants[1][i] < 635) {water++;}
-			}
-	
-			if ((int) (antAmount - (0.001*(((antAmount-food-water)/(antAmount/10)) - (food/2 + water)))) >= x.length) {return;}
-			antAmount = (int) (antAmount - (0.001*(((antAmount-food-water)/(antAmount/10)) - (food/2 + water))));
-		}
-	//decreases ant amount by 0.001 times the ants not in resource areas divided by the length/10 minus 1/2 the
-	//ant in foot and the ants in water
-	}
-	
-	
-	public void paint(Graphics g) 
-	{
-		
-		Graphics2D g2D = (Graphics2D) g;
-		
-		//super.paint(g2D);
-		
-		g2D.setPaint(new Color (60,60,75));
-		g2D.fillRect(0, 0, 650, 650); //background
-		
-		g2D.setPaint(new Color (100,70,70)); //food
-		g2D.fillRect(0, 145, 100, 460);
-		
-		g2D.setPaint(new Color (80,80,110)); //water
-		g2D.fillRect(600, 155, 50, 480);
-		g2D.fillRect(45, 0, 200, 80);
-		
-		g2D.setPaint(new Color (80,80,90));		//gray area
-		g2D.fillRect(250, 135, 278, 175);
-		g2D.fillRect(205, 310,320, 215); 
-		
-		g2D.setPaint(new Color (40,40,40));	
-		g2D.setStroke(new BasicStroke(10));
-		
-		for (int i = 0; i < wallamount; i++)
-		{
-			g2D.drawLine(walls[i][0],walls[i][1],walls[i][2],walls[i][3]);	//walls
-		}
-		
-		lengthvar = 100 / (double)antAmount;
-		
-		for (int i = 0; i <=antAmount-1; i++) //drawing each ant
-		{ 
-		g2D.setPaint(new Color ((int) (color1.getRed()-(lengthvar*i)),(int) (color1.getGreen()-(lengthvar*i)),(int) (color1.getBlue()-(lengthvar*i))));
-		g2D.fillRect(ants[0][i], ants[1][i], size[i], size[i]);
-		}
-		
-		g2D.setPaint(Color.LIGHT_GRAY);
-		g2D.fillRect(3, 4, 38, 15); //Counter Background
-		
-		g2D.setPaint(Color.BLACK);
-		g2D.drawString(""+antAmount,5,15); //Counter
-		
-		
-	}	
 	
 	
 	public void changeAntAmount(boolean increase)
 	{
-		if (increase && antAmount+ changeAmount < x.length)
+		if (increase && antAmount + changeAmount < Ants.length)
 		{antAmount+=changeAmount;}
 		else
 		{antAmount-=changeAmount;}
+		setColors();
 	}
 	
 	public void changeAddAmount(boolean increase)
