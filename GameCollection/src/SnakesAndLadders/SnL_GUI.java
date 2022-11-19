@@ -150,10 +150,16 @@ public class SnL_GUI extends JPanel implements MouseListener
 	@Override
 	public void mouseEntered(MouseEvent e) 
 	{
-		JLabel button = (JLabel) e.getSource();
+		if (e.getSource() == playerCountButton)
+		{playerCountButton.setBackground(buttonColor2);}
 		
-		buttonAnimation(button, (buttonSizeX /30));
-		button.setBackground(buttonColor2);
+		else
+		{
+			JLabel button = (JLabel) e.getSource();
+			
+			buttonAnimation(button, (buttonSizeX /30));
+			button.setBackground(buttonColor2);
+		}
 	}
 
 	@Override
