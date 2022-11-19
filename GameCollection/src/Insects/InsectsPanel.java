@@ -21,18 +21,19 @@ public class InsectsPanel extends JPanel implements ActionListener
 	private int food = 0;	//how many are in which area
 	private int water = 0;
 	
-	private int antAmount = 1000; //amount of ants at start
-	private int antBuffer = 100000;
-	private Ant[] Ants = new Ant[antAmount+antBuffer];
+	int antAmount = 1000; //amount of ants at start
+	private int maxAntAmount = 100000;
+	private Ant[] Ants = new Ant[maxAntAmount];
 	private double lengthvar = 100 / (double)antAmount;
 	
 	private Color antColor;
-	private int changeAmount = 10;	//amount by which antAmount is changed in changeAntAmount()
+	int changeAmount = 10;	//amount by which antAmount is changed in changeAntAmount()
 	
 	private static final int wallamount = 11;
 	private int[][] walls = new int [wallamount][4];
 	
 	private Random random;
+	private Insects_GUI GUI;
 	
 	InsectsPanel()
 	{
@@ -54,13 +55,12 @@ public class InsectsPanel extends JPanel implements ActionListener
 		random = new Random();
 		
 		timer = new Timer(50,this); //movement
-		timer.start();
 		survive = new Timer(2500,this);
-		survive.setInitialDelay(10000000/antAmount);
-		survive.start();
-		
-		start();	
+		survive.setInitialDelay(10000000/antAmount);	
 	}
+	
+	public void addGUI(Insects_GUI GUI)
+	{this.GUI = GUI;}
 	
 	public static void stop()
 	{timer.stop(); survive.stop();}
@@ -83,7 +83,7 @@ public class InsectsPanel extends JPanel implements ActionListener
 
 		Ants = null;
 		System.gc();
-		Ants = new Ant[antAmount+antBuffer];
+		Ants = new Ant[maxAntAmount];
 		
 		antColor = new Color(random.nextInt(135)+120,random.nextInt(135)+120,random.nextInt(135)+120);
 		
@@ -91,7 +91,11 @@ public class InsectsPanel extends JPanel implements ActionListener
 		{
 			Ants[i] = new Ant(random.nextInt(3)+3);
 		}
+		GUI.setAntAmountCounter(antAmount);
 		setColors();
+		
+		survive.start();
+		timer.start();
 	}
 	
 	public void paint(Graphics g) 
@@ -131,18 +135,13 @@ public class InsectsPanel extends JPanel implements ActionListener
 			g2D.setPaint(Ants[i].color);
 			g2D.fillRect(Ants[i].loc[0], Ants[i].loc[1], Ants[i].size, Ants[i].size);
 		}
-		
-		//COUNTER
-		g2D.setPaint(Color.LIGHT_GRAY);
-		g2D.fillRect(3, 4, 38, 15);
-		
-		g2D.setPaint(Color.BLACK);
-		g2D.drawString(""+antAmount,5,15);
 	}	
 	
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		if (antAmount == 0) {repaint(); return;}
+		
 		if (e.getSource()==timer) 
 		{
 			for (int i = antAmount-1; i >=0; i--) 
@@ -190,13 +189,16 @@ public class InsectsPanel extends JPanel implements ActionListener
 				{water++;}
 			}
 	
-			int tempAntAmount = (int) (antAmount - (0.001*(((antAmount-food-water)/(antAmount/10)) - (food/2 + water))));
+			double tempAntAmount = (antAmount - (0.001*(((antAmount-food-water)/(antAmount/10)) - (food/2 + water))));
 			if (tempAntAmount < Ants.length)
-			{antAmount = tempAntAmount;}
+			{
+				GUI.setChangeRate(tempAntAmount - antAmount);
+				antAmount = (int) tempAntAmount;
+			}
 			
 			//decreases ant amount by 0.001 times the ants not in resource areas divided by the length/10 minus 1/2 the
 			//amount of ants in food and in water
-			
+			GUI.setAntAmountCounter(antAmount);
 			setColors();
 		}
 	}
@@ -226,21 +228,16 @@ public class InsectsPanel extends JPanel implements ActionListener
 		return((x > a-6 &&  x < a2+6 && y > b-6 &&  y < b2+6) || (x+size > a-5 &&  x+size < a2+5 && y+size > b-5 &&  y+size < b2+5));
 	}
 	
-	
 	public void changeAntAmount(boolean increase)
 	{
-		if (increase && antAmount + changeAmount < Ants.length)
+		if (increase)
 		{antAmount+=changeAmount;}
 		else
 		{antAmount-=changeAmount;}
+		
+		if (antAmount < 0) {antAmount = 0;}
+		else if (antAmount > maxAntAmount) {antAmount = maxAntAmount;}
+		GUI.setAntAmountCounter(antAmount);
 		setColors();
-	}
-	
-	public void changeAddAmount(boolean increase)
-	{
-		if (increase)
-		{changeAmount*=2;}
-		else if (changeAmount / 2 >= 1)
-		{changeAmount/=2;}
 	}
 }
