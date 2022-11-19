@@ -15,94 +15,109 @@ import javax.swing.Timer;
 public class ParticlesPanel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 6395869615896081681L;
-		
-	int xloc = 0; 		//x location of the mouse
-	int prevloc = 0; 	//previous x location of the mouse
-	int yloc = 0;		//y location of the mouse
-	int size = 20;		//size of mouse influence
 	
-	int length = 6000;	//length of array of squares
+	static Timer movetimer; 	//timer for square movement
+	static Timer colorTimer;	//timer for color palette change
 	
-	int[][] sqloc = new int [2][length]; //location of squares 0-x 1-y
-	
-	int[] sqsizeX = new int [length];		//x sizes of squares
-	int[] sqsizeY = new int [length];		//y sizes of squares
-	
-	double [] dist = new double [length];	//distance of squares from the center
-	
-	boolean[] colorbool = new boolean[length];	//which ever color of two the square will have
-	
-	Color[] colors = new Color[length]; //square colors
-	
-	static Timer timer; 		//timer for square movement
-	static Timer timer2;		//timer for color palette change
-	
-	Random random;	
+	private Random random;	
 	
 	//starting color palette
 	Color color1 = (new Color (170,170,245)); 
 	Color color2 = (new Color (245,170,245));
+
+	private class Particle
+	{
+		int X, Y;
+		int sizeX, sizeY;
+		Color color;
+		
+		Particle(int X, int Y, int sizeX, int sizeY)
+		{this.X = X; this.Y = Y; this.sizeX = sizeX; this.sizeY = sizeY;}
+	}
 	
+	private int particleAmount = 6000;
+	private Particle[] particles;
+	
+	
+	private class Mouse
+	{
+		int X = 0; 	
+		int prevX = 0; 	
+		int Y = 0;
+		int size = 5;	//size of mouse influence
+	}
+	
+	private Mouse mouse;
 	
 	ParticlesPanel()
 	{
-		
 		random = new Random();
 		
-		start();
-		
 		DragListener dragListener = new DragListener(); 
-		
-		timer = new Timer(50, this);
-		timer.start();
-		
-		timer2 = new Timer(5000, this);
-		timer2.start();
-		          
 		this.addMouseMotionListener(dragListener);
 		
+		movetimer = new Timer(50, this);
+		movetimer.start();
+		
+		colorTimer = new Timer(5000, this);
+		colorTimer.start();
+		          
 		this.setPreferredSize(new Dimension(650,650));
 		this.setLayout(null);
 		
+		start();
 	}
 	
 	public static void stop()
-	{timer.stop(); timer2.stop();}
+	{movetimer.stop(); colorTimer.stop();}
 	
 	public void start()
 	{
-		for (int i = 0; i < length-1; i++)
+		particles = null;
+		System.gc();
+		particles =  new Particle[particleAmount];
+		
+		for (int i = 0; i < particleAmount; i++)
 		{
-			sqloc[0][i] = random.nextInt(640);
-			sqloc[1][i] = random.nextInt(640);
+			int X = random.nextInt(640), Y = random.nextInt(640);
+			int sizeX = random.nextInt(9)+5, sizeY = random.nextInt(9)+3;
 			
-			sqsizeX[i] = random.nextInt(9)+5;
-			sqsizeY[i] = random.nextInt(9)+3;
-			
-			dist[i] = Math.abs(sqloc[0][i]-325) + Math.abs(sqloc[1][i]-325); //distance from center
-			
-			colorbool[i] = random.nextBoolean();
-			
-			if (colorbool[i])	//switch between the two colors, then caculates brightness by distance
-			{colors[i] = (new Color ((int) (Math.abs(color1.getRed()-(dist[i] / 5))),(int) (Math.abs(color1.getGreen()-(dist[i] / 5))),(int) (Math.abs(color1.getBlue()-(dist[i] / 5)))));}
-			else 
-			{colors[i] = (new Color ((int) (Math.abs(color2.getRed()-(dist[i] / 5))),(int) (Math.abs(color2.getGreen()-(dist[i] / 5))),(int) (Math.abs(color2.getBlue()-(dist[i] / 5)))));}	
-			
+			particles[i] = new Particle(X,Y,sizeX,sizeY);
+			setColor(particles[i]);
 		}
+		
+		mouse = new Mouse();
+	}
+	
+	private void setColor(Particle p)
+	{
+		//switch between the two colors, then calculate brightness by distance from center
+		Color color;
+		if (random.nextBoolean())
+		{color = color1;}
+		else 
+		{color = color2;}
+		
+		double distFromCenter = Math.abs(p.X-325) + Math.abs(p.Y-325);
+		int R = (int) Math.abs(color.getRed()-(distFromCenter / 5));
+		int G = (int) Math.abs(color.getGreen()-(distFromCenter / 5));
+		int B = (int) Math.abs(color.getBlue()-(distFromCenter / 5));
+		p.color= new Color(R,G,B);
 	}
 	
 	public void paint(Graphics g) 
-	{
-		
+	{	
 		Graphics2D g2D = (Graphics2D) g;
 	
+		//BACKGROUND
 		g2D.setPaint(new Color(60,60,95));
-		g2D.fillRect(0, 0, 650, 650); 		//background
+		g2D.fillRect(0, 0, 650, 650); 
 		
-		for (int i = 0; i < length-1; i++) //all squares
+		//PARTICLES
+		for (Particle p : particles)
 		{		
-			g2D.setPaint(colors[i]);
-			g2D.fillRect(sqloc[0][i], sqloc[1][i], sqsizeX[i], sqsizeY[i]); 
+			g2D.setPaint(p.color);
+			g2D.fillRect(p.X, p.Y, p.sizeX, p.sizeY);
 		}	
 	}
 	
@@ -110,18 +125,18 @@ public class ParticlesPanel extends JPanel implements ActionListener
 	{
 	    public void mouseDragged(MouseEvent e) 
 	    { 
-	      xloc = e.getX();
-	      yloc = e.getY();
+	      mouse.X = e.getX();
+	      mouse.Y = e.getY();
 	               
-	      for (int i = 0; i < length-1; i++) //pushes squares to the side if they are inside mouse obj
+	      for (Particle p : particles) //pushes squares to the side if they are inside mouse size
 	      { 
-	    	  if (sqloc[0][i] > xloc-16 && sqloc[0][i] < xloc+size-12 && sqloc[1][i] > yloc-16 && sqloc[1][i] < yloc+size-12)	
+	    	  if (p.X > mouse.X-16 && p.X < mouse.X+mouse.size && p.Y > mouse.Y-16 && p.Y < mouse.Y+mouse.size)	
 	       	  {	
-	    		  if (prevloc < xloc) {sqloc[0][i]+=10; sqloc[1][i]+=10;}
-	       		  else {sqloc[0][i]-=10; sqloc[1][i]-=10;}	
+	    		  if (mouse.prevX < mouse.X) {p.X+=10; p.Y+=10;}
+	       		  else {p.X-=10; p.Y-=10;}	
 	       	  }
 	      }
-	      prevloc = xloc;
+	      mouse.prevX = mouse.X;
 	      repaint();    
 	    }
 	}
@@ -129,45 +144,34 @@ public class ParticlesPanel extends JPanel implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-	
-		if (e.getSource()==timer) 
+		if (e.getSource()==movetimer) 
 		{
-		
-			for (int i = 0; i < length-1; i++) 
+			for (Particle p : particles) 
 			{	
-					switch (random.nextInt(4)) //moves squares randomly
-					{
-						case 0: sqloc[0][i]+=random.nextInt(2);
-						break;
-						case 1: sqloc[0][i]-=random.nextInt(2);
-						break;
-						case 2: sqloc[1][i]+=random.nextInt(2);
-						break;
-						case 3: sqloc[1][i]-=random.nextInt(2);
-						break;
-					}
+				switch (random.nextInt(4)) //moves squares randomly
+				{
+					case 0: p.X+=random.nextInt(2);
+					break;
+					case 1: p.X-=random.nextInt(2);
+					break;
+					case 2: p.Y+=random.nextInt(2);
+					break;
+					case 3: p.Y-=random.nextInt(2);
+					break;
+				}
 			}
 			repaint();
 		}
 		
 		else 
 		{
-			switch (random.nextInt(2)) //changes colors
-			{	
-				case 0: color1 = (new Color (170,245,245)); color2 = (new Color (170,170,245));
-				break;
-				case 1: color1 = (new Color (170,170,245)); color2 = (new Color (245,170,245));
-				break;
-			}
+			if (random.nextBoolean())
+			{color1 = (new Color (170,245,245)); color2 = (new Color (170,170,245));}
+			else 
+			{color1 = (new Color (170,170,245)); color2 = (new Color (245,170,245));}
 		
-			for (int i = 0; i < length-1; i++) 
-			{
-				if (colorbool[i]) 
-				{colors[i] = (new Color ((int) (Math.abs(color1.getRed()-(dist[i] / 5))),(int) (Math.abs(color1.getGreen()-(dist[i] / 5))),(int) (Math.abs(color1.getBlue()-(dist[i] / 5)))));}
-			
-				else 
-				{colors[i] = (new Color ((int) (Math.abs(color2.getRed()-(dist[i] / 5))),(int) (Math.abs(color2.getGreen()-(dist[i] / 5))),(int) (Math.abs(color2.getBlue()-(dist[i] / 5)))));}	
-			}
+			for (Particle p : particles) 
+			{setColor(p);}
 		}
 	}
 }

@@ -12,8 +12,8 @@ public class Particles extends JFrame
 	
 	ParticlesPanel panel;
 	
-	public Particles(){
-		
+	public Particles()
+	{
 		panel = new ParticlesPanel();
 		
 		this.setTitle("Particles");
@@ -21,7 +21,6 @@ public class Particles extends JFrame
 		
 		this.addKeyListener(new KeyListener() 
 		{
-
 			@Override
 			public void keyTyped(KeyEvent e) 
 			{
