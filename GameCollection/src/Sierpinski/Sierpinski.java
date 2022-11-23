@@ -4,14 +4,13 @@ import javax.swing.JFrame;
 import Main.MainMenu;
 import Main.WindowEventHandler;
 
-public class Sierpinski{
+public class Sierpinski
+{
+	private SierpinskiSlow slowPanel;
+	private SierpinskiFast fastPanel;
 	
-	SierpinskiSlow slowPanel;
-	SierpinskiFast fastPanel;
-	
-	int gamemode = 0;
-	
-	WindowEventHandler eventHandler;
+	private int gamemode = 0;
+	private WindowEventHandler eventHandler;
 	
 	public Sierpinski(WindowEventHandler eventHandler, int gamemode)
 	{
@@ -21,7 +20,7 @@ public class Sierpinski{
 		start();
 	}	
 	
-	public void start()
+	private void start()
 	{
 		JFrame frame = new JFrame("Sierpinski");
 		frame.setIconImage(MainMenu.img.getImage());

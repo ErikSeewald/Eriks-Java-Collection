@@ -32,6 +32,9 @@ public class SierpinskiSlow extends JPanel implements ActionListener
 	static Timer timer1;
 	static Timer timer2;
 	
+	private Color background = new Color(40,40,50);
+	private Color foreground = new Color(100,255,100);
+	
 	SierpinskiSlow(boolean slowMode)
 	{
 		random = new Random();
@@ -71,7 +74,8 @@ public class SierpinskiSlow extends JPanel implements ActionListener
 	{
 		Graphics2D g2D = (Graphics2D) g;
 		
-		super.paint(g);
+		g2D.setPaint(background);
+		g2D.fillRect(0, 0, 600, 600);
 		
 		g2D.fillRect((int)ACorner.getX()-2,(int)ACorner.getY()-2, 5, 5);
 		g2D.fillRect((int)BCorner.getX()-2,(int)BCorner.getY()-2, 5, 5);
@@ -86,16 +90,16 @@ public class SierpinskiSlow extends JPanel implements ActionListener
 			
 		for (int i = 0; i < numP; i++) 
 		{
-			g2D.setPaint(Color.DARK_GRAY);
-			g2D.fillRect(allP[0][i]-2, allP[1][i]-2, 5, 5); 
-			g2D.setPaint(Color.GRAY);
-			g2D.fillRect(allP[0][i+1]-2, allP[1][i+1]-2, 5, 5);
+			g2D.setPaint(Color.white);
+			g2D.fillRect(allP[0][i]-2, allP[1][i]-2, 5, 5);
 		}
+		
+		g2D.setPaint(foreground);
+		g2D.fillRect(allP[0][numP]-3, allP[1][numP]-3, 7, 7);
 	}
 	
-	public void rollDice() 
+	private void rollDice() 
 	{
-	
 		switch (random.nextInt(3)) 
 		{
 			case 0: nextP[0] = (int)ACorner.getX(); nextP[1] = (int)ACorner.getY();

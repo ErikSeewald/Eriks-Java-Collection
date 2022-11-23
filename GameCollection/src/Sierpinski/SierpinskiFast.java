@@ -1,9 +1,11 @@
 package Sierpinski;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.Random;
+
 import javax.swing.JPanel;
 
 public class SierpinskiFast extends JPanel
@@ -25,9 +27,11 @@ public class SierpinskiFast extends JPanel
 	
 	private Thread t1;
 	
+	private Color background = new Color(40,40,50);
+	private Color foreground = new Color(100,255,100);
+	
 	SierpinskiFast()
 	{
-		
 		random = new Random();
 		
 		this.setPreferredSize(new Dimension(600,600));
@@ -62,9 +66,11 @@ public class SierpinskiFast extends JPanel
 	public void paint(Graphics g) 
 	{
 		Graphics2D g2D = (Graphics2D) g;
+				
+		g2D.setPaint(background);
+		g2D.fillRect(0, 0, 600, 600);
 		
-		super.paint(g2D);
-		
+		g2D.setPaint(foreground);
 		g2D.fillRect((int)ACorner.getX()-2,(int)ACorner.getY()-2, 5, 5);
 		g2D.fillRect((int)BCorner.getX()-2,(int)BCorner.getY()-2, 5, 5);
 		g2D.fillRect((int)CCorner.getX()-2,(int)CCorner.getY()-2, 5, 5);
@@ -77,7 +83,7 @@ public class SierpinskiFast extends JPanel
 		}
 	}
 	
-	public void rollDice() 
+	private void rollDice() 
 	{
 		if (points == null) {return;}
 		

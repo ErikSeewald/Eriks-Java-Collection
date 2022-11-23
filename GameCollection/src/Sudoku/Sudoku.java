@@ -10,7 +10,6 @@ public class Sudoku
 {
 	public void start(WindowEventHandler eventHandler) 
 	{
-		
 		JFrame frame = new JFrame("Sudoku");
 		frame.setIconImage(MainMenu.img.getImage());
 		frame.setResizable(false);

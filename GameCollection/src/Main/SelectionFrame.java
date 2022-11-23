@@ -19,24 +19,32 @@ public class SelectionFrame
 		
 		JFrame selection = new JFrame("Selection");
 		selection.setIconImage(MainMenu.img.getImage());
+		
 		JLabel headline = new JLabel("PICK A GAMEMODE BY PRESSING THE CORRESPONDING KEY");
 		headline.setForeground(new Color(220,220,240));
+		
 		JLabel mode1 = new JLabel();
 		mode1.setForeground(new Color(220,220,240));
+		
 		JLabel mode2 = new JLabel();
 		mode2.setForeground(new Color(220,220,240));
+		
 		JLabel mode3 = new JLabel();
 		mode3.setForeground(new Color(220,220,240));
+		
 		selection.getContentPane().setBackground(new Color(50,50,70));
 		selection.setLayout(null);
+		
 		headline.setBounds(20,5,500,40);
 		mode1.setBounds(20,40,500,40);
 		mode2.setBounds(20,70,500,40);
 		mode3.setBounds(20,100,500,40);
+		
 		selection.add(headline);
 		selection.add(mode1);
 		selection.add(mode2);
 		selection.add(mode3);
+		
 		selection.setSize(500, 200);
 		selection.setVisible(true);
 		
@@ -46,7 +54,6 @@ public class SelectionFrame
 			break;
 			case "Sierpinski": mode1.setText("1 - SLOW"); mode2.setText("2 - NORMAL"); mode3.setText("3 - FAST");
 			break;
-			
 		}
 		
 		selection.addKeyListener(new KeyListener() 
@@ -58,14 +65,15 @@ public class SelectionFrame
 				
 				int mode = key - '0'; //char to int
 				
+				if (mode < 1 || mode > 3) {return;}
+				
 				switch (gameName)
 				{
 					case "Pathfind": new Pathfind(eventHandler, mode); selection.dispatchEvent(new WindowEvent(selection, WindowEvent.WINDOW_CLOSING));
 					break;
 					case "Sierpinski": new Sierpinski(eventHandler, mode); selection.dispatchEvent(new WindowEvent(selection, WindowEvent.WINDOW_CLOSING));
 					break;
-				}
-					
+				}	
 			}
 			@Override
 			public void keyPressed(KeyEvent e) {}
