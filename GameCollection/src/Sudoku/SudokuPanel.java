@@ -14,12 +14,11 @@ public class SudokuPanel extends JPanel
 {
 	private static final long serialVersionUID = 3986470365499168687L;
 	
-	static final int GRID_SIZE = 9;
-	int PANEL_SIZE = 600;
-	int BOX_SIZE = (PANEL_SIZE /GRID_SIZE)+1;
+	private static final int GRID_SIZE = 9;
+	private int PANEL_SIZE = 600;
+	private int BOX_SIZE = (PANEL_SIZE /GRID_SIZE)+1;
 	
-	int[][] board = new int [GRID_SIZE][GRID_SIZE];			//row, column
-	int oldboard[][] = new int [GRID_SIZE][GRID_SIZE];		//state of board before "solve" method
+	private int[][] board = new int [GRID_SIZE][GRID_SIZE];			//row, column
 		
 	/*	column	 0 1 2 3 4 5 6 7 8	  
 	 								   row
@@ -33,10 +32,13 @@ public class SudokuPanel extends JPanel
 				{0,0,0,2,0,0,0,0,0},	7
 				{0,0,7,0,4,0,2,0,3},	8 */
 		
-	int activeColumn = -1;						//column that has been clicked on - by default outside of screen
-	int activeRow = -1;
+	private int activeColumn = -1;						//column that has been clicked on - by default outside of screen
+	private int activeRow = -1;
 	
-	long startTime;								//used to check if "solve" is taking too long
+	private long startTime;								//used to check if "solve" is taking too long
+	
+	private Color background = new Color(40,40,50);
+	private Color foreground = new Color(170,170,180);
 	
 	SudokuPanel()
 	{
@@ -59,7 +61,13 @@ public class SudokuPanel extends JPanel
 	public void reset()
 	{
 		for (int i = 0; i < GRID_SIZE; i++)
-		{for (int j = 0; j < GRID_SIZE; j++){board[i][j] = 0; oldboard[i][j] = 0;}}
+		{
+			for (int j = 0; j < GRID_SIZE; j++)
+			{
+				board[i][j] = 0;
+			}
+		}
+		
 		repaint();
 	}
 	
@@ -68,7 +76,6 @@ public class SudokuPanel extends JPanel
 		if (x >= 0 && x <=GRID_SIZE)
 		{
 			board[activeRow][activeColumn] = x;
-			oldboard[activeRow][activeColumn] = x;
 		}
 		
 		activeColumn = -1;
@@ -78,7 +85,8 @@ public class SudokuPanel extends JPanel
 	
 	public void changeSize(int c) 
 	{
-		PANEL_SIZE+=c; BOX_SIZE = (PANEL_SIZE /GRID_SIZE)+1; 
+		PANEL_SIZE+=c; 
+		BOX_SIZE = (PANEL_SIZE /GRID_SIZE)+1; 
 		repaint(); 
 		this.setPreferredSize(new Dimension(PANEL_SIZE,PANEL_SIZE));
 	}
@@ -87,35 +95,32 @@ public class SudokuPanel extends JPanel
 	{
 		Graphics2D g2D = (Graphics2D) g;
 		
-		super.paint(g2D);
-			
+		//BACKGROUND
+		g2D.setPaint(background);
+		g2D.fillRect(0, 0, PANEL_SIZE, PANEL_SIZE);
+		
+		//FOREGROUND
+		g2D.setPaint(foreground);
 		g2D.setFont(new Font ("Arial", Font.PLAIN, PANEL_SIZE / 14));
 		
-		int columnpush = 0;
-		int rowpush = 0; 
+		int columnpush = 0, rowpush = 0; 
 		
 		for (int row = 0; row < GRID_SIZE; row++)
 		{
 			for (int column = 0; column < GRID_SIZE; column++)
 			{	
-				if (oldboard[row][column] != 0) 
-				{
-					g2D.setPaint(Color.GRAY);
-					g2D.fillRect(column * BOX_SIZE, row * BOX_SIZE, BOX_SIZE, BOX_SIZE);
-					g2D.setPaint(Color.DARK_GRAY);
-				}
-				
-				g2D.drawRect(column * BOX_SIZE, row * BOX_SIZE, BOX_SIZE, BOX_SIZE); //Grid
+				//GRID
+				g2D.drawRect(column * BOX_SIZE, row * BOX_SIZE, BOX_SIZE, BOX_SIZE);
 		
+				//SELECTED BOX
 				g2D.fillRect(activeColumn * BOX_SIZE, activeRow * BOX_SIZE, BOX_SIZE, BOX_SIZE);
 				
+				//VALUES
 				g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				
 				if (board[row][column] != 0) 
 				{
 					g2D.drawString(""+board[row][column], (PANEL_SIZE/28)+columnpush, (PANEL_SIZE/13)+2+rowpush);
 				}
-
 				g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 				
 				columnpush+= BOX_SIZE;
@@ -124,20 +129,20 @@ public class SudokuPanel extends JPanel
 			rowpush+= BOX_SIZE;
 		}
 		
-		g2D.setStroke(new BasicStroke(PANEL_SIZE/150)); //Large Box Grid
+		//LARGE GRID
+		g2D.setStroke(new BasicStroke(PANEL_SIZE/150));
 		for (int i = 1; i <= 2; i++) 
 		{
-		g2D.drawLine(0, BOX_SIZE*3*i, BOX_SIZE*9, BOX_SIZE*3*i); 	//horizontal lines
-		g2D.drawLine(BOX_SIZE*3*i, 0, BOX_SIZE*3*i, BOX_SIZE*9);	//vertica lines
+			g2D.drawLine(0, BOX_SIZE*3*i, BOX_SIZE*9, BOX_SIZE*3*i);
+			g2D.drawLine(BOX_SIZE*3*i, 0, BOX_SIZE*3*i, BOX_SIZE*9);
 		}
-		
 	}
 	
-	public void sudoku() {startTime = System.currentTimeMillis(); solve(board); repaint();}
+	public void sudoku() 
+	{startTime = System.currentTimeMillis(); solve(board); repaint();}
 	
 	private boolean solve(int[][] board)
 	{
-		
 		if ((System.currentTimeMillis()-startTime)>500) {reset(); return false;}
 		
 		for (int row = 0; row < GRID_SIZE; row++)
@@ -152,7 +157,7 @@ public class SudokuPanel extends JPanel
 						{
 							board[row][column] = number; 
 							
-							if (solve(board)) {return true;} //check if it can solve board with current inputs recursively
+							if (solve(board)) {return true;}
 							else {board[row][column] = 0;} //backtrack if cannot solve rest of board
 						}
 					}
@@ -169,7 +174,6 @@ public class SudokuPanel extends JPanel
 				&& !isNumberInBox(board, number,row,column);
 	}
 
-	
 	private static boolean isNumberInRow(int[][] board, int number, int row)
 	{
 		for (int i = 0; i < GRID_SIZE; i++)
@@ -177,14 +181,12 @@ public class SudokuPanel extends JPanel
 		return false;
 	}
 	
-	
 	private static boolean isNumberInColumn(int[][] board, int number, int column)
 	{
 		for (int i = 0; i < GRID_SIZE; i++)
 		{if(board[i][column] == number) {return true;}}
 		return false;
 	}
-	
 	
 	private static boolean isNumberInBox(int[][] board, int number, int row, int column)
 	{
@@ -198,5 +200,4 @@ public class SudokuPanel extends JPanel
 		}
 		return false;	
 	}
-
 }
