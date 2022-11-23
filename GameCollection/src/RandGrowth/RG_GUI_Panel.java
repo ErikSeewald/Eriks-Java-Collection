@@ -97,8 +97,9 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 	
 	private void setTextFieldSettings(JTextField textField)
 	{
-		textField.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 170), 3));
+		textField.setBorder(BorderFactory.createLineBorder(new Color(170, 150, 100), 3));
 		textField.setFont(new Font("", Font.PLAIN, 15));
+		textField.setHorizontalAlignment(JTextField.CENTER);
 		this.add(textField);
 		
 		textField.addKeyListener(new KeyAdapter() 
@@ -142,10 +143,22 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 			buttonAnimation(startButton, -(buttonSizeX /30));
 			startButton.setBackground(buttonColor2);
 			
-			int deathChance = Integer.parseInt(deathChanceInput.getText());
-			int reviveChance = Integer.parseInt(reviveChanceInput.getText());
-			int pixelSize = Integer.parseInt(pixelSizeInput.getText());
-			int simSpeed = Integer.parseInt(simSpeedInput.getText());
+			int deathChance = 1;
+			int reviveChance = 1;
+			int pixelSize = 1;
+			int simSpeed = 1;
+			
+			String deathChanceStr = deathChanceInput.getText();
+			if (!deathChanceStr.isEmpty()) {deathChance = Integer.parseInt(deathChanceStr);}
+			
+			String reviveChanceStr = reviveChanceInput.getText();
+			if (!reviveChanceStr.isEmpty()) {reviveChance = Integer.parseInt(reviveChanceStr);}
+
+			String pixelSizeStr = pixelSizeInput.getText();
+			if (!pixelSizeStr.isEmpty()) {pixelSize = Integer.parseInt(pixelSizeStr);}
+			
+			String simSpeedStr = simSpeedInput.getText();
+			if (!simSpeedStr.isEmpty()) {simSpeed = Integer.parseInt(simSpeedStr);}
 			if (simSpeed != 0) {simSpeed = 1000/simSpeed;}
 			else {simSpeed = 1000000;}
 			

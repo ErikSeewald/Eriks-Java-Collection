@@ -278,11 +278,11 @@ public class MainMenu extends JFrame implements MouseListener
 		String[][] titles = new String[24][6];
 			
 		titles[0][0] = "INSECTS";
-		titles[0][1] ="Observe as the insects try to survive in this maze | R - Restart";
+		titles[0][1] ="Observe as the insects try to survive in this maze";
 		titles[0][2] ="You can see the current amount of insects in the top left corner.";
 		titles[0][3] ="Blue areas are sources of water, red ones are food. The number of insects";
 		titles[0][4] ="changes each round in relation to how many are within these sources.";
-		titles[0][5] ="1 - Less insects | 2 - More insects | 3 - Less increase per press | 4 - More";
+		titles[0][5] ="Change rate rounds down. (0.01 -> 0  | -0.01 -> -1)";
 		
 		titles[1][0] = "PARTICLES";
 		titles[1][1] ="Press down on your mouse to draw on the particles.";
