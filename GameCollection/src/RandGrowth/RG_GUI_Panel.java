@@ -97,7 +97,7 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 	
 	private void setTextFieldSettings(JTextField textField)
 	{
-		textField.setBorder(BorderFactory.createLineBorder(new Color(170, 150, 100), 3));
+		textField.setBorder(BorderFactory.createLineBorder(new Color(130, 130, 150), 3));
 		textField.setFont(new Font("", Font.PLAIN, 15));
 		textField.setHorizontalAlignment(JTextField.CENTER);
 		this.add(textField);
