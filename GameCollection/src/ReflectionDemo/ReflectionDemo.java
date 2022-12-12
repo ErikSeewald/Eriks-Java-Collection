@@ -33,9 +33,6 @@ public class ReflectionDemo extends JFrame
 				else if (key == '2') {panel.changeReflectCount(true);}
 				else if (key == '3') {panel.changeRotationSpeed(false);}
 				else if (key == '4') {panel.changeRotationSpeed(true);}
-				else if (key == '5') {panel.accuracy = 500;}
-				else if (key == '6') {panel.accuracy = 1000;}
-				else if (key == '7') {panel.accuracy = 5000;}
 				
 				else if (key == '+') {panel.changeSize(10); pack();}
 				else if (key == '-') {panel.changeSize(-10); pack();}

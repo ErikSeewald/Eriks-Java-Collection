@@ -314,7 +314,6 @@ public class MainMenu extends JFrame implements MouseListener
 		titles[6][1] ="Move the ray origin with your mouse held down and rotate it with the mouse wheel.";
 		titles[6][2] ="1 - Less reflections  |  2 - More reflections";
 		titles[6][3] ="3 - Less rotation speed  |  4 - More rotation speed";
-		titles[6][4] ="5 - Low accuracy | 6 - Default accuracy | 7 - Ultra accuracy";
 		
 		titles[7][0] = "MOUSE DODGE";
 		titles[7][1] = "Move your mouse to dodge the enemies.";
