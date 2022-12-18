@@ -15,17 +15,17 @@ public class ReflectionPanel extends JPanel implements MouseWheelListener
 {
 	private static final long serialVersionUID = 6487656587L;
 	
-	int panelSize = 700;
+	private int panelSize = 700;
 	
-	int reflectcount = 1; //HOW MANY RAYS WILL BE DRAWN
+	private int reflectcount = 1; //HOW MANY RAYS WILL BE DRAWN
 	
 	//ANGLE USED FOR ROTATING THE RAY
-	final static double PI = Math.PI;
-	final static double DEG90 = PI/2;
-	final static double DEG270 = 3*DEG90;
-	double rotationSpeed = 0.01;
+	private final static double PI = Math.PI;
+	private final static double DEG90 = PI/2;
+	private final static double DEG270 = 3*DEG90;
+	private double rotationSpeed = 0.01;
 	
-	int blue = 1; //CHANGING THE AMOUNT OF BLUE MIXED INTO THE RAY COLOR
+	private int blue = 1; //AMOUNT OF BLUE MIXED INTO THE RAY COLOR
 	
 	private class Ray
 	{
@@ -33,7 +33,7 @@ public class ReflectionPanel extends JPanel implements MouseWheelListener
 		double angle;
 	}
 	
-	Ray[] rays = new Ray[50];
+	private Ray[] rays = new Ray[50];
 	
 	ReflectionPanel()
 	{
@@ -49,14 +49,13 @@ public class ReflectionPanel extends JPanel implements MouseWheelListener
 		
 		rays[0].origin[0] = 350;
 		rays[0].origin[1] = 350;
-		
 		rays[0].angle = 0.01;
 		makeRays();
 	}
 	
 	public void changeReflectCount(boolean increase)
 	{
-		if (increase) {if (reflectcount < 49) {reflectcount++;}}	
+		if (increase && reflectcount < 49) {reflectcount++;}	
 		else if (reflectcount > 1) {reflectcount--;}
 			
 		makeRays();
@@ -69,7 +68,7 @@ public class ReflectionPanel extends JPanel implements MouseWheelListener
 		else {rotationSpeed/=2;}
 	}
 	
-	public void rayRotation(double change)
+	private void rayRotation(double change)
 	{
 		rays[0].angle+=change;
 		if (rays[0].angle <0) {rays[0].angle+=2*PI;}
@@ -77,19 +76,19 @@ public class ReflectionPanel extends JPanel implements MouseWheelListener
 		makeRays();
 	}
 	
-	public void makeRays()
+	private void makeRays()
 	{
 		for (int i = 1; i < reflectcount+1; i++)
 		{rayCalculation(rays[i-1], rays[i]);}
 	}
 	
-	double dist(double ax, double ay, double bx, double by)
+	private double dist(double ax, double ay, double bx, double by)
 	{
 		double v1 = bx-ax, v2 = by-ay;
 		return ( Math.sqrt(v1*v1 + v2*v2) );
 	}
 	
-	public void rayCalculation(Ray prevRay, Ray ray)
+	private void rayCalculation(Ray prevRay, Ray ray)
 	{	
 		double rayAngle = prevRay.angle;
 		
@@ -102,18 +101,15 @@ public class ReflectionPanel extends JPanel implements MouseWheelListener
 				
 		//looking up
 		if(rayAngle > PI) 
-		{
-			rayY = 0;
-			rayX = prevX + (prevY-rayY)*aTan; 
-			// tan = opposite/adjacent -> Tan a * Adjacent = Opposite -> aTan * Opposite = Adjacent -> aTan * ry = rx 
-		} 
+		{rayY = 0;} 
 				
 		//looking down
 		if(rayAngle < PI) 
-		{
-			rayY = panelSize; 
-			rayX = prevX + (prevY-rayY)*aTan; 
-		}		
+		{rayY = panelSize;}		
+
+		// tan = opposite/adjacent -> Tan a * Adjacent = Opposite -> aTan * Opposite = Adjacent -> aTan * rayY = rayX 
+		rayX = prevX + (prevY-rayY)*aTan;
+		
 		distHor = dist(prevX,prevY,rayX,rayY);
 		double horX = rayX, horY = rayY;
 		
@@ -124,17 +120,14 @@ public class ReflectionPanel extends JPanel implements MouseWheelListener
 				
 		//looking left
 		if(rayAngle > DEG90 && rayAngle < DEG270) 
-		{
-			rayX = 0;
-			rayY = prevY + (prevX-rayX)*nTan;
-		} 
+		{rayX = 0;} 
 				
 		//looking right
 		if(rayAngle < DEG90 || rayAngle > DEG270)
-		{
-			rayX = panelSize;
-			rayY = prevY + (prevX-rayX)*nTan;
-		}	
+		{rayX = panelSize;}
+		
+
+		rayY = prevY + (prevX-rayX)*nTan;
 		distVer = dist(prevX,prevY,rayX,rayY);
 		
 		
@@ -183,8 +176,8 @@ public class ReflectionPanel extends JPanel implements MouseWheelListener
 	public void changeSize(int c) 
 	{
 		panelSize+=c;
-		repaint();
 		this.setPreferredSize(new Dimension(panelSize,panelSize));
+		repaint();
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e) 
