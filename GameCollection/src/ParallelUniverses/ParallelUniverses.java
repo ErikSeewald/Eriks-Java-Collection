@@ -13,19 +13,16 @@ import Main.WindowEventHandler;
 public class ParallelUniverses 
 {
 	//pressedKeys List because keyPressed() has an annoying delay before it registers a key as held down
-	static ArrayList<Integer> pressedKeys = new ArrayList<>();
+	private static ArrayList<Integer> pressedKeys = new ArrayList<>();
 	
-	static ParallelUniversesPanel panel;
+	private static ParallelUniversesPanel panel;
 	
-	static Timer timer = new Timer(25, new ActionListener()
+	private static Timer timer = new Timer(25, new ActionListener()
 	{	@Override
 		public void actionPerformed(ActionEvent e) 
-		{
-			int x = 0;
-			int y = 0;	
-			
+	 	{
+			int x = 0, y = 0, loop = 1;	
 			boolean move = false;
-			int loop = 1;
 			
 			if (pressedKeys.contains(68)) {x = 1;  move = true;} 	//D
 			if (pressedKeys.contains(65)) {x = -1; move = true;} 	//A
@@ -34,9 +31,8 @@ public class ParallelUniverses
 			
 			if (pressedKeys.contains(16)) {loop = 4;}	//SHIFT
 		
-			if(move) //don't do an unnecessary calculation
+			if(move)
 			{
-				//handle speed thorugh loops instead of increasing x  or y because we need to calculate 1 pixel at a time
 				for (int i = 0; i < loop; i++) 
 				{panel.move(x,y);} 
 				panel.repaint();
@@ -70,19 +66,19 @@ public class ParallelUniverses
 				
 				if (!(pressedKeys.contains(code))) {pressedKeys.add(code);}
 				
-				if (e.getKeyCode() == 69) {panel.hideUniverses();} //E
+				if (code == 72) {panel.hideUniverses();} //H
 			
 			}
 			@Override
 			public void keyReleased(KeyEvent e) 
 			{
-				int x = pressedKeys.indexOf(e.getKeyCode());
-				pressedKeys.remove(x);
+				pressedKeys.remove(pressedKeys.indexOf(e.getKeyCode()));
 			}		
 		});	
+		
 		frame.setVisible(true);
 	}
 	
 	public static void stop()
-	{if (timer.isRunning()) {timer.stop();}}
+	{timer.stop();}
 }

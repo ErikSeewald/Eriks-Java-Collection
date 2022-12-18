@@ -311,7 +311,7 @@ public class MainMenu extends JFrame implements MouseListener
 		titles[5][1] ="The red point represents your position in the universe.";
 		titles[5][2] ="The green point represents your position in the parallel universes.";
 		titles[5][3] ="Move with W,A,S,D and hold down shift before pressing the keys to move faster.";
-		titles[5][4] ="Hide the parallel universes with E";
+		titles[5][4] ="Hide the parallel universes by pressing H";
 		
 		titles[6][0] = "REFLECTION DEMO";
 		titles[6][1] ="Move the ray origin with your mouse held down and rotate it with the mouse wheel.";
