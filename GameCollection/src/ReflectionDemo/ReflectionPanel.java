@@ -47,8 +47,8 @@ public class ReflectionPanel extends JPanel implements MouseWheelListener
 		for (int i = 0; i < rays.length; i++)
 		{rays[i] = new Ray();}
 		
-		rays[0].origin[0] = 300;
-		rays[0].origin[1] = 300;
+		rays[0].origin[0] = 350;
+		rays[0].origin[1] = 350;
 		
 		rays[0].angle = 0.01;
 		makeRays();

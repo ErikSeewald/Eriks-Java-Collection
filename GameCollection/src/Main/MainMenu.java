@@ -286,7 +286,8 @@ public class MainMenu extends JFrame implements MouseListener
 		
 		titles[1][0] = "PARTICLES";
 		titles[1][1] ="Press down on your mouse to draw on the particles.";
-		titles[1][2] ="R - Reset";
+		titles[1][2] ="Keys:";
+		titles[1][3] ="R - Reset";
 		
 		titles[2][0] = "SIERPINSKI";
 		titles[2][1] ="Every turn there is a random chance for the point to move towards one of the";
@@ -295,14 +296,16 @@ public class MainMenu extends JFrame implements MouseListener
 		
 		titles[3][0] = "SUDOKU";
 		titles[3][1] ="Use your mouse to click on a square, then type in a number.";
-		titles[3][2] ="S -- Solve | R -- Reset";
-		titles[3][3] ="+/- -- Change screen size";
+		titles[3][2] ="Keys:";
+		titles[3][3] ="S -- Solve | R -- Reset";
+		titles[3][4] ="+/- -- Change screen size";
 		
 		titles[4][0] = "PATHFIND";
 		titles[4][1] ="Use W,A,S,D to escape the red enemies for as many turns as possible.";
 		titles[4][2] ="Load and save levels with the menu bar. Shift + click on tiles to edit them.";
-		titles[4][3] ="0 -- Wipe board | R -- Reset board";
-		titles[4][4] ="T -- Generate new board | +/- -- Change screen size";
+		titles[4][3] ="Keys:";
+		titles[4][4] ="0 -- Wipe board | R -- Reset board";
+		titles[4][5] ="T -- Generate new board | +/- -- Change screen size";
 		
 		titles[5][0] = "PARALLEL UNIVERSES";
 		titles[5][1] ="The red point represents your position in the universe.";
@@ -312,8 +315,9 @@ public class MainMenu extends JFrame implements MouseListener
 		
 		titles[6][0] = "REFLECTION DEMO";
 		titles[6][1] ="Move the ray origin with your mouse held down and rotate it with the mouse wheel.";
-		titles[6][2] ="1 - Less reflections  |  2 - More reflections";
-		titles[6][3] ="3 - Less rotation speed  |  4 - More rotation speed";
+		titles[6][2] ="Keys:";
+		titles[6][3] ="1 - Less reflections  |  2 - More reflections";
+		titles[6][4] ="3 - Less rotation speed  |  4 - More rotation speed";
 		
 		titles[7][0] = "MOUSE DODGE";
 		titles[7][1] = "Move your mouse to dodge the enemies.";
@@ -322,15 +326,17 @@ public class MainMenu extends JFrame implements MouseListener
 		
 		titles[8][0] = "2D SIDESCROLLER";
 		titles[8][1] ="Outrun the screen and don't fall into the lava.";
-		titles[8][2] ="Use W,A,S,D to move and press space to jump. | F -- Flying mode";
-		titles[8][3] ="R -- Restart | T -- Generate new map | ESC -- Pause";
-		titles[8][4] ="CTRL + S -- Save | CTRL + L -- Load";
+		titles[8][2] ="Keys:";
+		titles[8][3] ="Use W,A,S,D to move and press space to jump. | F -- Flying mode";
+		titles[8][4] ="R -- Restart | T -- Generate new map | ESC -- Pause";
+		titles[8][5] ="CTRL + S -- Save | CTRL + L -- Load";
 		
 		titles[9][0] = "2D SPEEDRUN";
 		titles[9][1] ="Move as fast as you can.";
-		titles[9][2] ="Use W,A,S,D to move and press space to jump. | F -- Flying mode";
-		titles[9][3] ="R -- Restart | T -- Generate new map | ESC -- Pause";
-		titles[9][4] ="CTRL + S -- Save | CTRL + L -- Load";
+		titles[9][2] ="Keys:";
+		titles[9][3] ="Use W,A,S,D to move and press space to jump. | F -- Flying mode";
+		titles[9][4] ="R -- Restart | T -- Generate new map | ESC -- Pause";
+		titles[9][5] ="CTRL + S -- Save | CTRL + L -- Load";
 		
 		titles[10][0] = "PIXEL COLLISION";
 		titles[10][1] ="Anything you drawn on screen will become a collision object.";
@@ -347,8 +353,8 @@ public class MainMenu extends JFrame implements MouseListener
 		titles[11][5] ="over it | Delete last connection = CTRL Z | Save/load layouts with the menu bar";
 		
 		titles[12][0] = "GRAVITY VECTORS";
-		titles[12][1] ="This is not really a gravity or magnetic field simulation, but I could not";
-		titles[12][2] ="find a good name for it. Move gravity points with the mouse held down";
+		titles[12][1] ="Move gravity points with the mouse held down";
+		titles[12][2] ="Keys:";
 		titles[12][3] ="1 - Add another gravity point | 2 - Remove last gravity point";
 		titles[12][4] ="+/- - Change screen size";
 		titles[12][5] ="G - Activate gradient rendering | N - Turn off arrow normalization";
@@ -366,7 +372,8 @@ public class MainMenu extends JFrame implements MouseListener
 		titles[14][2] = "are generated. They pick a random target and try to shoot it until it is";
 		titles[14][3] = "DEAD, THEN THEY PICK A NEW ONE. WHO WILL BE THE LAST SURVIVOR?";
 		titles[14][3] = "dead, then they pick a new one. Who will be victorious?";
-		titles[14][4] = "R - Restart | S - Show stats | H - Only show Health";
+		titles[14][4] = "Keys:";
+		titles[14][5] = "R - Restart | S - Show stats | H - Only show Health";
 		
 		titles[15][0] = "RAND GROWTH";
 		titles[15][1] = "Once you have pressed the start button, press and move your mouse";
