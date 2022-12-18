@@ -1,5 +1,5 @@
 package MouseDodge;
- import java.awt.BasicStroke;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -18,55 +18,108 @@ import java.util.Random;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-
 public class MouseDodgePanel extends JPanel implements ActionListener{
 
 	private static final long serialVersionUID = 9082922097976866954L;
 
 	int PANEL_SIZE = 600;
 	
-	double[] player = {PANEL_SIZE/1,PANEL_SIZE/2};		//player coordinates
-	int playerSize = PANEL_SIZE/35;					
-	Color playerColor = new Color (220,50,50);
+	//PLAYER
+	private class Player
+	{
+		double X = PANEL_SIZE, Y = PANEL_SIZE/2;
+		int size = PANEL_SIZE/35;
+		Color color = new Color (220,50,50);
+	}
+	private Player player;
 	
-	int enemyCount = 25;
-	double[][] enemies = new double[enemyCount][4];		//enemy coordinates
-	double[][] enemyGoals = new double [enemyCount][2];	//enemy vector goals
-	double[][] enemyVects = new double [enemyCount][2]; //normalized vectors for enemies to move along
-	int[] enemySize = new int[enemyCount];
-	int[] sizeDivider = new int[enemyCount];		//divider that decides the ratio of screen size to enemy size
-	boolean[] fillOrDraw = new boolean[enemyCount];	//g2D.fillRect or g2D.drawRect
-	double speedMultiplier = 250/(double)PANEL_SIZE; //enemy vector multiplier as a ratio of screen size
 	
-	double[] boardData = new double[4];					//data of the centered grey board
-	double endPointX;									//Max values of board coordinates
-	double endPointY;
+	//ENEMIES
+	private class Enemy
+	{
+		double X, Y;
+		double goalX, goalY;
+		double vecX, vecY; //normalized vectors for enemies to move along
+		
+		int size;
+		int sizeDiv; //divider that decides the ratio of screen size to enemy size
+		
+		boolean fill;
+		
+		Enemy()
+		{
+			this.sizeDiv = random.nextInt(15)+15;
+			
+			this.fill = random.nextInt(4) == 1;
+			
+			this.size = PANEL_SIZE/this.sizeDiv;
+			
+			this.X = random.nextInt((int)(PANEL_SIZE*1.7));
+			this.Y = random.nextInt(PANEL_SIZE);
+			
+			this.goalX = random.nextInt((int)(PANEL_SIZE*1.7));
+			this.goalY = random.nextInt(PANEL_SIZE);
+			
+			generateVectors();
+		}
+		
+		void generateVectors()
+		{
+			vecX = goalX - X;
+			vecY = goalY - Y;
+			
+			double movelength = Math.sqrt(Math.pow(vecX, 2)+Math.pow(vecY, 2));
+			vecX /= movelength*speed; 
+			vecY /= movelength*speed;
+		}
+	}
+	private static final int enemyCount = 25;
+	private Enemy[] enemies = new Enemy[enemyCount];
+	private double speed = 250/(double)PANEL_SIZE;
 	
-	static Timer moveTimer;								//Timer for each frame (~60fps)
-	static Timer timer;									//Timer for time score 
-	Random random = new Random();
 	
-	byte moveNum = 0;								//move counter to limit the amount of updates for the MouseAdapter			
+	//BOARD
+	private class Board
+	{
+		int X,Y;
+		int width, height;
+		int endX, endY;
+		
+		Board()
+		{
+			X = (int)(PANEL_SIZE/2.8);
+			Y = (int)(PANEL_SIZE/7.5);
+			width = PANEL_SIZE;		
+			height = (int)(PANEL_SIZE/1.35);
+			
+			endX = X + width;
+			endY = Y + height;
+		}
+	}
+	private Board board;
 	
-	boolean paused;									//is the game paused
+	private static Timer moveTimer;	//Timer for each frame (~60fps)
+	private static Timer timer;		//Timer for time score 
+	private Random random = new Random();
 	
-	boolean debug = false;							//is the game in debug mode
+	private byte moveNum = 0;	//move counter to limit the amount of updates for the MouseAdapter			
 	
-	boolean finished;								//has the round ended
-	
-	boolean moveActive = false;						//is the player allowed to move
-
-	int time = 0;									//time score
-	
-	int bestTime;									//high score
-	
+	private boolean paused = true;
+	boolean debug = false;
+	private boolean finished;
+	private boolean moveActive = false;		//is the player allowed to move
 	boolean darkMode = true;
+	
+	private int time = 0;
+	private int bestTime;
 	
 	MouseDodgePanel()
 	{				
 		DragListener dragListener = new DragListener();
 		this.addMouseMotionListener(dragListener);
-		
+	
+		player = new Player();
+	
 		moveTimer = new Timer(14, this);
 		timer = new Timer(1000,this);
 		
@@ -75,51 +128,26 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 	
 	public void start()
 	{
-		
 		try {loadTime();} catch (IOException e) {System.out.println("Load failed");}
 		
-		finished = false;
-		paused = true;
+		if (finished)
+		{
+			finished = false; 
+			pause();
+		}
+		
 		time = 0;
 		
 		for (int i = 0; i < enemyCount; i++)
-		{ 
-			sizeDivider[i] = random.nextInt(15)+15;
-			
-			if (random.nextInt(4) == 1)				//only one in 4 should not be filled out
-			{fillOrDraw[i] = true;}
-			else {fillOrDraw[i] = false;}
-			
-			enemySize[i] = PANEL_SIZE/sizeDivider[i];
-			
-			//0 - starting X | 1 - starting Y | 2 - X size | 3 - Y size
-			enemies[i][0] = random.nextInt((int)(PANEL_SIZE*1.7)); enemies[i][1] = random.nextInt(PANEL_SIZE);
-			enemies[i][2] = enemySize[i]; enemies[i][3] = enemySize[i];
-			
-			enemyGoals[i][0] = random.nextInt((int)(PANEL_SIZE*1.7));
-			enemyGoals[i][1] = random.nextInt(PANEL_SIZE);
-			
-			generateVectors(i);
-		}
+		{enemies[i] = new Enemy();}
 		
 		this.setPreferredSize(new Dimension((int)(PANEL_SIZE*1.7),PANEL_SIZE));
 		
-		calcBoardData();
+		player.color= new Color (220,50,50);
 		
-		playerColor = new Color (220,50,50);
+		board = new Board();
 		
 		repaint();
-	}
-	
-	public void calcBoardData()
-	{
-		boardData[0] = (int)(PANEL_SIZE/2.8); 		//starting X
-		boardData[1] = (int)(PANEL_SIZE/7.5);		//starting Y
-		boardData[2] = PANEL_SIZE;					//X Size
-		boardData[3] = (int)(PANEL_SIZE/1.35);		//Y Size
-		
-		endPointX = boardData[0] + boardData[2];
-		endPointY = boardData[1] + boardData[3];
 	}
 	
 	public void paint (Graphics g)
@@ -137,41 +165,42 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 		if (!darkMode) {g2D.setPaint(Color.LIGHT_GRAY);}
 		else {g2D.setPaint(new Color(75,75,105));}
 		
-		g2D.fillRect((int)boardData[0],(int)boardData[1],(int)boardData[2],(int)boardData[3]);
+		g2D.fillRect(board.X, board.Y, board.width,board.height);
 		
 		if (!darkMode) {g2D.setPaint(Color.GRAY);}
 		else {g2D.setPaint(new Color(130,130,170));}
 		
 		g2D.setStroke(new BasicStroke(2));
-		g2D.drawRect((int)boardData[0],(int)boardData[1],(int)boardData[2],(int)boardData[3]);
+		g2D.drawRect(board.X, board.Y, board.width,board.height);
 		
 		//player
-		g2D.setPaint(playerColor);
+		g2D.setPaint(player.color);
 		if (finished) {g2D.setPaint(Color.GREEN);}
-		g2D.fillRect((int)player[0], (int)player[1], playerSize, playerSize);
+		g2D.fillRect((int)player.X, (int)player.Y, player.size, player.size);
 		
 		//enemies
 		
 		if (!darkMode) {g2D.setPaint(Color.GRAY);}
 		else {g2D.setPaint(new Color(150,150,200));}
 		
-		for (int i = 0; i < enemyCount; i++)
+		for (Enemy enemy : enemies)
 		{
-			if (fillOrDraw[i])
-			{g2D.drawRect((int)enemies[i][0], (int)enemies[i][1], (int)enemies[i][2], (int)enemies[i][3]);}
-			else {g2D.fillRect((int)enemies[i][0], (int)enemies[i][1], (int)enemies[i][2], (int)enemies[i][3]);}
+			if (enemy.fill)
+			{g2D.drawRect((int)enemy.X, (int)enemy.Y, enemy.size, enemy.size);}
+			else 
+			{g2D.fillRect((int)enemy.X, (int)enemy.Y, enemy.size, enemy.size);}
 		}
 		
 		if (debug)
 		{
 			//Shows enemy goals
 			g2D.setPaint(Color.GREEN);
-			for (int i = 0; i < enemyCount; i++)
-			{g2D.fillRect((int)enemyGoals[i][0],(int)enemyGoals[i][1], 10, 10);}	
+			for (Enemy enemy : enemies)
+			{g2D.fillRect((int)enemy.goalX,(int)enemy.goalY, 10, 10);}	
 	
 			g2D.setPaint(new Color(130,130,170));
-			for (int i = 0; i < enemyCount; i++)
-			{g2D.drawLine((int)enemyGoals[i][0],(int)enemyGoals[i][1], (int)enemies[i][0], (int)enemies[i][1]);}
+			for (Enemy enemy : enemies)
+			{g2D.drawLine((int) enemy.goalX,(int)enemy.goalY, (int)enemy.X, (int)enemy.Y);}
 		}	
 		
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -199,7 +228,7 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 			if (!darkMode) {g2D.setPaint(Color.GRAY);}
 			else {g2D.setPaint(new Color(130,130,170));}
 			g2D.drawRect((int)(PANEL_SIZE/1.55), PANEL_SIZE/55, (int)(PANEL_SIZE/2.3), PANEL_SIZE/10);
-			g2D.setPaint(playerColor);
+			g2D.setPaint(player.color);
 			g2D.setFont(new Font ("Dialog", Font.BOLD, PANEL_SIZE/11));
 			g2D.drawString("FINISHED", (int)(PANEL_SIZE/1.53), PANEL_SIZE/10);
 		}
@@ -251,43 +280,33 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 	
 	public void move()
 	{
-		for (int i = 0; i < enemyCount; i++)
+		for (Enemy enemy : enemies)
 		{	
 			//has the enemy reached its goal -> new goal
-			if (enemies[i][0] > enemyGoals[i][0]-(PANEL_SIZE/200) && enemies[i][0] < enemyGoals[i][0]+(PANEL_SIZE/200)
-				&& enemies[i][1] > enemyGoals[i][1]-(PANEL_SIZE/200) && enemies[i][1] < enemyGoals[i][1]+(PANEL_SIZE/200)) 
+			if (enemy.X > enemy.goalX-(PANEL_SIZE/200) && enemy.X < enemy.goalX+(PANEL_SIZE/200)
+				&& enemy.Y > enemy.goalY-(PANEL_SIZE/200) && enemy.Y < enemy.goalY+(PANEL_SIZE/200)) 
 			{
-				enemyGoals[i][0] = random.nextInt((int)(PANEL_SIZE*1.5));
-				enemyGoals[i][1] = random.nextInt(PANEL_SIZE);
-				generateVectors(i);
+				enemy.goalX = random.nextInt((int)(PANEL_SIZE*1.5));
+				enemy.goalY = random.nextInt(PANEL_SIZE);
+				enemy.generateVectors();
 			}
 			
-			enemies[i][0]+= enemyVects[i][0];
-			enemies[i][1]+= enemyVects[i][1];
+			enemy.X+= enemy.vecX;
+			enemy.Y+= enemy.vecY;
 		}
 		
-		if (isInside(player[0],player[1]))
+		if (isInside(player.X, player.Y))
 		{end();}		
 		
 		repaint();
 	}
 	
-	private void generateVectors(int i)
-	{
-		enemyVects[i][0] = enemyGoals[i][0] - enemies[i][0];
-		enemyVects[i][1] = enemyGoals[i][1] - enemies[i][1];
-	
-		double movelength = Math.sqrt(Math.pow(enemyVects[i][0], 2)+Math.pow(enemyVects[i][1], 2));
-		enemyVects[i][0] /= movelength*speedMultiplier; enemyVects[i][1] /= movelength*speedMultiplier;
-	}
-
-	
 	public boolean isInside(double x, double y)
 	{
 
-		for (int i = 0; i < enemyCount; i++)
+		for (Enemy enemy : enemies)
 		{
-			if (enemyBounds(enemies[i][0], enemies[i][1], enemies[i][2], enemies[i][3],x,y)) {return true;}
+			if (enemyBounds(enemy.X, enemy.Y, enemy.size, enemy.size,x,y)) {return true;}
 		}
 		
 		return false;
@@ -295,12 +314,14 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 	
 	public boolean enemyBounds(double a, double b,  double a2,double b2,  double x, double y)
 	{
+		int size = player.size;
+		
 		boolean isInside = 
 				(
 						(x > a &&  x < a+a2 && y > b &&  y < b+b2)
-					||	(x+playerSize > a &&  x+playerSize < a+a2 && y+playerSize > b &&  y+playerSize < b+b2)
-					||	(x+playerSize > a &&  x+playerSize < a+a2 && y > b &&  y < b+b2)
-					||	(x > a &&  x < a+a2 && y+playerSize > b &&  y+playerSize < b+b2)
+					||	(x+size > a &&  x+size < a+a2 && y+size > b &&  y+size < b+b2)
+					||	(x+size > a &&  x+size < a+a2 && y > b &&  y < b+b2)
+					||	(x > a &&  x < a+a2 && y+size > b &&  y+size < b+b2)
 				);
 		
 		return isInside;
@@ -322,11 +343,11 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 	
 	public void end()
 	{
+		pause();
+		
 		finished = true;
 		
 		moveActive = false;
-		
-		moveTimer.stop();
 		
 		if (time > bestTime)
 		{
@@ -361,8 +382,8 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 	    				
 	    				int locationCase = inBoard(x,y);
 	    				
-	    				if (locationCase != 1 && locationCase != 2) {player[0] = x-playerSize/2;}
-	    				if (locationCase != 3 && locationCase != 2) {player[1] = y-playerSize/2;}
+	    				if (locationCase != 1 && locationCase != 2) {player.X = x-player.size/2;}
+	    				if (locationCase != 3 && locationCase != 2) {player.Y = y-player.size/2;}
 	    				    				
 	    			}			
 	    	}
@@ -375,8 +396,8 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 		
 		byte locationCase = 0;
 		
-		boolean outsideX = (x < boardData[0] || x > endPointX);
-		boolean outsideY = (y < boardData[1] || y > endPointY);
+		boolean outsideX = (x < board.X || x > board.endX);
+		boolean outsideY = (y < board.Y || y > board.endY);
 		
 		if (outsideX) {locationCase++;}
 		if (outsideY) {locationCase++;}
@@ -386,39 +407,40 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 		return locationCase;
 	}
 	
-	public void changeSize(int height, int plus) 
+	public void changeSize(int plus) 
 	{
+		int height = PANEL_SIZE;
+		
 		double[][] enemyLocRatio = new double[enemyCount][2];
 		for (int i = 0; i < enemyCount; i++)
 		{
-			enemyLocRatio[i][0] = enemies[i][0] / (PANEL_SIZE*1.7); 
-			enemyLocRatio[i][1] = enemies[i][1] / PANEL_SIZE;
+			enemyLocRatio[i][0] = enemies[i].X / (PANEL_SIZE*1.7); 
+			enemyLocRatio[i][1] =  enemies[i].Y / PANEL_SIZE;
 		}
 		
 		double[] playerLocRatio = new double[2];
-		playerLocRatio[0] = player[0] / (PANEL_SIZE*1.7);
-		playerLocRatio[1] = player[1] / PANEL_SIZE;
+		playerLocRatio[0] = player.X / (PANEL_SIZE*1.7);
+		playerLocRatio[1] = player.Y / PANEL_SIZE;
 		
 		PANEL_SIZE= (height+plus);
-		playerSize = PANEL_SIZE/30;
+		player.size = PANEL_SIZE/30;
 		
-		speedMultiplier = 250/(double)PANEL_SIZE;
+		speed = 250/(double)PANEL_SIZE;
 		
-		player[0] = playerLocRatio[0] * PANEL_SIZE*1.7;
-		player[1] = playerLocRatio[1] * PANEL_SIZE;
+		player.X = playerLocRatio[0] * PANEL_SIZE*1.7;
+		player.Y = playerLocRatio[1] * PANEL_SIZE;
 		
 		for (int i = 0; i < enemyCount; i++)
 		{
-			enemySize[i] = PANEL_SIZE/sizeDivider[i];
+			enemies[i].size = PANEL_SIZE / enemies[i].sizeDiv;
 			
-			enemies[i][0] = enemyLocRatio[i][0] * PANEL_SIZE*1.7; 
-			enemies[i][1] = enemyLocRatio[i][1] * PANEL_SIZE;
-			enemies[i][2] = enemySize[i];enemies[i][3] = enemySize[i];
+			enemies[i].X = enemyLocRatio[i][0] * PANEL_SIZE*1.7; 
+			enemies[i].Y = enemyLocRatio[i][1] * PANEL_SIZE;
 
-			generateVectors(i);
+			enemies[i].generateVectors();
 		}
 		
-		calcBoardData();
+		board = new Board();
 			
 		repaint(); 
 		this.setPreferredSize(new Dimension((int)(PANEL_SIZE*1.7),PANEL_SIZE));
