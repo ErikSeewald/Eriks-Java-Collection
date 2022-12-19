@@ -40,6 +40,9 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 		double X, Y;
 		double goalX, goalY;
 		double vecX, vecY; //normalized vectors for enemies to move along
+
+		int stepsToGoal;
+		int steps;
 		
 		int size;
 		int sizeDiv; //divider that decides the ratio of screen size to enemy size
@@ -71,6 +74,9 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 			double movelength = Math.sqrt(Math.pow(vecX, 2)+Math.pow(vecY, 2));
 			vecX /= movelength*speed; 
 			vecY /= movelength*speed;
+			
+			stepsToGoal = (int) (movelength*speed);
+			steps = 0;
 		}
 	}
 	private static final int enemyCount = 25;
@@ -161,7 +167,7 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 			g2D.fillRect(0,0,(int)(PANEL_SIZE*1.7),PANEL_SIZE);
 		}
 		
-		//game board
+		//BOARD
 		if (!darkMode) {g2D.setPaint(Color.LIGHT_GRAY);}
 		else {g2D.setPaint(new Color(75,75,105));}
 		
@@ -173,13 +179,12 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 		g2D.setStroke(new BasicStroke(2));
 		g2D.drawRect(board.X, board.Y, board.width,board.height);
 		
-		//player
-		g2D.setPaint(player.color);
+		//PLAYER
 		if (finished) {g2D.setPaint(Color.GREEN);}
+		else {g2D.setPaint(player.color);}
 		g2D.fillRect((int)player.X, (int)player.Y, player.size, player.size);
 		
-		//enemies
-		
+		//ENEMIES
 		if (!darkMode) {g2D.setPaint(Color.GRAY);}
 		else {g2D.setPaint(new Color(150,150,200));}
 		
@@ -203,6 +208,8 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 			{g2D.drawLine((int) enemy.goalX,(int)enemy.goalY, (int)enemy.X, (int)enemy.Y);}
 		}	
 		
+		
+		//GUI
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		if (paused)
@@ -214,6 +221,7 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 			if (!darkMode) {g2D.setPaint(Color.GRAY);}
 			else {g2D.setPaint(new Color(130,130,170));}
 			g2D.drawRect((int)(PANEL_SIZE/1.55), PANEL_SIZE/55, (int)(PANEL_SIZE/2.35), PANEL_SIZE/10);
+			
 			if (darkMode) {g2D.setPaint(new Color(110,110,150));}
 			g2D.setFont(new Font ("Dialog", Font.BOLD, PANEL_SIZE/11));
 			g2D.drawString("PAUSED", (int)(PANEL_SIZE/1.48), PANEL_SIZE/10);
@@ -278,13 +286,12 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 		else {time++;}
 	}
 	
-	public void move()
+	private void move()
 	{
 		for (Enemy enemy : enemies)
 		{	
 			//has the enemy reached its goal -> new goal
-			if (enemy.X > enemy.goalX-(PANEL_SIZE/200) && enemy.X < enemy.goalX+(PANEL_SIZE/200)
-				&& enemy.Y > enemy.goalY-(PANEL_SIZE/200) && enemy.Y < enemy.goalY+(PANEL_SIZE/200)) 
+			if (enemy.steps == enemy.stepsToGoal) 
 			{
 				enemy.goalX = random.nextInt((int)(PANEL_SIZE*1.5));
 				enemy.goalY = random.nextInt(PANEL_SIZE);
@@ -293,6 +300,8 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 			
 			enemy.X+= enemy.vecX;
 			enemy.Y+= enemy.vecY;
+			
+			enemy.steps++;
 		}
 		
 		if (isInside(player.X, player.Y))
@@ -301,7 +310,7 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 		repaint();
 	}
 	
-	public boolean isInside(double x, double y)
+	private boolean isInside(double x, double y)
 	{
 
 		for (Enemy enemy : enemies)
@@ -312,7 +321,7 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 		return false;
 	}
 	
-	public boolean enemyBounds(double a, double b,  double a2,double b2,  double x, double y)
+	private boolean enemyBounds(double a, double b,  double a2,double b2,  double x, double y)
 	{
 		int size = player.size;
 		
@@ -332,16 +341,27 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 		if (!finished)
 		{	
 			if (paused)
-			{moveActive = true;moveTimer.start();timer.start();paused = false;}
+			{
+				moveActive = true;
+				moveTimer.start();
+				timer.start();
+				paused = false;
+			}
 			
-			else {moveActive = false; moveTimer.stop(); timer.stop(); paused = true;}
+			else 
+			{
+				moveActive = false;
+				moveTimer.stop();
+				timer.stop();
+				paused = true;
+			}
 			
 			repaint();
 		}
 		
 	}
 	
-	public void end()
+	private void end()
 	{
 		pause();
 		
@@ -390,7 +410,7 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 		}
 	}
 	
-	public byte inBoard(int x, int y)
+	private byte inBoard(int x, int y)
 	{
 		// 0 - None outside		1 - X outside	2 - Both outside	3 - Y outside
 		
@@ -460,11 +480,10 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 		String text = reader.readLine();	
 		reader.close();
 		
-		if (text != null)
+		if (text != null && text.length() < 50)
 		{bestTime = Integer.parseInt(text);}	
 	}
 	
 	public static void stop()
 	{moveTimer.stop(); timer.stop();}
-
 }
