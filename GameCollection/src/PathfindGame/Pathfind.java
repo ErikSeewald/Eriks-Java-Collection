@@ -21,12 +21,12 @@ public class Pathfind extends JFrame implements ActionListener
 {
 	private static final long serialVersionUID = 386670748457681736L;
 
-	JMenuItem loadItem;
-	JMenuItem saveItem;
+	private JMenuItem loadItem;
+	private JMenuItem saveItem;
 	
-	PathfindPanel panel;
+	private PathfindPanel panel;
 	
-	static private int gamemode;
+	private static int gamemode;
 	
 	public Pathfind(WindowEventHandler eventHandler, int gamemode)
 	{			
@@ -37,15 +37,18 @@ public class Pathfind extends JFrame implements ActionListener
 		
 		switch(gamemode)
 		{
-		case 1: panel = new PathfindNormal(); break;
-		case 2: panel = new PathfindTrail();break;
-		case 3: panel = new PathfindDemo();break;
+			case 1: panel = new PathfindNormal();
+			break;
+			case 2: panel = new PathfindTrail();
+			break;
+			case 3: panel = new PathfindDemo();
+			break;
 		}
 		
 		this.setResizable(false);
 		
 		JMenuBar menuBar = new JMenuBar();
-		JMenu fileMenu =new JMenu("File");
+		JMenu fileMenu = new JMenu("File");
 		
 		loadItem = new JMenuItem("Load");
 		saveItem = new JMenuItem("Save");
