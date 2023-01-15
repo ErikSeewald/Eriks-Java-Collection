@@ -5,14 +5,11 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Random;
 
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
-public class PathfindNormal extends JPanel implements ActionListener
+public class PathfindNormal extends JPanel
 {
 	private static final long serialVersionUID = 3986470365499168687L;
 	
@@ -48,7 +45,7 @@ public class PathfindNormal extends JPanel implements ActionListener
 		Chaser(int x, int y, boolean prefersX)
 		{this.x = x; this.y = y; this.prefersX = prefersX;}
 	}
-	private int chaser_count = 10;
+	private int chaser_count = 8;
 	private Chaser[] chasers = new Chaser[chaser_count];
 	
 	//PLAYER
@@ -59,20 +56,31 @@ public class PathfindNormal extends JPanel implements ActionListener
 	}
 	Player player = new Player();
 	
+	//COLORS
+	private final Color background = new Color(45,45,55);
+	private final Color foreground1 = new Color(180,180,200);
+	private final Color foreground2 = new Color(120,120,140);
+	private final Color foreground3 = new Color(80,80,100);
+	private final Color playerCol = new Color (50,250,50);
+	private final Color chaserCol = new Color(255,80,80);
+	
 	//OTHERS
-	private Timer timer;
 	private Random random = new Random();
 	
-	private boolean moveDone = true; 	//is the chaser move done? -> Player move ready
 	private boolean finished = false;
 	private int seed = random.nextInt();
 	
 	PathfindNormal()
 	{	
 		this.setPreferredSize(new Dimension (PANEL_SIZE,PANEL_SIZE));
-		timer = new Timer(100, this);
-		
 		reset();
+	}
+	
+	public void changeSize(int c) 
+	{
+		PANEL_SIZE+=c; BOX_SIZE = (PANEL_SIZE /GRID_SIZE)+1;
+		this.setPreferredSize(new Dimension(PANEL_SIZE,PANEL_SIZE));
+		repaint(); 
 	}
 	
 	public void setSeed(int seed)
@@ -89,6 +97,7 @@ public class PathfindNormal extends JPanel implements ActionListener
 		random.setSeed(seed);
 		seed+=10;
 		
+		//BOARD
 		if (fullReset)
 		{
 			board = null;
@@ -101,6 +110,18 @@ public class PathfindNormal extends JPanel implements ActionListener
 				{	
 					boolean isAlive = random.nextInt(4) == 1;
 					board[x][y] = new Square(isAlive);
+				}
+			}
+		}
+		
+		else 
+		{
+			for (int x = 0; x < GRID_SIZE; x++)
+			{
+				for (int y = 0; y < GRID_SIZE; y++)
+				{	
+					//only revive the squares that were alive from the start
+					if (board[x][y].hp != 3) {board[x][y].hp = 3; board[x][y].isAlive = true;}
 				}
 			}
 		}
@@ -180,24 +201,17 @@ public class PathfindNormal extends JPanel implements ActionListener
 		finished = false;
 		repaint();
 	}
-		
-	@Override
-	public void actionPerformed(ActionEvent e) 
-	{
-		timer.stop();
-		oneMove();
-	}
 	
-	public void oneMove()
+	private void oneMove()
 	{	
 		for (Chaser c : chasers)
 		{nextStep(c);}
 		
-		moveDone = true;
+		deathCheck();
 		repaint();
 	}
 	
-	public void nextStep(Chaser chaser)
+	private void nextStep(Chaser chaser)
 	{	
 		//MOVE
 		if (chaser.prefersX)
@@ -212,33 +226,28 @@ public class PathfindNormal extends JPanel implements ActionListener
 			if (xMove(chaser)) {return;}
 		}
 		
+		chaser.prefersX = !chaser.prefersX;
+		
 		//NO VALID MOVE FOUND -> START ATTACKING SQUARE
 		int attackX = chaser.x;
 		int attackY = chaser.y;
 		
-		if (chaser.prefersX)
-		{
-			if (player.x > chaser.x)
-			{attackX++;}
+		if (player.x > chaser.x)
+		{attackX++;}
 				
-			else if (player.x < chaser.x)
-			{attackX--;}
-			
-		}
+		else if (player.x < chaser.x)
+		{attackX--;}
 		
-		else 
-		{
-			if (player.y > chaser.y)
-			{attackY++;}
+		else if (player.y > chaser.y)
+		{attackY++;}
 				
-			if (player.y < chaser.y)
-			{attackY--;}
-		}
+		else
+		{attackY--;}
 		
 		board[attackX][attackY].getHit();
 	}
 	
-	public boolean xMove(Chaser chaser)
+	private boolean xMove(Chaser chaser)
 	{
 		if (player.x > chaser.x)
 		{
@@ -255,7 +264,7 @@ public class PathfindNormal extends JPanel implements ActionListener
 		return false;
 	}
 	
-	public boolean yMove(Chaser chaser)
+	private boolean yMove(Chaser chaser)
 	{		
 		if (player.y > chaser.y)
 		{
@@ -273,7 +282,7 @@ public class PathfindNormal extends JPanel implements ActionListener
 	
 	public void movePlayer(char key)
 	{
-		if (moveDone && !finished)
+		if (!finished)
 		{
 			switch (key)
 			{
@@ -288,11 +297,13 @@ public class PathfindNormal extends JPanel implements ActionListener
 			}
 			
 			player.move_count++;
-		
+			deathCheck();
+			
+			if (!finished) 
+			{
+				oneMove(); 
+			}
 			repaint();
-
-			timer.start(); 
-			moveDone = false;
 		}
 	}
 	
@@ -303,59 +314,54 @@ public class PathfindNormal extends JPanel implements ActionListener
 		return false;
 	}
 	
-	public void paint(Graphics g)
+	private void deathCheck()
 	{
 		for (Chaser chaser : chasers)
 		{
 			if (chaser.x == player.x && chaser.y == player.y) 
 			{finished = true;}
 		}
-		
+	}
+	
+	public void paint(Graphics g)
+	{	
 		Graphics2D g2D = (Graphics2D) g;
-		super.paint(g2D);
-		
+
+		//BACKGROUND
+		g2D.setPaint(background);
+		g2D.fillRect(0, 0, PANEL_SIZE, PANEL_SIZE);
 		
 		//BOARD
 		for (int x = 0; x < GRID_SIZE; x++)
 		{
 			for (int y = 0; y < GRID_SIZE; y++)
 			{	
-				g2D.setPaint(Color.DARK_GRAY);
-				if (board[x][y].hp == 2) {g2D.setPaint(Color.GRAY);}
-				else if (board[x][y].hp == 1) {g2D.setPaint(Color.LIGHT_GRAY);}
+				g2D.setPaint(foreground1);
+				if (board[x][y].hp == 2) {g2D.setPaint(foreground2);}
+				else if (board[x][y].hp == 1) {g2D.setPaint(foreground3);}
 				
 				if (board[x][y].isAlive) 
 				{g2D.fillRect(x * BOX_SIZE, y * BOX_SIZE, BOX_SIZE, BOX_SIZE);}
 				
+				g2D.setPaint(foreground3);
 				g2D.drawRect(x * BOX_SIZE, y * BOX_SIZE, BOX_SIZE, BOX_SIZE);
 			}
 		}
 		
-		g2D.setPaint(new Color (0, 140, 250));
+		//PLAYER
+		g2D.setPaint(playerCol);
 		g2D.fillRect(player.x * BOX_SIZE, player.y * BOX_SIZE, BOX_SIZE, BOX_SIZE);
 		
-		if (!finished) {g2D.setPaint(new Color(200,50,50).brighter());}
-		else {g2D.setPaint(new Color (50, 250, 50));}
+		//CHASERS
+		g2D.setPaint(chaserCol);
 		
 		for (Chaser chaser : chasers)
 		{g2D.fillRect(chaser.x * BOX_SIZE, chaser.y * BOX_SIZE, BOX_SIZE, BOX_SIZE);}
 		
+		//UI
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
-		if (!finished)
-		{
-			int counterpush = 65;
-			
-			g2D.setPaint(Color.DARK_GRAY);
-			g2D.setFont(new Font (null, Font.PLAIN, PANEL_SIZE/40));
-			if (player.move_count >= 100) {counterpush = 350;}
-			else if (player.move_count >= 10) {counterpush = 110;}
-			else {counterpush = 65;}
-			g2D.drawString
-			(""+player.move_count, player.x * BOX_SIZE + (PANEL_SIZE/counterpush), player.y * BOX_SIZE + (PANEL_SIZE/30));
-		}
-		
-		else 
+		if (finished)
 		{
 			double counterpush = 2.7;
 			
@@ -367,43 +373,17 @@ public class PathfindNormal extends JPanel implements ActionListener
 			(""+player.move_count, (int)(GRID_SIZE/counterpush * BOX_SIZE), (int)(GRID_SIZE/1.5 * BOX_SIZE));
 		}
 		
-		
+		else 
+		{	
+			int counterpush = 65;
+			
+			g2D.setPaint(foreground3);
+			g2D.setFont(new Font (null, Font.PLAIN, PANEL_SIZE/40));
+			if (player.move_count >= 100) {counterpush = 350;}
+			else if (player.move_count >= 10) {counterpush = 110;}
+			else {counterpush = 65;}
+			g2D.drawString
+			(""+player.move_count, player.x * BOX_SIZE + (PANEL_SIZE/counterpush), player.y * BOX_SIZE + (PANEL_SIZE/30));
+		}	
 	}
-	
-	public void changeSize(int c) 
-	{
-		PANEL_SIZE+=c; BOX_SIZE = (PANEL_SIZE /GRID_SIZE)+1; 
-		repaint(); 
-		this.setPreferredSize(new Dimension(PANEL_SIZE,PANEL_SIZE));
-	}
-	
-	public boolean[][] getBoard()
-	{
-		boolean[][] b = new boolean[GRID_SIZE][GRID_SIZE];
-		for (int x = 0; x < GRID_SIZE; x++)
-		{
-			for (int y = 0; y < GRID_SIZE; y++)
-			{
-				b[x][y] = board[x][y].isAlive;
-			}
-		}
-		return b;
-	}
-	
-	public int[][] getChasers()
-	{
-		int[][] ch = new int[2][chaser_count];
-		for (int i = 0; i < chaser_count; i++)
-		{
-			ch[0][i] = chasers[i].x;
-			ch[1][i] = chasers[i].y;
-		}
-		return ch;
-	}
-	
-	public int[] getSizes()
-	{int[] sizes = {chaser_count, GRID_SIZE}; return sizes;}
-	
-	public int[] getPlayer()
-	{int[] playerArr = {player.x, player.y, player.move_count}; return playerArr;}
 }

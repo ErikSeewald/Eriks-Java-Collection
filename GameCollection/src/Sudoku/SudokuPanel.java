@@ -37,8 +37,8 @@ public class SudokuPanel extends JPanel
 	
 	private long startTime;								//used to check if "solve" is taking too long
 	
-	private Color background = new Color(45,45,60);
-	private Color foreground = new Color(190,190,210);
+	private final Color background = new Color(45,45,60);
+	private final Color foreground = new Color(190,190,210);
 	
 	SudokuPanel()
 	{
