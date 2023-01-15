@@ -5,8 +5,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
-import PathfindGame.Pathfind;
 import Sierpinski.Sierpinski;
 
 public class SelectionFrame 
@@ -50,8 +48,6 @@ public class SelectionFrame
 		
 		switch(gameName)
 		{
-			case "Pathfind":  mode1.setText("1 - NORMAL"); mode2.setText("2 - TRAIL"); mode3.setText("3 - DEMO");
-			break;
 			case "Sierpinski": mode1.setText("1 - SLOW"); mode2.setText("2 - NORMAL"); mode3.setText("3 - FAST");
 			break;
 		}
@@ -69,8 +65,6 @@ public class SelectionFrame
 				
 				switch (gameName)
 				{
-					case "Pathfind": new Pathfind(eventHandler, mode); selection.dispatchEvent(new WindowEvent(selection, WindowEvent.WINDOW_CLOSING));
-					break;
 					case "Sierpinski": new Sierpinski(eventHandler, mode); selection.dispatchEvent(new WindowEvent(selection, WindowEvent.WINDOW_CLOSING));
 					break;
 				}	

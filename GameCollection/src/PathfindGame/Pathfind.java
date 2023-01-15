@@ -24,26 +24,13 @@ public class Pathfind extends JFrame implements ActionListener
 	private JMenuItem loadItem;
 	private JMenuItem saveItem;
 	
-	private PathfindPanel panel;
+	private PathfindNormal panel;
 	
-	private static int gamemode;
-	
-	public Pathfind(WindowEventHandler eventHandler, int gamemode)
+	public Pathfind()
 	{			
-		Pathfind.gamemode = gamemode;
 		this.setIconImage(MainMenu.img.getImage());
-		this.addWindowListener(eventHandler);
 		this.setTitle("Pathfind");
-		
-		switch(gamemode)
-		{
-			case 1: panel = new PathfindNormal();
-			break;
-			case 2: panel = new PathfindTrail();
-			break;
-			case 3: panel = new PathfindDemo();
-			break;
-		}
+		panel = new PathfindNormal();
 		
 		this.setResizable(false);
 		
@@ -89,6 +76,9 @@ public class Pathfind extends JFrame implements ActionListener
 		this.pack();
 		this.setVisible(true);
 	}
+	
+	public void start(WindowEventHandler eventHandler)
+	{this.addWindowListener(eventHandler);}
 
 	@Override
 	public void actionPerformed(ActionEvent e) 
@@ -197,7 +187,7 @@ public class Pathfind extends JFrame implements ActionListener
 					int[] player = null; //0 is column, 1 is Row, 2 is counter
 					
 					board = panel.getBoard();
-					chaser = panel.getChaser();
+					chaser = panel.getChasers();
 					sizes = panel.getSizes(); 
 					player = panel.getPlayer();
 			
@@ -227,7 +217,4 @@ public class Pathfind extends JFrame implements ActionListener
 				}
 			}
 		}
-	
-	public static void stop()
-	{if (gamemode == 3) {if (PathfindDemo.timer.isRunning()) {PathfindDemo.timer.stop();}}}
 }

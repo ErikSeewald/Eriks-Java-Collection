@@ -21,6 +21,7 @@ import JumpAndRun.JumpAndRun;
 import MouseDodge.MouseDodge;
 import ParallelUniverses.ParallelUniverses;
 import Particles.Particles;
+import PathfindGame.Pathfind;
 import PixelCollision.PixelCollision;
 import RandBattle.RandBattle;
 import RandGrowth.RandGrowth;
@@ -191,7 +192,7 @@ public class MainMenu extends JFrame implements MouseListener
 			break;
 			case 3: Sudoku sudoku = new Sudoku(); sudoku.start(eventHandler);
 			break;
-			case 4: SelectionFrame pathfind = new SelectionFrame(); pathfind.start("Pathfind", eventHandler);
+			case 4: Pathfind pathfind =  new Pathfind(); pathfind.start(eventHandler);
 			break;
 			case 5: ParallelUniverses parallelUniverses = new ParallelUniverses();parallelUniverses.start(eventHandler);
 			break;
