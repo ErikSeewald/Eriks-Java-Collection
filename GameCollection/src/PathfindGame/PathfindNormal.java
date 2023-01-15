@@ -10,28 +10,41 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Random;
+
+import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class PathfindNormal extends PathfindPanel implements ActionListener
+public class PathfindNormal extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 3986470365499168687L;
 	
-	static int GRID_SIZE = 22;
-	int PANEL_SIZE = 610;
-	int BOX_SIZE = (PANEL_SIZE /GRID_SIZE)+1;
+	//SIZES
+	private static int GRID_SIZE = 22;
+	private int PANEL_SIZE = 610;
+	private int BOX_SIZE = (PANEL_SIZE /GRID_SIZE)+1;
 	
-	int[][] board = new int[GRID_SIZE][GRID_SIZE];
+	//BOARD
+	private int[][] board = new int[GRID_SIZE][GRID_SIZE];
 	
-	int chasercount = 10;
-	int[][] chaser = new int[2][chasercount];
+	//CHASER
+	private class Chaser
+	{
+		int x,y;
+		int RM_count = 0; //how many times has the chaser needed to make a random move because something is blocking the direct path
+		
+		Chaser(int x, int y)
+		{this.x = x; this.y = y;}
+	}
+	private int chaser_count = 10;
+	private Chaser[] chasers = new Chaser[chaser_count];
 	
-	int[] randommove = new int [chasercount]; 
-	//how many times has the chaser needed to make a random move because something is blocking the direct path
-
-	int playerColumn;
-	int playerRow;
-	
-	int counter = 0;	//how many player moves
+	//PLAYER
+	private class Player
+	{
+		int x,y;
+		int move_count;
+	}
+	Player player = new Player();
 	
 	Timer timer;
 	
@@ -49,7 +62,7 @@ public class PathfindNormal extends PathfindPanel implements ActionListener
 	
 	
 	PathfindNormal()
-	{
+	{	
 		this.setPreferredSize(new Dimension (PANEL_SIZE,PANEL_SIZE));
 		
 		ClickListener clickListener = new ClickListener();
@@ -63,14 +76,22 @@ public class PathfindNormal extends PathfindPanel implements ActionListener
 	public int[][] getBoard()
 	{return board;}
 	
-	public int[][] getChaser()
-	{return chaser;}
+	public int[][] getChasers()
+	{
+		int[][] ch = new int[2][chaser_count];
+		for (int i = 0; i < chaser_count; i++)
+		{
+			ch[0][i] = chasers[i].x;
+			ch[1][i] = chasers[i].y;
+		}
+		return ch;
+	}
 	
 	public int[] getSizes()
-	{int[] sizes = {chasercount, GRID_SIZE}; return sizes;}
+	{int[] sizes = {chaser_count, GRID_SIZE}; return sizes;}
 	
 	public int[] getPlayer()
-	{int[] player = {playerColumn, playerRow, counter}; return player;}
+	{int[] playerArr = {player.x, player.y, player.move_count}; return playerArr;}
 	
 	public void start(boolean fullReset)
 	{
@@ -86,18 +107,21 @@ public class PathfindNormal extends PathfindPanel implements ActionListener
 			}
 		}
 		
-		for (int i = 0; i < chasercount; i++)
+		//CHASERS
+		chasers = null;
+		System.gc();
+		chasers = new Chaser[chaser_count];
+		for (int i = 0; i < chaser_count; i++)
 		{
-			chaser[0][i] = random.nextInt(GRID_SIZE);
-			chaser[1][i] = random.nextInt(GRID_SIZE);
-			randommove[i] = 0;
+			chasers[i] = new Chaser(random.nextInt(GRID_SIZE),random.nextInt(GRID_SIZE));
 		}
 		
 		finished = false;
-		counter = 0;
 		
-		playerColumn = random.nextInt(GRID_SIZE);
-		playerRow = random.nextInt(GRID_SIZE);
+		//PLAYER
+		player.x = random.nextInt(GRID_SIZE);
+		player.y = random.nextInt(GRID_SIZE);
+		player.move_count = 0;
 		
 		repaint();
 	}
@@ -105,7 +129,7 @@ public class PathfindNormal extends PathfindPanel implements ActionListener
 	public void load(int[]sizes, int[][]loadboard, int[][]loadchaser, int[] loadplayer)
 	{
 		GRID_SIZE = sizes[1];
-		chasercount = sizes[0];
+		chaser_count = sizes[0];
 		
 		for (int i = 0; i < GRID_SIZE; i++)
 			{
@@ -115,18 +139,21 @@ public class PathfindNormal extends PathfindPanel implements ActionListener
 				}
 			}
 		
-		for (int i = 0; i < chasercount; i++)
+		//CHASERS
+		chasers = null;
+		System.gc();
+		chasers = new Chaser[chaser_count];
+		for (int i = 0; i < chaser_count; i++)
 		{
-			chaser[0][i] = loadchaser[0][i];
-			chaser[1][i] = loadchaser[1][i];
-			randommove[i] = 0;
+			chasers[i] = new Chaser(loadchaser[0][i], loadchaser[1][i]);
 		}
 		
 		finished = false;
-		counter = loadplayer[2];
 		
-		playerColumn = loadplayer[0];;
-		playerRow = loadplayer[1];
+		//PLAYER
+		player.x = loadplayer[0];;
+		player.y = loadplayer[1];
+		player.move_count = loadplayer[2];
 		
 		BOX_SIZE = (PANEL_SIZE /GRID_SIZE)+1;
 		repaint();
@@ -149,8 +176,8 @@ public class PathfindNormal extends PathfindPanel implements ActionListener
 	    	
 	    		else
 	    		{
-	    			playerColumn = column;
-	    			playerRow = row;
+	    			player.x = column;
+	    			player.y = row;
 	    		}
 	    	
 	    		repaint();
@@ -167,46 +194,46 @@ public class PathfindNormal extends PathfindPanel implements ActionListener
 	
 	public void oneMove()
 	{	
-		for (int i = 0; i < chasercount; i++)
-		{nextStep(i);}
+		for (Chaser c : chasers)
+		{nextStep(c);}
 		
 		repaint();
 		
 		moveDone = true;
 	}
 	
-	public void nextStep(int chasernum)
-	{
-			
-		if (randommove[chasernum] == 0)
+	public void nextStep(Chaser chaser)
+	{	
+		
+		if (chaser.RM_count == 0)
 		{
 			if (random.nextBoolean())
 			{	
-				if (directionMove(0,chasernum)) {return;}	
-				if (directionMove(1,chasernum)) {return;}	
+				if (xMove(chaser)) {return;}	
+				if (yMove(chaser)) {return;}	
 			}
 			
 			else 
 			{
-				if (directionMove(1,chasernum)) {return;}	
-				if (directionMove(0,chasernum)) {return;}	
+				if (yMove(chaser)) {return;}	
+				if (xMove(chaser)) {return;}	
 			}
 		}
 		
-		randommove[chasernum]++;
+		chaser.RM_count++;
 		
-		if (randommove[chasernum] < 3)
+		if (chaser.RM_count < 3)
 		{
 			switch (random.nextInt(4))
 			{
-				case 0: if (isValidMove(chaser[0][chasernum]+1, chaser[1][chasernum]))  {chaser[0][chasernum]++; break;}
-				case 1: if (isValidMove(chaser[0][chasernum]-1, chaser[1][chasernum])) {chaser[0][chasernum]--; break;}
-				case 2: if (isValidMove(chaser[0][chasernum], chaser[1][chasernum]+1))  {chaser[1][chasernum]++; break;}
-				case 3: if (isValidMove(chaser[0][chasernum], chaser[1][chasernum]-1)) {chaser[1][chasernum]--; break;}
+				case 0: if (isValidMove(chaser.x+1, chaser.y))  {chaser.x++; break;}
+				case 1: if (isValidMove(chaser.x-1, chaser.y)) {chaser.x--; break;}
+				case 2: if (isValidMove(chaser.x, chaser.y+1))  {chaser.y++; break;}
+				case 3: if (isValidMove(chaser.x, chaser.y-1)) {chaser.y--; break;}
 			}
 		}
 	
-		else {randommove[chasernum] = 0;}
+		else {chaser.RM_count = 0;}
 	}
 	
 	public boolean isValidMove(int column, int row)
@@ -216,24 +243,38 @@ public class PathfindNormal extends PathfindPanel implements ActionListener
 		return false;
 	}
 	
-	public boolean directionMove(int direction, int chasernum)
+	public boolean xMove(Chaser chaser)
 	{
-		int[] rowcol = {playerColumn, playerRow};
-		
-		if (rowcol[direction] > chaser[direction][chasernum])
+		if (player.x > chaser.x)
 		{
-			if (board[chaser[1][chasernum] + 1 + (direction-1)] [chaser[0][chasernum]+ Math.abs(direction-1)] == 0) 
-			{chaser[direction][chasernum]++; return true;}
+			if (board[chaser.y] [chaser.x + 1] == 0) 
+			{chaser.x++; return true;}
 		}
 		
-		if (rowcol[direction] < chaser[direction][chasernum])
+		else if (player.x < chaser.x)
 		{
-			if (board[chaser[1][chasernum]- (1 + (direction-1))] [chaser[0][chasernum]- Math.abs(direction-1)] == 0) 
-			{chaser[direction][chasernum]--; return true;}
+			if (board[chaser.y] [chaser.x - 1] == 0) 
+			{chaser.x--; return true;}
 		}
-		
 		return false;
 	}
+	
+	public boolean yMove(Chaser chaser)
+	{		
+		if (player.y > chaser.y)
+		{
+			if (board[chaser.y + 1] [chaser.x] == 0) 
+			{chaser.y++; return true;}
+		}
+		
+		else if (player.y < chaser.y)
+		{
+			if (board[chaser.y - 1] [chaser.x] == 0) 
+			{chaser.y--; return true;}
+		}
+		return false;
+	}
+	
 	
 	public void wipeBoard()
 	{
@@ -255,17 +296,17 @@ public class PathfindNormal extends PathfindPanel implements ActionListener
 		{
 			switch (key)
 			{
-				case 'a': if (isValidMove(playerColumn-1, playerRow)) {playerColumn--;} else {return;}
+				case 'a': if (isValidMove(player.x-1, player.y)) {player.x--;} else {return;}
 				break;
-				case 's': if (isValidMove(playerColumn, playerRow+1)) {playerRow++;} else {return;}
+				case 's': if (isValidMove(player.x, player.y+1)) {player.y++;} else {return;}
 				break;
-				case 'd': if (isValidMove(playerColumn+1, playerRow)) {playerColumn++;} else {return;}
+				case 'd': if (isValidMove(player.x+1, player.y)) {player.x++;} else {return;}
 				break;
-				case 'w': if (isValidMove(playerColumn, playerRow-1)) {playerRow--;} else {return;}
+				case 'w': if (isValidMove(player.x, player.y-1)) {player.y--;} else {return;}
 				break;
 			}
 			
-			counter++;
+			player.move_count++;
 		
 			repaint();
 
@@ -276,9 +317,9 @@ public class PathfindNormal extends PathfindPanel implements ActionListener
 	
 	public void paint(Graphics g)
 	{
-		for (int i = 0; i < chasercount; i++)
+		for (Chaser chaser : chasers)
 		{
-			if (chaser[0][i] == playerColumn && chaser[1][i] == playerRow) 
+			if (chaser.x == player.x && chaser.y == player.y) 
 			{finished = true;}
 		}
 		
@@ -299,13 +340,13 @@ public class PathfindNormal extends PathfindPanel implements ActionListener
 		}
 		
 		g2D.setPaint(new Color (0, 140, 250));
-		g2D.fillRect(playerColumn * BOX_SIZE, playerRow * BOX_SIZE, BOX_SIZE, BOX_SIZE);
+		g2D.fillRect(player.x * BOX_SIZE, player.y * BOX_SIZE, BOX_SIZE, BOX_SIZE);
 		
 		if (!finished) {g2D.setPaint(halfred.brighter());}
 		else {g2D.setPaint(new Color (50, 250, 50));}
 		
-		for (int i = 0; i < chasercount; i++)
-		{g2D.fillRect(chaser[0][i] * BOX_SIZE, chaser[1][i] * BOX_SIZE, BOX_SIZE, BOX_SIZE);}
+		for (Chaser chaser : chasers)
+		{g2D.fillRect(chaser.x * BOX_SIZE, chaser.y * BOX_SIZE, BOX_SIZE, BOX_SIZE);}
 		
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
@@ -313,22 +354,22 @@ public class PathfindNormal extends PathfindPanel implements ActionListener
 		{
 			g2D.setPaint(Color.DARK_GRAY);
 			g2D.setFont(new Font (null, Font.PLAIN, PANEL_SIZE/40));
-			if (counter >= 100) {counterpush1 = 350;}
-			else if (counter >= 10) {counterpush1 = 110;}
+			if (player.move_count >= 100) {counterpush1 = 350;}
+			else if (player.move_count >= 10) {counterpush1 = 110;}
 			else {counterpush1 = 65;}
 			g2D.drawString
-			(""+counter, playerColumn * BOX_SIZE + (PANEL_SIZE/counterpush1), playerRow * BOX_SIZE + (PANEL_SIZE/30));
+			(""+player.move_count, player.x * BOX_SIZE + (PANEL_SIZE/counterpush1), player.y * BOX_SIZE + (PANEL_SIZE/30));
 		}
 		
 		else 
 		{
 			g2D.setPaint(halfred);
 			g2D.setFont(new Font (null, Font.PLAIN, PANEL_SIZE/2));
-			if (counter >= 100) {counterpush2 = 11.6;}
-			else if (counter >= 10) {counterpush2 = 4.7;}
+			if (player.move_count >= 100) {counterpush2 = 11.6;}
+			else if (player.move_count >= 10) {counterpush2 = 4.7;}
 			else {counterpush2 = 2.7;}
 			g2D.drawString
-			(""+counter, (int)(GRID_SIZE/counterpush2 * BOX_SIZE), (int)(GRID_SIZE/1.5 * BOX_SIZE));
+			(""+player.move_count, (int)(GRID_SIZE/counterpush2 * BOX_SIZE), (int)(GRID_SIZE/1.5 * BOX_SIZE));
 		}
 		
 		
