@@ -302,11 +302,11 @@ public class MainMenu extends JFrame implements MouseListener
 		titles[3][4] ="+/- -- Change screen size";
 		
 		titles[4][0] = "PATHFIND";
-		titles[4][1] ="Use W,A,S,D to escape the red enemies for as many turns as possible.";
-		titles[4][2] ="Load and save levels with the menu bar. Shift + click on tiles to edit them.";
+		titles[4][1] ="Use W,A,S,D to escape the chasers for as many turns as possible.";
+		titles[4][2] ="The chasers only move when you move and can break obstacles in 3 hits.";
 		titles[4][3] ="Keys:";
-		titles[4][4] ="0 -- Wipe board | R -- Reset board";
-		titles[4][5] ="T -- Generate new board | +/- -- Change screen size";
+		titles[4][4] ="R -- Reset board | T -- Generate new board";
+		titles[4][5] ="+/- -- Change screen size | Use the menu bar to input a board seed";
 		
 		titles[5][0] = "PARALLEL UNIVERSES";
 		titles[5][1] ="The red point represents your position in the universe.";
