@@ -205,7 +205,7 @@ public class PathfindNormal extends JPanel
 	private void oneMove()
 	{	
 		for (Chaser c : chasers)
-		{nextStep(c);}
+		{nextStep(c); c.prefersX = !c.prefersX;}
 		
 		deathCheck();
 		repaint();
@@ -225,8 +225,6 @@ public class PathfindNormal extends JPanel
 			if (yMove(chaser)) {return;}	
 			if (xMove(chaser)) {return;}
 		}
-		
-		chaser.prefersX = !chaser.prefersX;
 		
 		//NO VALID MOVE FOUND -> START ATTACKING SQUARE
 		int attackX = chaser.x;
