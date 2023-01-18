@@ -12,6 +12,12 @@ public class ReflectionDemo extends JFrame
 	
 	ReflectionPanel panel;
 	
+	private class KeyOperations
+	{
+		static final boolean decrease = false;
+		static final boolean increase = true;
+	}
+	
 	public ReflectionDemo()
 	{
 		panel = new ReflectionPanel();
@@ -29,10 +35,10 @@ public class ReflectionDemo extends JFrame
 			{	
 				char key = e.getKeyChar();
 				
-				if (key == '1') {panel.changeReflectCount(false);}
-				else if (key == '2') {panel.changeReflectCount(true);}
-				else if (key == '3') {panel.changeRotationSpeed(false);}
-				else if (key == '4') {panel.changeRotationSpeed(true);}
+				if (key == '1') {panel.changeReflectCount(KeyOperations.decrease);}
+				else if (key == '2') {panel.changeReflectCount(KeyOperations.increase);}
+				else if (key == '3') {panel.changeRotationSpeed(KeyOperations.decrease);}
+				else if (key == '4') {panel.changeRotationSpeed(KeyOperations.increase);}
 				
 				else if (key == '+') {panel.changeSize(10); pack();}
 				else if (key == '-') {panel.changeSize(-10); pack();}
