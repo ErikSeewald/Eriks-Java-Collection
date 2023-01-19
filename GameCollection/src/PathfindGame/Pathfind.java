@@ -73,28 +73,21 @@ public class Pathfind extends JFrame implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		if (e.getSource() == seedItem)
-		{
-			String seedStr = JOptionPane.showInputDialog("Seed:");
-			if (seedStr != null)
-			{
-				int seed = 0;
-				try
-				{seed = Integer.parseInt(seedStr);}
-				
-				catch(NumberFormatException ex) 
-				{
-					byte[] str = seedStr.getBytes();
+		if (e.getSource() != seedItem)
+		{return;}
+			
+		String seedStr = JOptionPane.showInputDialog("Seed:");
+		if (seedStr == null)
+		{return;}
+		
+		int seed = 0;
+		byte[] str = seedStr.getBytes();
 					
-					for (byte b : str)
-					{
-						seed+= (int) b;
-					}
-				}
-				
-				panel.setSeed(seed);
-				panel.reset();
-			}
+		for (byte b : str)
+		{
+			seed+= (int) b;
 		}
+				
+		panel.setSeed(seed);
 	}
 }
