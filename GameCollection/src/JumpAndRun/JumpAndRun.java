@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
-
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -13,7 +12,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
-
 import Main.MainMenu;
 import Main.WindowEventHandler;
 
@@ -22,21 +20,14 @@ public class JumpAndRun implements ActionListener
 	private static Timer timer;
 	private JumpAndRunPanel panel;
 	
-	public void start(WindowEventHandler eventHandler, boolean fastMode) 
+	public void start(WindowEventHandler eventHandler) 
 	{
 		//INITIALIZATION
 		JFrame frame = new JFrame("Sidescroller");
 		frame.setIconImage(MainMenu.img.getImage());
 		frame.addWindowListener(eventHandler);
 		
-		int scrollingSpeed = 2;
-		if (fastMode) 
-		{
-			frame.setTitle("Speedrun");
-			scrollingSpeed = 0;
-		}
-		
-		panel = new JumpAndRunPanel(scrollingSpeed);
+		panel = new JumpAndRunPanel();
 		
 		frame.add(panel);
 		frame.pack();
@@ -48,9 +39,8 @@ public class JumpAndRun implements ActionListener
 		
 		timer = new Timer(14, new ActionListener() 
 		{	
-			int timeUntilFall = 0;
-			int xSpeed, ySpeed;
-			
+			private int xSpeed, ySpeed;
+		
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
@@ -66,17 +56,16 @@ public class JumpAndRun implements ActionListener
 				{
 					ySpeed = -5;
 					panel.player.jumpAllowed = false; 
-					timeUntilFall = 35;
+					panel.player.airTime = 35;
 				}
 					
 				//FALLING
-				if (timeUntilFall > 0) {timeUntilFall--;}	
-				if (timeUntilFall == 10) {ySpeed = 1;}	//for a smoother transition in fallingSpeed
-				else if (timeUntilFall == 0) {ySpeed = 5;}
+				if (panel.player.airTime > 0) {panel.player.airTime--;}	
+				if (panel.player.airTime == 10) {ySpeed = 1;}	//for a smoother transition in fallingSpeed
+				else if (panel.player.airTime <= 0) {ySpeed = 5;}
 				
 				panel.scroll();
 				
-				if (fastMode) {xSpeed*=2;}
 				panel.movePlayer(xSpeed,ySpeed);	
 			}	
 		});

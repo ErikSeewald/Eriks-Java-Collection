@@ -11,7 +11,7 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
-public class JumpAndRunPanel extends JPanel //implements ActionListener
+public class JumpAndRunPanel extends JPanel
 {
 	private static final long serialVersionUID = 6717353794276866444L;
 
@@ -21,12 +21,13 @@ public class JumpAndRunPanel extends JPanel //implements ActionListener
 	
 	//MAP
 	private byte[] map = new byte[10000];
-	private int scrollingSpeed;
-	private int offset = 0;		//used for pushing the elements to the left -> scrolling
+	private int scrollingSpeed = 1;
+	private int scrollAmount = 0;
 	
 	//ELEMENTS
 	private static final int cubeSize = 30;
-	private int[] layoutChances = new int[8];
+	private static final int[] layoutChances = {50,60,70,85,90,95,100};
+	//private int[] layoutChances = {5,45,55,80,90,95,100};
 	
 	private static enum Layouts
 	{
@@ -82,7 +83,7 @@ public class JumpAndRunPanel extends JPanel //implements ActionListener
 			}
 			
 			this.slot = slot;
-			this.x = (this.slot % 32) * cubeSize;
+			this.x = this.slot * cubeSize;
 		}
 	}
 	private LinkedList<Element> elements = new LinkedList<>();
@@ -90,10 +91,9 @@ public class JumpAndRunPanel extends JPanel //implements ActionListener
 	//PLAYER
 	class Player
 	{
-		int x,y;
-		int prevY;
-		
-		int slot;
+		int x = -1, y = 30;
+		int slot = 0;
+		int airTime = 0;
 		
 		boolean jumpAllowed = false;
 	}
@@ -115,28 +115,17 @@ public class JumpAndRunPanel extends JPanel //implements ActionListener
 		final static boolean restart = false;
 	}
 	
-	JumpAndRunPanel(int scrollingSpeed)
+	JumpAndRunPanel()
 	{
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		this.scrollingSpeed = scrollingSpeed;
-		
-		//CHANGE LAYOUT CHANCES DEPENDING ON SCROLLING MODE
-		int[] layoutSlow = {50,60,70,85,90,95,100};
-		int[] layoutFast = {5,45,55,80,90,95,100};
-		
-		if (scrollingSpeed == 0)
-		{layoutChances = layoutFast;}
-		else {layoutChances = layoutSlow;}
-		
 		start(StartOperations.newMap);
 	}
 	
 	public void start(boolean newMap)
 	{
-		player.x = 0;
-		player.y = 10;
-		player.slot = 0;
-		offset = 0;
+		player = new Player();
+		scrollAmount = 0;
+		scrollingSpeed = 1;
 			
 		//MAP
 		if (newMap)
@@ -144,20 +133,18 @@ public class JumpAndRunPanel extends JPanel //implements ActionListener
 		
 		//ELEMENTS
 		elements.removeAll(elements);
-		for (int i = 0; i < 31; i++)
+		for (int i = 0; i < 32; i++)
 		{elements.add(new Element(map[i], i));}	
-		
-		updateElements();
 	}
 	
 	//MAP
-	public void makeMap(byte[] map)
+	private void makeMap(byte[] map)
 	{
 		for (int i = 1; i < map.length; i++)
 		{
 			int rand = random.nextInt(100);
 			
-			if (map[i-1] > 4 && random.nextBoolean()) {map[i] = (byte) (random.nextInt(3)+4);}
+			if (map[i-1] > 4 && random.nextBoolean()) {map[i] = (byte) (random.nextInt(2)+4);}
 			//if the last one was floating, there is a 50% change the next one will be too	
 			
 			for (byte j = 0; j < 7; j++)
@@ -174,13 +161,22 @@ public class JumpAndRunPanel extends JPanel //implements ActionListener
 		start(StartOperations.newMap);
 	}
 	
+	public void scroll()
+	{
+		if (elements.getLast().slot > 50) {scrollingSpeed = 2;}
+		if (elements.getLast().slot > 300) {scrollingSpeed = 3;}
+		
+		scrollAmount-=scrollingSpeed;
+	}
+	
 	public void paint(Graphics g)
 	{
 		Graphics2D g2D = (Graphics2D) g;
+		g2D.translate(scrollAmount, 0);
 		
 		//BACKROUND
 		g2D.setPaint(backgroundColor);
-		g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
+		g2D.fillRect(-scrollAmount, 0, PANEL_WIDTH, PANEL_HEIGHT);
 		
 		//ELEMENTS
 		g2D.setPaint(elementColor);
@@ -192,10 +188,10 @@ public class JumpAndRunPanel extends JPanel //implements ActionListener
 			
 			Layouts layout = element.layout;
 			if (layout.hitBox1 != null)
-			{g2D.fillRect(element.x - offset, layout.hitBox1[0], cubeSize, layout.hitBox1[1]);}
+			{g2D.fillRect(element.x, layout.hitBox1[0], cubeSize, layout.hitBox1[1]);}
 			
 			if (layout.hitBox2 != null)
-			{g2D.fillRect(element.x - offset, layout.hitBox2[0], cubeSize, layout.hitBox2[1]);}
+			{g2D.fillRect(element.x, layout.hitBox2[0], cubeSize, layout.hitBox2[1]);}
 		}
 			
 		//PLAYER
@@ -205,95 +201,97 @@ public class JumpAndRunPanel extends JPanel //implements ActionListener
 		//UI
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2D.setFont(new Font("", Font.BOLD, 60));
-		g2D.drawString("" + player.slot, 820, 80);
+		g2D.drawString("" + player.slot, 750 - scrollAmount, 80);
 		
-		if (paused) 
+		if (paused)
 		{
 			g2D.setFont(new Font("", Font.BOLD, 60));
-			g2D.drawString("PAUSED", 40, 100);
+			g2D.drawString("PAUSED", 40 - scrollAmount, 100);
 		}
 		
 		//LAVA
 		g2D.setPaint(lavaColor);
-		g2D.fillRect(0, 570, PANEL_WIDTH, cubeSize);
+		g2D.fillRect(-scrollAmount, 560, PANEL_WIDTH , cubeSize);
 	}
-	
-	public void scroll()
-	{offset+=scrollingSpeed;}
 	
 	//PLAYER
 	public void movePlayer(int x, int y)
-	{
-		player.prevY = player.y;
-		player.y+= y;
-		
-		player.x+= (x - scrollingSpeed);
-		
-		player.slot =(player.x + offset) / cubeSize;
-		
-		if (scrollingSpeed == 0)
+	{	
+		//X
+		player.x+= x;
+		Element element = xCheck();
+		if (element != null) 
 		{
-			if ((player.slot % 32) > 15)  //on the right of the screen -> scroll further
-			{
-				offset+=x;
-				player.x-=x;		//keep the player at the same position relative to the screen
-			}
-			
-			else if (player.slot > 15 && (player.slot % 32) < 10) //on the left of the screen -> scroll back
-			{
-				offset+=x;
-				player.x-=x;
-			}
-
+			if (x > 0) {player.x = element.x - cubeSize - 1;}
+			else {player.x = element.x + cubeSize - 1;}
 		}
 		
-		//remove any changes to playerY of this round for X Axis collision detection, then add it back
-		player.y-=y;
-		player.x-=1;
-		if (hitCheck()) {player.x-=x;}	
-		 player.x+=1;
+		//Y
 		player.y+=y;
-		
-		if (hitCheck()) {player.y-=y;}		//hit bottom
-		
-		player.jumpAllowed = (player.y - player.prevY) == 0;
+		int[] hitbox = yCheck();
+		if (hitbox != null)
+		{
+			if (y > 0) 
+			{player.y = hitbox[0] - cubeSize;}
+			else 
+			{player.y = hitbox[0] + hitbox[1];}
+
+			player.jumpAllowed = true;
+		}
+		else {player.jumpAllowed = false;}
 		
 		//DEATH CHECK
-		if (player.y >= PANEL_HEIGHT-cubeSize || player.x < 0) {start(StartOperations.restart);}
-
-		offset = offset % 601;
-		updateElements();
+		if (player.y >= PANEL_HEIGHT-cubeSize || player.x < -scrollAmount) {start(StartOperations.restart);}
 		
+		//UPDATE
+		player.slot = player.x / cubeSize;
+		updateElements();
 		repaint();
 	}
 	
 	private void updateElements()
-	{	
-		if ( (elements.getFirst().x - offset + cubeSize) < 0)
+	{		
+		if (scrollAmount > -30) {return;}
+		
+		if (scrollAmount % 30 == 0)
 		{
 			elements.removeFirst();
 			
 			int slot = elements.getLast().slot + 1;
-			elements.addLast(new Element(map[slot], slot));
+			if (slot < map.length) {elements.add(new Element(map[slot], slot));}
 		}
 	}
 	
-	private boolean hitCheck()
+	private Element xCheck()
 	{
-		//LEFT CHECK
-		Element element = elements.get(player.slot);
-		
-		if (hitboxCheck(element.layout.hitBox1)) {return true;}
-		if (hitboxCheck(element.layout.hitBox2)) {return true;}	
-		
-		//RIGHT CHECK
-		element = elements.get((player.x - offset + cubeSize) / cubeSize);
-		if (player.x + cubeSize > element.x - offset && player.x + cubeSize < element.x - offset + cubeSize)
+		Iterator<Element> e = elements.iterator();
+		while (e.hasNext())
 		{
-			if (hitboxCheck(element.layout.hitBox1)) {return true;}
-			if (hitboxCheck(element.layout.hitBox2)) {return true;}	
+			Element element = e.next();
+			if (player.x - cubeSize > element.x || player.x + cubeSize < element.x)
+			{continue;} //skip all elements that aren't close
+			
+			if (hitboxCheck(element.layout.hitBox1)) {return element;}
+			if (hitboxCheck(element.layout.hitBox2)) {return element;}	
 		}
-		return false;
+		
+		return null;
+	}
+	
+	private int[] yCheck()
+	{
+		Iterator<Element> e = elements.iterator();
+		while (e.hasNext())
+		{
+			Element element = e.next();
+			if (player.x - cubeSize +2 > element.x || player.x + cubeSize < element.x)
+			{continue;} //skip all elements that aren't close
+			
+			if (hitboxCheck(element.layout.hitBox1)) {return element.layout.hitBox1;}
+			if (hitboxCheck(element.layout.hitBox2)) {return element.layout.hitBox2;}	
+		}
+		
+		return null;
 	}
 	
 	private boolean hitboxCheck(int[] hitbox)
