@@ -56,7 +56,7 @@ public class ReflectionPanel extends JPanel implements MouseWheelListener
 	public void changeReflectCount(boolean increase)
 	{
 		if (increase && reflectcount < 49) {reflectcount++;}	
-		else if (reflectcount > 1) {reflectcount--;}
+		else if (!increase && reflectcount > 1) {reflectcount--;}
 			
 		makeRays();
 		repaint();
@@ -126,10 +126,8 @@ public class ReflectionPanel extends JPanel implements MouseWheelListener
 		if(rayAngle < DEG90 || rayAngle > DEG270)
 		{rayX = panelSize;}
 		
-
 		rayY = prevY + (prevX-rayX)*nTan;
 		distVer = dist(prevX,prevY,rayX,rayY);
-		
 		
 		if (distHor < distVer) //y = 0 or y = panelSize
 		{

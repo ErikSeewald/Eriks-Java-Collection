@@ -46,14 +46,13 @@ public class WindowEventHandler extends WindowAdapter
 			case "Reflection Demo": index = 6; break;
 			case "Mouse Dodge": MouseDodgePanel.stop(); index = 7; break; 
 			case "Sidescroller": JumpAndRun.stop(); index = 8; break;
-			case "Speedrun": JumpAndRun.stop(); index = 9; break;
-			case "Pixel Collision": PixelCollision.stop(); index = 10; break;
-			case "Cloth Sim": ClothSim.stop(); index = 11; break;
-			case "Gravity Vectors": index = 12; break;
-			case "Bloon Shooting": BloonShooting.stop(); index = 13; break;
-			case "Rand Battle": RandBattle.stop(); index = 14; break;
-			case "Rand Growth": RandGrowth.stop(); index = 15; break;
-			case "Snakes and Ladders": SnakesAndLadders.stop(); index = 16; break;
+			case "Pixel Collision": PixelCollision.stop(); index = 9; break;
+			case "Cloth Sim": ClothSim.stop(); index = 10; break;
+			case "Gravity Vectors": index = 11; break;
+			case "Bloon Shooting": BloonShooting.stop(); index = 12; break;
+			case "Rand Battle": RandBattle.stop(); index = 13; break;
+			case "Rand Growth": RandGrowth.stop(); index = 14; break;
+			case "Snakes and Ladders": SnakesAndLadders.stop(); index = 15; break;
 		}
 		
 		if (index != -1)

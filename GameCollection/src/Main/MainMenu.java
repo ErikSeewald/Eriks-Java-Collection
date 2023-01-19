@@ -44,14 +44,14 @@ public class MainMenu extends JFrame implements MouseListener
 	private JLabel gameButton7 = new JLabel("    Reflection");
 	private JLabel gameButton8 = new JLabel(" Mouse Dodge");
 	private JLabel gameButton9 = new JLabel("   Sidescroller");
-	private JLabel gameButton10 = new JLabel("    Speedrun");
-	private JLabel gameButton11 = new JLabel(" Pixel Collision");
-	private JLabel gameButton12 = new JLabel("    Cloth Sim");
-	private JLabel gameButton13 = new JLabel(" Gravity Vects");
-	private JLabel gameButton14 = new JLabel("  Bloon Shoot");
-	private JLabel gameButton15 = new JLabel("  Rand Battle");
-	private JLabel gameButton16 = new JLabel(" Rand Growth");
-	private JLabel gameButton17 = new JLabel("     Ladders");
+	private JLabel gameButton10 = new JLabel(" Pixel Collision");
+	private JLabel gameButton11 = new JLabel("    Cloth Sim");
+	private JLabel gameButton12 = new JLabel(" Gravity Vects");
+	private JLabel gameButton13 = new JLabel("  Bloon Shoot");
+	private JLabel gameButton14 = new JLabel("  Rand Battle");
+	private JLabel gameButton15 = new JLabel(" Rand Growth");
+	private JLabel gameButton16 = new JLabel("     Ladders");
+	private JLabel gameButton17 = new JLabel("");
 	private JLabel gameButton18 = new JLabel("");
 	private JLabel gameButton19 = new JLabel("");
 	private JLabel gameButton20 = new JLabel("");
@@ -200,23 +200,21 @@ public class MainMenu extends JFrame implements MouseListener
 			break;
 			case 7: MouseDodge mouseDodge = new MouseDodge(); mouseDodge.start(eventHandler);
 			break;
-			case 8: JumpAndRun jumpAndRun = new JumpAndRun(); jumpAndRun.start(eventHandler, false);
+			case 8: JumpAndRun jumpAndRun = new JumpAndRun(); jumpAndRun.start(eventHandler);
 			break;
-			case 9: JumpAndRun jumpAndRun2 = new JumpAndRun(); jumpAndRun2.start(eventHandler, true);
+			case 9: PixelCollision pixelCollision = new PixelCollision(); pixelCollision.start(eventHandler);
 			break;
-			case 10: PixelCollision pixelCollision = new PixelCollision(); pixelCollision.start(eventHandler);
+			case 10: ClothSim clothSim = new ClothSim(); clothSim.start(eventHandler);
 			break;
-			case 11: ClothSim clothSim = new ClothSim(); clothSim.start(eventHandler);
+			case 11: GravityVectors gravityVectors = new GravityVectors(); gravityVectors.start(eventHandler);
 			break;
-			case 12: GravityVectors gravityVectors = new GravityVectors(); gravityVectors.start(eventHandler);
+			case 12: BloonShooting bloonShooting = new BloonShooting(); bloonShooting.start(eventHandler);
 			break;
-			case 13: BloonShooting bloonShooting = new BloonShooting(); bloonShooting.start(eventHandler);
+			case 13: RandBattle randBattle = new RandBattle(); randBattle.start(eventHandler);
 			break;
-			case 14: RandBattle randBattle = new RandBattle(); randBattle.start(eventHandler);
+			case 14: RandGrowth randGrowth = new RandGrowth(); randGrowth.start(eventHandler);
 			break;
-			case 15: RandGrowth randGrowth = new RandGrowth(); randGrowth.start(eventHandler);
-			break;
-			case 16: SnakesAndLadders snakesAndLadders = new SnakesAndLadders(); snakesAndLadders.start(eventHandler);
+			case 15: SnakesAndLadders snakesAndLadders = new SnakesAndLadders(); snakesAndLadders.start(eventHandler);
 			break;
 		}
 		
@@ -326,66 +324,59 @@ public class MainMenu extends JFrame implements MouseListener
 		titles[7][3] = "Other controls are displayed ingame.";
 		
 		titles[8][0] = "2D SIDESCROLLER";
-		titles[8][1] ="Outrun the screen and don't fall into the lava.";
-		titles[9][2] ="Use the menu bar to input a level seed.";
-		titles[9][3] ="Keys:";
-		titles[9][4] ="Use W,A,S,D to move and press space to jump.";
-		titles[9][5] ="R -- Restart | T -- Generate new map | ESC -- Pause";
+		titles[8][1] ="Outrun the screen and don't fall into the lava. Grab on to ceilings by";
+		titles[8][2] ="holding space. Use the menu bar to input a level seed.";
+		titles[8][3] ="Keys:";
+		titles[8][4] ="Use W,A,S,D to move and press space to jump.";
+		titles[8][5] ="R -- Restart | T -- Generate new map | ESC -- Pause";
 		
-		titles[9][0] = "2D SPEEDRUN";
-		titles[9][1] ="Move as fast as you can.";
-		titles[9][2] ="Use the menu bar to input a level seed.";
-		titles[9][3] ="Keys:";
-		titles[9][4] ="Use W,A,S,D to move and press space to jump.";
-		titles[9][5] ="R -- Restart | T -- Generate new map | ESC -- Pause";
+		titles[9][0] = "PIXEL COLLISION";
+		titles[9][1] ="Anything you drawn on screen will become a collision object.";
+		titles[9][2] ="USe the Object Menu in the top left to drawn an object into the rectangle that";
+		titles[9][3] ="appears, save it and then move it with W,A,S,D. Use shift to move faster.";
+		titles[9][4] ="Use the Pixel Menu to change the size of the pixel grid";
+		titles[9][5] ="+/- - Change screen size| F - Fly mode | R - Reset | Shift click - Erase pixel";
 		
-		titles[10][0] = "PIXEL COLLISION";
-		titles[10][1] ="Anything you drawn on screen will become a collision object.";
-		titles[10][2] ="USe the Object Menu in the top left to drawn an object into the rectangle that";
-		titles[10][3] ="appears, save it and then move it with W,A,S,D. Use shift to move faster.";
-		titles[10][4] ="Use the Pixel Menu to change the size of the pixel grid";
-		titles[10][5] ="+/- - Change screen size| F - Fly mode | R - Reset | Shift click - Erase pixel";
+		titles[10][0] = "CLOTH SIM";
+		titles[10][1] ="Click anywhere on screen to create a point, CTRL click to lock it in place.";
+		titles[10][2] ="Click on a point again to select it. When you have two points selected, press";
+		titles[10][3] ="C to connect them. Start or stop the simulation with S and reset it with R.";
+		titles[10][4] ="Move point = Press mouse down and move | Cut point = Hold shift, press down and then move";
+		titles[10][5] ="over it | Delete last connection = CTRL Z | Save/load layouts with the menu bar";
 		
-		titles[11][0] = "CLOTH SIM";
-		titles[11][1] ="Click anywhere on screen to create a point, CTRL click to lock it in place.";
-		titles[11][2] ="Click on a point again to select it. When you have two points selected, press";
-		titles[11][3] ="C to connect them. Start or stop the simulation with S and reset it with R.";
-		titles[11][4] ="Move point = Press mouse down and move | Cut point = Hold shift, press down and then move";
-		titles[11][5] ="over it | Delete last connection = CTRL Z | Save/load layouts with the menu bar";
+		titles[11][0] = "GRAVITY VECTORS";
+		titles[11][1] ="Move gravity points with the mouse held down";
+		titles[11][2] ="Keys:";
+		titles[11][3] ="1 - Add another gravity point | 2 - Remove last gravity point";
+		titles[11][4] ="+/- - Change screen size";
+		titles[11][5] ="G - Activate gradient rendering | N - Turn off arrow normalization";
 		
-		titles[12][0] = "GRAVITY VECTORS";
-		titles[12][1] ="Move gravity points with the mouse held down";
-		titles[12][2] ="Keys:";
-		titles[12][3] ="1 - Add another gravity point | 2 - Remove last gravity point";
-		titles[12][4] ="+/- - Change screen size";
-		titles[12][5] ="G - Activate gradient rendering | N - Turn off arrow normalization";
+		titles[12][0] = "BALLOON SHOOTING";
+		titles[12][1] ="I wanted to recreate some aspects of the original bloons game in Java with";
+		titles[12][2] ="my own sprite renderer. Shoot the balloons using the slingshot with the";
+		titles[12][3] ="mouse held down. Press the right arrow key to load the next level,";
+		titles[12][4] ="PREVIOUS LEVEL. R TO RESTART THE LEVEL | G TO SHOW THE LEVEL GRID | USE";
+		titles[12][4] ="left for the previous level. R - Restart level | G - Show level grid";
+		titles[12][5] ="Use shift press to move the entire slingshot, not just the projectile.";
+	
+		titles[13][0] = "RAND BATTLE";
+		titles[13][1] = "NPCs with random sizes, hp, damage, movement speed and projectile speed";
+		titles[13][2] = "are generated. They pick a random target and try to shoot it until it is";
+		titles[13][3] = "DEAD, THEN THEY PICK A NEW ONE. WHO WILL BE THE LAST SURVIVOR?";
+		titles[13][3] = "dead, then they pick a new one. Who will be victorious?";
+		titles[13][4] = "Keys:";
+		titles[13][5] = "R - Restart | S - Show stats | H - Only show Health";
 		
-		titles[13][0] = "BALLOON SHOOTING";
-		titles[13][1] ="I wanted to recreate some aspects of the original bloons game in Java with";
-		titles[13][2] ="my own sprite renderer. Shoot the balloons using the slingshot with the";
-		titles[13][3] ="mouse held down. Press the right arrow key to load the next level,";
-		titles[13][4] ="PREVIOUS LEVEL. R TO RESTART THE LEVEL | G TO SHOW THE LEVEL GRID | USE";
-		titles[13][4] ="left for the previous level. R - Restart level | G - Show level grid";
-		titles[13][5] ="Use shift press to move the entire slingshot, not just the projectile.";
+		titles[14][0] = "RAND GROWTH";
+		titles[14][1] = "Once you have pressed the start button, press and move your mouse";
+		titles[14][2] = "across the screen to spawn pixels and watch them try to survive and grow";
+		titles[14][3] = "according to the rules you set with the UI included in the program.";
 		
-		titles[14][0] = "RAND BATTLE";
-		titles[14][1] = "NPCs with random sizes, hp, damage, movement speed and projectile speed";
-		titles[14][2] = "are generated. They pick a random target and try to shoot it until it is";
-		titles[14][3] = "DEAD, THEN THEY PICK A NEW ONE. WHO WILL BE THE LAST SURVIVOR?";
-		titles[14][3] = "dead, then they pick a new one. Who will be victorious?";
-		titles[14][4] = "Keys:";
-		titles[14][5] = "R - Restart | S - Show stats | H - Only show Health";
-		
-		titles[15][0] = "RAND GROWTH";
-		titles[15][1] = "Once you have pressed the start button, press and move your mouse";
-		titles[15][2] = "across the screen to spawn pixels and watch them try to survive and grow";
-		titles[15][3] = "according to the rules you set with the UI included in the program.";
-		
-		titles[16][0] = "SNAKES AND LADDERS";
-		titles[16][1] = "A classic game of Snakes And Ladders. Set the amount of players and press 'Start'.";
-		titles[16][2] = "Once you have pressed on the roll button you can either move your player piece with";
-		titles[16][3] = "the mouse, or you can press on Auto Move and have the piece move for you.";
-		titles[16][4] = "Try to reach square 53!";
+		titles[15][0] = "SNAKES AND LADDERS";
+		titles[15][1] = "A classic game of Snakes And Ladders. Set the amount of players and press 'Start'.";
+		titles[15][2] = "Once you have pressed on the roll button you can either move your player piece with";
+		titles[15][3] = "the mouse, or you can press on Auto Move and have the piece move for you.";
+		titles[15][4] = "Try to reach square 53!";
 		
 		
 		headline.setText(titles[game][0]);
