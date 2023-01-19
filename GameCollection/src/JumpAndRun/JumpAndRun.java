@@ -1,39 +1,42 @@
 package JumpAndRun;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import Main.MainMenu;
 import Main.WindowEventHandler;
 
-public class JumpAndRun 
-{
-	private int timeUntilFall = 0;
-	private int scrollingSpeed;
-	private int xSpeed, ySpeed;
-	
-	private static Timer timer;			//decides the framerate (at 14 -> around 60fps)
+public class JumpAndRun implements ActionListener
+{	
+	private static Timer timer;
+	private JumpAndRunPanel panel;
 	
 	public void start(WindowEventHandler eventHandler, boolean fastMode) 
 	{
 		//INITIALIZATION
 		JFrame frame = new JFrame("Sidescroller");
-		if (fastMode) {frame.setTitle("Speedrun");}
-		
 		frame.setIconImage(MainMenu.img.getImage());
 		frame.addWindowListener(eventHandler);
 		
+		int scrollingSpeed = 2;
 		if (fastMode) 
-		{scrollingSpeed = 0;}
-		else
-		{scrollingSpeed = 2;}
+		{
+			frame.setTitle("Speedrun");
+			scrollingSpeed = 0;
+		}
 		
-		JumpAndRunPanel panel = new JumpAndRunPanel(scrollingSpeed);
+		panel = new JumpAndRunPanel(scrollingSpeed);
 		
 		frame.add(panel);
 		frame.pack();
@@ -44,11 +47,14 @@ public class JumpAndRun
 		HashSet<Integer> pressedKeys = new HashSet<>();
 		
 		timer = new Timer(14, new ActionListener() 
-		{	@Override
+		{	
+			int timeUntilFall = 0;
+			int xSpeed, ySpeed;
+			
+			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
 				xSpeed = 0;
-			
 				if (pressedKeys.contains(68)) //D
 				{xSpeed = 5;} 	
 				
@@ -64,44 +70,27 @@ public class JumpAndRun
 				}
 					
 				//FALLING
-				if (timeUntilFall > 0) {timeUntilFall--;}
-					
+				if (timeUntilFall > 0) {timeUntilFall--;}	
 				if (timeUntilFall == 10) {ySpeed = 1;}	//for a smoother transition in fallingSpeed
 				else if (timeUntilFall == 0) {ySpeed = 5;}
-					
-				if (panel.player.onGround) {panel.player.jumpAllowed = true;}
 				
-				
-				panel.offset+=panel.scrollingSpeed;
+				panel.scroll();
 				
 				if (fastMode) {xSpeed*=2;}
 				panel.movePlayer(xSpeed,ySpeed);	
 			}	
 		});
-		
 		timer.start();
 		
 		frame.addKeyListener(new KeyListener() 
-		{
-			@Override
-			public void keyTyped(KeyEvent e) 
-			{}
-			
+		{	
 			@Override
 			public void keyPressed(KeyEvent e) 
 			{	
 				int code = e.getKeyCode();
 				
-				if (code == 82) {panel.start(false,false);} //R Restart
-				else if (code == 84) {panel.start(true,false);} //T	Restart + new map
-				
-				//CTRL S
-				else if (code == 83 && e.isControlDown())
-				{if (!panel.paused) {pause();} panel.saveMap(); pressedKeys.remove(83);} //otherwise S stays pressed
-				
-				//CTRL L
-				else if (code == 76 && e.isControlDown()) {if (!panel.paused) {pause();} panel.loadMap(); frame.pack();} 
-				
+				if (code == 82) {panel.start(JumpAndRunPanel.StartOperations.restart);} //R
+				else if (code == 84) {panel.start(JumpAndRunPanel.StartOperations.newMap);} //T
 				else if (code == 27) //ESC
 				{pause();} 
 				
@@ -111,13 +100,53 @@ public class JumpAndRun
 			}
 			@Override
 			public void keyReleased(KeyEvent e) 
-			{
-				pressedKeys.remove(e.getKeyCode());
-			}	
+			{pressedKeys.remove(e.getKeyCode());}
+			
+			@Override
+			public void keyTyped(KeyEvent e) 
+			{}
+		});
+		
+		//MENU BAR
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBackground(new Color (100,100,120));
+		menuBar.setBorder(BorderFactory.createLineBorder(new Color (115,115,135), 2));
+				
+		JMenu fileMenu = new JMenu("Seed");	
+		fileMenu.setForeground(new Color (230,230,250));
+		fileMenu.setBorder(BorderFactory.createLineBorder(new Color (100,100,120)));
+				
+		JMenuItem seedItem = new JMenuItem("Set seed");
+		seedItem.addActionListener(this);
+				
+		fileMenu.add(seedItem);
+		menuBar.add(fileMenu);
+		frame.setJMenuBar(menuBar);
+	}
 	
-			public void pause()
-			{panel.paused = !panel.paused; panel.repaint(); if (timer.isRunning()) {timer.stop();} else {timer.start();}}
-		});	
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{
+		String seedStr = JOptionPane.showInputDialog("Seed:");
+		if (seedStr == null)
+		{return;}
+		
+		int seed = 0;
+		byte[] str = seedStr.getBytes();
+					
+		for (byte b : str)
+		{
+			seed+= (int) b;
+		}
+				
+		panel.setSeed(seed);
+	}
+	
+	public void pause()
+	{
+		panel.paused = !panel.paused; 
+		panel.repaint(); 
+		if (timer.isRunning()) {timer.stop();} else {timer.start();}
 	}
 	
 	public static void stop()

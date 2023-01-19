@@ -306,7 +306,7 @@ public class MainMenu extends JFrame implements MouseListener
 		titles[4][2] ="The chasers only move when you move and can break obstacles in 3 hits.";
 		titles[4][3] ="Keys:";
 		titles[4][4] ="R -- Reset board | T -- Generate new board";
-		titles[4][5] ="+/- -- Change screen size | Use the menu bar to input a board seed";
+		titles[4][5] ="+/- -- Change screen size | Use the menu bar to input a board seed.";
 		
 		titles[5][0] = "PARALLEL UNIVERSES";
 		titles[5][1] ="The red point represents your position in the universe.";
@@ -327,17 +327,17 @@ public class MainMenu extends JFrame implements MouseListener
 		
 		titles[8][0] = "2D SIDESCROLLER";
 		titles[8][1] ="Outrun the screen and don't fall into the lava.";
-		titles[8][2] ="Keys:";
-		titles[8][3] ="Use W,A,S,D to move and press space to jump. | F -- Flying mode";
-		titles[8][4] ="R -- Restart | T -- Generate new map | ESC -- Pause";
-		titles[8][5] ="CTRL + S -- Save | CTRL + L -- Load";
+		titles[9][2] ="Use the menu bar to input a level seed.";
+		titles[9][3] ="Keys:";
+		titles[9][4] ="Use W,A,S,D to move and press space to jump.";
+		titles[9][5] ="R -- Restart | T -- Generate new map | ESC -- Pause";
 		
 		titles[9][0] = "2D SPEEDRUN";
 		titles[9][1] ="Move as fast as you can.";
-		titles[9][2] ="Keys:";
-		titles[9][3] ="Use W,A,S,D to move and press space to jump. | F -- Flying mode";
-		titles[9][4] ="R -- Restart | T -- Generate new map | ESC -- Pause";
-		titles[9][5] ="CTRL + S -- Save | CTRL + L -- Load";
+		titles[9][2] ="Use the menu bar to input a level seed.";
+		titles[9][3] ="Keys:";
+		titles[9][4] ="Use W,A,S,D to move and press space to jump.";
+		titles[9][5] ="R -- Restart | T -- Generate new map | ESC -- Pause";
 		
 		titles[10][0] = "PIXEL COLLISION";
 		titles[10][1] ="Anything you drawn on screen will become a collision object.";
