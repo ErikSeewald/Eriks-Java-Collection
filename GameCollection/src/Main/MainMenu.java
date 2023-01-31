@@ -16,7 +16,6 @@ import BloonShooting.BloonShooting;
 import ClothSim.ClothSim;
 import GravityVectors.GravityVectors;
 import Insects.Insects;
-import JumpAndRun.JumpAndRun;
 import MouseDodge.MouseDodge;
 import ParallelUniverses.ParallelUniverses;
 import Particles.Particles;
@@ -25,6 +24,7 @@ import PixelCollision.PixelCollision;
 import RandBattle.RandBattle;
 import RandGrowth.RandGrowth;
 import ReflectionDemo.ReflectionDemo;
+import Sidescroller.JumpAndRun;
 import SnakesAndLadders.SnakesAndLadders;
 import Sudoku.Sudoku;
 
@@ -59,14 +59,16 @@ public class MainMenu extends JFrame implements MouseListener
 	private boolean buttonSizeIncreased = false;
 	
 	//LABELS
-	private JLabel headline = new JLabel("ERIK'S COLLECTION");
-	private JLabel guide1 = new JLabel("");
-	private JLabel guide2 = new JLabel("");
-	private JLabel guide3 = new JLabel("");
-	private JLabel guide4 = new JLabel("");
-	private JLabel guide5 = new JLabel("");
+	private JLabel[] guideLabels = 
+	{new JLabel("ERIK'S COLLECTION"), new JLabel(""), new JLabel(""), new JLabel(""), new JLabel(""), new JLabel("")};
 	
-	private JLabel[] guideLabels = {headline, guide1, guide2, guide3, guide4, guide5};
+	private static final GameTitles[] titles = 
+	{
+			GameTitles.Insects, GameTitles.Particles, GameTitles.Sierpinski, GameTitles.Sudoku, 
+			GameTitles.Pathfind, GameTitles.ParralelUniverses, GameTitles.ReflectionDemo, GameTitles.MouseDodge, 
+			GameTitles.Sidescroller, GameTitles.PixelCollision,GameTitles.ClothSim, GameTitles.GravityVectors, 
+			GameTitles.BalloonShooting, GameTitles.RandBattle, GameTitles.RandGrowth, GameTitles.SnakesAndLadders
+	};
 	
 	private WindowEventHandler eventHandler;
 	private static int closeTurn = 0;		//how many windows have been closed since the JVM has been launched
@@ -94,15 +96,16 @@ public class MainMenu extends JFrame implements MouseListener
 	{
 		this.setSize(resolution, resolution);
 		
-		headline.setBounds(resolution/40,resolution/60,resolution+100,resolution/15);
-		headline.setFont(new Font ("", Font.BOLD, resolution/26));
-		guide1.setBounds(resolution/40,resolution/15,resolution+100,resolution/15);
-		guide2.setBounds(resolution/40,resolution/10,resolution+100,resolution/15);
-		guide3.setBounds(resolution/40,(int)(resolution/7.5),resolution+100,resolution/15);
-		guide4.setBounds(resolution/40,resolution/6,resolution+100,resolution/15);
-		guide5.setBounds(resolution/40,resolution/5,resolution+100,resolution/15);
-		for (int i = 0; i < guideLabels.length; i++)
-		{setTextBasics(guideLabels[i], i);}
+		guideLabels[0].setBounds(resolution/40,resolution/60,resolution+100,resolution/15);
+		guideLabels[0].setFont(new Font ("", Font.BOLD, resolution/26));
+		setTextBasics(guideLabels[0], 0);
+		
+		final double[] divs = {15,10,7.5, 6, 5};
+		for (int i = 1; i < guideLabels.length; i++)
+		{
+			guideLabels[i].setBounds(resolution/40,(int) (resolution/divs[i-1]),resolution+100,resolution/15);
+			setTextBasics(guideLabels[i], i);
+		}
 		
 		buttonSizeX = resolution/6;
 		buttonSizeY = resolution/15;
@@ -250,118 +253,9 @@ public class MainMenu extends JFrame implements MouseListener
 	}
 	
 	public void changeInformation(int game)
-	{
-		String[][] titles = new String[24][6];
-			
-		titles[0][0] = "INSECTS";
-		titles[0][1] ="Observe as the insects try to survive in this maze";
-		titles[0][2] ="You can see the current amount of insects in the top left corner.";
-		titles[0][3] ="Blue areas are sources of water, red ones are food. The number of insects";
-		titles[0][4] ="changes each round in relation to how many are within these sources.";
-		titles[0][5] ="Change rate rounds down. (0.01 -> 0  | -0.01 -> -1)";
-		
-		titles[1][0] = "PARTICLES";
-		titles[1][1] ="Press down on your mouse to draw on the particles.";
-		titles[1][2] ="Keys:";
-		titles[1][3] ="R - Reset";
-		
-		titles[2][0] = "SIERPINSKI";
-		titles[2][1] ="Every turn there is a random chance for the point to move towards one of the";
-		titles[2][2] ="3 points of the triangle. Then it leaves a new point halfway on the path to the";
-		titles[2][3] ="chosen point. Repeating this will slowly create a sierpinski triangle.";
-		
-		titles[3][0] = "SUDOKU";
-		titles[3][1] ="Use your mouse to click on a square, then type in a number.";
-		titles[3][2] ="Keys:";
-		titles[3][3] ="S -- Solve | R -- Reset";
-		titles[3][4] ="+/- -- Change screen size";
-		
-		titles[4][0] = "PATHFIND";
-		titles[4][1] ="Use W,A,S,D to escape the chasers for as many turns as possible.";
-		titles[4][2] ="The chasers only move when you move and can break obstacles in 3 hits.";
-		titles[4][3] ="Keys:";
-		titles[4][4] ="R -- Reset board | T -- Generate new board";
-		titles[4][5] ="+/- -- Change screen size | Use the menu bar to input a board seed.";
-		
-		titles[5][0] = "PARALLEL UNIVERSES";
-		titles[5][1] ="The red point represents your position in the universe.";
-		titles[5][2] ="The green point represents your position in the parallel universes.";
-		titles[5][3] ="Move with W,A,S,D and hold down shift before pressing the keys to move faster.";
-		titles[5][4] ="Hide the parallel universes by pressing H";
-		
-		titles[6][0] = "REFLECTION DEMO";
-		titles[6][1] ="Move the ray origin with your mouse held down and rotate it with the mouse wheel.";
-		titles[6][2] ="Keys:";
-		titles[6][3] ="1 - Less reflections  |  2 - More reflections";
-		titles[6][4] ="3 - Less rotation speed  |  4 - More rotation speed";
-		
-		titles[7][0] = "MOUSE DODGE";
-		titles[7][1] = "Move your mouse to dodge the enemies.";
-		titles[7][2] = "Press F to switch dark mode on or off.";
-		titles[7][3] = "Other controls are displayed ingame.";
-		
-		titles[8][0] = "2D SIDESCROLLER";
-		titles[8][1] ="Outrun the screen and don't fall into the lava. Grab on to ceilings by";
-		titles[8][2] ="holding space. Use the menu bar to input a level seed.";
-		titles[8][3] ="Keys:";
-		titles[8][4] ="Use W,A,S,D to move and press space to jump.";
-		titles[8][5] ="R -- Restart | T -- Generate new map | ESC -- Pause";
-		
-		titles[9][0] = "PIXEL COLLISION";
-		titles[9][1] ="Anything you drawn on screen will become a collision object.";
-		titles[9][2] ="USe the Object Menu in the top left to drawn an object into the rectangle that";
-		titles[9][3] ="appears, save it and then move it with W,A,S,D. Use shift to move faster.";
-		titles[9][4] ="Use the Pixel Menu to change the size of the pixel grid";
-		titles[9][5] ="+/- - Change screen size| F - Fly mode | R - Reset | Shift click - Erase pixel";
-		
-		titles[10][0] = "CLOTH SIM";
-		titles[10][1] ="Click anywhere on screen to create a point, CTRL click to lock it in place.";
-		titles[10][2] ="Click on a point again to select it. When you have two points selected, press";
-		titles[10][3] ="C to connect them. Start or stop the simulation with S and reset it with R.";
-		titles[10][4] ="Move point = Press mouse down and move | Cut point = Hold shift, press down and then move";
-		titles[10][5] ="over it | Delete last connection = CTRL Z | Save/load layouts with the menu bar";
-		
-		titles[11][0] = "GRAVITY VECTORS";
-		titles[11][1] ="Move gravity points with the mouse held down";
-		titles[11][2] ="Keys:";
-		titles[11][3] ="1 - Add another gravity point | 2 - Remove last gravity point";
-		titles[11][4] ="+/- - Change screen size";
-		titles[11][5] ="G - Activate gradient rendering | N - Turn off arrow normalization";
-		
-		titles[12][0] = "BALLOON SHOOTING";
-		titles[12][1] ="I wanted to recreate some aspects of the original bloons game in Java with";
-		titles[12][2] ="my own sprite renderer. Shoot the balloons using the slingshot with the";
-		titles[12][3] ="mouse held down. Press the right arrow key to load the next level,";
-		titles[12][4] ="PREVIOUS LEVEL. R TO RESTART THE LEVEL | G TO SHOW THE LEVEL GRID | USE";
-		titles[12][4] ="left for the previous level. R - Restart level | G - Show level grid";
-		titles[12][5] ="Use shift press to move the entire slingshot, not just the projectile.";
-	
-		titles[13][0] = "RAND BATTLE";
-		titles[13][1] = "NPCs with random sizes, hp, damage, movement speed and projectile speed";
-		titles[13][2] = "are generated. They pick a random target and try to shoot it until it is";
-		titles[13][3] = "DEAD, THEN THEY PICK A NEW ONE. WHO WILL BE THE LAST SURVIVOR?";
-		titles[13][3] = "dead, then they pick a new one. Who will be victorious?";
-		titles[13][4] = "Keys:";
-		titles[13][5] = "R - Restart | S - Show stats | H - Only show Health";
-		
-		titles[14][0] = "RAND GROWTH";
-		titles[14][1] = "Once you have pressed the start button, press and move your mouse";
-		titles[14][2] = "across the screen to spawn pixels and watch them try to survive and grow";
-		titles[14][3] = "according to the rules you set with the UI included in the program.";
-		
-		titles[15][0] = "SNAKES AND LADDERS";
-		titles[15][1] = "A classic game of Snakes And Ladders. Set the amount of players and press 'Start'.";
-		titles[15][2] = "Once you have pressed on the roll button you can either move your player piece with";
-		titles[15][3] = "the mouse, or you can press on Auto Move and have the piece move for you.";
-		titles[15][4] = "Try to reach square 53!";
-		
-		
-		headline.setText(titles[game][0]);
-		guide1.setText(titles[game][1]);
-		guide2.setText(titles[game][2]);
-		guide3.setText(titles[game][3]);
-		guide4.setText(titles[game][4]);
-		guide5.setText(titles[game][5]);
+	{	
+		for(int i = 0; i < guideLabels.length; i++)
+		{guideLabels[i].setText(titles[game].guide[i]);}
 	}
 	
 	public static void restart() throws IOException, URISyntaxException
@@ -374,11 +268,11 @@ public class MainMenu extends JFrame implements MouseListener
 		final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
 		final File currentJar = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
 
-		/* is it a jar file? */
+		//is it a jar file?
 		if(!currentJar.getName().endsWith(".jar"))
 	    return;
 
-		/* Build command: java -jar application.jar */
+		//Build command: java -jar application.jar
 		final ArrayList<String> command = new ArrayList<String>();
 		command.add(javaBin);
 	  	command.add("-jar");
