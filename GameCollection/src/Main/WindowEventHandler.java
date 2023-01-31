@@ -7,13 +7,13 @@ import java.net.URISyntaxException;
 import BloonShooting.BloonShooting;
 import ClothSim.ClothSim;
 import Insects.InsectsPanel;
-import JumpAndRun.JumpAndRun;
 import MouseDodge.MouseDodgePanel;
 import ParallelUniverses.ParallelUniverses;
 import Particles.ParticlesPanel;
 import PixelCollision.PixelCollision;
 import RandBattle.RandBattle;
 import RandGrowth.RandGrowth;
+import Sidescroller.JumpAndRun;
 import Sierpinski.SierpinskiSlow;
 import SnakesAndLadders.SnakesAndLadders;
 
