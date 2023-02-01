@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import BloonShooting.BloonShooting;
+import BloonShoot.BloonShooting;
 import ClothSim.ClothSim;
 import GravityVectors.GravityVectors;
 import Insects.Insects;
@@ -47,16 +47,13 @@ public class MainMenu extends JFrame implements MouseListener
 			new JLabel(""), new JLabel(""), new JLabel(""), new JLabel(""), 
 			new JLabel(""), new JLabel(""), new JLabel(""), new JLabel(""), 
 	};
-
-	public static boolean[] hasWindowOpen = new boolean[24]; //to check whether an instance of this game is already open
-	
-	private static final Color textColor = new Color(210,210,230);
-	private static final Color buttonColor1 = new Color(75,75,105);
-	private static final Color buttonColor2 = new Color(110,110,130);
-	private static final Color buttonColor3 = new Color(130,130,150);
-	
 	
 	private boolean buttonSizeIncreased = false;
+	
+	private static final Color text_color = new Color(210,210,230);
+	private static final Color b_color_basic = new Color(75,75,105);
+	private static final Color b_color_highlight = new Color(110,110,130);
+	private static final Color b_color_pressed = new Color(130,130,150);
 	
 	//LABELS
 	private JLabel[] guideLabels = 
@@ -70,135 +67,138 @@ public class MainMenu extends JFrame implements MouseListener
 			GameTitles.BalloonShooting, GameTitles.RandBattle, GameTitles.RandGrowth, GameTitles.SnakesAndLadders
 	};
 	
-	private WindowEventHandler eventHandler;
-	private static int closeTurn = 0;		//how many windows have been closed since the JVM has been launched
+	//CONTROL
+	private WindowEventHandler eventHandler = new WindowEventHandler();
+	public static boolean[] isOpened = new boolean[24]; 	//to check whether an instance of the game is already open
+	private static int windowsClosedCount = 0;				//how many windows have been closed since the JVM has been launched
 	
 	public static final ImageIcon img = new ImageIcon("src\\Main\\logo.jpg");
 	
 	MainMenu()
 	{
-		eventHandler = new WindowEventHandler();
-		
-		this.setIconImage(img.getImage());
-		
 		this.setTitle("Menu");
+		this.setIconImage(img.getImage());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.getContentPane().setBackground(new Color(40,40,55));
 		
 		this.setLayout(null);
-		start();
-		
+		initialize();
 		this.setVisible(true);
 	}
 	
-	public void start()
+	private void initialize()
 	{
 		this.setSize(resolution, resolution);
 		
-		guideLabels[0].setBounds(resolution/40,resolution/60,resolution+100,resolution/15);
-		guideLabels[0].setFont(new Font ("", Font.BOLD, resolution/26));
-		setTextBasics(guideLabels[0], 0);
-		
-		final double[] divs = {15,10,7.5, 6, 5};
-		for (int i = 1; i < guideLabels.length; i++)
+		//LABELS
+		final double[] divisors = {60, 15,10,7.5, 6, 5};
+		for (int i = 0; i < guideLabels.length; i++)
 		{
-			guideLabels[i].setBounds(resolution/40,(int) (resolution/divs[i-1]),resolution+100,resolution/15);
-			setTextBasics(guideLabels[i], i);
+			guideLabels[i].setBounds(resolution/40,	(int) (resolution/divisors[i]),	resolution+100,	resolution/15);
+			guideLabels[i].setForeground(text_color);
+			
+			if (i == 0) {guideLabels[i].setFont(new Font ("", Font.BOLD, resolution/26));}
+			else {guideLabels[i].setFont(new Font ("", Font.BOLD, resolution/42));}
+			
+			this.add(guideLabels[i]);
 		}
 		
+		//BUTTONS
 		buttonSizeX = resolution/6;
 		buttonSizeY = resolution/15;
 		
-		int j = 0, k = 0;
-		for (int i = 0; i < gameButtons.length; i++)
+		int x = 0, y = 0;
+		for (JLabel button : gameButtons)
 		{
-			if (j > 3) {j = 0; k++;} //k++ -> move to next row after 4 buttons have been drawn
-			gameButtons[i].setBounds((resolution/10) + j*(resolution/5), (resolution/3) + k*(resolution/10),buttonSizeX, buttonSizeY);
-			j++;
-			setButtonBasics(gameButtons[i]);
-		}	
+			button.setBounds((resolution/10) + x*(resolution/5), (resolution/3) + y*(resolution/10),buttonSizeX, buttonSizeY);
+			setButtonBasics(button);
+			
+			x++;
+			if (x > 3) {x = 0; y++;} //move to next row after 4 buttons have been drawn
+		}
 	}
-	
-	public void changeSize(int amount)
-	{
-		resolution+=amount;
-		start();
-		repaint();
-	}
-	
-	public void setButtonBasics(JLabel x)
+
+	//BUTTONS
+	private void setButtonBasics(JLabel x)
 	{
 		x.setFont(new Font ("", Font.PLAIN, resolution/42));
-		x.setForeground(textColor);
-		x.setBackground(buttonColor1);
+		x.setForeground(text_color);
+		x.setBackground(b_color_basic);
 		x.setOpaque(true);
 		x.setBorder(BorderFactory.createLineBorder(new Color(100,100,130), resolution/300));
 		x.addMouseListener(this);
 		this.add(x);
 	}
-	
-	public void setTextBasics(JLabel x, int index)
+
+	private void openWindow(JLabel button)
 	{
-		x.setForeground(textColor);
-		if (index != 0) {x.setFont(new Font ("", Font.BOLD, resolution/42));}
-		this.add(x);
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) 
-	{	
-		JLabel button = (JLabel)e.getSource();	
-		
-		buttonAnimation(button, -(buttonSizeX /25));
-		button.setBackground(buttonColor2);
-
-		//IMPLEMENT SOMETHING TO PREVENT PLAYERS FROM OPENING TWO OF THE SAME WINDOW
-			
-		int index = 0;
-		for (int i = 0; i < gameButtons.length; i++)
-		{if (button != gameButtons[i]) {index++;} else {break;}}
 		if (button.getText() == "") {return;}
 		
-		if (hasWindowOpen[index]) {return;} //don't open another instance of the same game
+		int index = getButtonIndex(button);
+		if (isOpened[index]) {return;}
 		
 		switch (index)
 		{
-			case 0: Insects insects = new Insects(); insects.start(eventHandler);
-			break;
-			case 1: Particles particles = new Particles(); particles.start(eventHandler);
-			break;
-			case 2: SelectionFrame sierpinski = new SelectionFrame(); sierpinski.start("Sierpinski", eventHandler);
-			break;
-			case 3: Sudoku sudoku = new Sudoku(); sudoku.start(eventHandler);
-			break;
-			case 4: Pathfind pathfind =  new Pathfind(); pathfind.start(eventHandler);
-			break;
-			case 5: ParallelUniverses parallelUniverses = new ParallelUniverses();parallelUniverses.start(eventHandler);
-			break;
-			case 6: ReflectionDemo reflectionDemo = new ReflectionDemo(); reflectionDemo.start(eventHandler);
-			break;
-			case 7: MouseDodge mouseDodge = new MouseDodge(); mouseDodge.start(eventHandler);
-			break;
-			case 8: JumpAndRun jumpAndRun = new JumpAndRun(); jumpAndRun.start(eventHandler);
-			break;
-			case 9: PixelCollision pixelCollision = new PixelCollision(); pixelCollision.start(eventHandler);
-			break;
-			case 10: ClothSim clothSim = new ClothSim(); clothSim.start(eventHandler);
-			break;
-			case 11: GravityVectors gravityVectors = new GravityVectors(); gravityVectors.start(eventHandler);
-			break;
-			case 12: BloonShooting bloonShooting = new BloonShooting(); bloonShooting.start(eventHandler);
-			break;
-			case 13: RandBattle randBattle = new RandBattle(); randBattle.start(eventHandler);
-			break;
-			case 14: RandGrowth randGrowth = new RandGrowth(); randGrowth.start(eventHandler);
-			break;
-			case 15: SnakesAndLadders snakesAndLadders = new SnakesAndLadders(); snakesAndLadders.start(eventHandler);
-			break;
+			case 0: new Insects().start(eventHandler); break;
+			case 1: new Particles().start(eventHandler); break;
+			case 2: new SelectionFrame().start("Sierpinski", eventHandler); break;
+			case 3: new Sudoku().start(eventHandler); break;
+			case 4: new Pathfind().start(eventHandler); break;
+			case 5: new ParallelUniverses().start(eventHandler); break;
+			case 6: new ReflectionDemo().start(eventHandler); break;
+			case 7: new MouseDodge().start(eventHandler); break;
+			case 8: new JumpAndRun().start(eventHandler); break;
+			case 9: new PixelCollision().start(eventHandler); break;
+			case 10: new ClothSim().start(eventHandler); break;
+			case 11: new GravityVectors().start(eventHandler); break;
+			case 12: new BloonShooting().start(eventHandler); break;
+			case 13: new RandBattle().start(eventHandler); break;
+			case 14: new RandGrowth().start(eventHandler); break;
+			case 15: new SnakesAndLadders().start(eventHandler); break;
 		}
 		
-		hasWindowOpen[index] = !hasWindowOpen[index];		
+		isOpened[index] = true;		
+	}
+	
+	private int getButtonIndex(JLabel button)
+	{
+		int index = 0;
+		for (JLabel b : gameButtons)
+		{
+			if (button == b) {break;} 
+			index++;
+		}
+		return index;
+	}
+	
+	private void buttonAnimation(JLabel button, int change)
+	{
+		if ((change > 0 && buttonSizeIncreased) || (change < 0 && !buttonSizeIncreased)) {return;} //don't go beyond max/min size
+		buttonSizeIncreased = change > 0;
+		
+		button.setBounds
+		(
+		 button.getX()-(change/2), button.getY()-(change/2),
+		 button.getWidth()+change, button.getHeight()+change
+		);
+	}
+	
+	private void changeInformation(int game)
+	{	
+		for(int i = 0; i < guideLabels.length; i++)
+		{guideLabels[i].setText(titles[game].guide[i]);}
+	}
+	
+	//MOUSE
+	@Override
+	public void mouseClicked(MouseEvent e) 
+	{
+		JLabel button = (JLabel) e.getSource();
+		buttonAnimation(button, -(buttonSizeX /25));
+		button.setBackground(b_color_highlight);
+		
+		openWindow(button);
 	}
 	
 	@Override
@@ -206,7 +206,7 @@ public class MainMenu extends JFrame implements MouseListener
 	{
 		JLabel button = (JLabel)e.getSource();
 		if (buttonSizeIncreased) {buttonAnimation(button, -(buttonSizeX /25));}
-		button.setBackground(buttonColor3);
+		button.setBackground(b_color_pressed);
 	}
 
 	@Override
@@ -218,15 +218,10 @@ public class MainMenu extends JFrame implements MouseListener
 	{
 		JLabel button = (JLabel)e.getSource();
 		buttonAnimation(button, (buttonSizeX /25));
-		button.setBackground(buttonColor2);
+		button.setBackground(b_color_highlight);
 		
-		int index = 0;
-		for (int i = 0; i < gameButtons.length; i++)
-		{if (button != gameButtons[i]) {index++;} else {break;}}
-		if (button.getText() == "") {return;}
-		
-		changeInformation(index);
-		
+		if (button.getText() != "") 
+		{changeInformation(getButtonIndex(button));}
 	}
 
 	@Override
@@ -234,36 +229,22 @@ public class MainMenu extends JFrame implements MouseListener
 	{
 		JLabel button = (JLabel)e.getSource();
 		if (buttonSizeIncreased) {buttonAnimation(button, -(buttonSizeX /25));}
-		button.setBackground(buttonColor1);
-		
+		button.setBackground(b_color_basic);	
 	}
 	
-	public void buttonAnimation(JLabel button, int change)
+	//CONTROL
+	public void changeSize(int amount)
 	{
-		if ((change > 0 && buttonSizeIncreased) || (change < 0 && !buttonSizeIncreased)) {return;} //don't go beyond max/min size
-		
-		if (change > 0) {buttonSizeIncreased = true;}
-		else {buttonSizeIncreased = false;}
-		
-		button.setBounds
-		(
-		 button.getX()-(change/2), button.getY()-(change/2),
-		 button.getWidth()+change, button.getHeight()+change
-		);
-	}
-	
-	public void changeInformation(int game)
-	{	
-		for(int i = 0; i < guideLabels.length; i++)
-		{guideLabels[i].setText(titles[game].guide[i]);}
+		resolution+=amount;
+		initialize();
 	}
 	
 	public static void restart() throws IOException, URISyntaxException
 	{
 		System.gc();
 		
-		closeTurn++;
-		if (!(closeTurn == 10)) {return;} //only restart the JVM (Build new JAR) after frames have been closed 10 times
+		windowsClosedCount++;
+		if (windowsClosedCount < 10) {return;}
 		
 		final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
 		final File currentJar = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());

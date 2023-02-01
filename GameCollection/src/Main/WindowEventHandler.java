@@ -4,7 +4,7 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
-import BloonShooting.BloonShooting;
+import BloonShoot.BloonShooting;
 import ClothSim.ClothSim;
 import Insects.InsectsPanel;
 import MouseDodge.MouseDodgePanel;
@@ -56,7 +56,7 @@ public class WindowEventHandler extends WindowAdapter
 		}
 		
 		if (index != -1)
-		{MainMenu.hasWindowOpen[index] = false;}
+		{MainMenu.isOpened[index] = false;}
 		
 		try {MainMenu.restart();} 
 		catch (IOException e1) {e1.printStackTrace();} catch (URISyntaxException e1) {e1.printStackTrace();}

@@ -1,4 +1,4 @@
-package BloonShooting;
+package BloonShoot;
 
 import java.awt.Color;
 import java.util.Random;
