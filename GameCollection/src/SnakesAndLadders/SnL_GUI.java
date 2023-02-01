@@ -177,9 +177,7 @@ public class SnL_GUI extends JPanel implements MouseListener
 	private void buttonAnimation(JLabel button, int change)
 	{
 		if ((change > 0 && buttonSizeIncreased) || (change < 0 && !buttonSizeIncreased)) {return;} //don't go beyond max/min size
-		
-		if (change > 0) {buttonSizeIncreased = true;}
-		else {buttonSizeIncreased = false;}
+		buttonSizeIncreased = change > 0;
 		
 		button.setBounds
 		(

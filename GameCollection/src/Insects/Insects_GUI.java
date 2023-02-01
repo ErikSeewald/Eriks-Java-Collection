@@ -31,7 +31,6 @@ public class Insects_GUI extends JPanel implements MouseListener
 	private JLabel changeRateLabel;
 	private JLabel changeRateCounter;
 	
-	
 	private final Color textColor = new Color(90, 90, 110);
 	private final Color borderColor = new Color(120,120,150);
 	
@@ -227,9 +226,7 @@ public class Insects_GUI extends JPanel implements MouseListener
 	private void buttonAnimation(JLabel button, int change)
 	{
 		if ((change > 0 && buttonSizeIncreased) || (change < 0 && !buttonSizeIncreased)) {return;} //don't go beyond max/min size
-		
-		if (change > 0) {buttonSizeIncreased = true;}
-		else {buttonSizeIncreased = false;}
+		buttonSizeIncreased = change > 0;
 		
 		button.setBounds
 		(
