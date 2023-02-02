@@ -19,28 +19,31 @@ public class Insects_GUI extends JPanel implements MouseListener
 	private static final int PANEL_WIDTH = 250;
 	private static final int PANEL_HEIGHT = 650;
 	
-	private boolean buttonSizeIncreased = false;
+	//INPUTS
+	private JTextField addAmountInput = new JTextField("10");
 	
-	private JTextField addAmountInput;
+	//LABELS
+	private JLabel addAmountLabel = new JLabel("Add / Remove");
 	
-	private JLabel addAmountLabel;
-	
-	private JLabel antAmountLabel;
+	private JLabel antAmountLabel = new JLabel("Insect amount");
 	private JLabel antAmountCounter;
 	
-	private JLabel changeRateLabel;
-	private JLabel changeRateCounter;
+	private JLabel changeRateLabel = new JLabel("Change rate");
+	private JLabel changeRateCounter = new JLabel("0");
 	
-	private final Color textColor = new Color(90, 90, 110);
-	private final Color borderColor = new Color(120,120,150);
+	private static final Color textColor = new Color(90, 90, 110);
+	private static final Color borderColor = new Color(120,120,150);
 	
-	private JLabel startButton;
-	private JLabel addButton;
-	private JLabel removeButton;
+	//BUTTONS
+	private boolean buttonSizeIncreased = false;
 	
-	private final Color buttonColor1 = new Color(170, 170, 210);
-	private final Color buttonColor2 = new Color(200, 200, 240);
-	private final Color buttonColor3 = new Color(215, 215, 255);
+	private JLabel startButton = new JLabel("    Start");
+	private JLabel addButton = new JLabel("  +");
+	private JLabel removeButton = new JLabel("  -");
+	
+	private static final Color b_color_basic = new Color(170, 170, 210);
+	private static final Color b_color_highlight = new Color(200, 200, 240);
+	private static final Color b_color_pressed = new Color(215, 215, 255);
 	
 	private InsectsPanel panel;
 	
@@ -55,50 +58,32 @@ public class Insects_GUI extends JPanel implements MouseListener
 		this.setLayout(null);
 		
 		//BUTTONS
-		startButton = new JLabel("    Start");
-		startButton.setBounds(50, 60, 150, 70);
-		setButtonSettings(startButton);
+		setButtonSettings(startButton, 50, 60, 150, 70);
+		setButtonSettings(addButton, 93, 465, 60, 60);
 		
-		addButton = new JLabel("  +");
-		addButton.setBounds(93, 465, 60, 60);
-		setButtonSettings(addButton);
-		
-		removeButton = new JLabel("  -");
-		removeButton.setBounds(93, 545, 60, 60);
-		setButtonSettings(removeButton);
+		setButtonSettings(removeButton, 93, 545, 60, 60);
 		removeButton.setFont(new Font("", Font.BOLD, 35));
 		
 		//INPUTS
-		addAmountInput = new JTextField("10");
-		setTextFieldSettings(addAmountInput);
-		addAmountInput.setBounds(70, 400, 110, 45);
+		setTextFieldSettings(addAmountInput, 70, 400, 110, 45);
 		
 		//LABELS
-		addAmountLabel = new JLabel("Add / Remove");
-		setLabelSettings(addAmountLabel);
-		addAmountLabel.setBounds(65, 360, 250, 45);
-		
-		antAmountLabel = new JLabel("Insect amount");
-		setLabelSettings(antAmountLabel);
-		antAmountLabel.setBounds(62, 160, 250, 45);
+		setLabelSettings(addAmountLabel, 65, 360, 250, 45);	
+		setLabelSettings(antAmountLabel, 62, 160, 250, 45);
 		
 		antAmountCounter = new JLabel(""+panel.antAmount);
-		setLabelSettings(antAmountCounter);
-		antAmountCounter.setBounds(108, 190, 250, 45);
+		setLabelSettings(antAmountCounter, 108, 190, 250, 45);
 		antAmountCounter.setFont(new Font("", Font.PLAIN, 16));
 		
-		changeRateLabel = new JLabel("Change rate");
-		setLabelSettings(changeRateLabel);
-		changeRateLabel.setBounds(73, 250, 250, 45);
-		
-		changeRateCounter = new JLabel("0");
-		setLabelSettings(changeRateCounter);
-		changeRateCounter.setBounds(120, 280, 250, 45);
+		setLabelSettings(changeRateLabel, 73, 250, 250, 45);
+		setLabelSettings(changeRateCounter, 120, 280, 250, 45);
 		changeRateCounter.setFont(new Font("", Font.PLAIN, 16));
 	}
 	
-	private void setTextFieldSettings(JTextField textField)
+	//INITIALIZERS
+	private void setTextFieldSettings(JTextField textField, int a, int b, int c, int d)
 	{
+		textField.setBounds(a,b,c,d);
 		textField.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 170), 3));
 		textField.setFont(new Font("", Font.PLAIN, 15));
 		textField.setHorizontalAlignment(JTextField.CENTER);
@@ -119,16 +104,18 @@ public class Insects_GUI extends JPanel implements MouseListener
 		});
 	}
 	
-	private void setLabelSettings(JLabel label)
+	private void setLabelSettings(JLabel label, int a, int b, int c, int d)
 	{
+		label.setBounds(a,b,c,d);
 		label.setForeground(textColor);
 		label.setFont(new Font("", Font.BOLD, 18));
 		this.add(label);
 	}
 	
-	private void setButtonSettings(JLabel button)
+	private void setButtonSettings(JLabel button, int a, int b, int c, int d)
 	{
-		button.setBackground(buttonColor1);
+		button.setBounds(a,b,c,d);
+		button.setBackground(b_color_basic);
 		button.setForeground(textColor);
 		button.setOpaque(true);
 		button.setBorder(BorderFactory.createLineBorder(borderColor, 3));
@@ -137,6 +124,7 @@ public class Insects_GUI extends JPanel implements MouseListener
 		this.add(button);
 	}
 
+	//MOUSE
 	@Override
 	public void mouseClicked(MouseEvent e) 
 	{
@@ -161,7 +149,7 @@ public class Insects_GUI extends JPanel implements MouseListener
 		if (e.getSource()==startButton) 
 		{
 			if (buttonSizeIncreased) {buttonAnimation(startButton, -(150 /30));}
-			startButton.setBackground(buttonColor3);
+			startButton.setBackground(b_color_pressed);
 		}
 		
 		else 
@@ -173,7 +161,7 @@ public class Insects_GUI extends JPanel implements MouseListener
 					button.getWidth()-6, button.getHeight()-6
 			);
 			
-			button.setBackground(buttonColor3);
+			button.setBackground(b_color_pressed);
 		}
 	}
 	
@@ -183,13 +171,13 @@ public class Insects_GUI extends JPanel implements MouseListener
 		if (e.getSource()==startButton) 
 		{
 			buttonAnimation(startButton, (150 /30));
-			startButton.setBackground(buttonColor2);
+			startButton.setBackground(b_color_highlight);
 		}
 		
 		else 
 		{
 			JLabel button = (JLabel) e.getSource();
-			button.setBackground(buttonColor2);
+			button.setBackground(b_color_highlight);
 		}
 	}
 
@@ -199,13 +187,13 @@ public class Insects_GUI extends JPanel implements MouseListener
 		if (e.getSource()==startButton) 
 		{
 			if (buttonSizeIncreased) {buttonAnimation(startButton, -(150 /30));}
-			startButton.setBackground(buttonColor1);
+			startButton.setBackground(b_color_basic);
 		}
 		
 		else 
 		{
 			JLabel button = (JLabel) e.getSource();
-			button.setBackground(buttonColor1);
+			button.setBackground(b_color_basic);
 		}
 	}
 	
@@ -223,6 +211,7 @@ public class Insects_GUI extends JPanel implements MouseListener
 		}
 	}
 
+	//CONTROL
 	private void buttonAnimation(JLabel button, int change)
 	{
 		if ((change > 0 && buttonSizeIncreased) || (change < 0 && !buttonSizeIncreased)) {return;} //don't go beyond max/min size
