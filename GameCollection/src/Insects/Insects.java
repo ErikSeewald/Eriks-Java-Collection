@@ -31,7 +31,5 @@ public class Insects
 	}
 	
 	public void start(WindowEventHandler eventHandler)
-	{
-		frame.addWindowListener(eventHandler);
-	}
+	{frame.addWindowListener(eventHandler);}
 }
