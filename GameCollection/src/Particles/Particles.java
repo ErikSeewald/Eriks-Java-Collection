@@ -10,7 +10,7 @@ public class Particles extends JFrame
 {
 	private static final long serialVersionUID = -1650331621506133111L;
 	
-	ParticlesPanel panel;
+	private ParticlesPanel panel;
 	
 	public Particles()
 	{

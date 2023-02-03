@@ -16,15 +16,12 @@ public class ParticlesPanel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 6395869615896081681L;
 	
-	static Timer movetimer; 	//timer for square movement
+	static Timer movetimer; 	//timer for particle movement
 	static Timer colorTimer;	//timer for color palette change
 	
-	private Random random;	
-	
-	//starting color palette
-	Color color1 = (new Color (170,170,245)); 
-	Color color2 = (new Color (245,170,245));
+	private Random random = new Random();
 
+	//PARTICLES
 	private class Particle
 	{
 		int X, Y;
@@ -35,10 +32,17 @@ public class ParticlesPanel extends JPanel implements ActionListener
 		{this.X = X; this.Y = Y; this.sizeX = sizeX; this.sizeY = sizeY;}
 	}
 	
-	private int particleAmount = 6000;
+	private static final int particleAmount = 6000;
 	private Particle[] particles;
 	
-	
+	private static final Color[] palette = 
+	{
+			new Color (170,170,245), new Color (245,170,245),
+			new Color (170,245,245), new Color (170,170,245)		
+	};
+	private int palette_pos = 0;
+		
+	//MOUSE
 	private class Mouse
 	{
 		int X = 0; 	
@@ -51,10 +55,11 @@ public class ParticlesPanel extends JPanel implements ActionListener
 	
 	ParticlesPanel()
 	{
-		random = new Random();
-		
 		DragListener dragListener = new DragListener(); 
 		this.addMouseMotionListener(dragListener);
+		
+		this.setPreferredSize(new Dimension(650,650));
+		this.setLayout(null);
 		
 		movetimer = new Timer(50, this);
 		movetimer.start();
@@ -62,12 +67,10 @@ public class ParticlesPanel extends JPanel implements ActionListener
 		colorTimer = new Timer(5000, this);
 		colorTimer.start();
 		          
-		this.setPreferredSize(new Dimension(650,650));
-		this.setLayout(null);
-		
 		start();
 	}
 	
+	//CONTROL
 	public static void stop()
 	{movetimer.stop(); colorTimer.stop();}
 	
@@ -89,14 +92,55 @@ public class ParticlesPanel extends JPanel implements ActionListener
 		mouse = new Mouse();
 	}
 	
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		if (e.getSource()==movetimer) 
+		{moveParticles();}
+		
+		else 
+		{changePalette();}
+	}
+	
+	//PARTICLES
+	private void moveParticles()
+	{
+		for (Particle p : particles) 
+		{	
+			switch (random.nextInt(4))
+			{
+				case 0: p.X+=random.nextInt(2); break;
+				case 1: p.X-=random.nextInt(2); break;
+				case 2: p.Y+=random.nextInt(2); break;
+				case 3: p.Y-=random.nextInt(2); break;
+			}
+		}
+		repaint();
+	}
+	
+	private void pushParticles(int amount)
+	{
+		for (Particle p : particles)
+    	{ 
+    		if (p.X > mouse.X-16 && p.X < mouse.X+mouse.size && p.Y > mouse.Y-16 && p.Y < mouse.Y+mouse.size)	
+       	  	{	
+    			p.X+=amount;
+    			p.Y+=amount;	
+       	  	}
+    	}
+    	repaint();  
+	}
+	
+	private void changePalette()
+	{
+		palette_pos = (palette_pos + 2) % 4;
+		for (Particle p : particles)
+		{setColor(p);}
+	}
+	
 	private void setColor(Particle p)
 	{
-		//switch between the two colors, then calculate brightness by distance from center
-		Color color;
-		if (random.nextBoolean())
-		{color = color1;}
-		else 
-		{color = color2;}
+		Color color = palette[random.nextInt(2) + palette_pos];
 		
 		double distFromCenter = Math.abs(p.X-325) + Math.abs(p.Y-325);
 		int R = (int) Math.abs(color.getRed()-(distFromCenter / 5));
@@ -121,57 +165,19 @@ public class ParticlesPanel extends JPanel implements ActionListener
 		}	
 	}
 	
+	//MOUSE
 	private class DragListener extends MouseMotionAdapter
 	{
 	    public void mouseDragged(MouseEvent e) 
 	    { 
-	      mouse.X = e.getX();
-	      mouse.Y = e.getY();
-	               
-	      for (Particle p : particles) //pushes squares to the side if they are inside mouse size
-	      { 
-	    	  if (p.X > mouse.X-16 && p.X < mouse.X+mouse.size && p.Y > mouse.Y-16 && p.Y < mouse.Y+mouse.size)	
-	       	  {	
-	    		  if (mouse.prevX < mouse.X) {p.X+=10; p.Y+=10;}
-	       		  else {p.X-=10; p.Y-=10;}	
-	       	  }
-	      }
-	      mouse.prevX = mouse.X;
-	      repaint();    
+	    	mouse.X = e.getX();
+	    	mouse.Y = e.getY();
+	    	
+	    	int amount = 10;
+	    	if (mouse.prevX > mouse.X) {amount = -10;}
+	    	pushParticles(amount);
+	    	
+	    	mouse.prevX = mouse.X;  
 	    }
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		if (e.getSource()==movetimer) 
-		{
-			for (Particle p : particles) 
-			{	
-				switch (random.nextInt(4)) //moves squares randomly
-				{
-					case 0: p.X+=random.nextInt(2);
-					break;
-					case 1: p.X-=random.nextInt(2);
-					break;
-					case 2: p.Y+=random.nextInt(2);
-					break;
-					case 3: p.Y-=random.nextInt(2);
-					break;
-				}
-			}
-			repaint();
-		}
-		
-		else 
-		{
-			if (random.nextBoolean())
-			{color1 = (new Color (170,245,245)); color2 = (new Color (170,170,245));}
-			else 
-			{color1 = (new Color (170,170,245)); color2 = (new Color (245,170,245));}
-		
-			for (Particle p : particles) 
-			{setColor(p);}
-		}
 	}
 }
