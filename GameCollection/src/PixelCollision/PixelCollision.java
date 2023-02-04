@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -12,11 +13,15 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.Timer;
 
+import Main.EJC_Interface;
 import Main.MainMenu;
 import Main.WindowEventHandler;
 
-public class PixelCollision 
+public class PixelCollision extends JFrame implements EJC_Interface
 {
+	private static final long serialVersionUID = 1188212923048325213L;
+	private static final int index = 9;
+	
 	static ArrayList<Integer> pressedKeys = new ArrayList<>();
 	//use the ArrayList instead of the standard keyPressed to avoid delay when changing inputs
 	
@@ -42,7 +47,7 @@ public class PixelCollision
 	ActionListener actionListener; //for MenuBar
 	
 	//static so it can only exist once and be called from other classes in GameCollection
-	static Timer timer = new Timer(20, new ActionListener() 
+	Timer timer = new Timer(20, new ActionListener() 
 	{	@Override
 		public void actionPerformed(ActionEvent e) 
 		{
@@ -99,11 +104,11 @@ public class PixelCollision
 	public void start(WindowEventHandler eventHandler) 
 	{
 		
-		JFrame frame = new JFrame("Pixel Collision");
-		frame.setIconImage(MainMenu.img.getImage());
+		this.setTitle("Pixel Collision");
+		this.setIconImage(MainMenu.img.getImage());
 		panel = new PixelCollisionPanel();
 		
-		frame.addKeyListener(new KeyListener() 
+		this.addKeyListener(new KeyListener() 
 		{
 			@Override
 			public void keyTyped(KeyEvent e) 
@@ -118,8 +123,8 @@ public class PixelCollision
 				if (code == 82) {panel.start();} 	//R
 				else if (code == 70) {panel.flyMode = !panel.flyMode;}		 //F
 				
-				else if (code == 45) {panel.saveObject(); panel.changeSize(-10); frame.pack();} 	//-
-				else if (code == 521) {panel.saveObject(); panel.changeSize(10); frame.pack();} 	//+
+				else if (code == 45) {panel.saveObject(); panel.changeSize(-10); pack();} 	//-
+				else if (code == 521) {panel.saveObject(); panel.changeSize(10); pack();} 	//+
 				//saveObject to avoid dealing with object scaling -> just resets it	
 			}
 			@Override
@@ -173,14 +178,14 @@ public class PixelCollision
 			
 		menuBar.setBackground(new Color (100,100,120));
 		menuBar.setBorder(BorderFactory.createLineBorder(new Color (115,115,135), 2));
-		frame.setJMenuBar(menuBar);
+		this.setJMenuBar(menuBar);
 		
-		frame.addWindowListener(eventHandler);
-		frame.setResizable(false);
-		frame.add(panel);
-		frame.pack();
+		this.addWindowListener(eventHandler);
+		this.setResizable(false);
+		this.add(panel);
+		this.pack();
 			
-		frame.setVisible(true);
+		this.setVisible(true);
 		timer.start();
 	}
 	
@@ -197,6 +202,10 @@ public class PixelCollision
 		menuBar.add(menu);
 	}
 	
-	public static void stop()
+	@Override
+	public void stop()
 	{timer.stop();}
+	
+	@Override
+	public int getIndex() {return index;}
 }

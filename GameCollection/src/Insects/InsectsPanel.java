@@ -15,8 +15,8 @@ public class InsectsPanel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 4974460083826443803L;
 	
-	private static Timer timer; 	//movement
-	private static Timer survive;	//increasing or decreasing amount of ants
+	private Timer timer; 	//movement
+	private Timer survive;	//increasing or decreasing amount of ants
 	
 	//RESOURCES
 	private int food = 0;	//how many are in which area
@@ -76,7 +76,7 @@ public class InsectsPanel extends JPanel implements ActionListener
 	public void addGUI(Insects_GUI GUI)
 	{this.GUI = GUI;}
 	
-	public static void stop()
+	public void stop()
 	{timer.stop(); survive.stop();}
 	
 	public void start()

@@ -104,8 +104,8 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 	}
 	private Board board;
 	
-	private static Timer moveTimer;	//Timer for each frame (~60fps)
-	private static Timer timer;		//Timer for time score 
+	private Timer moveTimer;	//Timer for each frame (~60fps)
+	private Timer timer;		//Timer for time score 
 	private Random random = new Random();
 	
 	private byte moveNum = 0;	//move counter to limit the amount of updates for the MouseAdapter			
@@ -484,6 +484,6 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 		{bestTime = Integer.parseInt(text);}	
 	}
 	
-	public static void stop()
+	public void stop()
 	{moveTimer.stop(); timer.stop();}
 }

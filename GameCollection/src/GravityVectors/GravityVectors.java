@@ -5,12 +5,14 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 
+import Main.EJC_Interface;
 import Main.MainMenu;
 import Main.WindowEventHandler;
 
-public class GravityVectors extends JFrame
+public class GravityVectors extends JFrame implements EJC_Interface
 {
 	private static final long serialVersionUID = -7941120893843254800L;
+	private static final int index = 11;
 
 	public void start(WindowEventHandler eventHandler) 
 	{
@@ -48,4 +50,10 @@ public class GravityVectors extends JFrame
 		this.pack();
 		this.setVisible(true);
 	}
+
+	@Override
+	public void stop() {}
+	
+	@Override
+	public int getIndex() {return index;}
 }

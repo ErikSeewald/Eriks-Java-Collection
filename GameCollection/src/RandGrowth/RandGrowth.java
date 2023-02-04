@@ -3,14 +3,16 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
+import Main.EJC_Interface;
 import Main.MainMenu;
 import Main.WindowEventHandler;
 
-public class RandGrowth extends JFrame
+public class RandGrowth extends JFrame implements EJC_Interface
 {
 	private static final long serialVersionUID = -7593694436385018187L;
+	private static final int index = 14;
 	
-	static RandGrowthPanel panel;
+	RandGrowthPanel panel;
 	RG_GUI_Panel GUIpanel;
 	
 	public RandGrowth()
@@ -30,9 +32,14 @@ public class RandGrowth extends JFrame
 		this.setVisible(true);	
 	}
 	
-	public static void stop()
-	{panel.timer.stop();}
-	
+	@Override
 	public void start(WindowEventHandler eventHandler)
 	{this.addWindowListener(eventHandler);}
+	
+	@Override
+	public void stop()
+	{panel.timer.stop();}
+	
+	@Override
+	public int getIndex() {return index;}
 }

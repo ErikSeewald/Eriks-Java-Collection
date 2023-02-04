@@ -1,14 +1,17 @@
 package ReflectionDemo;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 import javax.swing.JFrame;
 
+import Main.EJC_Interface;
 import Main.MainMenu;
 import Main.WindowEventHandler;
 
-public class ReflectionDemo extends JFrame
+public class ReflectionDemo extends JFrame implements EJC_Interface
 {
 	private static final long serialVersionUID = 1345146613461L;
+	private static final int index = 6;
 	
 	ReflectionPanel panel;
 	
@@ -49,6 +52,14 @@ public class ReflectionDemo extends JFrame
 		});
 		this.setVisible(true);	
 	}
+	
+	@Override
 	public void start(WindowEventHandler eventHandler)
 	{this.addWindowListener(eventHandler);}
+	
+	@Override
+	public void stop() {}
+	
+	@Override
+	public int getIndex() {return index;}
 }

@@ -1,14 +1,17 @@
 package Particles;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 import javax.swing.JFrame;
 
+import Main.EJC_Interface;
 import Main.MainMenu;
 import Main.WindowEventHandler;
 
-public class Particles extends JFrame
-{
+public class Particles extends JFrame implements EJC_Interface
+{	
 	private static final long serialVersionUID = -1650331621506133111L;
+	private static final int index = 1;
 	
 	private ParticlesPanel panel;
 	
@@ -43,4 +46,10 @@ public class Particles extends JFrame
 	
 	public void start(WindowEventHandler eventHandler)
 	{this.addWindowListener(eventHandler);}
+
+	@Override
+	public void stop() {panel.stop();}
+	
+	@Override
+	public int getIndex() {return index;}
 }

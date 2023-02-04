@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -12,27 +13,32 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+
+import Main.EJC_Interface;
 import Main.MainMenu;
 import Main.WindowEventHandler;
 
-public class JumpAndRun implements ActionListener
+public class JumpAndRun extends JFrame implements ActionListener, EJC_Interface
 {	
-	private static Timer timer;
+	private static final long serialVersionUID = -7018763596595532898L;
+	private static final int index = 8;
+	
+	private Timer timer;
 	private JumpAndRunPanel panel;
 	
 	public void start(WindowEventHandler eventHandler) 
 	{
 		//INITIALIZATION
-		JFrame frame = new JFrame("Sidescroller");
-		frame.setIconImage(MainMenu.img.getImage());
-		frame.addWindowListener(eventHandler);
+		this.setTitle("Sidescroller");
+		this.setIconImage(MainMenu.img.getImage());
+		this.addWindowListener(eventHandler);
 		
 		panel = new JumpAndRunPanel();
 		
-		frame.add(panel);
-		frame.pack();
-		frame.setResizable(false);
-		frame.setVisible(true);
+		this.add(panel);
+		this.pack();
+		this.setResizable(false);
+		this.setVisible(true);
 		
 		//MOVEMENT
 		HashSet<Integer> pressedKeys = new HashSet<>();
@@ -71,7 +77,7 @@ public class JumpAndRun implements ActionListener
 		});
 		timer.start();
 		
-		frame.addKeyListener(new KeyListener() 
+		this.addKeyListener(new KeyListener() 
 		{	
 			@Override
 			public void keyPressed(KeyEvent e) 
@@ -110,7 +116,7 @@ public class JumpAndRun implements ActionListener
 				
 		fileMenu.add(seedItem);
 		menuBar.add(fileMenu);
-		frame.setJMenuBar(menuBar);
+		this.setJMenuBar(menuBar);
 	}
 	
 	@Override
@@ -138,6 +144,10 @@ public class JumpAndRun implements ActionListener
 		if (timer.isRunning()) {timer.stop();} else {timer.start();}
 	}
 	
-	public static void stop()
+	@Override
+	public void stop()
 	{timer.stop();}
+	
+	@Override
+	public int getIndex() {return index;}
 }

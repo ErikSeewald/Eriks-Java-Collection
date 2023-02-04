@@ -1,15 +1,19 @@
 package SnakesAndLadders;
 
 import java.awt.BorderLayout;
+
 import javax.swing.JFrame;
+
+import Main.EJC_Interface;
 import Main.MainMenu;
 import Main.WindowEventHandler;
 
-public class SnakesAndLadders extends JFrame 
+public class SnakesAndLadders extends JFrame implements EJC_Interface
 {
 	private static final long serialVersionUID = 7284705718024953236L;
+	private static final int index = 15;
 	
-	private static SnL_Panel panel;
+	private SnL_Panel panel;
 	private SnL_GUI GUI;
 	
 	public SnakesAndLadders()
@@ -28,9 +32,14 @@ public class SnakesAndLadders extends JFrame
 		this.setVisible(true);
 	}
 	
+	@Override
 	public void start(WindowEventHandler eventHandler)
 	{this.addWindowListener(eventHandler);}
 	
-	public static void stop()
+	@Override
+	public void stop()
 	{panel.stopAllTimers();}
+	
+	@Override
+	public int getIndex() {return index;}
 }

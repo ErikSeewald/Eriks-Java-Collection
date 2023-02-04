@@ -4,20 +4,25 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
+import Main.EJC_Interface;
 import Main.MainMenu;
 import Main.WindowEventHandler;
 
-public class ParallelUniverses 
+public class ParallelUniverses extends JFrame implements EJC_Interface
 {
+	private static final long serialVersionUID = -728908076775898206L;
+	private static final int index = 5;
+	
 	//pressedKeys List because keyPressed() has an annoying delay before it registers a key as held down
 	private static ArrayList<Integer> pressedKeys = new ArrayList<>();
 	
 	private static ParallelUniversesPanel panel;
 	
-	private static Timer timer = new Timer(25, new ActionListener()
+	private Timer timer = new Timer(25, new ActionListener()
 	{	@Override
 		public void actionPerformed(ActionEvent e) 
 	 	{
@@ -42,18 +47,18 @@ public class ParallelUniverses
 	
 	public void start(WindowEventHandler eventHandler) 
 	{
-		JFrame frame = new JFrame("Parallel Universes");
-		frame.setIconImage(MainMenu.img.getImage());
+		this.setTitle("Parallel Universes");
+		this.setIconImage(MainMenu.img.getImage());
 		panel = new ParallelUniversesPanel();
 		
 		timer.start();
 		
-		frame.addWindowListener(eventHandler);
-		frame.setResizable(true);
-		frame.add(panel);
-		frame.pack();
+		this.addWindowListener(eventHandler);
+		this.setResizable(true);
+		this.add(panel);
+		this.pack();
 		
-		frame.addKeyListener(new KeyListener() 
+		this.addKeyListener(new KeyListener() 
 		{
 			@Override
 			public void keyTyped(KeyEvent e) 
@@ -76,9 +81,13 @@ public class ParallelUniverses
 			}		
 		});	
 		
-		frame.setVisible(true);
+		this.setVisible(true);
 	}
 	
-	public static void stop()
+	@Override
+	public void stop()
 	{timer.stop();}
+	
+	@Override
+	public int getIndex() {return index;}
 }

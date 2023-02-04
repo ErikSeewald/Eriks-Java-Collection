@@ -10,6 +10,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DecimalFormat;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -18,16 +19,18 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.Timer;
 
+import Main.EJC_Interface;
 import Main.MainMenu;
 import Main.WindowEventHandler;
 
-public class ClothSim extends JFrame
+public class ClothSim extends JFrame implements EJC_Interface
 {
 	private static final long serialVersionUID = -1946430738048947884L;
+	private static final int index = 10;
 	
 	ClothSimPanel panel;
 	
-	static Timer timer;
+	Timer timer;
 	
 	ActionListener actionListener;
 	
@@ -232,9 +235,14 @@ public class ClothSim extends JFrame
 		}
 	}
 	
+	@Override
 	public void start(WindowEventHandler eventHandler)
 	{this.addWindowListener(eventHandler);}
 	
-	public static void stop()
+	@Override
+	public void stop()
 	{timer.stop();}
+	
+	@Override
+	public int getIndex() {return index;}
 }
