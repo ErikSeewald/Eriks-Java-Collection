@@ -58,7 +58,7 @@ public class ReflectionDemo extends JFrame implements EJC_Interface
 	{this.addWindowListener(eventHandler);}
 	
 	@Override
-	public void stop() {}
+	public void stop() {panel = null;}
 	
 	@Override
 	public int getIndex() {return index;}

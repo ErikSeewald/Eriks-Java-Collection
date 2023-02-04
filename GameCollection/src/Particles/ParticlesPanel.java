@@ -72,7 +72,7 @@ public class ParticlesPanel extends JPanel implements ActionListener
 	
 	//CONTROL
 	public void stop()
-	{movetimer.stop(); colorTimer.stop();}
+	{movetimer.stop(); colorTimer.stop(); particles = null;}
 	
 	public void start()
 	{

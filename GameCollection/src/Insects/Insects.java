@@ -37,8 +37,10 @@ public class Insects extends JFrame implements EJC_Interface
 	{this.addWindowListener(eventHandler);}
 
 	@Override
-	public void stop() {panel.stop();}
+	public void stop() {panel.stop(); panel = null; GUI = null;}
 	
 	@Override
 	public int getIndex() {return index;}
+	
+	public void close() {this.removeAll();}
 }

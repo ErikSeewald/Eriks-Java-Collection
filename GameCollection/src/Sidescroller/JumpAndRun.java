@@ -146,7 +146,7 @@ public class JumpAndRun extends JFrame implements ActionListener, EJC_Interface
 	
 	@Override
 	public void stop()
-	{timer.stop();}
+	{timer.stop(); panel = null;}
 	
 	@Override
 	public int getIndex() {return index;}

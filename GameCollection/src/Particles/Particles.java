@@ -48,7 +48,7 @@ public class Particles extends JFrame implements EJC_Interface
 	{this.addWindowListener(eventHandler);}
 
 	@Override
-	public void stop() {panel.stop();}
+	public void stop() {panel.stop(); panel = null;}
 	
 	@Override
 	public int getIndex() {return index;}

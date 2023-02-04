@@ -35,7 +35,7 @@ public class InsectsPanel extends JPanel implements ActionListener
 	
 	int antAmount = 1000; //amount of ants at start
 	private static final int maxAntAmount = 100000;
-	private Ant[] Ants = new Ant[maxAntAmount];
+	private Ant[] ants = new Ant[maxAntAmount];
 	private double lengthvar = 100 / (double)antAmount;
 	
 	private Color antColor;
@@ -77,21 +77,21 @@ public class InsectsPanel extends JPanel implements ActionListener
 	{this.GUI = GUI;}
 	
 	public void stop()
-	{timer.stop(); survive.stop();}
+	{timer.stop(); survive.stop(); ants = null;}
 	
 	public void start()
 	{
 		antAmount = 1000;
 
-		Ants = null;
+		ants = null;
 		System.gc();
-		Ants = new Ant[maxAntAmount];
+		ants = new Ant[maxAntAmount];
 		
 		antColor = new Color(random.nextInt(135)+120,random.nextInt(135)+120,random.nextInt(135)+120);
 		
-		for (int i = 0; i < Ants.length; i++) 
+		for (int i = 0; i < ants.length; i++) 
 		{
-			Ants[i] = new Ant(random.nextInt(3)+3);
+			ants[i] = new Ant(random.nextInt(3)+3);
 		}
 		GUI.setAntAmountCounter(antAmount);
 		setColors();
@@ -134,8 +134,8 @@ public class InsectsPanel extends JPanel implements ActionListener
 		//ANTS
 		for (int i = 0; i <=antAmount-1; i++) //drawing each ant
 		{ 
-			g2D.setPaint(Ants[i].color);
-			g2D.fillRect(Ants[i].loc[0], Ants[i].loc[1], Ants[i].size, Ants[i].size);
+			g2D.setPaint(ants[i].color);
+			g2D.fillRect(ants[i].loc[0], ants[i].loc[1], ants[i].size, ants[i].size);
 		}
 	}	
 	
@@ -156,7 +156,7 @@ public class InsectsPanel extends JPanel implements ActionListener
 	{
 		for (int i = antAmount-1; i >=0; i--) 
 		{
-			int locX = Ants[i].loc[0], locY = Ants[i].loc[1];
+			int locX = ants[i].loc[0], locY = ants[i].loc[1];
 			
 			switch (random.nextInt(5)) //choose from 5 different kinds of movements, at 10 different speeds
 			{ 
@@ -170,8 +170,8 @@ public class InsectsPanel extends JPanel implements ActionListener
 			//COLLISION CHECK
 			if (locX > 0 && locX < 650 && locY > 0 && locY < 650)  // Is inside panel
 			{
-				if (!collisionCheck(locX, locY, Ants[i].size)) //Not intersecting any wall
-				{Ants[i].loc[0] = locX; Ants[i].loc[1] = locY;} 
+				if (!collisionCheck(locX, locY, ants[i].size)) //Not intersecting any wall
+				{ants[i].loc[0] = locX; ants[i].loc[1] = locY;} 
 			}
 		}
 		repaint();
@@ -182,7 +182,7 @@ public class InsectsPanel extends JPanel implements ActionListener
 		//check how many ants are in each resource area
 		for (int i = 0; i < antAmount-1; i++)
 		{
-			int locX = Ants[i].loc[0], locY = Ants[i].loc[1];
+			int locX = ants[i].loc[0], locY = ants[i].loc[1];
 			
 			if ((locX > 0 && locX < 100 && locY > 145 && locY < 605)) 
 			{food++;}
@@ -193,7 +193,7 @@ public class InsectsPanel extends JPanel implements ActionListener
 		}
 
 		double tempAntAmount = (antAmount - (0.001*(((antAmount-food-water)/(antAmount/10)) - (food/2 + water))));
-		if (tempAntAmount < Ants.length)
+		if (tempAntAmount < ants.length)
 		{
 			GUI.setChangeRate(tempAntAmount - antAmount);
 			antAmount = (int) tempAntAmount;
@@ -209,7 +209,7 @@ public class InsectsPanel extends JPanel implements ActionListener
 		
 		for (int i = 0; i < antAmount; i++) 
 		{
-			Ants[i].color = new Color
+			ants[i].color = new Color
 			((int) (antColor.getRed()-(lengthvar*i)),(int) (antColor.getGreen()-(lengthvar*i)),(int) (antColor.getBlue()-(lengthvar*i)));
 		}
 	}

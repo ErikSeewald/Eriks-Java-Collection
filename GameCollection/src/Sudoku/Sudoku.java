@@ -10,7 +10,10 @@ import Main.WindowEventHandler;
 
 public class Sudoku extends JFrame implements EJC_Interface
 {
+	private static final long serialVersionUID = -7551546838805061960L;
 	private static final int index = 3;
+	
+	private SudokuPanel panel;
 	
 	public void start(WindowEventHandler eventHandler) 
 	{
@@ -18,7 +21,7 @@ public class Sudoku extends JFrame implements EJC_Interface
 		this.setIconImage(MainMenu.img.getImage());
 		this.setResizable(false);
 		
-		SudokuPanel panel = new SudokuPanel();
+		panel = new SudokuPanel();
 	
 		this.addWindowListener(eventHandler);
 		this.addKeyListener(new KeyListener() 
@@ -49,7 +52,7 @@ public class Sudoku extends JFrame implements EJC_Interface
 	}
 
 	@Override
-	public void stop() {}
+	public void stop() {panel = null;}
 	
 	@Override
 	public int getIndex() {return index;}

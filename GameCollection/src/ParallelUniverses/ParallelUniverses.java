@@ -20,7 +20,7 @@ public class ParallelUniverses extends JFrame implements EJC_Interface
 	//pressedKeys List because keyPressed() has an annoying delay before it registers a key as held down
 	private static ArrayList<Integer> pressedKeys = new ArrayList<>();
 	
-	private static ParallelUniversesPanel panel;
+	private ParallelUniversesPanel panel;
 	
 	private Timer timer = new Timer(25, new ActionListener()
 	{	@Override
@@ -86,7 +86,7 @@ public class ParallelUniverses extends JFrame implements EJC_Interface
 	
 	@Override
 	public void stop()
-	{timer.stop();}
+	{timer.stop(); panel = null;}
 	
 	@Override
 	public int getIndex() {return index;}
