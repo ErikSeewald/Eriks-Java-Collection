@@ -94,7 +94,7 @@ public class Pathfind extends JFrame implements ActionListener, EJC_Interface
 	}
 
 	@Override
-	public void stop() {}
+	public void stop() {panel = null;}
 	
 	@Override
 	public int getIndex() {return index;}

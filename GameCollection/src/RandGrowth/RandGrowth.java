@@ -38,7 +38,7 @@ public class RandGrowth extends JFrame implements EJC_Interface
 	
 	@Override
 	public void stop()
-	{panel.timer.stop();}
+	{panel.timer.stop(); panel = null;}
 	
 	@Override
 	public int getIndex() {return index;}

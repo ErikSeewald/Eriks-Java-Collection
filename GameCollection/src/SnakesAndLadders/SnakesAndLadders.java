@@ -38,7 +38,7 @@ public class SnakesAndLadders extends JFrame implements EJC_Interface
 	
 	@Override
 	public void stop()
-	{panel.stopAllTimers();}
+	{panel.stopAllTimers(); panel = null;}
 	
 	@Override
 	public int getIndex() {return index;}

@@ -13,10 +13,12 @@ public class GravityVectors extends JFrame implements EJC_Interface
 {
 	private static final long serialVersionUID = -7941120893843254800L;
 	private static final int index = 11;
+	
+	private GravityVectorsPanel panel;
 
 	public void start(WindowEventHandler eventHandler) 
 	{
-		GravityVectorsPanel panel = new GravityVectorsPanel();
+		panel = new GravityVectorsPanel();
 		
 		this.addWindowListener(eventHandler);
 		this.setIconImage(MainMenu.img.getImage());
@@ -52,7 +54,7 @@ public class GravityVectors extends JFrame implements EJC_Interface
 	}
 
 	@Override
-	public void stop() {}
+	public void stop() {panel = null;}
 	
 	@Override
 	public int getIndex() {return index;}

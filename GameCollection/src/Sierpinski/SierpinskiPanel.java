@@ -82,7 +82,7 @@ public class SierpinskiPanel extends JPanel implements ActionListener
 		    @Override
 		    public void run() 
 		    {
-		    	while (true) 
+		    	while (random != null) 
 		    	{
 		    		rollDice();
 		    		if (random.nextInt(20) == 1) //makes it look a little more organic
@@ -95,7 +95,7 @@ public class SierpinskiPanel extends JPanel implements ActionListener
 	}
 	
 	public void stop()
-	{if (timer != null) {timer.stop();}}
+	{if (timer != null) {timer.stop();} random = null;}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) 

@@ -22,10 +22,10 @@ public class PixelCollision extends JFrame implements EJC_Interface
 	private static final long serialVersionUID = 1188212923048325213L;
 	private static final int index = 9;
 	
-	static ArrayList<Integer> pressedKeys = new ArrayList<>();
+	private static ArrayList<Integer> pressedKeys = new ArrayList<>();
 	//use the ArrayList instead of the standard keyPressed to avoid delay when changing inputs
 	
-	static PixelCollisionPanel panel;
+	private PixelCollisionPanel panel;
 	
 	static int fallingSpeed;
 	static int timeUntilFall;
@@ -204,7 +204,7 @@ public class PixelCollision extends JFrame implements EJC_Interface
 	
 	@Override
 	public void stop()
-	{timer.stop();}
+	{timer.stop(); panel = null;}
 	
 	@Override
 	public int getIndex() {return index;}

@@ -54,7 +54,7 @@ public class BloonShooting extends JFrame implements EJC_Interface
 	
 	@Override
 	public void stop()
-	{panel.shot.stop();}
+	{panel.shot.stop(); panel = null;}
 
 	@Override
 	public int getIndex() {return index;}

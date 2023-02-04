@@ -241,7 +241,7 @@ public class ClothSim extends JFrame implements EJC_Interface
 	
 	@Override
 	public void stop()
-	{timer.stop();}
+	{timer.stop(); panel = null;}
 	
 	@Override
 	public int getIndex() {return index;}

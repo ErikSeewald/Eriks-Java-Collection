@@ -41,7 +41,7 @@ public class Sierpinski extends JFrame implements EJC_Interface
 	public void start(WindowEventHandler eventHandler) {}
 
 	@Override
-	public void stop() {panel.stop();}
+	public void stop() {panel.stop(); panel = null;}
 	
 	@Override
 	public int getIndex() {return index;}

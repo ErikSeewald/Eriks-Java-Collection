@@ -52,7 +52,7 @@ public class MouseDodge extends JFrame implements EJC_Interface
 	}
 
 	@Override
-	public void stop() {panel.stop();}
+	public void stop() {panel.stop(); panel = null;}
 	
 	@Override
 	public int getIndex() {return index;}

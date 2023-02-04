@@ -50,7 +50,7 @@ public class RandBattle extends JFrame implements EJC_Interface
 	{this.addWindowListener(eventHandler);}
 	
 	@Override
-	public void stop() {panel.stopTimer();}
+	public void stop() {panel.stopTimer(); panel = null;}
 	
 	@Override
 	public int getIndex() {return index;}

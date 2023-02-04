@@ -45,7 +45,7 @@ public class PathfindNormal extends JPanel
 		Chaser(int x, int y, boolean prefersX)
 		{this.x = x; this.y = y; this.prefersX = prefersX;}
 	}
-	private int chaser_count = 5;
+	private int chaser_count = 6;
 	private Chaser[] chasers = new Chaser[chaser_count];
 	
 	//PLAYER
