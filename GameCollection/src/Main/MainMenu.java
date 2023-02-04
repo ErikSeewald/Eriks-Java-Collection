@@ -239,12 +239,12 @@ public class MainMenu extends JFrame implements MouseListener
 		initialize();
 	}
 	
-	public static void restart() throws IOException, URISyntaxException
+	public static void gameClosed() throws IOException, URISyntaxException
 	{
 		System.gc();
 		
 		windowsClosedCount++;
-		if (windowsClosedCount < 10) {return;}
+		if (windowsClosedCount < 10) {return;} //REBUILD THE JAR AFTER 10 GAMES TO AVOID ERORRS
 		
 		final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
 		final File currentJar = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());

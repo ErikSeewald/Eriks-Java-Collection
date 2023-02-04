@@ -16,8 +16,8 @@ public class ParticlesPanel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 6395869615896081681L;
 	
-	static Timer movetimer; 	//timer for particle movement
-	static Timer colorTimer;	//timer for color palette change
+	private Timer movetimer; 	//timer for particle movement
+	private Timer colorTimer;	//timer for color palette change
 	
 	private Random random = new Random();
 
@@ -71,7 +71,7 @@ public class ParticlesPanel extends JPanel implements ActionListener
 	}
 	
 	//CONTROL
-	public static void stop()
+	public void stop()
 	{movetimer.stop(); colorTimer.stop();}
 	
 	public void start()

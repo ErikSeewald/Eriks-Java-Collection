@@ -5,14 +5,16 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 
+import Main.EJC_Interface;
 import Main.MainMenu;
 import Main.WindowEventHandler;
 
-public class BloonShooting extends JFrame
+public class BloonShooting extends JFrame implements EJC_Interface
 {
 	private static final long serialVersionUID = -1952542729679771029L;
-
-	static BlS_Panel panel;
+	private static final int index = 12;
+	
+	private BlS_Panel panel;
 	
 	public BloonShooting()
 	{
@@ -45,10 +47,15 @@ public class BloonShooting extends JFrame
 		this.setResizable(false);
 		this.setVisible(true);
 	}
-	
+
+	@Override
 	public void start(WindowEventHandler eventHandler)
 	{this.addWindowListener(eventHandler);}
 	
-	public static void stop()
+	@Override
+	public void stop()
 	{panel.shot.stop();}
+
+	@Override
+	public int getIndex() {return index;}
 }

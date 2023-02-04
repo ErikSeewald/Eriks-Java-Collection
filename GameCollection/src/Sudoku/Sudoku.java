@@ -1,30 +1,34 @@
 package Sudoku;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 import javax.swing.JFrame;
 
+import Main.EJC_Interface;
 import Main.MainMenu;
 import Main.WindowEventHandler;
 
-public class Sudoku
+public class Sudoku extends JFrame implements EJC_Interface
 {
+	private static final int index = 3;
+	
 	public void start(WindowEventHandler eventHandler) 
 	{
-		JFrame frame = new JFrame("Sudoku");
-		frame.setIconImage(MainMenu.img.getImage());
-		frame.setResizable(false);
+		this.setTitle("Sudoku");
+		this.setIconImage(MainMenu.img.getImage());
+		this.setResizable(false);
 		
 		SudokuPanel panel = new SudokuPanel();
 	
-		frame.addWindowListener(eventHandler);
-		frame.addKeyListener(new KeyListener() 
+		this.addWindowListener(eventHandler);
+		this.addKeyListener(new KeyListener() 
 		{
 			@Override
 			public void keyTyped(KeyEvent e) 
 			{	
 				if (e.getKeyChar() == 's') {panel.sudoku();}
-				else if (e.getKeyChar() == '+') {panel.changeSize(10); frame.pack();}
-				else if (e.getKeyChar() == '-') {panel.changeSize(-10); frame.pack();}
+				else if (e.getKeyChar() == '+') {panel.changeSize(10); pack();}
+				else if (e.getKeyChar() == '-') {panel.changeSize(-10); pack();}
 				else if (e.getKeyChar() == 'r') {panel.reset();}
 				
 				else 
@@ -39,8 +43,14 @@ public class Sudoku
 			public void keyReleased(KeyEvent e) {}		
 		});
 		
-		frame.add(panel);
-		frame.pack();
-		frame.setVisible(true);
+		this.add(panel);
+		this.pack();
+		this.setVisible(true);
 	}
+
+	@Override
+	public void stop() {}
+	
+	@Override
+	public int getIndex() {return index;}
 }

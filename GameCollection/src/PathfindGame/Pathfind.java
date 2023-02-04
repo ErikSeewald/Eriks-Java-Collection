@@ -9,13 +9,15 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import Main.EJC_Interface;
 import Main.MainMenu;
 import Main.WindowEventHandler;
 
 
-public class Pathfind extends JFrame implements ActionListener
+public class Pathfind extends JFrame implements ActionListener, EJC_Interface
 {
 	private static final long serialVersionUID = 386670748457681736L;
+	private static final int index = 4;
 
 	private JMenuItem seedItem;
 	
@@ -90,4 +92,10 @@ public class Pathfind extends JFrame implements ActionListener
 				
 		panel.setSeed(seed);
 	}
+
+	@Override
+	public void stop() {}
+	
+	@Override
+	public int getIndex() {return index;}
 }

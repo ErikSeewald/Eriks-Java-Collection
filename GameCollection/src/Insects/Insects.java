@@ -3,14 +3,17 @@ package Insects;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 
+import Main.EJC_Interface;
 import Main.MainMenu;
 import Main.WindowEventHandler;
 
-public class Insects
+public class Insects extends JFrame implements EJC_Interface
 {
+	private static final long serialVersionUID = -3887848730761835772L;
+	private static final int index = 0;
+	
 	private InsectsPanel panel;
 	private Insects_GUI GUI;
-	private JFrame frame;
 	
 	public Insects()
 	{	
@@ -19,17 +22,23 @@ public class Insects
 		panel.addGUI(GUI);
 		panel.start();
 		
-		frame = new JFrame("Insects");
-		frame.setIconImage(MainMenu.img.getImage());
+		this.setTitle("Insects");
+		this.setIconImage(MainMenu.img.getImage());
 		
-		frame.setResizable(false);
-		frame.add(GUI, BorderLayout.EAST);
-		frame.add(panel, BorderLayout.WEST);
-		frame.pack();
+		this.setResizable(false);
+		this.add(GUI, BorderLayout.EAST);
+		this.add(panel, BorderLayout.WEST);
+		this.pack();
 
-		frame.setVisible(true);	
+		this.setVisible(true);	
 	}
 	
 	public void start(WindowEventHandler eventHandler)
-	{frame.addWindowListener(eventHandler);}
+	{this.addWindowListener(eventHandler);}
+
+	@Override
+	public void stop() {panel.stop();}
+	
+	@Override
+	public int getIndex() {return index;}
 }
