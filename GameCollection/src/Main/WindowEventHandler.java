@@ -9,6 +9,6 @@ public class WindowEventHandler extends WindowAdapter
 	WindowEventHandler(MainMenu menu)
 	{this.menu = menu;}
 	
-	public void windowClosing(WindowEvent evt) 
+	public void windowClosing(WindowEvent evt)
 	{menu.closeGame((EJC_Interface) evt.getComponent());}
 }

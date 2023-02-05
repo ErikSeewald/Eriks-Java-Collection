@@ -5,7 +5,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import Sierpinski.Sierpinski;
+
+import sierpinski.Sierpinski;
 
 public class SelectionFrame 
 {
@@ -15,7 +16,6 @@ public class SelectionFrame
 	{
 		//FRAME
 		frame = new JFrame("Selection");
-		frame.setIconImage(MainMenu.img.getImage());
 		frame.getContentPane().setBackground(new Color(50,50,70));
 		frame.setLayout(null);
 		frame.setSize(500, 200);
