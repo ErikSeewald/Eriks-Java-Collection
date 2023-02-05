@@ -16,9 +16,6 @@ public class Sudoku extends JFrame implements EJC_Interface
 	{
 		this.setTitle("Sudoku");
 		this.setResizable(false);
-		
-		panel = new SudokuPanel();
-	
 		this.addWindowListener(eventHandler);
 		this.addKeyListener(new KeyListener() 
 		{
@@ -31,10 +28,7 @@ public class Sudoku extends JFrame implements EJC_Interface
 				else if (e.getKeyChar() == 'r') {panel.reset();}
 				
 				else 
-				{
-					int x =  e.getKeyChar() - '0'; //gives the int value
-					try{panel.changeValue(x);} catch (Exception ex) {}
-				}
+				{panel.changeValue(e.getKeyChar() - '0');} //char to int	
 			}
 			@Override
 			public void keyPressed(KeyEvent e) {}
@@ -42,6 +36,7 @@ public class Sudoku extends JFrame implements EJC_Interface
 			public void keyReleased(KeyEvent e) {}		
 		});
 		
+		panel = new SudokuPanel();
 		this.add(panel);
 		this.pack();
 		this.setVisible(true);
