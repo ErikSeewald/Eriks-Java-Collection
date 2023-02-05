@@ -4,25 +4,24 @@ import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import BloonShoot.BloonShooting;
-import ClothSim.ClothSim;
-import GravityVectors.GravityVectors;
-import Insects.Insects;
-import MouseDodge.MouseDodge;
-import ParallelUniverses.ParallelUniverses;
-import Particles.Particles;
-import PathfindGame.Pathfind;
-import PixelCollision.PixelCollision;
-import RandBattle.RandBattle;
-import RandGrowth.RandGrowth;
-import ReflectionDemo.ReflectionDemo;
-import Sidescroller.JumpAndRun;
-import SnakesAndLadders.SnakesAndLadders;
-import Sudoku.Sudoku;
+import bloonShoot.BloonShooting;
+import clothSim.ClothSim;
+import gravityVectors.GravityVectors;
+import insects.Insects;
+import mouseDodge.MouseDodge;
+import parallelUniverses.ParallelUniverses;
+import particles.Particles;
+import pathfindGame.Pathfind;
+import pixelCollision.PixelCollision;
+import randBattle.RandBattle;
+import randGrowth.RandGrowth;
+import reflectionDemo.ReflectionDemo;
+import sidescroller.JumpAndRun;
+import snakesAndLadders.SnakesAndLadders;
+import sudoku.Sudoku;
 
 public class MainMenu extends JFrame implements MouseListener
 {
@@ -81,12 +80,9 @@ public class MainMenu extends JFrame implements MouseListener
 	private WindowEventHandler eventHandler = new WindowEventHandler(this);
 	private boolean[] gameOpened = new boolean[24];
 	
-	public static final ImageIcon img = new ImageIcon("src\\Main\\logo.jpg");
-	
 	MainMenu()
 	{
 		this.setTitle("Menu");
-		this.setIconImage(img.getImage());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.getContentPane().setBackground(new Color(40,40,55));
@@ -178,7 +174,7 @@ public class MainMenu extends JFrame implements MouseListener
 		);
 	}
 	
-	private void changeInformation(int index)
+	private void changeGuide(int index)
 	{	
 		for(int i = 0; i < guideLabels.length; i++)
 		{guideLabels[i].setText(titles[index].guide[i]);}
@@ -215,7 +211,7 @@ public class MainMenu extends JFrame implements MouseListener
 		button.setBackground(b_color_highlight);
 		
 		if (button.getText() != "") 
-		{changeInformation(button.index);}
+		{changeGuide(button.index);}
 	}
 
 	@Override
