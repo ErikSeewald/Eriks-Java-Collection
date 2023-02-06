@@ -58,7 +58,7 @@ public class SudokuPanel extends JPanel
 		if (activeRow < 0 || activeColumn < 0) {return;}
 		if (x < 0 || x > GRID_SIZE) {return;}
 		
-		if (isValidPlacement(x, activeRow, activeColumn))
+		if (x == 0 || isValidPlacement(x, activeRow, activeColumn))
 		{board[activeRow][activeColumn] = x;}
 		
 		activeColumn = -1;
