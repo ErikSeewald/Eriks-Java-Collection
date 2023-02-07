@@ -14,20 +14,9 @@ public class SudokuPanel extends JPanel
 {
 	private static final long serialVersionUID = 3986470365499168687L;
 	
-	//RESOLUTION
 	private static final int GRID_SIZE = 9;
 	private int PANEL_SIZE = 600;
 	private int BOX_SIZE = (PANEL_SIZE /GRID_SIZE)+1;
-	
-	//BOARD
-	private int[][] board = new int [GRID_SIZE][GRID_SIZE];	//row, column	
-	private int activeColumn = -1;	//column that has been clicked on
-	private int activeRow = -1;
-	
-	//CONTROL
-	private long startTime;		//check if "solve" is taking more than a minute (absolute max -> assume something has gone wrong)
-	private static final Color background = new Color(45,45,60);
-	private static final Color foreground = new Color(190,190,210);
 	
 	SudokuPanel()
 	{
@@ -74,54 +63,14 @@ public class SudokuPanel extends JPanel
 		repaint(); 
 	}
 	
-	public void paint(Graphics g)
-	{
-		Graphics2D g2D = (Graphics2D) g;
-		
-		//BACKGROUND
-		g2D.setPaint(background);
-		g2D.fillRect(0, 0, PANEL_SIZE, PANEL_SIZE);
-		
-		//FOREGROUND
-		g2D.setPaint(foreground);
-		g2D.setFont(new Font ("Arial", Font.PLAIN, PANEL_SIZE / 14));
-		
-		int columnpush = 0, rowpush = 2; 
-		
-		for (int row = 0; row < GRID_SIZE; row++)
-		{
-			for (int column = 0; column < GRID_SIZE; column++)
-			{	
-				//GRID
-				g2D.drawRect(column * BOX_SIZE, row * BOX_SIZE, BOX_SIZE, BOX_SIZE);
-		
-				//SELECTED BOX
-				g2D.fillRect(activeColumn * BOX_SIZE, activeRow * BOX_SIZE, BOX_SIZE, BOX_SIZE);
-				
-				//VALUES
-				g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				if (board[row][column] != 0) 
-				{
-					g2D.drawString(""+board[row][column], (PANEL_SIZE/28)+columnpush, (PANEL_SIZE/13)+rowpush);
-				}
-				g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-				
-				columnpush+= BOX_SIZE;
-			}
-			columnpush = 0;
-			rowpush+= BOX_SIZE;
-		}
-		
-		//OUTER GRID
-		g2D.setStroke(new BasicStroke(PANEL_SIZE/150));
-		for (int i = 1; i <= 2; i++) 
-		{
-			g2D.drawLine(0, BOX_SIZE*3*i, BOX_SIZE*9, BOX_SIZE*3*i);
-			g2D.drawLine(BOX_SIZE*3*i, 0, BOX_SIZE*3*i, BOX_SIZE*9);
-		}
-	}
+	//---------------------------------------SUDOKU_ALGORITHM---------------------------------------
 	
-	//SUDOKU ALGORITHM
+	private int[][] board = new int [GRID_SIZE][GRID_SIZE];	//row, column	
+	private int activeColumn = -1;
+	private int activeRow = -1;
+
+	private long startTime;		//check if "solve" is taking more than a minute (absolute max -> assume something has gone wrong)
+	
 	public void sudoku() 
 	{startTime = System.currentTimeMillis(); solve(board); repaint();}
 	
@@ -183,5 +132,57 @@ public class SudokuPanel extends JPanel
 			{if(board[i][j] == number) {return true;}}
 		}
 		return false;	
+	}
+	
+	//---------------------------------------PAINT---------------------------------------
+	
+	private static final Color background = new Color(45,45,60);
+	private static final Color foreground = new Color(190,190,210);
+	
+	public void paint(Graphics g)
+	{
+		Graphics2D g2D = (Graphics2D) g;
+
+		//BACKGROUND
+		g2D.setPaint(background);
+		g2D.fillRect(0, 0, PANEL_SIZE, PANEL_SIZE);
+
+		//FOREGROUND
+		g2D.setPaint(foreground);
+		g2D.setFont(new Font ("Arial", Font.PLAIN, PANEL_SIZE / 14));
+
+		int columnpush = 0, rowpush = 2; 
+
+		for (int row = 0; row < GRID_SIZE; row++)
+		{
+			for (int column = 0; column < GRID_SIZE; column++)
+			{	
+				//GRID
+				g2D.drawRect(column * BOX_SIZE, row * BOX_SIZE, BOX_SIZE, BOX_SIZE);
+
+				//SELECTED BOX
+				g2D.fillRect(activeColumn * BOX_SIZE, activeRow * BOX_SIZE, BOX_SIZE, BOX_SIZE);
+
+				//VALUES
+				g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				if (board[row][column] != 0) 
+				{
+					g2D.drawString(""+board[row][column], (PANEL_SIZE/28)+columnpush, (PANEL_SIZE/13)+rowpush);
+				}
+				g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+
+				columnpush+= BOX_SIZE;
+			}
+			columnpush = 0;
+			rowpush+= BOX_SIZE;
+		}
+
+		//OUTER GRID
+		g2D.setStroke(new BasicStroke(PANEL_SIZE/150));
+		for (int i = 1; i <= 2; i++) 
+		{
+			g2D.drawLine(0, BOX_SIZE*3*i, BOX_SIZE*9, BOX_SIZE*3*i);
+			g2D.drawLine(BOX_SIZE*3*i, 0, BOX_SIZE*3*i, BOX_SIZE*9);
+		}
 	}
 }
