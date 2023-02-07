@@ -68,10 +68,10 @@ public class InsectsPanel extends JPanel
 		//ANTS
 		for (int i = 0; i < simulation.getAntAmount(); i++)
 		{
-			g2D.setPaint(simulation.getAntColor(i));
+			Ant ant = simulation.getAntCopy(i);
 			
-			int[] ant = simulation.getXYandSize(i);
-			g2D.fillRect(ant[0], ant[1], ant[2], ant[2]);
+			g2D.setPaint(ant.color);
+			g2D.fillRect(ant.loc[0], ant.loc[1], ant.size, ant.size);
 		}
 	}
 }

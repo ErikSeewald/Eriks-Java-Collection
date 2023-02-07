@@ -30,6 +30,16 @@ public class Simulation implements ActionListener
 	public void stop()
 	{ants = null; panel = null; movement_timer.stop(); survival_timer.stop(); movement_timer = null; survival_timer = null;}
 	
+	public int getAntAmount() {return antAmount;}
+	
+	public Ant getAntCopy(int i) 
+	{
+		Ant ant = new Ant(ants[i].size); 
+		ant.loc = ants[i].loc;
+		ant.color = ants[i].color;
+		return ant;
+	}
+	
 	public void setColors()
 	{
 		double lengthvar = 100 / (double)antAmount;
@@ -39,13 +49,6 @@ public class Simulation implements ActionListener
 					((int) (antColor.getRed()-(lengthvar*i)),(int) (antColor.getGreen()-(lengthvar*i)),(int) (antColor.getBlue()-(lengthvar*i)));
 		}
 	}
-	
-	public int getAntAmount() {return antAmount;}
-	
-	public int[] getXYandSize(int i)
-	{return new int[] {ants[i].loc[0], ants[i].loc[1], ants[i].size};}
-	
-	public Color getAntColor(int i) {return ants[i].color;}
 	
 	//---------------------------------------SIMULATION---------------------------------------
 	
@@ -87,13 +90,13 @@ public class Simulation implements ActionListener
 		if (amount > 0) {setColors();}
 	}
 	
-	public void antMovement()
+	private void antMovement()
 	{
 		for (int i = antAmount-1; i >=0; i--) 
 		{ants[i].move(random);}
 	}
 
-	public void survivalCalculation()
+	private void survivalCalculation()
 	{
 		for (int i = 0; i < antAmount-1; i++)
 		{
