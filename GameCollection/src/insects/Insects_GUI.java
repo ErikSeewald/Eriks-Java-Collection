@@ -56,75 +56,11 @@ public class Insects_GUI extends JPanel implements MouseListener
 		this.setBorder(BorderFactory.createLineBorder(borderColor, 8));
 
 		this.setLayout(null);
-		
-		//BUTTONS
-		setButtonSettings(startButton, 50, 60, 150, 70);
-		setButtonSettings(addButton, 93, 465, 60, 60);
-		
-		setButtonSettings(removeButton, 93, 545, 60, 60);
-		removeButton.setFont(new Font("", Font.BOLD, 35));
-		
-		//INPUTS
-		setTextFieldSettings(addAmountInput, 70, 400, 110, 45);
-		
-		//LABELS
-		setLabelSettings(addAmountLabel, 65, 360, 250, 45);	
-		setLabelSettings(antAmountLabel, 62, 160, 250, 45);
-		
-		antAmountCounter = new JLabel(""+panel.antAmount);
-		setLabelSettings(antAmountCounter, 108, 190, 250, 45);
-		antAmountCounter.setFont(new Font("", Font.PLAIN, 16));
-		
-		setLabelSettings(changeRateLabel, 73, 250, 250, 45);
-		setLabelSettings(changeRateCounter, 120, 280, 250, 45);
-		changeRateCounter.setFont(new Font("", Font.PLAIN, 16));
+		this.initialize();
 	}
 	
-	//INITIALIZERS
-	private void setTextFieldSettings(JTextField textField, int a, int b, int c, int d)
-	{
-		textField.setBounds(a,b,c,d);
-		textField.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 170), 3));
-		textField.setFont(new Font("", Font.PLAIN, 15));
-		textField.setHorizontalAlignment(JTextField.CENTER);
-		this.add(textField);
-		
-		textField.addKeyListener(new KeyAdapter() 
-		{
-			public void keyPressed(KeyEvent e) 
-			{
-				if ((e.getKeyChar() >= '0' && e.getKeyChar() <= '9') || e.getKeyChar() == '') //-> Delete
-				{textField.setEditable(true);} 
-				else 
-				{textField.setEditable(false);}
-				
-				if (textField.getText().length() >= 5 && e.getKeyChar() != '') // limit to 5 characters
-				{textField.setEditable(false);}
-			}
-		});
-	}
+	//---------------------------------------GUI_CONTROL---------------------------------------
 	
-	private void setLabelSettings(JLabel label, int a, int b, int c, int d)
-	{
-		label.setBounds(a,b,c,d);
-		label.setForeground(textColor);
-		label.setFont(new Font("", Font.BOLD, 18));
-		this.add(label);
-	}
-	
-	private void setButtonSettings(JLabel button, int a, int b, int c, int d)
-	{
-		button.setBounds(a,b,c,d);
-		button.setBackground(b_color_basic);
-		button.setForeground(textColor);
-		button.setOpaque(true);
-		button.setBorder(BorderFactory.createLineBorder(borderColor, 3));
-		button.setFont(new Font("", Font.BOLD, 30));
-		button.addMouseListener(this);
-		this.add(button);
-	}
-
-	//MOUSE
 	@Override
 	public void mouseClicked(MouseEvent e) 
 	{
@@ -211,7 +147,6 @@ public class Insects_GUI extends JPanel implements MouseListener
 		}
 	}
 
-	//CONTROL
 	private void buttonAnimation(JLabel button, int change)
 	{
 		if ((change > 0 && buttonSizeIncreased) || (change < 0 && !buttonSizeIncreased)) {return;} //don't go beyond max/min size
@@ -246,5 +181,75 @@ public class Insects_GUI extends JPanel implements MouseListener
 		else if (length > 4) {offset = 10;}
 		else if (length > 3) {offset = 5;}
 		changeRateCounter.setLocation(120-offset, 280);
+	}
+	
+	//---------------------------------------INITIALIZATION---------------------------------------
+	
+	private void initialize()
+	{
+		//BUTTONS
+		setButtonSettings(startButton, 50, 60, 150, 70);
+		setButtonSettings(addButton, 93, 465, 60, 60);
+
+		setButtonSettings(removeButton, 93, 545, 60, 60);
+		removeButton.setFont(new Font("", Font.BOLD, 35));
+
+		//INPUTS
+		setTextFieldSettings(addAmountInput, 70, 400, 110, 45);
+
+		//LABELS
+		setLabelSettings(addAmountLabel, 65, 360, 250, 45);	
+		setLabelSettings(antAmountLabel, 62, 160, 250, 45);
+
+		antAmountCounter = new JLabel(""+panel.antAmount);
+		setLabelSettings(antAmountCounter, 108, 190, 250, 45);
+		antAmountCounter.setFont(new Font("", Font.PLAIN, 16));
+
+		setLabelSettings(changeRateLabel, 73, 250, 250, 45);
+		setLabelSettings(changeRateCounter, 120, 280, 250, 45);
+		changeRateCounter.setFont(new Font("", Font.PLAIN, 16));
+	}
+	
+	private void setTextFieldSettings(JTextField textField, int a, int b, int c, int d)
+	{
+		textField.setBounds(a,b,c,d);
+		textField.setBorder(BorderFactory.createLineBorder(new Color(150, 150, 170), 3));
+		textField.setFont(new Font("", Font.PLAIN, 15));
+		textField.setHorizontalAlignment(JTextField.CENTER);
+		this.add(textField);
+		
+		textField.addKeyListener(new KeyAdapter() 
+		{
+			public void keyPressed(KeyEvent e) 
+			{
+				if ((e.getKeyChar() >= '0' && e.getKeyChar() <= '9') || e.getKeyChar() == '') //-> Delete
+				{textField.setEditable(true);} 
+				else 
+				{textField.setEditable(false);}
+				
+				if (textField.getText().length() >= 5 && e.getKeyChar() != '') // limit to 5 characters
+				{textField.setEditable(false);}
+			}
+		});
+	}
+	
+	private void setLabelSettings(JLabel label, int a, int b, int c, int d)
+	{
+		label.setBounds(a,b,c,d);
+		label.setForeground(textColor);
+		label.setFont(new Font("", Font.BOLD, 18));
+		this.add(label);
+	}
+	
+	private void setButtonSettings(JLabel button, int a, int b, int c, int d)
+	{
+		button.setBounds(a,b,c,d);
+		button.setBackground(b_color_basic);
+		button.setForeground(textColor);
+		button.setOpaque(true);
+		button.setBorder(BorderFactory.createLineBorder(borderColor, 3));
+		button.setFont(new Font("", Font.BOLD, 30));
+		button.addMouseListener(this);
+		this.add(button);
 	}
 }
