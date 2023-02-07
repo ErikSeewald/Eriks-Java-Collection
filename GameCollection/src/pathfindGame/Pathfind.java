@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 
 import Main.EJC_Interface;
 import Main.WindowEventHandler;
+import pathfindGame.PathfindPanel.ControlBooleans;
 
 
 public class Pathfind extends JFrame implements ActionListener, EJC_Interface
@@ -19,14 +20,12 @@ public class Pathfind extends JFrame implements ActionListener, EJC_Interface
 	private static final int index = 4;
 
 	private JMenuItem seedItem;
-	
-	private PathfindNormal panel;
+	private PathfindPanel panel;
 	
 	public Pathfind()
 	{
 		this.setTitle("Pathfind");
-		panel = new PathfindNormal();
-		
+		panel = new PathfindPanel();
 		this.setResizable(false);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -36,7 +35,6 @@ public class Pathfind extends JFrame implements ActionListener, EJC_Interface
 		seedItem.addActionListener(this);
 		
 		fileMenu.add(seedItem);
-		
 		menuBar.add(fileMenu);
 		this.setJMenuBar(menuBar);
 		
@@ -49,12 +47,11 @@ public class Pathfind extends JFrame implements ActionListener, EJC_Interface
 				
 				if (key == '+') {panel.changeSize(10); pack();}
 				else if (key == '-') {panel.changeSize(-10); pack();}
-				else if (key == 'r') {panel.restart();}
-				else if (key == 't') {panel.reset();}
+				else if (key == 'r') {panel.initialize(ControlBooleans.restart);}
+				else if (key == 't') {panel.initialize(ControlBooleans.fullReset);}
 					
 				else if (key == 'a' || key == 's' || key == 'd' || key == 'w')
 				{panel.movePlayer(key);}
-				
 			}
 			@Override
 			public void keyPressed(KeyEvent e) {}
@@ -73,9 +70,12 @@ public class Pathfind extends JFrame implements ActionListener, EJC_Interface
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		if (e.getSource() != seedItem)
-		{return;}
-			
+		if (e.getSource() == seedItem)
+		{loadSeed();}
+	}
+	
+	private void loadSeed()
+	{
 		String seedStr = JOptionPane.showInputDialog("Seed:");
 		if (seedStr == null)
 		{return;}
@@ -84,15 +84,13 @@ public class Pathfind extends JFrame implements ActionListener, EJC_Interface
 		byte[] str = seedStr.getBytes();
 					
 		for (byte b : str)
-		{
-			seed+= (int) b;
-		}
+		{seed+= (int) b;}
 				
 		panel.setSeed(seed);
 	}
 
 	@Override
-	public void stop() {panel = null;}
+	public void stop() {panel = null; seedItem = null;}
 	
 	@Override
 	public int getIndex() {return index;}
