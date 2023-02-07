@@ -20,16 +20,16 @@ public class Insects extends JFrame implements EJC_Interface
 		panel.addGUI(GUI);
 		panel.start();
 		
-		this.setTitle("Insects");
-		
-		this.setResizable(false);
 		this.add(GUI, BorderLayout.EAST);
 		this.add(panel, BorderLayout.WEST);
 		this.pack();
 
+		this.setTitle("Insects");
+		this.setResizable(false);
 		this.setVisible(true);	
 	}
 	
+	@Override
 	public void start(WindowEventHandler eventHandler)
 	{this.addWindowListener(eventHandler);}
 
@@ -38,6 +38,4 @@ public class Insects extends JFrame implements EJC_Interface
 	
 	@Override
 	public int getIndex() {return index;}
-	
-	public void close() {this.removeAll();}
 }

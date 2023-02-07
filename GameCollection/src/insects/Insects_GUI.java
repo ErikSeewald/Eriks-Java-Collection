@@ -16,8 +16,8 @@ public class Insects_GUI extends JPanel implements MouseListener
 {
 	private static final long serialVersionUID = -5876435514501823550L;
 	
-	private static final int PANEL_WIDTH = 250;
-	private static final int PANEL_HEIGHT = 650;
+	public static final int PANEL_WIDTH = 250;
+	public static final int PANEL_HEIGHT = 650;
 	
 	//INPUTS
 	private JTextField addAmountInput = new JTextField("10");
@@ -72,9 +72,9 @@ public class Insects_GUI extends JPanel implements MouseListener
 			String changeString = addAmountInput.getText();
 			if (!changeString.isEmpty())
 			{
-				panel.changeAmount = Integer.parseInt(changeString);
-				boolean increase = e.getSource() == addButton;
-				panel.changeAntAmount(increase);
+				int changeAmount = Integer.parseInt(changeString);
+				if (e.getSource() == removeButton) {changeAmount*= -1;}
+				panel.simulation.changeAntAmount(changeAmount);
 			}
 		}
 	}
@@ -201,7 +201,7 @@ public class Insects_GUI extends JPanel implements MouseListener
 		setLabelSettings(addAmountLabel, 65, 360, 250, 45);	
 		setLabelSettings(antAmountLabel, 62, 160, 250, 45);
 
-		antAmountCounter = new JLabel(""+panel.antAmount);
+		antAmountCounter = new JLabel("");
 		setLabelSettings(antAmountCounter, 108, 190, 250, 45);
 		antAmountCounter.setFont(new Font("", Font.PLAIN, 16));
 
