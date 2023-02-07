@@ -13,36 +13,10 @@ import javax.swing.Timer;
 public class SierpinskiPanel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 9082922097976866954L;
-	
-	//POINTS
-	private class SP_Point
-	{
-		int x, y;
-		int vector[] = {0,0};
-		
-		SP_Point(int x, int y)
-		{this.x = x; this.y = y;}
-	}
-	private SP_Point point;
-	
-	private static final int point_count = 1000000;
-	private int[][] allPoints = new int[2][point_count];
-	private int pointIndex = 0;
-	
-	//OUTER TRIANGLE
-	private static class SP_Triangle
-	{
-		final static int[][] corners = {{10,550},{300,10},{590,550}};
-	}
-
-	//CONROL
 	private Random random = new Random();
 	
 	private Timer timer;
-	private Thread t1;
-	
-	private static final Color background = new Color(40,40,50);
-	private static final Color foreground = new Color(100,255,100);
+	private Thread thread;
 	
 	private static class TimerSpeeds
 	{
@@ -52,12 +26,26 @@ public class SierpinskiPanel extends JPanel implements ActionListener
 	private int speed;
 	
 	SierpinskiPanel(int speed)
-	{
-		this.speed = speed;
-		
+	{	
 		this.setPreferredSize(new Dimension(600,600));
 		this.setLayout(null);
 			
+		this.initialize(speed);
+	}
+	
+	public void stop()
+	{if (timer != null) {timer.stop();} random = null;}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{rollDice(); repaint();}
+	
+	//---------------------------------------INITIALIZATION---------------------------------------
+	
+	private void initialize(int speed)
+	{
+		this.speed = speed;
+		
 		switch (speed)
 		{
 			case 1: initTimer(TimerSpeeds.slow); break;
@@ -68,16 +56,15 @@ public class SierpinskiPanel extends JPanel implements ActionListener
 		point = new SP_Point(550,550);
 	}
 	
-	//CONTROL
-	private void initTimer(int timerSpeed)
+	private void initTimer(int speed)
 	{
-		timer = new Timer(timerSpeed, this);
+		timer = new Timer(speed, this);
 		timer.start();
 	}
 	
 	private void initThread() 
 	{
-		t1 = new Thread(new Runnable() 
+		thread = new Thread(new Runnable() 
 		{
 		    @Override
 		    public void run() 
@@ -91,17 +78,32 @@ public class SierpinskiPanel extends JPanel implements ActionListener
 		    }	 		    		
 		});
 		
-		t1.start();
+		thread.start();
 	}
 	
-	public void stop()
-	{if (timer != null) {timer.stop();} random = null;}
+	//---------------------------------------CALCULATION---------------------------------------
 	
-	@Override
-	public void actionPerformed(ActionEvent e) 
-	{rollDice(); repaint();}
+	//POINTS
+	private class SP_Point
+	{
+		int x, y;
+		int vector[] = {0,0};
+
+		SP_Point(int x, int y)
+		{this.x = x; this.y = y;}
+	}
+	private SP_Point point;
+
+	private static final int point_count = 1000000;
+	private int[][] allPoints = new int[2][point_count];
+	private int pointIndex = 0;
+
+	//OUTER TRIANGLE
+	private static class SP_Triangle
+	{
+		final static int[][] corners = {{10,550},{300,10},{590,550}};
+	}
 	
-	//CALCULATION
 	private void rollDice() 
 	{
 		if (point == null || pointIndex >= point_count-1) {return;}
@@ -118,7 +120,11 @@ public class SierpinskiPanel extends JPanel implements ActionListener
 		pointIndex++;
 	}
 	
-	//RENDERING
+	//---------------------------------------PAINT---------------------------------------
+	
+	private static final Color background = new Color(40,40,50);
+	private static final Color foreground = new Color(100,255,100);
+	
 	public void paint(Graphics g) 
 	{
 		Graphics2D g2D = (Graphics2D) g;
