@@ -6,14 +6,14 @@ import java.util.Random;
 
 import javax.swing.Timer;
 
-public class InsectsSimulation implements ActionListener
+public class Simulation implements ActionListener
 {	
 	private InsectsPanel panel;
 	
-	private Ant[] ants = new Ant[InsectsSimulation.maxAntAmount];
+	private Ant[] ants = new Ant[Simulation.maxAntAmount];
 	private Color antColor;
 	
-	InsectsSimulation(int antAmount, InsectsPanel panel)
+	Simulation(int antAmount, InsectsPanel panel)
 	{
 		this.antAmount = antAmount; this.panel = panel;
 		
@@ -81,7 +81,7 @@ public class InsectsSimulation implements ActionListener
 	
 	public void changeAntAmount(int amount)
 	{
-		this.antAmount = InsectsSimulation.toValidAntAmount(antAmount + amount);
+		this.antAmount = Simulation.toValidAntAmount(antAmount + amount);
 		
 		panel.GUI.setAntAmountCounter(antAmount);
 		if (amount > 0) {setColors();}

@@ -11,8 +11,8 @@ public class InsectsPanel extends JPanel
 	private static final long serialVersionUID = 4974460083826443803L;
 	public static final int PANEL_SIZE = 650;
 	
-	Insects_GUI GUI;	
-	InsectsSimulation simulation;
+	GUI GUI;	
+	Simulation simulation;
 	
 	InsectsPanel()
 	{
@@ -20,7 +20,7 @@ public class InsectsPanel extends JPanel
 		this.setLayout(null);
 	}
 	
-	public void addGUI(Insects_GUI GUI)
+	public void addGUI(GUI GUI)
 	{this.GUI = GUI;}
 	
 	public void stop()
@@ -28,12 +28,12 @@ public class InsectsPanel extends JPanel
 	
 	public void start()
 	{	
-		int antAmount = InsectsSimulation.toValidAntAmount(1000);
+		int antAmount = Simulation.toValidAntAmount(1000);
 		GUI.setAntAmountCounter(antAmount);
 		
 		//SIMULATION
 		this.stop(); System.gc();
-		simulation = new InsectsSimulation(antAmount, this);
+		simulation = new Simulation(antAmount, this);
 	}
 	
 	public void paint(Graphics g) 
@@ -46,12 +46,12 @@ public class InsectsPanel extends JPanel
 		
 		//FOOD
 		g2D.setPaint(new Color (100,70,70));
-		g2D.fillRect(0, 145, 100, 460);
+		g2D.fillRect(Map.food[0], Map.food[1], Map.food[2], Map.food[3]);
 	
 		//WATER
 		g2D.setPaint(new Color (80,80,110));
-		g2D.fillRect(600, 155, 50, 480);
-		g2D.fillRect(45, 0, 200, 80);
+		g2D.fillRect(Map.water_1[0], Map.water_1[1], Map.water_1[2], Map.water_1[3]);
+		g2D.fillRect(Map.water_2[0], Map.water_2[1], Map.water_2[2], Map.water_2[3]);
 		
 		//SPAWN AREA
 		g2D.setPaint(new Color (80,80,90));
@@ -62,7 +62,7 @@ public class InsectsPanel extends JPanel
 		g2D.setPaint(new Color (40,40,40));	
 		g2D.setStroke(new BasicStroke(10));
 		
-		for (InsectsMap.Wall wall : InsectsMap.walls)
+		for (Map.Wall wall : Map.walls)
 		{g2D.drawLine(wall.topX,wall.topY, wall.bottomX, wall.bottomY);}
 		
 		//ANTS

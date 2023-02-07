@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class Insects_GUI extends JPanel implements MouseListener
+public class GUI extends JPanel implements MouseListener
 {
 	private static final long serialVersionUID = -5876435514501823550L;
 	
@@ -47,7 +47,7 @@ public class Insects_GUI extends JPanel implements MouseListener
 	
 	private InsectsPanel panel;
 	
-	Insects_GUI(InsectsPanel panel)
+	GUI(InsectsPanel panel)
 	{
 		this.panel = panel;
 		

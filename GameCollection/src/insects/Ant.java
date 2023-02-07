@@ -33,7 +33,7 @@ public class Ant
 	
 	private boolean collision(int x, int y)
 	{
-		for (InsectsMap.Wall wall : InsectsMap.walls)
+		for (Map.Wall wall : Map.walls)
 		{
 			if
 			((x > wall.topX-6 &&  x < wall.bottomX+6 && y > wall.topY-6 && y < wall.bottomY+6) 
@@ -46,18 +46,22 @@ public class Ant
 	
 	public int gettingFood()
 	{
-		if ((loc[0] > 0 && loc[0] < 100 && loc[1] > 145 && loc[1] < 605)) 
+		if ((loc[0] > Map.food[0] && loc[0] < Map.food[0] + Map.food[2] 
+				&& loc[1] > Map.food[1] && loc[1] < Map.food[1] + Map.food[3])) 
 		{return 1;}
-		
+
 		return 0;
 	}
-	
+
 	public int gettingWater()
 	{
-		if ((loc[0] > 45 && loc[0] < 245 && loc[1] > 0 && loc[1] < 80)
-			||loc[0] > 600 && loc[0] < 650 && loc[1] > 155 && loc[1] < 635) 
+		if ((loc[0] > Map.water_1[0] && loc[0] < Map.water_1[0] + Map.water_1[2] 
+				&& loc[1] > Map.water_1[1] && loc[1] < Map.water_1[1] + Map.water_1[3])
+
+				|| loc[0] > Map.water_2[0] && loc[0] < Map.water_2[0] + Map.water_2[2] 
+						&& loc[1] > Map.water_2[1] && loc[1] < Map.water_2[1] + Map.water_2[3])
 		{return 1;}
-		
+
 		return 0;
 	}
 }

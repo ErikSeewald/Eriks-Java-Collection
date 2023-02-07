@@ -11,12 +11,12 @@ public class Insects extends JFrame implements EJC_Interface
 	private static final int index = 0;
 	
 	private InsectsPanel panel;
-	private Insects_GUI GUI;
+	private GUI GUI;
 	
 	public Insects()
 	{	
 		panel = new InsectsPanel();
-		GUI = new Insects_GUI(panel);
+		GUI = new GUI(panel);
 		panel.addGUI(GUI);
 		panel.start();
 		
