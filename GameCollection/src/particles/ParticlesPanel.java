@@ -20,38 +20,6 @@ public class ParticlesPanel extends JPanel implements ActionListener
 	private Timer colorTimer;	//timer for color palette change
 	
 	private Random random = new Random();
-
-	//PARTICLES
-	private class Particle
-	{
-		int X, Y;
-		int sizeX, sizeY;
-		Color color;
-		
-		Particle(int X, int Y, int sizeX, int sizeY)
-		{this.X = X; this.Y = Y; this.sizeX = sizeX; this.sizeY = sizeY;}
-	}
-	
-	private static final int particleAmount = 6000;
-	private Particle[] particles;
-	
-	private static final Color[] palette = 
-	{
-			new Color (170,170,245), new Color (245,170,245),
-			new Color (170,245,245), new Color (170,170,245)		
-	};
-	private int palette_pos = 0;
-		
-	//MOUSE
-	private class Mouse
-	{
-		int X = 0; 	
-		int prevX = 0; 	
-		int Y = 0;
-		int size = 5;	//size of mouse influence
-	}
-	
-	private Mouse mouse;
 	
 	ParticlesPanel()
 	{
@@ -70,14 +38,12 @@ public class ParticlesPanel extends JPanel implements ActionListener
 		start();
 	}
 	
-	//CONTROL
 	public void stop()
 	{movetimer.stop(); colorTimer.stop(); particles = null;}
 	
 	public void start()
 	{
-		particles = null;
-		System.gc();
+		particles = null; System.gc();
 		particles =  new Particle[particleAmount];
 		
 		for (int i = 0; i < particleAmount; i++)
@@ -102,7 +68,54 @@ public class ParticlesPanel extends JPanel implements ActionListener
 		{changePalette();}
 	}
 	
-	//PARTICLES
+	//---------------------------------------MOUSE---------------------------------------
+	
+	private class Mouse
+	{
+		int X = 0; 	
+		int prevX = 0; 	
+		int Y = 0;
+		int size = 5;	//size of mouse influence
+	}
+	private Mouse mouse;
+	
+	private class DragListener extends MouseMotionAdapter
+	{
+		public void mouseDragged(MouseEvent e) 
+		{ 
+			mouse.X = e.getX();
+			mouse.Y = e.getY();
+
+			int amount = 10;
+			if (mouse.prevX > mouse.X) {amount = -10;}
+			pushParticles(amount);
+
+			mouse.prevX = mouse.X;  
+		}
+	}
+	
+	//---------------------------------------PARTICLES---------------------------------------
+	
+	private class Particle
+	{
+		int X, Y;
+		int sizeX, sizeY;
+		Color color;
+
+		Particle(int X, int Y, int sizeX, int sizeY)
+		{this.X = X; this.Y = Y; this.sizeX = sizeX; this.sizeY = sizeY;}
+	}
+
+	private static final int particleAmount = 6000;
+	private Particle[] particles;
+
+	private static final Color[] palette = 
+	{
+			new Color (170,170,245), new Color (245,170,245),
+			new Color (170,245,245), new Color (170,170,245)		
+	};
+	private int palette_pos = 0;
+	
 	private void moveParticles()
 	{
 		for (Particle p : particles) 
@@ -130,6 +143,8 @@ public class ParticlesPanel extends JPanel implements ActionListener
     	}
     	repaint();  
 	}
+	
+	//---------------------------------------PAINT---------------------------------------
 	
 	private void changePalette()
 	{
@@ -163,21 +178,5 @@ public class ParticlesPanel extends JPanel implements ActionListener
 			g2D.setPaint(p.color);
 			g2D.fillRect(p.X, p.Y, p.sizeX, p.sizeY);
 		}	
-	}
-	
-	//MOUSE
-	private class DragListener extends MouseMotionAdapter
-	{
-	    public void mouseDragged(MouseEvent e) 
-	    { 
-	    	mouse.X = e.getX();
-	    	mouse.Y = e.getY();
-	    	
-	    	int amount = 10;
-	    	if (mouse.prevX > mouse.X) {amount = -10;}
-	    	pushParticles(amount);
-	    	
-	    	mouse.prevX = mouse.X;  
-	    }
 	}
 }
