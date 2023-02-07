@@ -47,10 +47,10 @@ public enum GameTitles {
 			{
 					"SUDOKU",
 					"Use your mouse to click on a square, then type in a number.",
+					"Type 0 to delete a number.",
 					"Keys:",
 					"S -- Solve | R -- Reset",
 					"+/- -- Change screen size",
-					"",
 			}
 	),
 	
