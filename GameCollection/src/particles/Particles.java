@@ -36,7 +36,6 @@ public class Particles extends JFrame implements EJC_Interface
 		this.setResizable(false);
 		this.add(panel);
 		this.pack();
-		
 		this.setVisible(true);	
 	}
 	
