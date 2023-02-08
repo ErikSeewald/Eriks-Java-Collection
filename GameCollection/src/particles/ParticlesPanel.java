@@ -108,13 +108,13 @@ public class ParticlesPanel extends JPanel implements ActionListener
 	private void pushParticles(int amount)
 	{
 		for (Particle p : particles)
-    	{p.push(mouse.X, mouse.Y, mouse.size, amount);}
+		{p.push(mouse.X, mouse.Y, mouse.size, amount);}
 	}
-	
+
 	private void moveParticles()
 	{
 		for (Particle p : particles)
-    	{p.move(random);}
+		{p.move(random);}
 	}
 	
 	//---------------------------------------PAINT---------------------------------------
