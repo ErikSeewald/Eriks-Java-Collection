@@ -13,17 +13,11 @@ public class Simulation implements ActionListener
 	private Ant[] ants = new Ant[Simulation.maxAntAmount];
 	private Color antColor;
 	
-	private boolean isRunning = false;
-	
 	Simulation(int antAmount, InsectsPanel panel)
-	{
-		this.antAmount = antAmount; this.panel = panel;
-	}
+	{this.antAmount = antAmount; this.panel = panel;}
 	
 	public void start()
-	{
-		if (this.isRunning) {return;}
-		
+	{	
 		for (int i = 0; i < ants.length; i++) 
 		{ants[i] = new Ant(random.nextInt(3)+3);}
 		
@@ -32,12 +26,10 @@ public class Simulation implements ActionListener
 		
 		survival_timer.start();
 		movement_timer.start();
-		
-		this.isRunning = true;
 	}
 	
-	public void stop()
-	{ants = null; panel = null; movement_timer.stop(); survival_timer.stop(); movement_timer = null; survival_timer = null; isRunning = false;}
+	public void end()
+	{ants = null; panel = null; movement_timer.stop(); survival_timer.stop(); movement_timer = null; survival_timer = null;}
 	
 	public int getAntAmount() {return antAmount;}
 	
