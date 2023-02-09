@@ -31,7 +31,7 @@ public class SelectionFrame
 				
 				switch (gameName)
 				{
-					case "Sierpinski": new Sierpinski(eventHandler, mode);
+					case "Sierpinski": new Sierpinski(mode).start(eventHandler);
 					break;
 				}
 				

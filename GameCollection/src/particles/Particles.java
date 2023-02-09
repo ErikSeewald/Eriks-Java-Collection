@@ -39,6 +39,7 @@ public class Particles extends JFrame implements EJC_Interface
 		this.setVisible(true);	
 	}
 	
+	@Override
 	public void start(WindowEventHandler eventHandler)
 	{this.addWindowListener(eventHandler);}
 
