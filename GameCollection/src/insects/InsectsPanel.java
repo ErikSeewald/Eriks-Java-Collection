@@ -24,7 +24,7 @@ public class InsectsPanel extends JPanel
 	{this.GUI = GUI;}
 	
 	public void stop()
-	{if (!(simulation == null)) {simulation.stop();} simulation = null;}
+	{if (!(simulation == null)) {simulation.end();} simulation = null;}
 	
 	public void start()
 	{	

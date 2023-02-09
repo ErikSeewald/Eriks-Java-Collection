@@ -17,7 +17,6 @@ public class SierpinskiAlgorithm implements ActionListener
 		final static int medium = 50;
 	}
 	private int speed;
-	private boolean isRunning = false;
 	
 	SierpinskiAlgorithm(int speed, SierpinskiPanel panel)
 	{
@@ -26,9 +25,7 @@ public class SierpinskiAlgorithm implements ActionListener
 	}
 	
 	public void start()
-	{	
-		if (this.isRunning) {return;}
-		
+	{		
 		switch (speed)
 		{
 			case 1: initTimer(TimerSpeeds.slow); break;
@@ -37,8 +34,7 @@ public class SierpinskiAlgorithm implements ActionListener
 		}
 		
 		point = new SP_Point(550,550, new int[] {0,0});
-		
-		this.isRunning = true;
+		allPoints = new int[2][max_points];
 	}
 	
 	private void initTimer(int speed)
@@ -80,7 +76,7 @@ public class SierpinskiAlgorithm implements ActionListener
 	private SP_Point point;
 
 	static final int max_points = 1000000;
-	int[][] allPoints = new int[2][max_points];
+	int[][] allPoints;
 	int pointIndex = 0;
 
 	private static class OuterTriangle
@@ -108,6 +104,6 @@ public class SierpinskiAlgorithm implements ActionListener
 	
 	public SP_Point getPointCopy() {return new SP_Point(point.x, point.y, point.vector);}
 	
-	public void stop()
-	{if (timer != null) {timer.stop();} if (thread != null) {thread.interrupt();} timer = null; thread = null; allPoints = null; isRunning = false;}
+	public void end()
+	{if (timer != null) {timer.stop();} if (thread != null) {thread.interrupt();} timer = null; thread = null; allPoints = null;}
 }

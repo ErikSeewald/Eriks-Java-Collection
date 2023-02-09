@@ -26,7 +26,7 @@ public class SierpinskiPanel extends JPanel
 	}
 	
 	public void stop()
-	{algorithm.stop();}
+	{algorithm.end();}
 	
 	//---------------------------------------PAINT---------------------------------------
 	
