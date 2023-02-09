@@ -22,6 +22,7 @@ public class SierpinskiPanel extends JPanel
 			
 		this.speed = speed;
 		algorithm = new SierpinskiAlgorithm(speed, this);
+		algorithm.start();
 	}
 	
 	public void stop()
