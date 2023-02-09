@@ -11,17 +11,11 @@ public class Sierpinski extends JFrame implements EJC_Interface
 	private int speed = 0;
 	private SierpinskiPanel panel;
 	
-	private WindowEventHandler eventHandler;
+	public Sierpinski(int speed)
+	{this.speed = speed;}
 	
-	public Sierpinski(WindowEventHandler eventHandler, int speed)
-	{
-		this.speed = speed;
-		this.eventHandler = eventHandler;
-		
-		start();
-	}	
-	
-	private void start()
+	@Override
+	public void start(WindowEventHandler eventHandler)
 	{
 		this.setTitle("Sierpinski");
 		this.addWindowListener(eventHandler);
@@ -33,9 +27,6 @@ public class Sierpinski extends JFrame implements EJC_Interface
 		this.setResizable(false);
 		this.setVisible(true);
 	}
-
-	@Override
-	public void start(WindowEventHandler eventHandler) {}
 
 	@Override
 	public void stop() {panel.stop(); panel = null;}
