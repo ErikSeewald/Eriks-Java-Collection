@@ -34,6 +34,7 @@ public class InsectsPanel extends JPanel
 		//SIMULATION
 		this.stop(); System.gc();
 		simulation = new Simulation(antAmount, this);
+		simulation.start();
 	}
 	
 	public void paint(Graphics g) 
