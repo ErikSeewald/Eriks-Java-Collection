@@ -14,9 +14,11 @@ public class SudokuPanel extends JPanel
 {
 	private static final long serialVersionUID = 3986470365499168687L;
 	
-	private static final int GRID_SIZE = 9;
 	private int PANEL_SIZE = 600;
-	private int BOX_SIZE = (PANEL_SIZE /GRID_SIZE)+1;
+	private int BOX_SIZE = (PANEL_SIZE / 9) + 1;
+	
+	private int[][] board = new int [9][9];	//row, column
+	private int activeColumn = -1, activeRow = -1;
 	
 	SudokuPanel()
 	{
@@ -29,111 +31,45 @@ public class SudokuPanel extends JPanel
 	private class ClickListener extends MouseAdapter
 	{
 	    public void mousePressed(MouseEvent e) 
-	    {  
-	    	activeColumn = e.getX() / BOX_SIZE;
-	    	activeRow = e.getY() / BOX_SIZE;
-	    	repaint();
-	    }
+	    {setActivePosition(e.getX() / BOX_SIZE, e.getY() / BOX_SIZE); }
 	}
 	
 	public void reset()
 	{
-		board = new int[GRID_SIZE][GRID_SIZE];
+		board = null; System.gc();
+		board = new int[9][9];
 		repaint();
 	}
 	
 	public void changeValue(int x)
 	{
 		if (activeRow < 0 || activeColumn < 0) {return;}
-		if (x < 0 || x > GRID_SIZE) {return;}
+		if (x < 0 || x > 9) {return;}
 		
-		if (x == 0 || isValidPlacement(x, activeRow, activeColumn))
+		if (x == 0 || SudokuAlgorithm.isValidPlacement(board, x, activeRow, activeColumn))
 		{board[activeRow][activeColumn] = x;}
 		
-		activeColumn = -1;
-    	activeRow = -1;
+		setActivePosition(-1,-1);
+	}
+	
+	private void setActivePosition(int column, int row)
+	{
+		activeColumn = column;
+    	activeRow = row;
     	repaint();
 	}
 	
-	public void changeSize(int c) 
+	public void changeSize(int amount) 
 	{
-		PANEL_SIZE+=c; 
-		BOX_SIZE = (PANEL_SIZE /GRID_SIZE)+1; 
+		PANEL_SIZE+= amount; 
+		BOX_SIZE = (PANEL_SIZE /9)+1; 
 		this.setPreferredSize(new Dimension(PANEL_SIZE,PANEL_SIZE));
 		repaint(); 
 	}
 	
-	//---------------------------------------SUDOKU_ALGORITHM---------------------------------------
-	
-	private int[][] board = new int [GRID_SIZE][GRID_SIZE];	//row, column	
-	private int activeColumn = -1;
-	private int activeRow = -1;
-
-	private long startTime;		//check if "solve" is taking more than a minute (absolute max -> assume something has gone wrong)
-	
-	public void sudoku() 
-	{startTime = System.currentTimeMillis(); solve(board); repaint();}
-	
-	private boolean solve(int[][] board)
-	{
-		if ((System.currentTimeMillis()-startTime) > 60000) {reset(); return false;}
+	public void sudoku()
+	{SudokuAlgorithm.solve(board); repaint();}
 		
-		for (int row = 0; row < GRID_SIZE; row++)
-		{
-			for (int column = 0; column < GRID_SIZE; column++)
-			{
-				if (board[row][column] == 0)
-				{
-					for (int number = 1; number <= GRID_SIZE; number++)
-					{
-						if (isValidPlacement(number,row,column))
-						{
-							board[row][column] = number; 
-							
-							if (solve(board)) {return true;}
-							else {board[row][column] = 0;} //backtrack if cannot solve rest of board
-						}
-					}
-					return false; //if current position is not solvable
-				}
-			}
-		}
-		return true; //final return
-	}
-	
-	private boolean isValidPlacement(int number, int row, int column)
-	{
-		return !isNumberInRow(number,row) && !isNumberInColumn(number,column)
-				&& !isNumberInBox(number,row,column);
-	}
-
-	private boolean isNumberInRow(int number, int row)
-	{
-		for (int i = 0; i < GRID_SIZE; i++)
-		{if(board[row][i] == number) {return true;}}
-		return false;
-	}
-	
-	private boolean isNumberInColumn(int number, int column)
-	{
-		for (int i = 0; i < GRID_SIZE; i++)
-		{if(board[i][column] == number) {return true;}}
-		return false;
-	}
-	
-	private boolean isNumberInBox(int number, int row, int column)
-	{
-		int localBoxRow = row - row % 3;
-		int localBoxColumn = column - column % 3;
-		
-		for (int i = localBoxRow; i < localBoxRow + 3; i++)
-		{
-			for (int j = localBoxColumn; j < localBoxColumn + 3; j++)
-			{if(board[i][j] == number) {return true;}}
-		}
-		return false;	
-	}
-	
 	//---------------------------------------PAINT---------------------------------------
 	
 	private static final Color background = new Color(45,45,60);
@@ -153,9 +89,9 @@ public class SudokuPanel extends JPanel
 
 		int columnpush = 0, rowpush = 2; 
 
-		for (int row = 0; row < GRID_SIZE; row++)
+		for (int row = 0; row < 9; row++)
 		{
-			for (int column = 0; column < GRID_SIZE; column++)
+			for (int column = 0; column < 9; column++)
 			{	
 				//GRID
 				g2D.drawRect(column * BOX_SIZE, row * BOX_SIZE, BOX_SIZE, BOX_SIZE);
