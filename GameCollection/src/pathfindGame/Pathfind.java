@@ -51,7 +51,7 @@ public class Pathfind extends JFrame implements ActionListener, EJC_Interface
 				else if (key == 't') {panel.initialize(ControlBooleans.fullReset);}
 					
 				else if (key == 'a' || key == 's' || key == 'd' || key == 'w')
-				{panel.movePlayer(key);}
+				{panel.nextMove(key);}
 			}
 			@Override
 			public void keyPressed(KeyEvent e) {}
@@ -77,8 +77,7 @@ public class Pathfind extends JFrame implements ActionListener, EJC_Interface
 	private void loadSeed()
 	{
 		String seedStr = JOptionPane.showInputDialog("Seed:");
-		if (seedStr == null)
-		{return;}
+		if (seedStr == null) {return;}
 		
 		int seed = 0;
 		byte[] str = seedStr.getBytes();
