@@ -180,6 +180,7 @@ public class MainMenu extends JFrame implements MouseListener
 	{	
 		for(int i = 0; i < guideLabels.length; i++)
 		{guideLabels[i].setText(titles[index].guide[i]);}
+		System.gc();
 	}
 	
 	//MOUSE
