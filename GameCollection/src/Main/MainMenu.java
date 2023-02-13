@@ -7,21 +7,21 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import bloonShoot.BloonShooting;
-import clothSim.ClothSim;
-import gravityVectors.GravityVectors;
-import insects.Insects;
-import mouseDodge.MouseDodge;
-import parallelUniverses.ParallelUniverses;
-import particles.Particles;
-import pathfindGame.Pathfind;
-import pixelCollision.PixelCollision;
-import randBattle.RandBattle;
-import randGrowth.RandGrowth;
-import reflectionDemo.ReflectionDemo;
-import sidescroller.JumpAndRun;
-import snakesAndLadders.SnakesAndLadders;
-import sudoku.Sudoku;
+import bloonShoot.EJC_BloonShoot;
+import clothSim.EJC_ClothSim;
+import gravityVectors.EJC_GravityVectors;
+import insects.EJC_Insects;
+import mouseDodge.EJC_MouseDodge;
+import parallelUniverses.EJC_ParallelUniverses;
+import particles.EJC_Particles;
+import pathfindGame.EJC_Pathfind;
+import pixelCollision.EJC_PixelCollision;
+import randBattle.EJC_RandBattle;
+import randGrowth.EJC_RandGrowth;
+import reflectionDemo.EJC_ReflectionDemo;
+import sidescroller.EJC_Sidescroller;
+import snakesAndLadders.EJC_SnakesAndLadders;
+import sudoku.EJC_Sudoku;
 
 public class MainMenu extends JFrame implements MouseListener
 {
@@ -141,22 +141,22 @@ public class MainMenu extends JFrame implements MouseListener
 		
 		switch (button.index)
 		{
-			case 0: new Insects().start(eventHandler); break;
-			case 1: new Particles().start(eventHandler); break;
+			case 0: new EJC_Insects().start(eventHandler); break;
+			case 1: new EJC_Particles().start(eventHandler); break;
 			case 2: new SelectionFrame().start("Sierpinski", eventHandler); break;
-			case 3: new Sudoku().start(eventHandler); break;
-			case 4: new Pathfind().start(eventHandler); break;
-			case 5: new ParallelUniverses().start(eventHandler); break;
-			case 6: new ReflectionDemo().start(eventHandler); break;
-			case 7: new MouseDodge().start(eventHandler); break;
-			case 8: new JumpAndRun().start(eventHandler); break;
-			case 9: new PixelCollision().start(eventHandler); break;
-			case 10: new ClothSim().start(eventHandler); break;
-			case 11: new GravityVectors().start(eventHandler); break;
-			case 12: new BloonShooting().start(eventHandler); break;
-			case 13: new RandBattle().start(eventHandler); break;
-			case 14: new RandGrowth().start(eventHandler); break;
-			case 15: new SnakesAndLadders().start(eventHandler); break;
+			case 3: new EJC_Sudoku().start(eventHandler); break;
+			case 4: new EJC_Pathfind().start(eventHandler); break;
+			case 5: new EJC_ParallelUniverses().start(eventHandler); break;
+			case 6: new EJC_ReflectionDemo().start(eventHandler); break;
+			case 7: new EJC_MouseDodge().start(eventHandler); break;
+			case 8: new EJC_Sidescroller().start(eventHandler); break;
+			case 9: new EJC_PixelCollision().start(eventHandler); break;
+			case 10: new EJC_ClothSim().start(eventHandler); break;
+			case 11: new EJC_GravityVectors().start(eventHandler); break;
+			case 12: new EJC_BloonShoot().start(eventHandler); break;
+			case 13: new EJC_RandBattle().start(eventHandler); break;
+			case 14: new EJC_RandGrowth().start(eventHandler); break;
+			case 15: new EJC_SnakesAndLadders().start(eventHandler); break;
 			
 			default: return;
 		}
