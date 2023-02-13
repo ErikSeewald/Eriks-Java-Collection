@@ -30,7 +30,7 @@ public class Ray
 	
 	private void toValidAngle()
 	{
-		if (this.angle < 0) {this.angle+=2*PI;}
-		if (this.angle > 2*PI) {this.angle -=2*PI;}
+		while (this.angle < 0) {this.angle+=2*PI;}
+		while (this.angle > 2*PI) {this.angle -=2*PI;}
 	}
 }
