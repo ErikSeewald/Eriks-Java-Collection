@@ -84,14 +84,6 @@ public class MainMenu extends JFrame implements MouseListener
 		private JLabel[] guideLabels = 
 		{new JLabel("ERIK'S COLLECTION"), new JLabel(""), new JLabel(""), new JLabel(""), new JLabel(""), new JLabel("")};
 		
-		private static final GameTitles[] titles = 
-		{
-				GameTitles.Insects, GameTitles.Particles, GameTitles.Sierpinski, GameTitles.Sudoku, 
-				GameTitles.Pathfind, GameTitles.ParralelUniverses, GameTitles.ReflectionDemo, GameTitles.MouseDodge, 
-				GameTitles.Sidescroller, GameTitles.PixelCollision,GameTitles.ClothSim, GameTitles.GravityVectors, 
-				GameTitles.BalloonShooting, GameTitles.RandBattle, GameTitles.RandGrowth, GameTitles.SnakesAndLadders
-		};
-		
 		private void initialize()
 		{
 			this.setSize(resolution, resolution);
@@ -179,7 +171,7 @@ public class MainMenu extends JFrame implements MouseListener
 	private void changeGuide(int index)
 	{	
 		for(int i = 0; i < guideLabels.length; i++)
-		{guideLabels[i].setText(titles[index].guide[i]);}
+		{guideLabels[i].setText(GameTitles.values()[index].guide[i]);}
 		System.gc();
 	}
 	
