@@ -43,13 +43,13 @@ public class SidescrollerPanel extends JPanel
 		 *  	||		|	||		|	||		|			|	||		|
 		 */
 		
+		empty(null,null),
 		smallCol(new int[] {540, cubeSize}, null),
 		mediumCol(new int[] {510, cubeSize*2}, null),
 		bigCol(new int[] {480, cubeSize*3}, null),
 		flyBlock(new int[] {420, cubeSize}, null),
 		lowTunnel(new int[] {390, cubeSize*2}, new int[] {540, cubeSize}),
-		highTunnel(new int[] {330, cubeSize}, new int[] {420, cubeSize}),
-		empty(null,null);
+		highTunnel(new int[] {330, cubeSize}, new int[] {420, cubeSize});
 		
 		int[] hitBox1, hitBox2;
 		Layouts(int[] hitBox1, int[] hitBox2)
@@ -64,24 +64,7 @@ public class SidescrollerPanel extends JPanel
 		
 		Element(byte type, int slot)
 		{
-			switch (type)
-			{
-				case 1: this.layout = Layouts.smallCol;
-				break;
-				case 2: this.layout = Layouts.mediumCol;
-				break;
-				case 3: this.layout = Layouts.bigCol;
-				break;
-				case 4: this.layout = Layouts.flyBlock;
-				break;
-				case 5: this.layout = Layouts.lowTunnel;
-				break;
-				case 6: this.layout = Layouts.highTunnel;
-				break;
-					
-				default: this.layout = Layouts.empty;
-			}
-			
+			this.layout = Layouts.values()[type];
 			this.slot = slot;
 			this.x = this.slot * cubeSize;
 		}
