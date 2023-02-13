@@ -6,7 +6,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import sierpinski.Sierpinski;
+import sierpinski.EJC_Sierpinski;
 
 public class SelectionFrame 
 {
@@ -31,7 +31,7 @@ public class SelectionFrame
 				
 				switch (gameName)
 				{
-					case "Sierpinski": new Sierpinski(mode).start(eventHandler);
+					case "Sierpinski": new EJC_Sierpinski(mode).start(eventHandler);
 					break;
 				}
 				
