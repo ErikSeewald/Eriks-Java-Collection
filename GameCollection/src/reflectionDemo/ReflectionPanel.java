@@ -25,8 +25,7 @@ public class ReflectionPanel extends JPanel implements MouseWheelListener
 		this.setPreferredSize(new Dimension(PANEL_SIZE,PANEL_SIZE));
 		this.setLayout(null);
 		
-		DragListener dragListener = new DragListener();
-		this.addMouseMotionListener(dragListener);
+		this.addMouseMotionListener(new DragListener());
 		this.addMouseWheelListener(this);
 		
 		for (int i = 0; i < rays.length; i++)
