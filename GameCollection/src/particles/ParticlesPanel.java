@@ -21,8 +21,7 @@ public class ParticlesPanel extends JPanel implements ActionListener
 	
 	ParticlesPanel()
 	{
-		DragListener dragListener = new DragListener(); 
-		this.addMouseMotionListener(dragListener);		
+		this.addMouseMotionListener(new DragListener());		
 		this.setPreferredSize(new Dimension(PANEL_SIZE,PANEL_SIZE));
 		this.setLayout(null);
          

@@ -23,9 +23,7 @@ public class SudokuPanel extends JPanel
 	SudokuPanel()
 	{
 		this.setPreferredSize(new Dimension (PANEL_SIZE,PANEL_SIZE));	
-		
-		ClickListener clickListener = new ClickListener();
-		this.addMouseListener(clickListener);
+		this.addMouseListener(new ClickListener());
 	}
 	
 	private class ClickListener extends MouseAdapter
