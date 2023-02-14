@@ -31,8 +31,7 @@ public class EJC_MouseDodge extends JFrame implements EJC_Interface
 				else if (key == '-') {panel.changeSize(-10); pack();}
 				else if (key == 'r') {panel.start();}
 				else if (key == '') {panel.pause();} //ESC Key
-				else if (key == 'd') {panel.debug = !panel.debug; panel.repaint();}
-				else if (key == 'f') {panel.darkMode = !panel.darkMode; panel.repaint();}
+				else if (key == 'd') {panel.darkMode = !panel.darkMode; panel.repaint();}
 				
 			}
 			@Override
@@ -43,7 +42,6 @@ public class EJC_MouseDodge extends JFrame implements EJC_Interface
 		
 		this.add(panel);
 		this.pack();
-		
 		this.setVisible(true);
 	}
 
