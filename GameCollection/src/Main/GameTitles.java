@@ -99,8 +99,8 @@ public enum GameTitles {
 			{
 					"MOUSE DODGE",
 					"Move your mouse to dodge the enemies.",
-					"Press F to switch dark mode on or off.",
-					"Other controls are displayed ingame.",
+					"Controls are displayed ingame.",
+					"",
 					"",
 					"",
 			}
