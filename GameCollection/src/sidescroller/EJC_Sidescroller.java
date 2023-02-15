@@ -66,9 +66,7 @@ public class EJC_Sidescroller extends JFrame implements ActionListener, EJC_Inte
 				if (panel.player.airTime == 10) {ySpeed = 1;}	//for a smoother transition in fallingSpeed
 				else if (panel.player.airTime <= 0) {ySpeed = 5;}
 				
-				panel.scroll();
-				
-				panel.movePlayer(xSpeed,ySpeed);	
+				panel.update(xSpeed,ySpeed);	
 			}	
 		});
 		timer.start();
@@ -126,9 +124,7 @@ public class EJC_Sidescroller extends JFrame implements ActionListener, EJC_Inte
 		byte[] str = seedStr.getBytes();
 					
 		for (byte b : str)
-		{
-			seed+= (int) b;
-		}
+		{seed+= (int) b;}
 				
 		panel.setSeed(seed);
 	}
