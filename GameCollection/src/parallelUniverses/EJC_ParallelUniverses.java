@@ -15,39 +15,17 @@ public class EJC_ParallelUniverses extends JFrame implements EJC_Interface
 	private static final int index = 5;
 	
 	private PU_Panel panel;
-	
 	private HashSet<Integer> pressedKeys = new HashSet<>();
-	
-	private Timer timer = new Timer(25, new ActionListener()
-	{	@Override
-		public void actionPerformed(ActionEvent e) 
-	 	{
-			int x = 0, y = 0, moveCount = 1;	
-			boolean move = false;
-			
-			if (pressedKeys.contains(68)) {x = 1;  move = true;} 	//D
-			if (pressedKeys.contains(65)) {x = -1; move = true;} 	//A
-			if (pressedKeys.contains(87)) {y = -1; move = true;} 	//W
-			if (pressedKeys.contains(83)) {y = 1;  move = true;} 	//S
-			
-			if (pressedKeys.contains(16)) {moveCount = 4;}	//SHIFT
-		
-			if(!move)
-			{return;}
-			
-			panel.movePlayer(x, y, moveCount);
-		}	
-	});
+	private Timer timer;
 	
 	@Override
 	public void start(WindowEventHandler eventHandler) 
 	{
+		this.addWindowListener(eventHandler);
 		this.setTitle("Parallel Universes");
 		panel = new PU_Panel();
-		
-		this.addWindowListener(eventHandler);
-		this.setResizable(false);
 		this.add(panel);
+		this.setResizable(false);
 		this.pack();
 		
 		this.addKeyListener(new KeyListener() 
@@ -69,6 +47,27 @@ public class EJC_ParallelUniverses extends JFrame implements EJC_Interface
 			public void keyTyped(KeyEvent e) {}
 		});	
 		
+		timer = new Timer(25, new ActionListener()
+		{	@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				int x = 0, y = 0, moveCount = 1;	
+				boolean move = false;
+
+				if (pressedKeys.contains(68)) {x = 1;  move = true;} 	//D
+				if (pressedKeys.contains(65)) {x = -1; move = true;} 	//A
+				if (pressedKeys.contains(87)) {y = -1; move = true;} 	//W
+				if (pressedKeys.contains(83)) {y = 1;  move = true;} 	//S
+
+				if (pressedKeys.contains(16)) {moveCount = 4;}	//SHIFT
+
+				if(!move)
+				{return;}
+
+				panel.movePlayer(x, y, moveCount);
+			}	
+		});
+
 		timer.start();
 		this.setVisible(true);
 	}

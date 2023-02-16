@@ -85,7 +85,7 @@ public class ParticlesPanel extends JPanel implements ActionListener
 				timeSincePaletteChange = 0;
 			}
 			timeSincePaletteChange++;
-		}	
+		}
     	repaint();  
 	}
 	

@@ -11,7 +11,7 @@ public class InsectsPanel extends JPanel
 	private static final long serialVersionUID = 4974460083826443803L;
 	public static final int PANEL_SIZE = 650;
 	
-	GUI GUI;	
+	GUI GUI;
 	Simulation simulation;
 	
 	InsectsPanel()

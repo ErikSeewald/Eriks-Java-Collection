@@ -12,12 +12,14 @@ public class EJC_Particles extends JFrame implements EJC_Interface
 	
 	private ParticlesPanel panel;
 	
-	public EJC_Particles()
+	@Override
+	public void start(WindowEventHandler eventHandler)
 	{
+		this.addWindowListener(eventHandler);
 		panel = new ParticlesPanel();
-		
+
 		this.setTitle("Particles");
-		
+
 		this.addKeyListener(new KeyListener() 
 		{
 			@Override
@@ -30,18 +32,14 @@ public class EJC_Particles extends JFrame implements EJC_Interface
 			public void keyPressed(KeyEvent e) {}
 			@Override
 			public void keyReleased(KeyEvent e) {}
-			
+
 		});
-		
+
 		this.setResizable(false);
 		this.add(panel);
 		this.pack();
 		this.setVisible(true);	
 	}
-	
-	@Override
-	public void start(WindowEventHandler eventHandler)
-	{this.addWindowListener(eventHandler);}
 
 	@Override
 	public void stop() {panel.stop(); panel = null;}

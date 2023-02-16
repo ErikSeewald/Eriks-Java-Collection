@@ -7,7 +7,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 
 import Main.EJC_Interface;
 import Main.WindowEventHandler;
@@ -22,8 +21,9 @@ public class EJC_Pathfind extends JFrame implements ActionListener, EJC_Interfac
 	private JMenuItem seedItem;
 	private PathfindPanel panel;
 	
-	public EJC_Pathfind()
+	public void start(WindowEventHandler eventHandler)
 	{
+		this.addWindowListener(eventHandler);
 		this.setTitle("Pathfind");
 		panel = new PathfindPanel();
 		this.setResizable(false);
@@ -63,29 +63,12 @@ public class EJC_Pathfind extends JFrame implements ActionListener, EJC_Interfac
 		this.pack();
 		this.setVisible(true);
 	}
-	
-	public void start(WindowEventHandler eventHandler)
-	{this.addWindowListener(eventHandler);}
 
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
 		if (e.getSource() == seedItem)
-		{loadSeed();}
-	}
-	
-	private void loadSeed()
-	{
-		String seedStr = JOptionPane.showInputDialog("Seed:");
-		if (seedStr == null) {return;}
-		
-		int seed = 0;
-		byte[] str = seedStr.getBytes();
-					
-		for (byte b : str)
-		{seed+= (int) b;}
-				
-		panel.setSeed(seed);
+		{panel.createSeed();}
 	}
 
 	@Override
