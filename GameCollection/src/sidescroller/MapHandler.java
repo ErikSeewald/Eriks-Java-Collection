@@ -15,7 +15,7 @@ public class MapHandler
 	MapHandler(LinkedList<Element> elements) 
 	{this.elements = elements; random = new Random(); reset();}
 	
-	public void setSeed(int seed)
+	public void setSeed(long seed)
 	{random.setSeed(seed);}
 	
 	public void reset()

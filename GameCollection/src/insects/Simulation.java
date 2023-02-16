@@ -43,7 +43,7 @@ public class Simulation implements ActionListener
 	
 	public void setColors()
 	{
-		double lengthvar = 100 / (double)antAmount;
+		double lengthvar = 100 / (double) antAmount;
 		for (int i = 0; i < antAmount; i++) 
 		{
 			ants[i].color = new Color

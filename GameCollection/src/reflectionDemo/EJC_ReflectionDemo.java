@@ -10,21 +10,22 @@ public class EJC_ReflectionDemo extends JFrame implements EJC_Interface
 	private static final long serialVersionUID = 1345146613461L;
 	private static final int index = 6;
 	
-	ReflectionPanel panel;
+	private ReflectionPanel panel;
 	
 	private class KeyOperations
 	{
 		static final boolean decrease = false;
 		static final boolean increase = true;
 	}
-	
-	public EJC_ReflectionDemo()
+
+	@Override
+	public void start(WindowEventHandler eventHandler)
 	{
+		this.addWindowListener(eventHandler);
 		panel = new ReflectionPanel();
-		
+		this.add(panel);
 		this.setTitle("Reflection Demo");
 		this.setResizable(false);
-		this.add(panel);
 		this.pack();
 		
 		this.addKeyListener(new KeyListener() 
@@ -48,10 +49,6 @@ public class EJC_ReflectionDemo extends JFrame implements EJC_Interface
 		});
 		this.setVisible(true);	
 	}
-	
-	@Override
-	public void start(WindowEventHandler eventHandler)
-	{this.addWindowListener(eventHandler);}
 	
 	@Override
 	public void stop() {panel = null;}

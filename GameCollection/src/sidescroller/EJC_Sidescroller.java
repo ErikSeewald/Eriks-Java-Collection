@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import Main.EJC_Interface;
 import Main.WindowEventHandler;
@@ -22,54 +21,21 @@ public class EJC_Sidescroller extends JFrame implements ActionListener, EJC_Inte
 	
 	private Timer timer;
 	private SidescrollerPanel panel;
+	private int xSpeed, ySpeed;
+	private HashSet<Integer> pressedKeys;
+	private JMenuItem seedItem;
 	
 	public void start(WindowEventHandler eventHandler) 
 	{
-		//INITIALIZATION
-		this.setTitle("Sidescroller");
 		this.addWindowListener(eventHandler);
-		
+		this.setTitle("Sidescroller");
 		panel = new SidescrollerPanel();
-		
 		this.add(panel);
 		this.pack();
 		this.setResizable(false);
-		this.setVisible(true);
 		
 		//MOVEMENT
-		HashSet<Integer> pressedKeys = new HashSet<>();
-		
-		timer = new Timer(14, new ActionListener() 
-		{	
-			private int xSpeed, ySpeed;
-		
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-				xSpeed = 0;
-				if (pressedKeys.contains(68)) //D
-				{xSpeed = 5;} 	
-				
-				if (pressedKeys.contains(65)) //A
-				{xSpeed = -5;}
-				
-				//JUMPING
-				if (pressedKeys.contains(32) && panel.player.jumpAllowed) //SPACE
-				{
-					ySpeed = -5;
-					panel.player.jumpAllowed = false; 
-					panel.player.airTime = 35;
-				}
-					
-				//FALLING
-				if (panel.player.airTime > 0) {panel.player.airTime--;}	
-				if (panel.player.airTime == 10) {ySpeed = 1;}	//for a smoother transition in fallingSpeed
-				else if (panel.player.airTime <= 0) {ySpeed = 5;}
-				
-				panel.update(xSpeed,ySpeed);	
-			}	
-		});
-		timer.start();
+		pressedKeys = new HashSet<>();
 		
 		this.addKeyListener(new KeyListener() 
 		{	
@@ -80,12 +46,10 @@ public class EJC_Sidescroller extends JFrame implements ActionListener, EJC_Inte
 				
 				if (code == 82) {panel.start(SidescrollerPanel.StartOperations.restart);} //R
 				else if (code == 84) {panel.start(SidescrollerPanel.StartOperations.newMap);} //T
-				else if (code == 27) //ESC
-				{pause();} 
+				else if (code == 27) {panel.pause();} //ESC
 				
 				else
-				{pressedKeys.add(code);}
-				
+				{pressedKeys.add(code);}			
 			}
 			@Override
 			public void keyReleased(KeyEvent e) 
@@ -96,6 +60,9 @@ public class EJC_Sidescroller extends JFrame implements ActionListener, EJC_Inte
 			{}
 		});
 		
+		timer = new Timer(14, this);
+		timer.start();
+		
 		//MENU BAR
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(new Color (100,100,120));
@@ -105,35 +72,13 @@ public class EJC_Sidescroller extends JFrame implements ActionListener, EJC_Inte
 		fileMenu.setForeground(new Color (230,230,250));
 		fileMenu.setBorder(BorderFactory.createLineBorder(new Color (100,100,120)));
 				
-		JMenuItem seedItem = new JMenuItem("Set seed");
+		seedItem = new JMenuItem("Set seed");
 		seedItem.addActionListener(this);
 				
 		fileMenu.add(seedItem);
 		menuBar.add(fileMenu);
 		this.setJMenuBar(menuBar);
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) 
-	{
-		String seedStr = JOptionPane.showInputDialog("Seed:");
-		if (seedStr == null)
-		{return;}
-		
-		int seed = 0;
-		byte[] str = seedStr.getBytes();
-					
-		for (byte b : str)
-		{seed+= (int) b;}
-				
-		panel.setSeed(seed);
-	}
-	
-	public void pause()
-	{
-		panel.paused = !panel.paused; 
-		panel.repaint(); 
-		if (timer.isRunning()) {timer.stop();} else {timer.start();}
+		this.setVisible(true);
 	}
 	
 	@Override
@@ -142,4 +87,39 @@ public class EJC_Sidescroller extends JFrame implements ActionListener, EJC_Inte
 	
 	@Override
 	public int getIndex() {return index;}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{
+		if(e.getSource() == seedItem)
+		{panel.createSeed();}
+		
+		if (e.getSource() == timer)
+		{keyToMovement();}	
+	}
+	
+	private void keyToMovement()
+	{
+		xSpeed = 0;
+		if (pressedKeys.contains(68)) //D
+		{xSpeed = 5;} 	
+		
+		if (pressedKeys.contains(65)) //A
+		{xSpeed = -5;}
+		
+		//JUMPING
+		if (pressedKeys.contains(32) && panel.player.jumpAllowed) //SPACE
+		{
+			ySpeed = -5;
+			panel.player.jumpAllowed = false; 
+			panel.player.airTime = 35;
+		}
+			
+		//FALLING
+		if (panel.player.airTime > 0) {panel.player.airTime--;}	
+		if (panel.player.airTime == 10) {ySpeed = 1;}	//for a smoother transition in fallingSpeed
+		else if (panel.player.airTime <= 0) {ySpeed = 5;}
+		
+		panel.update(xSpeed,ySpeed);	
+	}
 }

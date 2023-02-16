@@ -16,7 +16,7 @@ public class Player
 	
 	public void spawn()
 	{
-		this.x = 50; this.y = 30;
+		this.x = 49; this.y = 30;
 		this.slot = 0;
 		this.airTime = 0;
 		

@@ -9,6 +9,8 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
+import Main.EJC_Utilities;
+
 public class PathfindPanel extends JPanel
 {
 	private static final long serialVersionUID = 3986470365499168687L;
@@ -46,9 +48,9 @@ public class PathfindPanel extends JPanel
 		repaint();
 	}
 	
-	public void setSeed(int seed)
+	public void createSeed()
 	{
-		random.setSeed(seed);
+		random.setSeed(EJC_Utilities.createSeed());
 		this.initialize(ControlBooleans.fullReset);
 	}
 	

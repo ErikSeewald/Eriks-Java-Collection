@@ -10,6 +10,8 @@ import java.util.LinkedList;
 
 import javax.swing.JPanel;
 
+import Main.EJC_Utilities;
+
 public class SidescrollerPanel extends JPanel
 {
 	private static final long serialVersionUID = 6717353794276866444L;
@@ -26,7 +28,7 @@ public class SidescrollerPanel extends JPanel
 	
 	//OTHERS
 	Player player;
-	boolean paused = false;
+	private boolean paused = false;
 	
 	static class StartOperations
 	{
@@ -45,29 +47,36 @@ public class SidescrollerPanel extends JPanel
 	public void start(boolean newMap)
 	{
 		player.spawn();
-		mapHandler.reset();
 			
 		//MAP
+		mapHandler.reset();
 		if (newMap)
 		{map = mapHandler.makeMap(maplength);}
 		
-		//ELEMENTS
 		elements.removeAll(elements);
 		for (int i = 0; i < 32; i++)
 		{elements.add(new Element(map[i], i));}	
 	}
 	
-	public void setSeed(int seed)
+	public void createSeed()
 	{
-		mapHandler.setSeed(seed);
+		mapHandler.setSeed(EJC_Utilities.createSeed());
 		start(StartOperations.newMap);
 	}
 
 	public void update(int x, int y)
 	{
+		if (paused) {return;}
+		
 		player.move(x, y);
 		mapHandler.scroll();
 		mapHandler.updateElements(map);
+		repaint();
+	}
+	
+	public void pause()
+	{
+		paused = !paused;
 		repaint();
 	}
 

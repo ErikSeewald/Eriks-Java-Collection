@@ -17,7 +17,6 @@ public class PU_Panel extends JPanel
 	PU_Panel()
 	{this.setPreferredSize(new Dimension (PANEL_SIZE,PANEL_SIZE));}
 
-	
 	public void hideUniverses()
 	{
 		universesVisible = !universesVisible;

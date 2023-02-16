@@ -13,8 +13,10 @@ public class EJC_Insects extends JFrame implements EJC_Interface
 	private InsectsPanel panel;
 	private GUI GUI;
 	
-	public EJC_Insects()
-	{	
+	@Override
+	public void start(WindowEventHandler eventHandler)
+	{
+		this.addWindowListener(eventHandler);
 		panel = new InsectsPanel();
 		GUI = new GUI(panel);
 		panel.addGUI(GUI);
@@ -26,12 +28,8 @@ public class EJC_Insects extends JFrame implements EJC_Interface
 
 		this.setTitle("Insects");
 		this.setResizable(false);
-		this.setVisible(true);	
+		this.setVisible(true);
 	}
-	
-	@Override
-	public void start(WindowEventHandler eventHandler)
-	{this.addWindowListener(eventHandler);}
 
 	@Override
 	public void stop() {panel.stop(); panel = null; GUI = null;}
