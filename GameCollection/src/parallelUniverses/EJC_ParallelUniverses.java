@@ -51,17 +51,16 @@ public class EJC_ParallelUniverses extends JFrame implements EJC_Interface
 		{	@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				int x = 0, y = 0, moveCount = 1;	
-				boolean move = false;
+				int x = 0, y = 0, moveCount = 1;
 
-				if (pressedKeys.contains(68)) {x = 1;  move = true;} 	//D
-				if (pressedKeys.contains(65)) {x = -1; move = true;} 	//A
-				if (pressedKeys.contains(87)) {y = -1; move = true;} 	//W
-				if (pressedKeys.contains(83)) {y = 1;  move = true;} 	//S
+				if (pressedKeys.contains(68)) {x = 1;} 	//D
+				if (pressedKeys.contains(65)) {x = -1;} 	//A
+				if (pressedKeys.contains(87)) {y = -1;} 	//W
+				if (pressedKeys.contains(83)) {y = 1;} 	//S
 
 				if (pressedKeys.contains(16)) {moveCount = 4;}	//SHIFT
 
-				if(!move)
+				if(x == 0 && y == 0)
 				{return;}
 
 				panel.movePlayer(x, y, moveCount);
