@@ -125,9 +125,9 @@ public enum GameTitles {
 			{
 					"PIXEL COLLISION",
 					"Anything you drawn on screen will become a collision object.",
-					"Use the Object Menu in the top left to drawn an object into the rectangle that",
-					"appears, save it and then move it with W,A,S,D. Use shift to move faster.",
-					"Use the Pixel Menu to change the size of the pixel grid",
+					"Use the Object Menu in the top left to drawn an object into the rectangle,",
+					"save it and then move it with W,A,S,D. Use shift to move faster.",
+					"Use the Pixel Menu to change the size of the pixel grid.",
 					"+/- - Change screen size| F - Fly mode | R - Reset | Shift click - Erase pixel",
 			}
 	),
@@ -140,8 +140,8 @@ public enum GameTitles {
 					"Click anywhere on screen to create a point, CTRL click to lock it in place.",
 					"Click on a point again to select it. When you have two points selected, press",
 					"C to connect them. Start or stop the simulation with S and reset it with R.",
-					"Move point = Press mouse down and move | Cut point = Hold shift, press down and then move",
-					"over it | Delete last connection = CTRL Z | Save/load layouts with the menu bar",
+					"Move point = Press mouse down and move | Cut point = Move over it with shift and",
+					"mouse pressed | Delete last connection = CTRL Z | Save/load layouts - menu bar",
 			}
 	),
 	
