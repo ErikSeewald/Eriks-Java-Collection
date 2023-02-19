@@ -100,7 +100,7 @@ public class EJC_ClothSim extends JFrame implements EJC_Interface
 	
 	public void saveLayout()
 	{
-		JFileChooser fileChooser = new JFileChooser();
+		/*JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setCurrentDirectory(new File("C:\\Users\\Erik\\eclipse-workspace\\GameCollection\\ClothLayouts"));
 		
 		int response = fileChooser.showSaveDialog(null);
@@ -139,12 +139,12 @@ public class EJC_ClothSim extends JFrame implements EJC_Interface
 				fw.close();
 			}
 			catch (IOException e1) {e1.printStackTrace();}
-		}
+		}*/
 	}
 	
 	public void loadLayout()
 	{
-		JFileChooser fileChooser = new JFileChooser();
+		/*JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setCurrentDirectory(new File("C:\\Users\\Erik\\eclipse-workspace\\GameCollection\\ClothLayouts"));
 		
 		int response = fileChooser.showOpenDialog(null);
@@ -228,7 +228,7 @@ public class EJC_ClothSim extends JFrame implements EJC_Interface
 				reader.close();
 			}
 			catch (IOException e1) {e1.printStackTrace();}
-		}
+		}*/
 	}
 	
 	@Override

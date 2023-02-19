@@ -35,6 +35,7 @@ public class Simulation implements ActionListener
 	
 	public Ant getAntCopy(int i) 
 	{
+		if (i >= antAmount) {return null;}
 		Ant ant = new Ant(ants[i].size); 
 		ant.loc = ants[i].loc;
 		ant.color = ants[i].color;
