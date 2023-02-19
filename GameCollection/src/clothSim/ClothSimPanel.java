@@ -4,90 +4,22 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
 import javax.swing.JPanel;
-import clothSim.Simulation.Point;
 
 public class ClothSimPanel extends JPanel
 {
 	private static final long serialVersionUID = -5643933341241043804L;
 	
-	private Simulation sim;
-	
-	private boolean mouseHeld = false;
+	private VerletSimulation sim;
 	
 	ClothSimPanel()
 	{
 		this.setPreferredSize(new Dimension(960,600));
-		sim = new Simulation(this);	
+		sim = new VerletSimulation(this);	
 		
-		ClickListener clickListener = new ClickListener();
-		DragListener dragListener = new DragListener();
-		ReleaseListener releaseListener = new ReleaseListener();
-		
-		this.addMouseListener(clickListener);
-		this.addMouseMotionListener(dragListener);
-		this.addMouseListener(releaseListener);
-	}
-	
-	private class ClickListener extends MouseAdapter
-	{
-	    public void mousePressed(MouseEvent e) 
-	    {	
-	    	sim.prevSelectedPoint = sim.selectedPoint;
-	    	sim.selectedPoint = sim.getPointIndex(e.getX(), e.getY());
-			
-			if (e.isControlDown()) {lockPoint(); return;}
-		    		
-		    if (sim.selectedPoint == -1) //= NULL -> ADD POINT THERE
-		    {
-		    	sim.pointAmount++;
-				    	
-				int pIndex = sim.pointAmount-1;
-				sim.points[pIndex] = sim.new Point(pIndex);
-				    
-				sim.points[pIndex].positionX = e.getX();
-				sim.points[pIndex].positionY = e.getY();
-						
-				sim.points[pIndex].prevPositionX = sim.points[pIndex].positionX;
-				sim.points[pIndex].prevPositionY = sim.points[pIndex].positionY;
-		    }	
-	    	repaint();	
-	    }
-	}
-	
-	private class DragListener extends MouseMotionAdapter
-	{
-	    public void mouseDragged(MouseEvent e) 
-	    {
-	    	if (!mouseHeld || e.isShiftDown()) //ONLY CHANGE THE SELECTED POINT WHEN CUTTING OR WHEN JUST STARTING TO PRESS
-	    	{sim.selectedPoint = sim.getPointIndex(e.getX(), e.getY());}
-	    	
-    		if (sim.selectedPoint == -1 || sim.pointAmount < 1) {return;}
-	    	
-	    	if (!e.isShiftDown()) //MOVE HELD POINT
-	    	{
-	    		sim.points[sim.selectedPoint].positionX = e.getX();
-	    		sim.points[sim.selectedPoint].positionY = e.getY();
-	    	}
-	    	
-	    	else //"CUT" POINT BY MOVING IT OFF SCREEN AND KILLING IT'S CONNECTOR
-	    	{
-	    		sim.points[sim.selectedPoint].positionX = -10;
-	    		sim.points[sim.selectedPoint].positionY = -10;
-	    		
-	    		for (int i = 0; i < sim.connectorAmount; i++)
-	    		{
-	    			if (sim.connectors[i].pointA == sim.points[sim.selectedPoint]) {sim.connectors[i].isAlive = false;}
-	    			else if (sim.connectors[i].pointB == sim.points[sim.selectedPoint]) {sim.connectors[i].isAlive = false;}
-	    		}
-	    	}
-	    	
-	    	mouseHeld = true;
-	    	repaint();
-	    }
+		MouseHandler mouseHandler = new MouseHandler(sim ,this);
+		this.addMouseListener(mouseHandler.new ClickListener());
+		this.addMouseMotionListener(mouseHandler.new DragListener());
 	}
 	
 	public void simulation()
@@ -98,15 +30,6 @@ public class ClothSimPanel extends JPanel
 	
 	public void removeLastConnector()
 	{sim.removeLastConnector(); repaint();}
-	
-	public void lockPoint()
-	{sim.lockPoint(); repaint();}
-	
-	private class ReleaseListener extends MouseAdapter	
-	{
-	    public void mouseReleased(MouseEvent e) 
-	    {mouseHeld = false;}
-	}
 
 	public void restart()
 	{sim.restart(); repaint();}
