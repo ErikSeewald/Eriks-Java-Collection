@@ -46,7 +46,7 @@ public class EJC_ClothSim extends JFrame implements EJC_Interface
 		{
 			@Override
 			public void actionPerformed(ActionEvent e) 
-			{panel.simulation();}	
+			{panel.simulate();}	
 		});
 		
 		this.addKeyListener(new KeyListener()
@@ -56,10 +56,14 @@ public class EJC_ClothSim extends JFrame implements EJC_Interface
 			{
 				int code = e.getKeyCode();
 				
-				if (code == 67) {panel.connect(true);}	//C -> CONNECT
-				else if (code == 83) {if (timer.isRunning()) {timer.stop();} else {timer.start();}}	//S -> START
+				if (code == 67) {panel.connect();}	//C -> CONNECT
 				else if (code == 82) {panel.restart();} //R -> RESTART
-				else if (code == 90 && e.isControlDown()) {panel.removeLastConnector();} //CTRL Z (APPLIES TO CONNECTORS ONLY)	
+				else if (code == 90 && e.isControlDown()) {panel.removeLastConnector();} //CTRL Z
+				else if (code == 83) //S -> START
+				{
+					if (timer.isRunning()) {timer.stop();} else {timer.start();}
+					panel.switchIsRunning();
+				}	
 			}
 			@Override
 			public void keyTyped(KeyEvent e) {}
@@ -237,7 +241,7 @@ public class EJC_ClothSim extends JFrame implements EJC_Interface
 	
 	@Override
 	public void stop()
-	{timer.stop(); panel = null;}
+	{timer.stop(); timer = null; panel = null;}
 	
 	@Override
 	public int getIndex() {return index;}
