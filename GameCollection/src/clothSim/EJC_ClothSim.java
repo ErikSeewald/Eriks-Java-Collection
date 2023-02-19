@@ -20,34 +20,24 @@ import javax.swing.Timer;
 import Main.EJC_Interface;
 import Main.WindowEventHandler;
 
-public class EJC_ClothSim extends JFrame implements EJC_Interface
+public class EJC_ClothSim extends JFrame implements EJC_Interface, ActionListener
 {
 	private static final long serialVersionUID = -1946430738048947884L;
 	private static final int index = 10;
 	
-	ClothSimPanel panel;
+	private ClothSimPanel panel;
+	private Timer timer;
+	private JMenuItem fileLoad;
+	private JMenuItem fileSave;
 	
-	Timer timer;
-	
-	ActionListener actionListener;
-	
-	JMenuItem fileLoad  = new JMenuItem("Load");
-	JMenuItem fileSave  = new JMenuItem("Save");
-
-	public EJC_ClothSim()
+	@Override
+	public void start(WindowEventHandler eventHandler)
 	{
-
+		this.addWindowListener(eventHandler);
+		this.setTitle("Cloth Sim");
 		panel = new ClothSimPanel();
 		this.add(panel);
 		this.pack();
-		this.setTitle("Cloth Sim");
-		
-		timer = new Timer(30, new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) 
-			{panel.simulate();}	
-		});
 		
 		this.addKeyListener(new KeyListener()
 		{
@@ -71,27 +61,19 @@ public class EJC_ClothSim extends JFrame implements EJC_Interface
 			public void keyReleased(KeyEvent e) {}
 		});
 		
-		actionListener = new ActionListener()
-		{	@Override
-			public void actionPerformed(ActionEvent e) 
-			{
-				if (e.getSource() == fileSave)
-				{saveLayout();}
-				else if  (e.getSource() == fileLoad)
-				{loadLayout();}
-			}
-		};
+		timer = new Timer(30, this);
 		
-		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu= new JMenu("Files");
+		fileMenu.setForeground(new Color (230,230,250));
+		fileMenu.setBorder(BorderFactory.createLineBorder(new Color (100,100,120)));
 		
+		fileLoad  = new JMenuItem("Load");
+		fileSave  = new JMenuItem("Save");
 		setItemBasics(fileLoad, fileMenu);
 		setItemBasics(fileSave, fileMenu);
 		
-		fileMenu.setForeground(new Color (230,230,250));
-		fileMenu.setBorder(BorderFactory.createLineBorder(new Color (100,100,120)));
+		JMenuBar menuBar = new JMenuBar();
 		menuBar.add(fileMenu);
-		
 		menuBar.setBackground(new Color (100,100,120));
 		menuBar.setBorder(BorderFactory.createLineBorder(new Color (115,115,135), 2));
 		this.setJMenuBar(menuBar);
@@ -99,8 +81,23 @@ public class EJC_ClothSim extends JFrame implements EJC_Interface
 		this.setVisible(true);
 	}
 	
-	public void setItemBasics(JMenuItem item, JMenu menu)
-	{item.addActionListener(actionListener); menu.add(item);}
+	private void setItemBasics(JMenuItem item, JMenu menu)
+	{item.addActionListener(this); menu.add(item);}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{
+		if (e.getSource() == timer) {panel.simulate();}
+		else if (e.getSource() == fileSave) {saveLayout();}
+		else if  (e.getSource() == fileLoad) {loadLayout();}
+	}
+	
+	@Override
+	public void stop()
+	{timer.stop(); timer = null; panel = null;}
+	
+	@Override
+	public int getIndex() {return index;}
 	
 	public void saveLayout()
 	{
@@ -234,15 +231,4 @@ public class EJC_ClothSim extends JFrame implements EJC_Interface
 			catch (IOException e1) {e1.printStackTrace();}
 		}*/
 	}
-	
-	@Override
-	public void start(WindowEventHandler eventHandler)
-	{this.addWindowListener(eventHandler);}
-	
-	@Override
-	public void stop()
-	{timer.stop(); timer = null; panel = null;}
-	
-	@Override
-	public int getIndex() {return index;}
 }
