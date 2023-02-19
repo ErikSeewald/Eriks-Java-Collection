@@ -1,6 +1,6 @@
 package clothSim;
 
-public class Simulation 
+public class VerletSimulation 
 {
 	int pointAmount = 0;	//HOW MANY OF THE 200 PLACES IN THE ARRAY ARE IN USE
 	Point[] points = new Point[200];
@@ -17,7 +17,7 @@ public class Simulation
 	
 	private ClothSimPanel panel;
 	
-	Simulation(ClothSimPanel panel)
+	VerletSimulation(ClothSimPanel panel)
 	{this.panel = panel;}
 	
 	public class Point
@@ -137,23 +137,6 @@ public class Simulation
 		points[selectedPoint].isLocked = !points[selectedPoint].isLocked;
 	}
 	
-	public int getPointIndex(int x, int y)
-	{
-		int index = 0;
-		
-		x+= pointSize/2;
-		y+= pointSize/2;
-		
-		for (int i = 0; i < pointAmount; i++)
-		{
-			if (x > points[i].positionX-sizeBuffer && x < points[i].positionX+pointSize+sizeBuffer &&
-				y > points[i].positionY-sizeBuffer && y < points[i].positionY+pointSize+sizeBuffer)
-			{return index;}
-			index++;
-		}
-		return -1; //NO POINT FOUND
-	}
-	
 	public void restart()
 	{
 		pointAmount = 0;
@@ -162,5 +145,57 @@ public class Simulation
 		selectedPoint = -1;
 		
 		System.gc();
+	}
+	
+	public void setSelectedPoint(int x, int y)
+	{
+		prevSelectedPoint = selectedPoint;
+		selectedPoint = getPointIndex(x,y);
+	}
+	
+	private int getPointIndex(int x, int y)
+	{
+		x+= pointSize/2;
+		y+= pointSize/2;
+		
+		for (int i = 0; i < pointAmount; i++)
+		{
+			if (x > points[i].positionX-sizeBuffer && x < points[i].positionX+pointSize+sizeBuffer &&
+				y > points[i].positionY-sizeBuffer && y < points[i].positionY+pointSize+sizeBuffer)
+			{return i;}
+		}
+		return -1; //NO POINT FOUND
+	}
+	
+	public void moveSelectedPoint(int x, int y)
+	{
+		points[selectedPoint].positionX = x;
+		points[selectedPoint].positionY = y;
+	}
+	
+	public void cutSelectedPoint()
+	{
+		points[selectedPoint].positionX = -10;
+		points[selectedPoint].positionY = -10;
+		
+		for (int i = 0; i < connectorAmount; i++)
+		{
+			if (connectors[i].pointA == points[selectedPoint]) {connectors[i].isAlive = false;}
+			else if (connectors[i].pointB == points[selectedPoint]) {connectors[i].isAlive = false;}
+		}
+	}
+	
+	public void addPoint(int x, int y)
+	{
+		int i = pointAmount;
+		points[i] = new Point(i);
+		    
+		points[i].positionX = x;
+		points[i].positionY = y;
+				
+		points[i].prevPositionX = points[i].positionX;
+		points[i].prevPositionY = points[i].positionY;
+		
+		pointAmount++;
 	}
 }
