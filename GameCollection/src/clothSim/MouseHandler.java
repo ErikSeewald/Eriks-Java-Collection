@@ -17,12 +17,12 @@ public class MouseHandler
 	    {	
 	    	sim.setSelectedPoint(e.getX(), e.getY());
 			
-			if (e.isControlDown()) {sim.lockPoint();}
+			if (e.isControlDown()) {sim.lockSelectedPoint();}
 		    		
-		    if (sim.selectedPoint == -1)
+		    if (sim.selectedPoint == null)
 		    {sim.addPoint(e.getX(), e.getY());}	
 		    
-	    	panel.repaint();	
+		    if (!sim.isRunning) {panel.repaint();}	
 	    }
 	}
 	
@@ -33,14 +33,14 @@ public class MouseHandler
 	    	if (e.isShiftDown())
 	    	{sim.setSelectedPoint(e.getX(), e.getY());}
 	    	
-    		if (sim.selectedPoint < 0 || sim.pointAmount < 1) {return;}
+    		if (sim.selectedPoint == null) {return;}
 	    	
 	    	if (!e.isShiftDown())
 	    	{sim.moveSelectedPoint(e.getX(), e.getY());}
 	    	else
 	    	{sim.cutSelectedPoint();}
 	    	
-	    	panel.repaint();
+	    	if (!sim.isRunning) {panel.repaint();}
 	    }
 	}
 }

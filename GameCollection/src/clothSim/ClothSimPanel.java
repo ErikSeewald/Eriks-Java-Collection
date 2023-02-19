@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 public class ClothSimPanel extends JPanel
 {
 	private static final long serialVersionUID = -5643933341241043804L;
-	
 	private VerletSimulation sim;
 	
 	ClothSimPanel()
@@ -22,11 +21,13 @@ public class ClothSimPanel extends JPanel
 		this.addMouseMotionListener(mouseHandler.new DragListener());
 	}
 	
-	public void simulation()
-	{sim.simulation(); repaint();}
+	public void simulate()
+	{sim.algorithm(); repaint();}
 	
-	public void connect(boolean repaint)
-	{sim.connect(); if (repaint) {repaint();}}
+	public void switchIsRunning() {sim.isRunning = !sim.isRunning;}
+	
+	public void connect()
+	{sim.connect(); repaint();}
 	
 	public void removeLastConnector()
 	{sim.removeLastConnector(); repaint();}
@@ -51,47 +52,44 @@ public class ClothSimPanel extends JPanel
 		g2D.fillRect(0, 0, this.getWidth(), this.getHeight());
 	
 		//POINTS
-		if (sim.pointAmount < 1) {return;}
-		int pointSize = sim.pointSize, selectedPoint = sim.selectedPoint, prevSelectedPoint = sim.prevSelectedPoint;
-		for (int i = 0; i < sim.pointAmount; i++)
+		if (sim.points.size() < 1) {return;}
+		
+		for (Point point : sim.points)
 		{
-			g2D.setPaint(sim.points[i].isLocked ? locked_col : point_col);
-			g2D.fillRect((int)sim.points[i].positionX-pointSize/2, (int)sim.points[i].positionY-pointSize/2, pointSize, pointSize);	
+			g2D.setPaint(point.isLocked ? locked_col : point_col);
+			g2D.fillRect((int) point.x-Point.size/2, (int) point.y-Point.size/2, Point.size, Point.size);	
 		}
 		
 		//SELECTED POINTS
 		g2D.setPaint(selected_col);
-		if (selectedPoint >= 0)
+		if (sim.selectedPoint != null)
 		{
-			if (!sim.points[selectedPoint].isLocked)
+			if (!sim.selectedPoint.isLocked)
 			{
 				g2D.fillRect
-				((int)sim.points[selectedPoint].positionX-pointSize/2,
-				(int)sim.points[selectedPoint].positionY-pointSize/2, pointSize, pointSize);
+				((int) sim.selectedPoint.x-Point.size/2,
+				(int) sim.selectedPoint.y-Point.size/2, Point.size, Point.size);
 			}
 		}
 		
-		if (prevSelectedPoint >= 0)
+		if (sim.prevSelectedPoint != null)
 		{
-			if (!sim.points[prevSelectedPoint].isLocked)
+			if (!sim.prevSelectedPoint.isLocked)
 			{
 				g2D.fillRect
-				((int)sim.points[prevSelectedPoint].positionX-pointSize/2,
-				(int)sim.points[prevSelectedPoint].positionY-pointSize/2, pointSize, pointSize);
+				((int) sim.prevSelectedPoint.x-Point.size/2,
+				(int) sim.prevSelectedPoint.y-Point.size/2, Point.size, Point.size);
 			}
 		}
 		
 		//CONNECTORS
 		g2D.setPaint(connector_col);
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		for (int i = 0; i < sim.connectorAmount; i++)
+		for (Connector connector : sim.connectors)
 		{
-			if (sim.connectors[i].isAlive)
-			{
-				g2D.drawLine
-				((int) sim.connectors[i].pointA.positionX, (int) sim.connectors[i].pointA.positionY, 
-				(int) sim.connectors[i].pointB.positionX, (int) sim.connectors[i].pointB.positionY);
-			}
+			g2D.drawLine
+			((int) connector.pointA.x, (int) connector.pointA.y, 
+			(int) connector.pointB.x, (int) connector.pointB.y);
 		}
 	}
 }
