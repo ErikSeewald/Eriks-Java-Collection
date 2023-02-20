@@ -19,6 +19,8 @@ public class ClothSimPanel extends JPanel
 		MouseHandler mouseHandler = new MouseHandler(sim ,this);
 		this.addMouseListener(mouseHandler.new ClickListener());
 		this.addMouseMotionListener(mouseHandler.new DragListener());
+		
+		FileHandler.loadString(FileHandler.example_layout, sim);
 	}
 	
 	public void simulate()
@@ -34,6 +36,12 @@ public class ClothSimPanel extends JPanel
 
 	public void restart()
 	{sim.restart(); repaint();}
+	
+	public void saveLayout()
+	{FileHandler.saveLayout(sim);}
+	
+	public void loadLayout()
+	{FileHandler.loadLayout(sim); repaint();}
 	
 	//---------------------------------------PAINT---------------------------------------
 	
