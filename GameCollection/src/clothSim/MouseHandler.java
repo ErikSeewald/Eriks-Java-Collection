@@ -35,10 +35,10 @@ public class MouseHandler
 	    	
     		if (sim.selectedPoint == null) {return;}
 	    	
-	    	if (!e.isShiftDown())
-	    	{sim.moveSelectedPoint(e.getX(), e.getY());}
+	    	if (e.isShiftDown())
+	    	{sim.cutSelectedPoint();;}
 	    	else
-	    	{sim.cutSelectedPoint();}
+	    	{sim.moveSelectedPoint(e.getX(), e.getY());}
 	    	
 	    	if (!sim.isRunning) {panel.repaint();}
 	    }

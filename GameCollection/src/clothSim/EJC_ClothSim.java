@@ -4,14 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.DecimalFormat;
 import javax.swing.BorderFactory;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -88,8 +81,8 @@ public class EJC_ClothSim extends JFrame implements EJC_Interface, ActionListene
 	public void actionPerformed(ActionEvent e) 
 	{
 		if (e.getSource() == timer) {panel.simulate();}
-		else if (e.getSource() == fileSave) {saveLayout();}
-		else if  (e.getSource() == fileLoad) {loadLayout();}
+		else if (e.getSource() == fileSave) {panel.saveLayout();}
+		else if  (e.getSource() == fileLoad) {panel.loadLayout();}
 	}
 	
 	@Override
@@ -98,137 +91,4 @@ public class EJC_ClothSim extends JFrame implements EJC_Interface, ActionListene
 	
 	@Override
 	public int getIndex() {return index;}
-	
-	public void saveLayout()
-	{
-		/*JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setCurrentDirectory(new File("C:\\Users\\Erik\\eclipse-workspace\\GameCollection\\ClothLayouts"));
-		
-		int response = fileChooser.showSaveDialog(null);
-		
-		File file = null;
-		
-		if (response == JFileChooser.APPROVE_OPTION) 
-		{
-			file = new File(fileChooser.getSelectedFile().getAbsolutePath());
-		
-			try 
-			{
-				FileWriter fw = new FileWriter(file,false);
-				
-				fw.write(""+panel.pointAmount+"|");
-				
-				DecimalFormat df = new DecimalFormat("#.##");   //ROUND THE DOUBLES TO TWO DECIMAL PLACES    
-				
-				for (int i = 0; i < panel.pointAmount; i++)
-				{
-					double x = panel.points[i].positionX;
-					double y = panel.points[i].positionY;
-					
-					//"X,Y,ISLOCKED;"
-					fw.write(Double.valueOf(df.format(x))+","+ Double.valueOf(df.format(y))+ ","+ panel.points[i].isLocked+";");
-				}
-				
-				fw.write("|"+panel.connectorAmount+"|");
-				
-				for (int i = 0; i < panel.connectorAmount; i++)
-				{
-					//"I1,I2,ISALIVE;"
-					fw.write(panel.connectors[i].pointA.index+","+ panel.connectors[i].pointB.index + "," + panel.connectors[i].isAlive+";");
-				}
-				
-				fw.close();
-			}
-			catch (IOException e1) {e1.printStackTrace();}
-		}*/
-	}
-	
-	public void loadLayout()
-	{
-		/*JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setCurrentDirectory(new File("C:\\Users\\Erik\\eclipse-workspace\\GameCollection\\ClothLayouts"));
-		
-		int response = fileChooser.showOpenDialog(null);
-		
-		if (response == JFileChooser.APPROVE_OPTION) 
-		{
-			File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
-			
-			try
-			{
-				BufferedReader reader = null;
-				reader = new BufferedReader(new FileReader(file));
-		
-				String text = reader.readLine();
-				
-				panel.prevSelectedPoint = -1;
-				panel.selectedPoint = -1;
-				
-				int start = 0;
-				int end = 0;
-				while (text.charAt(end) != '|') {end++;}
-				
-				panel.pointAmount = Integer.parseInt(text.substring(start,end));
-				
-				for (int i = 0; i < panel.pointAmount; i++)
-				{
-					panel.newPoint(i);
-					
-					end++;
-					start = end;
-					while (text.charAt(end) != ',') {end++;}
-					panel.points[i].positionX = Float.parseFloat(text.substring(start,end));
-					panel.points[i].prevPositionX = panel.points[i].positionX;
-					
-					end++;
-					start = end;
-					while (text.charAt(end) != ',') {end++;}
-					panel.points[i].positionY = Float.parseFloat(text.substring(start,end));
-					panel.points[i].prevPositionY = panel.points[i].positionY;
-					
-					end++;
-					start = end;
-					while (text.charAt(end) != 'f' && text.charAt(end) != 't') {end++;}
-					panel.points[i].isLocked = text.charAt(end) == 't';
-					
-					while (text.charAt(end) != ';') {end++;}
-				}
-				
-				panel.connectorAmount = 0;
-				
-				end+=2;
-				start = end;
-				while (text.charAt(end) != '|') {end++;}
-				int iterationCount = Integer.parseInt(text.substring(start,end));
-				
-				for (int i = 0; i < iterationCount; i++)
-				{
-					end++;
-					start = end;
-					while (text.charAt(end) != ',') {end++;}
-					panel.prevSelectedPoint = Integer.parseInt(text.substring(start,end));
-					
-					end++;
-					start = end;
-					while (text.charAt(end) != ',') {end++;}
-					panel.selectedPoint = Integer.parseInt(text.substring(start,end));
-					
-					panel.connect(false); //FALSE -> CONNECT WITHOUT REPAINTING
-					
-					end++;
-					start = end;
-					while (text.charAt(end) != 'f' && text.charAt(end) != 't') {end++;}
-					panel.connectors[i].isAlive = text.charAt(end) == 't';
-					
-					while (text.charAt(end) != ';') {end++;}
-				}
-				
-				System.gc();
-				panel.repaint();
-				
-				reader.close();
-			}
-			catch (IOException e1) {e1.printStackTrace();}
-		}*/
-	}
 }

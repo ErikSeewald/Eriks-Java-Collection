@@ -9,7 +9,7 @@ public class Point
 	
 	boolean isLocked;
 	
-	Point(int x, int y)
+	Point(float x, float y)
 	{
 		this.x = x;
 		this.y = y;

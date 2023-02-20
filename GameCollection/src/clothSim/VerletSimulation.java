@@ -1,5 +1,4 @@
 package clothSim;
-
 import java.util.ArrayList;
 
 public class VerletSimulation 
@@ -83,7 +82,10 @@ public class VerletSimulation
 	}
 	
 	public void removeLastConnector()
-	{connectors.remove(connectors.size() - 1);}
+	{
+		if (connectors.size() < 1) {return;}
+		connectors.remove(connectors.size() - 1);
+	}
 	
 	public void lockSelectedPoint()
 	{
