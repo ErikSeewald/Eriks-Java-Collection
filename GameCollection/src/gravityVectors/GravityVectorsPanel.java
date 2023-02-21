@@ -44,22 +44,22 @@ public class GravityVectorsPanel extends JPanel
 		this.setPreferredSize(new Dimension(PANEL_WIDTH,PANEL_HEIGHT));
 		
 		sim.increaseArrowCount();
-		start();
+		repaint();
 	}
 	
 	public void changePPointCount(int amount)
-	{sim.changePPOINT_COUNT(amount); repaint();}
+	{sim.changePointCount(amount); repaint();}
 	
 	private class ClickListener extends MouseAdapter
 	{
 	    public void mousePressed(MouseEvent e)
-	    {sim.selectGravityPoint(e.getX(), e.getY());} 
+	    {sim.selectPoint(e.getX(), e.getY());} 
 	}
 	
 	private class DragListener extends MouseMotionAdapter
 	{
 	    public void mouseDragged(MouseEvent e) 
-	    {sim.moveGravityPoint(e.getX(), e.getY()); repaint();}  
+	    {sim.movePoint(e.getX(), e.getY()); repaint();}  
 	}
 	
 	//---------------------------------------PAINT---------------------------------------
