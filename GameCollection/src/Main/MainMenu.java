@@ -27,6 +27,12 @@ public class MainMenu extends JFrame implements MouseListener
 {
 	private static final long serialVersionUID = 1454253443346436L;
 	
+	private static final class MenuControl
+	{
+		public static final boolean firstInit = true;
+		public static final boolean sizeChange = false;
+	}
+	
 	MainMenu()
 	{
 		this.setTitle("Menu");
@@ -35,7 +41,7 @@ public class MainMenu extends JFrame implements MouseListener
 		this.getContentPane().setBackground(new Color(40,40,55));
 		
 		this.setLayout(null);
-		this.initialize();
+		this.initialize(MenuControl.firstInit);
 	}
 	
 	//---------------------------------------INITIALIZATION---------------------------------------
@@ -84,7 +90,7 @@ public class MainMenu extends JFrame implements MouseListener
 		private JLabel[] guideLabels = 
 		{new JLabel("ERIK'S COLLECTION"), new JLabel(""), new JLabel(""), new JLabel(""), new JLabel(""), new JLabel("")};
 		
-		private void initialize()
+		private void initialize(boolean firstInit)
 		{
 			this.setSize(resolution, resolution);
 			
@@ -98,7 +104,7 @@ public class MainMenu extends JFrame implements MouseListener
 				if (i == 0) {guideLabels[i].setFont(new Font ("", Font.BOLD, resolution/26));}
 				else {guideLabels[i].setFont(new Font ("", Font.BOLD, resolution/42));}
 				
-				this.add(guideLabels[i]);
+				if (firstInit) {this.add(guideLabels[i]);}
 			}
 			
 			//BUTTONS
@@ -106,6 +112,12 @@ public class MainMenu extends JFrame implements MouseListener
 			for (GButton button : gameButtons)
 			{
 				initButton(button, (resolution/10) + x*(resolution/5), (resolution/3) + y*(resolution/10));
+				
+				if (firstInit)
+				{
+					button.addMouseListener(this);
+					this.add(button);
+				}
 				
 				x++;
 				if (x > 3) {x = 0; y++;} //move to next row after 4 buttons have been drawn
@@ -117,12 +129,9 @@ public class MainMenu extends JFrame implements MouseListener
 		{
 			button.width = resolution/6;
 			button.height = resolution/15;
-			button.setBounds(x, y, button.width, button.height);
-			
+			button.setBounds(x, y, button.width, button.height);		
 			button.setFont(new Font ("", Font.PLAIN, resolution/42));
 			button.setBorder(BorderFactory.createLineBorder(new Color(100,100,130), resolution/300));
-			button.addMouseListener(this);
-			this.add(button);
 		}
 	
 	//---------------------------------------GUI_CONTROL---------------------------------------
@@ -220,7 +229,8 @@ public class MainMenu extends JFrame implements MouseListener
 	public void changeSize(int amount)
 	{
 		resolution+=amount;
-		initialize();
+		initialize(MenuControl.sizeChange);
+		System.gc();
 	}
 	
 	public void closeGame(EJC_Interface game)
