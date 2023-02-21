@@ -1,7 +1,7 @@
 package Main;
 import javax.swing.JOptionPane;
 
-public class EJC_Utilities
+public class EJC_Util
 {
 	public static long createSeed()
 	{
@@ -16,5 +16,11 @@ public class EJC_Utilities
 		{seed+= (int) b;}
 				
 		return seed;
+	}
+	
+	public static float[] normalize(float x , float y)
+	{	
+		float length = (float) Math.sqrt(Math.pow(x, 2)+Math.pow(y, 2));
+		return new float[] {x/length, y/length};
 	}
 }

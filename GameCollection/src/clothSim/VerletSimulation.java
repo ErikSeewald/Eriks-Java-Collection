@@ -1,6 +1,8 @@
 package clothSim;
 import java.util.ArrayList;
 
+import Main.EJC_Util;
+
 public class VerletSimulation 
 {
 	ArrayList<Point> points;
@@ -50,7 +52,7 @@ public class VerletSimulation
 			float[] center = {(c.pointA.x + c.pointB.x) / 2, (c.pointA.y + c.pointB.y) / 2};
 
 			float vecX = c.pointA.x - c.pointB.x, vecY = c.pointA.y - c.pointB.y;
-			float[] cVector = normalize(vecX, vecY);
+			float[] cVector = EJC_Util.normalize(vecX, vecY);
 
 			//KEEP THE CONNECTORS LENGTH BY MOVING THE POINTS HALFWAY IT'S LENGTH IN THE CORRECT DIRECTION FROM IT'S CENTER	
 			if (!c.pointA.isLocked)
@@ -65,12 +67,6 @@ public class VerletSimulation
 				c.pointB.y =  center[1] - cVector[1] * c.length/2;
 			}	
 		}
-	}
-	
-	private float[] normalize(float x , float y)
-	{	
-		float length = (float) Math.sqrt(Math.pow(x, 2)+Math.pow(y, 2));
-		return new float[] {x/length, y/length};
 	}
 	
 	//---------------------------------------SELECTED_POINT---------------------------------------

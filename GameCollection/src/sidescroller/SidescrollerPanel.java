@@ -10,7 +10,7 @@ import java.util.LinkedList;
 
 import javax.swing.JPanel;
 
-import Main.EJC_Utilities;
+import Main.EJC_Util;
 
 public class SidescrollerPanel extends JPanel
 {
@@ -60,7 +60,7 @@ public class SidescrollerPanel extends JPanel
 	
 	public void createSeed()
 	{
-		mapHandler.setSeed(EJC_Utilities.createSeed());
+		mapHandler.setSeed(EJC_Util.createSeed());
 		start(StartOperations.newMap);
 	}
 
