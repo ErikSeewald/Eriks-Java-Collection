@@ -15,10 +15,10 @@ public class EJC_GravityVectors extends JFrame implements EJC_Interface
 
 	public void start(WindowEventHandler eventHandler) 
 	{
-		panel = new GravityVectorsPanel();
-		
 		this.addWindowListener(eventHandler);
 		this.setTitle("Gravity Vectors");
+		
+		panel = new GravityVectorsPanel();
 	
 		this.addKeyListener(new KeyListener()
 		{
@@ -29,10 +29,10 @@ public class EJC_GravityVectors extends JFrame implements EJC_Interface
 				
 				if (code == 521) {panel.changeSize(30); pack();} //+
 				else if (code == 45) {panel.changeSize(-30); pack();} //-
-				else if (code == 49) {panel.changePPOINT_COUNT(-1);} //1
-				else if (code == 50) {panel.changePPOINT_COUNT(1);} //2
-				else if (code == 71) {panel.gradientMode = !panel.gradientMode; panel.repaint();} //G     
-				else if (code == 78) {panel.switchArrowNormalization(); panel.repaint();} //N              
+				else if (code == 49) {panel.changePPointCount(-1);} //1
+				else if (code == 50) {panel.changePPointCount(1);} //2
+				else if (code == 71) {panel.gradientMode();} //G     
+				else if (code == 78) {panel.switchArrowNormalization();} //N              
 			}
 			
 			@Override

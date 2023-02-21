@@ -9,7 +9,7 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
-import Main.EJC_Utilities;
+import Main.EJC_Util;
 
 public class PathfindPanel extends JPanel
 {
@@ -50,7 +50,7 @@ public class PathfindPanel extends JPanel
 	
 	public void createSeed()
 	{
-		random.setSeed(EJC_Utilities.createSeed());
+		random.setSeed(EJC_Util.createSeed());
 		this.initialize(ControlBooleans.fullReset);
 	}
 	
