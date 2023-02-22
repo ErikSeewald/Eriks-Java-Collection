@@ -1,7 +1,6 @@
 package bloonShoot;
 
 import java.awt.Color;
-
 import bloonShoot.hittable.HittableIDs;
 
 public class Projectile 
