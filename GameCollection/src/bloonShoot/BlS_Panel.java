@@ -14,6 +14,13 @@ import java.awt.event.MouseMotionAdapter;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import bloonShoot.hittable.Balloon;
+import bloonShoot.hittable.Block;
+import bloonShoot.hittable.BoomBalloon;
+import bloonShoot.hittable.BounceBlock;
+import bloonShoot.hittable.Hittable;
+import bloonShoot.hittable.WoodBlock;
+
 public class BlS_Panel extends JPanel implements ActionListener
 {
 	private static final long serialVersionUID = 5219711456361037203L;
@@ -40,7 +47,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 	private final int LINE_COUNT_X = 44; //for calculations and drawing the grid
 	private final int LINE_COUNT_Y = 26;
 	
-	private final int CELL_COUNT_X = 42; //for the indices of the cells
+	public final static int CELL_COUNT_X = 42; //for the indices of the cells
 	private final int CELL_COUNT_Y = 24;
 	private final int CELL_COUNT = CELL_COUNT_X * CELL_COUNT_Y;
 	
@@ -100,15 +107,15 @@ public class BlS_Panel extends JPanel implements ActionListener
 			
 			switch (levelRAW[i])
 			{
-				case 1: level[i] = new Balloon(new int[] {column*CELL_SIZE,row*CELL_SIZE}, levelPixelSize);;
+				case 1: level[i] = new Balloon(new int[] {column*CELL_SIZE,row*CELL_SIZE});
 				break;
-				case 2: level[i] = new Block(new int[] {column*CELL_SIZE,row*CELL_SIZE}, levelPixelSize);;
+				case 2: level[i] = new Block(new int[] {column*CELL_SIZE,row*CELL_SIZE}, levelPixelSize);
 				break;
-				case 3: level[i] = new BounceBlock(new int[] {column*CELL_SIZE,row*CELL_SIZE}, levelPixelSize);;
+				case 3: level[i] = new BounceBlock(new int[] {column*CELL_SIZE,row*CELL_SIZE}, levelPixelSize);
 				break;
-				case 4: level[i] = new WoodBlock(new int[] {column*CELL_SIZE,row*CELL_SIZE}, levelPixelSize);;
+				case 4: level[i] = new WoodBlock(new int[] {column*CELL_SIZE,row*CELL_SIZE}, levelPixelSize);
 				break;
-				case 5: level[i] = new BoomBalloon(new int[] {column*CELL_SIZE,row*CELL_SIZE}, levelPixelSize);;
+				case 5: level[i] = new BoomBalloon(new int[] {column*CELL_SIZE,row*CELL_SIZE});
 				break;
 			}
 			column++;

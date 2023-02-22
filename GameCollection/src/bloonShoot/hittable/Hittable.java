@@ -1,4 +1,4 @@
-package bloonShoot;
+package bloonShoot.hittable;
 
 import java.awt.Color;
 
