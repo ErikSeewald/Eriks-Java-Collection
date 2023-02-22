@@ -4,7 +4,7 @@ import java.awt.Color;
 
 public class WoodBlock extends Block
 {
-	private final static int HITTABLE_ID = 4;
+	private final static int HITTABLE_ID = HittableIDs.woodblock;
 	
 	//SPRITE & COLOR
 	private static final Color[] sprite_palette =

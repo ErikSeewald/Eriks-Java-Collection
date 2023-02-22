@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Balloon implements Hittable
 {
-	private final static int HITTABLE_ID = 1;
+	private final static int HITTABLE_ID = HittableIDs.balloon;
 	
 	//SPRITE
 	private final static Color[] green_palette =

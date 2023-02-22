@@ -6,7 +6,7 @@ import bloonShoot.BlS_Panel;
 
 public class BoomBalloon extends Balloon
 {
-	private final static int HITTABLE_ID = 5;
+	private final static int HITTABLE_ID = HittableIDs.boomballoon;
 	
 	//SPRITE
 	private static final Color[] sprite_palette =

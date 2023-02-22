@@ -12,13 +12,15 @@ public class EJC_BloonShoot extends JFrame implements EJC_Interface
 	private static final int index = 12;
 	
 	private BlS_Panel panel;
-	
-	public EJC_BloonShoot()
+
+	@Override
+	public void start(WindowEventHandler eventHandler)
 	{
+		this.addWindowListener(eventHandler);
+		this.setTitle("Bloon Shooting");
 		panel = new BlS_Panel();
 		this.add(panel);
 		this.pack();
-		this.setTitle("Bloon Shooting");
 		
 		this.addKeyListener(new KeyListener() 
 		{
@@ -43,10 +45,6 @@ public class EJC_BloonShoot extends JFrame implements EJC_Interface
 		this.setResizable(false);
 		this.setVisible(true);
 	}
-
-	@Override
-	public void start(WindowEventHandler eventHandler)
-	{this.addWindowListener(eventHandler);}
 	
 	@Override
 	public void stop()

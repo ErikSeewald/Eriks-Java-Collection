@@ -4,7 +4,7 @@ import java.awt.Color;
 
 public class BounceBlock extends Block
 {
-	private final static int HITTABLE_ID = 3;
+	private final static int HITTABLE_ID = HittableIDs.bounceblock;
 	
 	//SPRITE & COLOR
 	private static final Color[] sprite_palette =
