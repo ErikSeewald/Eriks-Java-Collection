@@ -1,4 +1,4 @@
-package bloonShoot;
+package bloonShoot.hittable;
 
 import java.awt.Color;
 
@@ -7,11 +7,10 @@ public class WoodBlock extends Block
 	private final static int HITTABLE_ID = 4;
 	
 	//SPRITE & COLOR
-	static final Color Color1 = new Color(178,118,61);
-	static final Color Color2 = new Color(148,105,65);
-	static final Color Color3 = new Color(183,132,85);
+	private static final Color[] sprite_palette =
+	{new Color(178,118,61), new Color(148,105,65), new Color(183,132,85)};
 	
-	static final byte[] SPRITE = 
+	private static final byte[] SPRITE = 
 	{
 				1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,	
 				1,2,2,2,2,2,2,1,1,2,2,2,2,2,2,1,
@@ -31,7 +30,7 @@ public class WoodBlock extends Block
 				1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 	};
 	
-	static final byte[] BREAK_SPRITE = 
+	private static final byte[] BREAK_SPRITE = 
 	{
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 				0,2,0,0,3,2,0,0,0,0,3,3,0,0,0,0,
@@ -51,42 +50,33 @@ public class WoodBlock extends Block
 				0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 	};
 	
-	private boolean POPPING;
-	
-	private int popAnimationFrame;
+	private boolean breaking;	
+	private int breakAnimationFrame;
 
-	WoodBlock(int[] origin, int pixelSize) 
-	{super(origin, pixelSize); POPPING = false;}
+	public WoodBlock(int[] origin, int pixelSize) 
+	{super(origin, pixelSize); breaking = false;}
 	
-	@Override
 	public int getHittableID()
 	{return HITTABLE_ID;}
 	
-	@Override
 	public byte[] getSprite()
 	{return SPRITE;}
 	
-	@Override
 	public byte[] getReactSprite()
-	{popAnimationFrame++; return BREAK_SPRITE; }
+	{breakAnimationFrame++; return BREAK_SPRITE; }
 	
-	@Override
 	public Color[] getColors()
-	{return new Color[] {Color1, Color2, Color3};}
+	{return sprite_palette;}
 	
-	@Override
 	public Color[] getReactColors()
-	{return new Color[] {Color1, Color2, Color3};}
+	{return sprite_palette;}
 	
-	@Override
 	public void hit()
-	{POPPING = true;}
+	{breaking = true;}
 	
-	@Override
 	public boolean isAlive()
-	{return (popAnimationFrame < 3);}
+	{return (breakAnimationFrame < 3);}
 	
-	@Override
 	public boolean isReacting()
-	{return POPPING;}
+	{return breaking;}
 }
