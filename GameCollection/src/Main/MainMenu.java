@@ -204,8 +204,7 @@ public class MainMenu extends JFrame implements MouseListener
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) 
-	{}
+	public void mouseReleased(MouseEvent e) {}
 
 	@Override
 	public void mouseEntered(MouseEvent e) 

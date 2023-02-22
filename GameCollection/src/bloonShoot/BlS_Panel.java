@@ -1,11 +1,9 @@
 package bloonShoot;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -13,7 +11,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-
 import bloonShoot.hittable.Balloon;
 import bloonShoot.hittable.Block;
 import bloonShoot.hittable.BoomBalloon;
@@ -28,17 +25,13 @@ public class BlS_Panel extends JPanel implements ActionListener
 	private int PANEL_WIDTH = 1320;
 	private int PANEL_HEIGHT = (int) (PANEL_WIDTH *0.6);
 	
-	private final Color BACKGROUND = new Color(50,50,60);
-	
 	//SLINGSHOT
 	private Slingshot slingshot = new Slingshot();
-	private Color[] slingshotColors = Slingshot.sprite_palette;
-	private int slingshotPixelSize = PANEL_WIDTH/250;
+	private int slingshotPixelSize = (PANEL_WIDTH+PANEL_HEIGHT)/400;
 	
 	//PROJECTILE
 	private Projectile projectile = new Projectile();
-	private Color[] projectileColors = Projectile.sprite_palette;
-	private int projectilePixelSize = PANEL_WIDTH/450;
+	private int projectilePixelSize = (PANEL_WIDTH+PANEL_HEIGHT)/1000;
 	
 	//GRID
 	private boolean gridVisible = false;
@@ -61,7 +54,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 	private byte[] levelRAW = new byte[CELL_COUNT]; //array containing the id of the element at each position
 	
 	private Hittable[] level = new Hittable[CELL_COUNT_X*CELL_COUNT_Y]; //array containing the actual element at each position
-	private int levelPixelSize = PANEL_WIDTH/450;
+	private int levelPixelSize = (PANEL_WIDTH+PANEL_HEIGHT)/1000;
 	
 	//SIMULATION
 	final Timer shot = new Timer(15,this);
@@ -121,76 +114,6 @@ public class BlS_Panel extends JPanel implements ActionListener
 		}
 		System.gc();
 		repaint();
-	}
-	
-	public void paint(Graphics g)
-	{
-		Graphics2D g2D = (Graphics2D) g;
-		super.paint(g);
-		
-		g2D.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-		
-		//BACKGROUND
-		g2D.setPaint(BACKGROUND);
-		g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
-		
-		
-		//SURROUNDING RECTANGLE
-		g2D.setPaint(Color.LIGHT_GRAY);
-		g2D.drawRect(CELL_SIZE, CELL_SIZE, CELL_END_Y-CELL_SIZE, CELL_END_X-CELL_SIZE); 
-		
-		//GRID
-		if (gridVisible)
-		{
-			for (int i = 0; i < LINE_COUNT_X; i++)
-			{g2D.drawLine(i*CELL_SIZE, CELL_SIZE, i*CELL_SIZE, CELL_END_X);}
-			for (int i = 0; i < LINE_COUNT_Y; i++)
-			{g2D.drawLine(CELL_SIZE, i*CELL_SIZE, CELL_END_Y, i*CELL_SIZE);}
-		}
-		
-		//LEVEL
-		for (int i = 0; i < CELL_COUNT; i++)
-		{
-			if (levelRAW[i] != 0)
-			{
-				if (level[i].isAlive())
-				{
-					if (level[i].isReacting())
-					{paintSprite(level[i].getReactColors(), level[i].getReactSprite(), level[i].getOrigin(), levelPixelSize, g2D);}
-					else
-					{paintSprite(level[i].getColors(), level[i].getSprite(), level[i].getOrigin(), levelPixelSize, g2D);}
-				}
-			}
-		}
-				
-		//SLINGSHOT
-		paintSprite(slingshotColors, Slingshot.SPRITE, slingshot.getOrigin(), slingshotPixelSize, g2D);
-				
-		//SLINGSHOT BAND
-		g2D.setStroke(new BasicStroke(PANEL_WIDTH/150));
-		g2D.setPaint(Slingshot.rubber_col);
-		int[] paintOrigin = slingshot.getPaintOrigin();
-		int[] pullPoint = slingshot.getPullPoint();
-		g2D.drawLine(paintOrigin[0], paintOrigin[1], pullPoint[0], pullPoint[1]);
-		g2D.drawLine(paintOrigin[2], paintOrigin[1], pullPoint[0], pullPoint[1]);
-		
-		//PROJECTILE
-		paintSprite(projectileColors, Projectile.SPRITE, projectile.getOrigin(), projectilePixelSize, g2D);
-	}
-	
-	private void paintSprite(Color[] colors, byte[] sprite, int [] origin, int pixelSize, Graphics2D g2D)
-	{
-		int row = 0, column = 0;
-		for (int i = 0; i < 256; i++)
-		{
-			if (column == 16) {row++; column = 0;}
-			if (sprite[i] != 0) //0 -> transparent
-			{
-				g2D.setPaint(colors[sprite[i]-1]);
-				g2D.fillRect(origin[0] + column*pixelSize, origin[1]+ row*pixelSize, pixelSize, pixelSize);
-			}
-			column++;
-		}
 	}
 	
 	private class ClickListener extends MouseAdapter
@@ -312,8 +235,13 @@ public class BlS_Panel extends JPanel implements ActionListener
 	
 	public void changeSize(int amount)
 	{
-		//PANEL
-		PANEL_WIDTH+=amount;
+		int[] validWidths = {1250, 1320,2112};
+		int curWidth = 0;
+		for (int i = 0; i < validWidths.length; i++)
+		{if (PANEL_WIDTH == validWidths[i]) {curWidth = i; break;}}
+		curWidth = validWidths[Math.abs((curWidth + amount) % validWidths.length)];
+		
+		PANEL_WIDTH = curWidth;
 		PANEL_HEIGHT = (int) (PANEL_WIDTH *0.6);
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
@@ -323,16 +251,93 @@ public class BlS_Panel extends JPanel implements ActionListener
 		CELL_END_Y = CELL_SIZE * (LINE_COUNT_X-1);
 		
 		//OBJECTS
-		slingshotPixelSize = PANEL_WIDTH/250;
+		slingshotPixelSize = (PANEL_WIDTH+PANEL_HEIGHT)/400;
 		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, slingshotPixelSize);
 		
-		projectilePixelSize = PANEL_WIDTH/450;
+		projectilePixelSize = (PANEL_WIDTH+PANEL_HEIGHT)/1000;
 		projectile.initialize(slingshot.getPullPoint(), projectilePixelSize);
 		
 		//LEVEL
-		levelPixelSize = PANEL_WIDTH/450;
+		levelPixelSize = (PANEL_WIDTH+PANEL_HEIGHT)/1000;
 		loadLevel(levelNum);
 		
 		repaint();
+	}
+	
+	//---------------------------------------PAINT---------------------------------------
+	
+	private static final Color background_col = new Color(50,50,60);
+	
+	public void paint(Graphics g)
+	{
+		Graphics2D g2D = (Graphics2D) g;
+		
+		//BACKGROUND
+		g2D.setPaint(background_col);
+		g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
+		
+		//SURROUNDING RECTANGLE
+		g2D.setPaint(Color.LIGHT_GRAY);
+		g2D.drawRect(CELL_SIZE, CELL_SIZE, CELL_END_Y-CELL_SIZE, CELL_END_X-CELL_SIZE); 
+		
+		//GRID
+		if (gridVisible)
+		{
+			for (int i = 0; i < LINE_COUNT_X; i++)
+			{g2D.drawLine(i*CELL_SIZE, CELL_SIZE, i*CELL_SIZE, CELL_END_X);}
+			for (int i = 0; i < LINE_COUNT_Y; i++)
+			{g2D.drawLine(CELL_SIZE, i*CELL_SIZE, CELL_END_Y, i*CELL_SIZE);}
+		}
+		
+		//LEVEL
+		for (int i = 0; i < CELL_COUNT; i++)
+		{
+			if (levelRAW[i] == 0)
+			{continue;}
+			
+			if (level[i].isAlive())
+			{
+				if (level[i].isReacting())
+				{paintSprite(level[i].getReactColors(), level[i].getReactSprite(), level[i].getOrigin(), levelPixelSize, g2D);}
+				else
+				{paintSprite(level[i].getColors(), level[i].getSprite(), level[i].getOrigin(), levelPixelSize, g2D);}
+			}
+		}
+				
+		//SLINGSHOT
+		paintSprite(Slingshot.sprite_palette, Slingshot.SPRITE, slingshot.getOrigin(), slingshotPixelSize, g2D);
+				
+		//SLINGSHOT BAND
+		g2D.setStroke(new BasicStroke(PANEL_WIDTH/150));
+		g2D.setPaint(Slingshot.rubber_col);
+		int[] paintOrigin = slingshot.getPaintOrigin();
+		int[] pullPoint = slingshot.getPullPoint();
+		g2D.drawLine(paintOrigin[0], paintOrigin[1], pullPoint[0], pullPoint[1]);
+		g2D.drawLine(paintOrigin[2], paintOrigin[1], pullPoint[0], pullPoint[1]);
+		
+		//PROJECTILE
+		paintSprite(Projectile.sprite_palette, Projectile.SPRITE, projectile.getOrigin(), projectilePixelSize, g2D);
+	}
+	
+	private void paintSprite(Color[] colors, byte[] sprite, int [] origin, int pixelSize, Graphics2D g2D)
+	{
+		short row = 0, column = 0;
+		for (short i = 0; i < 256; i++)
+		{
+			if (column == 16) {row++; column = 0;}
+			if (sprite[i] != 0)
+			{
+				short startCol = column;
+				while (column < 15) //extend further while color is the same to draw a wide rectangle instead of multiple single squares
+				{
+					if (sprite[i] == sprite[i+1]) {i++; column++;}
+					else {break;}
+				}
+				
+				g2D.setPaint(colors[sprite[i]-1]);
+				g2D.fillRect(origin[0] + startCol*pixelSize, origin[1]+ row*pixelSize, pixelSize * (column - startCol + 1), pixelSize);
+			}
+			column++;
+		}
 	}
 }
