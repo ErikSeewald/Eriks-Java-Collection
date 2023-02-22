@@ -5,7 +5,7 @@ public class Levels_Databox
 	public static final int LEVEL_COUNT = 12;
 	public static final int CELL_COUNT = 1008;
 	
-	public static byte[] loadLevel(int levelNum) //loadLevel(1) -> loads LEVELS[0] which is Level 1
+	public static byte[] loadLevel(int levelNum)
 	{
 		if (levelNum < 1 || levelNum > LEVEL_COUNT) {return null;}
 		
@@ -19,12 +19,12 @@ public class Levels_Databox
 			int insert = 0, amount = level[i];
 			
 			if (level[i] < 0) {amount*=-1;}
-			else {insert = (level[i] / 100)+1;} //assigns the number to be inserted into levelRAW per the norm specified at the LEVELS array
+			else {insert = (level[i] / 100)+1;} //assigns the number to be inserted into levelRAW per norm specified at LEVELS array
 			
 			int fillUpTo = rawIndex + amount;
-			if (insert > 1) {fillUpTo-= (insert-1)*100;} //removes the ID indicator digit from the amount that should be filled in
+			if (insert > 1) {fillUpTo-= (insert-1)*100;} //removes the ID indicator digit
 			
-			while(rawIndex < fillUpTo ) //fill the levelRAW for the in level[i] specified amount of indices
+			while(rawIndex < fillUpTo )
 			{levelRAW[rawIndex] = (byte) insert; rawIndex++;}	
 		}
 		return levelRAW;

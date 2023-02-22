@@ -4,7 +4,7 @@ import java.awt.Color;
 
 public class Block implements Hittable
 {
-	private final static int HITTABLE_ID = 2;
+	private final static int HITTABLE_ID = HittableIDs.block;
 	
 	//SPRITE & COLOR
 	private final static Color[] sprite_palette = 

@@ -32,13 +32,12 @@ public class BlS_Panel extends JPanel implements ActionListener
 	
 	//SLINGSHOT
 	private Slingshot slingshot = new Slingshot();
-	private Color[] slingshotColors = {Slingshot.Color1,Slingshot.Color2, Slingshot.Color3};
+	private Color[] slingshotColors = Slingshot.sprite_palette;
 	private int slingshotPixelSize = PANEL_WIDTH/250;
-	private boolean shiftMove = false; //IS THE SLINGSHOT ITSELF BEING MOVED -> SHIFT HELD DOWN
 	
 	//PROJECTILE
 	private Projectile projectile = new Projectile();
-	private Color[] projectileColors = {Projectile.Color1,Projectile.Color2,Projectile.Color3,Projectile.Color4,Projectile.Color5};
+	private Color[] projectileColors = Projectile.sprite_palette;
 	private int projectilePixelSize = PANEL_WIDTH/450;
 	
 	//GRID
@@ -80,7 +79,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 		this.addMouseListener(releaseListener);
 		
 		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, slingshotPixelSize);
-		projectile.setPixelSize(projectilePixelSize); projectile.initialize(slingshot.getPullPoint());
+		projectile.initialize(slingshot.getPullPoint(), projectilePixelSize);
 		
 		loadLevel(levelNum);
 	}
@@ -169,7 +168,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 				
 		//SLINGSHOT BAND
 		g2D.setStroke(new BasicStroke(PANEL_WIDTH/150));
-		g2D.setPaint(Slingshot.SlingColor);
+		g2D.setPaint(Slingshot.rubber_col);
 		int[] paintOrigin = slingshot.getPaintOrigin();
 		int[] pullPoint = slingshot.getPullPoint();
 		g2D.drawLine(paintOrigin[0], paintOrigin[1], pullPoint[0], pullPoint[1]);
@@ -210,15 +209,9 @@ public class BlS_Panel extends JPanel implements ActionListener
 			//DON'T MOVE IF NOT INSIDE DRAG AREA OR IF A SHOT IS STILL OCCURRING
 			if (!slingshot.isDragValid() || shot.isRunning()) {return;} 
 			
-			//MOVE WHOLE SLINGSHOT
-			if (e.isShiftDown()) 
-			{slingshot.initOnNewCoords(e.getX()- slingshotPixelSize*8, e.getY()- slingshotPixelSize*8); shiftMove = true;}
+			slingshot.setPullPoint(e.getX(), e.getY());
 			
-			//MOVE SLINGSHOT BAND
-			else 
-			{slingshot.setPullPoint(e.getX(), e.getY());}
-			
-			projectile.setNewOrigin(slingshot.getPullPoint());
+			projectile.setNewOrigin(slingshot.getPullPoint(), projectilePixelSize);
 			repaint();
 		}
 	}
@@ -229,7 +222,6 @@ public class BlS_Panel extends JPanel implements ActionListener
 		{
 			//DON'T DO IF NOT INSIDE DRAG AREA OR IF A SHOT IS STILL OCCURRING
 			if (!slingshot.isDragValid() || shot.isRunning()) {return;}
-			if (shiftMove) {shiftMove = false; return;} //IF WHOLE SLING IS BEING MOVED, DON'T RELEASE PROJECTILE, JUST LET GO OF SLINGSHOT
 			
 			slingshot.setReturnVect();
 			projectile.setSpeed(slingshot.getReturnVect());
@@ -241,12 +233,12 @@ public class BlS_Panel extends JPanel implements ActionListener
 	public void actionPerformed(ActionEvent e) 
 	{	
 		if (slingshot.moveSling()) //MOVES SLINGSHOT WHILE ALSO CHECKING IF THE SLINGSHOT HAS STOPPED MOVING
-		{projectile.setNewOrigin(slingshot.getPullPoint());}
+		{projectile.setNewOrigin(slingshot.getPullPoint(), projectilePixelSize);}
 		
 		else
 		{
 			if (!projectile.fly(PANEL_HEIGHT)) //MOVES PROJECTILE WHILE ALSO CHECKING IF THE PROJECTILE HAS HIT THE FLOOR
-			{shot.stop(); projectile.initialize(slingshot.getPullPoint());} //RESET PROJECTILE
+			{shot.stop(); projectile.initialize(slingshot.getPullPoint(), projectilePixelSize);} //RESET PROJECTILE
 			
 			
 			//COLLISION DETECTION
@@ -267,7 +259,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 						
 						//projectile does hit calculation and returns whether or not projectile is still alive
 						if (!projectile.hitReaction(level[gridEdges[i]].getHittableID()))
-						{shot.stop(); projectile.initialize(slingshot.getPullPoint());} //RESET PROJECTILE
+						{shot.stop(); projectile.initialize(slingshot.getPullPoint(), projectilePixelSize);} //RESET PROJECTILE
 					}
 				}
 			}
@@ -335,7 +327,7 @@ public class BlS_Panel extends JPanel implements ActionListener
 		slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, slingshotPixelSize);
 		
 		projectilePixelSize = PANEL_WIDTH/450;
-		projectile.setPixelSize(projectilePixelSize); projectile.initialize(slingshot.getPullPoint());
+		projectile.initialize(slingshot.getPullPoint(), projectilePixelSize);
 		
 		//LEVEL
 		levelPixelSize = PANEL_WIDTH/450;

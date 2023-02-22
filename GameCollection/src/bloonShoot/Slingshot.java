@@ -5,10 +5,9 @@ import java.awt.Color;
 public class Slingshot 
 {
 	//SPRITE
-	final static Color Color1 = new Color(110,125,170);
-	final static Color Color2 = new Color(95,110,160);
-	final static Color Color3 = new Color(132,148,188);
-	final static Color SlingColor = new Color(75,75,110);
+	final static Color[] sprite_palette = 
+	{new Color(110,125,170), new Color(95,110,160), new Color(132,148,188)};
+	final static Color rubber_col = new Color(75,75,110);
 	
 	private int PIXEL_SIZE;
 	
@@ -37,20 +36,20 @@ public class Slingshot
 	
 	private int[] PULLPOINT = new int[2]; //WHERE IS THE PULLPOINT CURRENTLY
 	private int[] PULLPOINT_ORIGIN = new int[2]; //WHERE WAS IT ORIGINALLY
-	
 	private float[] returnVect = new float[2];
 	
 	//CONDITIONS
 	private boolean dragValid = false;
-	
 	int slingReturnRounds = 0;
-
 	
 	//INITIALIZATION
 	public void initialize(int PANEL_WIDTH, int PANEL_HEIGHT, int size)
-	{setPixelSize(size); initOnNewCoords(PANEL_WIDTH/10, PANEL_HEIGHT - (PANEL_HEIGHT/4));}
+	{
+		setPixelSize(size); 
+		initOnNewCoords(PANEL_WIDTH/10, PANEL_HEIGHT - (PANEL_HEIGHT/4));
+	}
 		
-	public void initOnNewCoords(int x, int y)
+	private void initOnNewCoords(int x, int y)
 	{
 		ORIGIN[0] = x; ORIGIN[1] = y;
 			
@@ -74,7 +73,6 @@ public class Slingshot
 		return true; //-> STILL MOVING
 	}
 	
-	//RETURN VECTOR
 	public void setReturnVect()
 	{
 		returnVect[0] = PULLPOINT_ORIGIN[0] - PULLPOINT[0]; 
@@ -84,7 +82,6 @@ public class Slingshot
 	
 	public float[] getReturnVect()
 	{return returnVect;}
-	
 	
 	//PULL POINT
 	public void setPullPoint(int x, int y)
