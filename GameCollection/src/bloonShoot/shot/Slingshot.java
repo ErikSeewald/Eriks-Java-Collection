@@ -1,17 +1,17 @@
-package bloonShoot;
+package bloonShoot.shot;
 
 import java.awt.Color;
 
 public class Slingshot 
 {
 	//SPRITE
-	final static Color[] sprite_palette = 
+	public final static Color[] sprite_palette = 
 	{new Color(110,125,170), new Color(95,110,160), new Color(132,148,188)};
-	final static Color rubber_col = new Color(75,75,110);
+	public final static Color rubber_col = new Color(75,75,110);
 	
 	private int PIXEL_SIZE;
 	
-	static final byte[] SPRITE = 
+	public static final byte[] SPRITE = 
 	{
 			1,2,2,0,0,0,0,0,0,0,0,0,0,0,1,1,
 			3,1,1,2,0,0,0,0,0,0,0,0,0,1,1,2,

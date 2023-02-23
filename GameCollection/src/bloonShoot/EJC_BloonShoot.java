@@ -1,10 +1,10 @@
 package bloonShoot;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import Main.EJC_Interface;
 import Main.WindowEventHandler;
+import bloonShoot.level.LevelHandler.LoadOperations;
 
 public class EJC_BloonShoot extends JFrame implements EJC_Interface
 {
@@ -32,9 +32,9 @@ public class EJC_BloonShoot extends JFrame implements EJC_Interface
 				if (code == 71) {panel.changeGridVisibility();} //G
 				else if (code == 45) {panel.changeSize(-1); pack();} //-
 				else if (code == 521) {panel.changeSize(1); pack();} //+
-				else if (code == 37) {panel.loadLevel(panel.levelNum-1);} //LEFT
-				else if (code == 39) {panel.loadLevel(panel.levelNum+1);} //RIGHT	
-				else if (code == 82) {panel.loadLevel(panel.levelNum);} //R	
+				else if (code == 37) {panel.changeLevel(LoadOperations.previousLevel);} //LEFT
+				else if (code == 39) {panel.changeLevel(LoadOperations.nextLevel);} //RIGHT	
+				else if (code == 82) {panel.changeLevel(LoadOperations.reload);} //R	
 			}
 			@Override
 			public void keyReleased(KeyEvent e) {}
@@ -48,7 +48,7 @@ public class EJC_BloonShoot extends JFrame implements EJC_Interface
 	
 	@Override
 	public void stop()
-	{panel.shot.stop(); panel = null;}
+	{panel.shotHandler.shot.stop(); panel = null;}
 
 	@Override
 	public int getIndex() {return index;}

@@ -1,16 +1,15 @@
-package bloonShoot;
+package bloonShoot.shot;
 
 import java.awt.Color;
 import bloonShoot.hittable.HittableIDs;
 
 public class Projectile 
 {
-	
 	//SPRITE
-	static final Color[] sprite_palette = 
+	public static final Color[] sprite_palette = 
 	{new Color(145,170,234), new Color(138,154,194), new Color(94,111,157), new Color(89,101,133), new Color(212,224,255)};
 
-	static final byte[] SPRITE = 
+	public static final byte[] SPRITE = 
 	{
 			0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 			0,5,0,0,0,0,0,3,3,0,0,0,0,0,5,0,
