@@ -10,8 +10,6 @@ public class Block implements Hittable
 	private final static Color[] sprite_palette = 
 	{new Color(223,223,223), new Color(203,203,203), new Color(185,185,185)};
 	
-	private int PIXEL_SIZE;
-	
 	private static final byte[] SPRITE = 
 	{
 			1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -34,9 +32,8 @@ public class Block implements Hittable
 	
 	private int[] ORIGIN = new int[2];
 	
-	public Block(int[] origin, int pixelSize)
+	public Block(int[] origin)
 	{
-		setPixelSize(pixelSize);
 		ORIGIN[0] = origin[0]; 
 		ORIGIN[1] = origin[1];
 	}
@@ -49,13 +46,7 @@ public class Block implements Hittable
 	
 	public int[] getOrigin()
 	{return ORIGIN;}
-	
-	public int getPixelSize()
-	{return PIXEL_SIZE;}
-	
-	public void setPixelSize(int pixelSize)
-	{PIXEL_SIZE = pixelSize;}
-	
+
 	public byte[] getSprite()
 	{return SPRITE;}
 	

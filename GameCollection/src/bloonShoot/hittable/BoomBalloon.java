@@ -1,8 +1,6 @@
 package bloonShoot.hittable;
-
 import java.awt.Color;
-
-import bloonShoot.BlS_Panel;
+import bloonShoot.level.LevelHandler;
 
 public class BoomBalloon extends Balloon
 {
@@ -49,7 +47,7 @@ public class BoomBalloon extends Balloon
 	
 	public static int[] getHitEdges(int edge)
 	{
-		int width = BlS_Panel.CELL_COUNT_X;
+		int width = LevelHandler.CELL_COUNT_X;
 		
 		return new int[]
 		{

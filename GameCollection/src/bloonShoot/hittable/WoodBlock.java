@@ -53,8 +53,8 @@ public class WoodBlock extends Block
 	private boolean breaking;	
 	private int breakAnimationFrame;
 
-	public WoodBlock(int[] origin, int pixelSize) 
-	{super(origin, pixelSize); breaking = false;}
+	public WoodBlock(int[] origin) 
+	{super(origin); breaking = false;}
 	
 	public int getHittableID()
 	{return HITTABLE_ID;}

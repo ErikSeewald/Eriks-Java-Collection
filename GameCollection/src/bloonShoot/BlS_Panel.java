@@ -25,7 +25,7 @@ public class BlS_Panel extends JPanel
 		this.setPreferredSize(new Dimension( PANEL_WIDTH, PANEL_HEIGHT));
 		
 		shotHandler = new ShotHandler(this);
-		mouseHandler = new MouseHandler(shotHandler.shot, shotHandler.slingshot, shotHandler.projectile, this);
+		mouseHandler = new MouseHandler(shotHandler, this);
 		this.addMouseListener(mouseHandler.new ClickListener());
 		this.addMouseMotionListener(mouseHandler.new DragListener());
 		this.addMouseListener(mouseHandler.new ReleaseListener());
@@ -38,7 +38,13 @@ public class BlS_Panel extends JPanel
 	public int[] getDimensions()
 	{return new int[] {PANEL_WIDTH, PANEL_HEIGHT};}
 	
-	public void changeLevel(int change) {levelHandler.changeLevel(change); repaint();}
+	public int getCellSize() {return CELL_SIZE;}
+	
+	public void changeLevel(int change) 
+	{
+		if (shotHandler.isRunning()) {return;}
+		levelHandler.changeLevel(change); repaint();
+	}
 	
 	public void changeGridVisibility()
 	{gridVisible = !gridVisible; repaint();}
@@ -58,10 +64,8 @@ public class BlS_Panel extends JPanel
 		CELL_SIZE = PANEL_WIDTH/LINE_COUNT_X;
 		
 		slingshotPixelSize = (PANEL_WIDTH+PANEL_HEIGHT)/400;
-		shotHandler.slingshot.initialize(PANEL_WIDTH, PANEL_HEIGHT, slingshotPixelSize);
-		
 		pixelSize = (PANEL_WIDTH+PANEL_HEIGHT)/1000;
-		shotHandler.projectile.initialize(shotHandler.slingshot.getPullPoint(), pixelSize);
+		shotHandler.initialize();
 		
 		levelHandler.changeLevel(0);;
 		repaint();
@@ -79,7 +83,7 @@ public class BlS_Panel extends JPanel
 	private boolean gridVisible = false;
 	private static final int LINE_COUNT_X = 44;
 	private static final int LINE_COUNT_Y = 26;
-	public int CELL_SIZE = PANEL_WIDTH/LINE_COUNT_X;
+	private int CELL_SIZE = PANEL_WIDTH/LINE_COUNT_X;
 	
 	public void paint(Graphics g)
 	{
@@ -102,35 +106,31 @@ public class BlS_Panel extends JPanel
 			{g2D.drawLine(CELL_SIZE, i*CELL_SIZE, CELL_SIZE * (LINE_COUNT_X-1), i*CELL_SIZE);}
 		}
 		
-		//LEVEL
-		Hittable[] level = levelHandler.level;
+		//HITTABLE
+		Hittable[] level = levelHandler.getLevel();
 		for (int i = 0; i < LevelHandler.CELL_COUNT; i++)
 		{
-			if (levelHandler.levelRAW[i] == 0)
+			if (!LevelHandler.isHittable(i, level))
 			{continue;}
 			
-			if (level[i].isAlive())
-			{
-				if (level[i].isReacting())
-				{paintSprite(level[i].getReactColors(), level[i].getReactSprite(), level[i].getOrigin(), pixelSize, g2D);}
-				else
-				{paintSprite(level[i].getColors(), level[i].getSprite(), level[i].getOrigin(), pixelSize, g2D);}
-			}
+			if (level[i].isReacting())
+			{paintSprite(level[i].getReactColors(), level[i].getReactSprite(), level[i].getOrigin(), pixelSize, g2D);}
+			else
+			{paintSprite(level[i].getColors(), level[i].getSprite(), level[i].getOrigin(), pixelSize, g2D);}
 		}
 				
 		//SLINGSHOT
-		paintSprite(Slingshot.sprite_palette, Slingshot.SPRITE, shotHandler.slingshot.getOrigin(), slingshotPixelSize, g2D);
+		paintSprite(Slingshot.sprite_palette, Slingshot.SPRITE, shotHandler.getSlingshotOrigin(), slingshotPixelSize, g2D);
 				
 		//SLINGSHOT BAND
 		g2D.setStroke(new BasicStroke(PANEL_WIDTH/150));
 		g2D.setPaint(Slingshot.rubber_col);
-		int[] paintOrigin = shotHandler.slingshot.getPaintOrigin();
-		int[] pullPoint = shotHandler.slingshot.getPullPoint();
-		g2D.drawLine(paintOrigin[0], paintOrigin[1], pullPoint[0], pullPoint[1]);
-		g2D.drawLine(paintOrigin[2], paintOrigin[1], pullPoint[0], pullPoint[1]);
+		int[] slingEdges = shotHandler.getSlingEdges(), pullPoint = shotHandler.getPullPoint();
+		g2D.drawLine(slingEdges[0], slingEdges[1], pullPoint[0], pullPoint[1]);
+		g2D.drawLine(slingEdges[2], slingEdges[1], pullPoint[0], pullPoint[1]);
 		
 		//PROJECTILE
-		paintSprite(Projectile.sprite_palette, Projectile.SPRITE, shotHandler.projectile.getOrigin(), pixelSize, g2D);
+		paintSprite(Projectile.sprite_palette, Projectile.SPRITE, shotHandler.getProjectileOrigin(), pixelSize, g2D);
 	}
 	
 	private void paintSprite(Color[] colors, byte[] sprite, int [] origin, int pixelSize, Graphics2D g2D)

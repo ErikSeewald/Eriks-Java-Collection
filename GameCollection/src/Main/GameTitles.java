@@ -163,11 +163,11 @@ public enum GameTitles {
 			new String[] 
 			{
 					"BALLOON SHOOTING",
-					"I wanted to recreate some aspects of the original bloons game in Java with",
+					"I wanted to recreate aspects of the original 'Bloons' while trying to make",
 					"my own sprite renderer. Shoot the balloons using the slingshot with the",
 					"mouse held down. Press the right arrow key to load the next level,",
 					"left for the previous level. R - Restart level | G - Show level grid",
-					"Use shift press to move the entire slingshot, not just the projectile."
+					"+/- - Change resolution"
 			}
 	),
 	

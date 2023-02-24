@@ -40,7 +40,7 @@ public class Slingshot
 	
 	//CONDITIONS
 	private boolean dragValid = false;
-	int slingReturnRounds = 0;
+	private int slingReturnRounds = 0;
 	
 	//INITIALIZATION
 	public void initialize(int PANEL_WIDTH, int PANEL_HEIGHT, int size)
@@ -61,22 +61,22 @@ public class Slingshot
 	}
 	
 	//MOVEMENT
-	public boolean moveSling()
+	public void moveSling()
 	{
-		if (slingReturnRounds > 4) {return false;} //SLING HAS REACHED ORIGIN -> RETURN NO LONGER MOVING
+		if (slingReturnRounds > 4) {return;}
 		
 		PULLPOINT[0]+= returnVect[0]/5;
 		PULLPOINT[1]+= returnVect[1]/5;
 		
 		slingReturnRounds++;
-		
-		return true; //-> STILL MOVING
 	}
+	
+	public boolean isMoving() {return slingReturnRounds <= 4;}
 	
 	public void setReturnVect()
 	{
-		returnVect[0] = PULLPOINT_ORIGIN[0] - PULLPOINT[0]; 
-		returnVect[1] = PULLPOINT_ORIGIN[1] - PULLPOINT[1]; 
+		returnVect[0] = PULLPOINT_ORIGIN[0] - PULLPOINT[0];
+		returnVect[1] = PULLPOINT_ORIGIN[1] - PULLPOINT[1];
 		slingReturnRounds = 0;
 	}
 	
@@ -105,6 +105,6 @@ public class Slingshot
 	public int[] getOrigin()
 	{return ORIGIN;}
 	
-	public int[] getPaintOrigin() //third element in the array is where the second band of the sling starts from
+	public int[] getSlingEdges() //third element in the array is where the second band of the sling starts from
 	{return new int[] {ORIGIN[0] + PIXEL_SIZE, ORIGIN[1] + PIXEL_SIZE, ORIGIN[0] + PIXEL_SIZE*14};}
 }
