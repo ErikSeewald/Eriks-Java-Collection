@@ -10,13 +10,17 @@ import bloonShoot.level.LevelHandler;
 public class ShotHandler implements ActionListener
 {
 	private Timer shot;
-	private Projectile projectile = new Projectile();
-	private Slingshot slingshot = new Slingshot();
+	private Projectile projectile;
+	private Slingshot slingshot;
 	private BlS_Panel panel;
+	private LevelHandler levelHandler;
 	
-	public ShotHandler(BlS_Panel panel)
+	public ShotHandler(BlS_Panel panel, LevelHandler levelHandler)
 	{
 		this.panel = panel;
+		this.levelHandler = levelHandler;
+		projectile = new Projectile();
+		slingshot = new Slingshot();
 		shot = new Timer(15,this);
 		this.initialize();
 	}
@@ -52,7 +56,7 @@ public class ShotHandler implements ActionListener
 		{stop(); return;}
 
 		//COLLISION
-		Hittable[] level = panel.levelHandler.getLevel();
+		Hittable[] level = levelHandler.getLevel();
 		int[] gridEdges = getGridEdges(projectile.getOrigin());
 		if (gridEdges== null) {return;}
 		
@@ -64,7 +68,7 @@ public class ShotHandler implements ActionListener
 			level[gridEdges[i]].hit();
 			
 			if (level[gridEdges[i]].getHittableID() == HittableIDs.boomballoon)
-			{panel.levelHandler.boomCalc(gridEdges[i]);}
+			{levelHandler.boomCalc(gridEdges[i]);}
 
 			projectile.hitReaction(level[gridEdges[i]].getHittableID());
 			
@@ -94,7 +98,7 @@ public class ShotHandler implements ActionListener
 	}
 	
 	//MOUSE HANDLER INTERACTION
-	public void setDragValid(int x, int y) 
+	public void validDragCheck(int x, int y) 
 	{
 		if (this.isRunning()) {return;}
 		slingshot.setDragValid(x, y);

@@ -16,24 +16,26 @@ public class BlS_Panel extends JPanel
 	private int PANEL_WIDTH = 1320;
 	private int PANEL_HEIGHT = (int) (PANEL_WIDTH *0.6);
 	
-	public MouseHandler mouseHandler;
-	public ShotHandler shotHandler;
-	public LevelHandler levelHandler;
+	private MouseHandler mouseHandler;
+	private ShotHandler shotHandler;
+	private LevelHandler levelHandler;
 
 	BlS_Panel()
 	{
 		this.setPreferredSize(new Dimension( PANEL_WIDTH, PANEL_HEIGHT));
 		
-		shotHandler = new ShotHandler(this);
+		levelHandler = new LevelHandler(this);
+		shotHandler = new ShotHandler(this, levelHandler);
 		mouseHandler = new MouseHandler(shotHandler, this);
 		this.addMouseListener(mouseHandler.new ClickListener());
 		this.addMouseMotionListener(mouseHandler.new DragListener());
 		this.addMouseListener(mouseHandler.new ReleaseListener());
 		
-		levelHandler = new LevelHandler(this);
 		levelHandler.loadLevel(1);
 		repaint();
 	}
+	
+	public void stop() {shotHandler.stop(); shotHandler = null; levelHandler = null; mouseHandler = null;}
 	
 	public int[] getDimensions()
 	{return new int[] {PANEL_WIDTH, PANEL_HEIGHT};}
