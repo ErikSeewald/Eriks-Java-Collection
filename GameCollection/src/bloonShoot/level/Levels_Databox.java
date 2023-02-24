@@ -10,7 +10,7 @@ public class Levels_Databox
 		if (levelNum < 1 || levelNum > LEVEL_COUNT) {return null;}
 		
 		short[] level = LEVELS[levelNum-1];		//compressed data
-		byte[] levelRAW = new byte[CELL_COUNT]; //raw data
+		byte[] level_raw = new byte[CELL_COUNT]; //raw data
 		
 		int rawIndex = 0;
 		
@@ -25,9 +25,9 @@ public class Levels_Databox
 			if (insert > 1) {fillUpTo-= (insert-1)*100;} //removes the ID indicator digit
 			
 			while(rawIndex < fillUpTo )
-			{levelRAW[rawIndex] = (byte) insert; rawIndex++;}	
+			{level_raw[rawIndex] = (byte) insert; rawIndex++;}	
 		}
-		return levelRAW;
+		return level_raw;
 	}
 	
 	//-30 -> 30 zeros | 30 -> 30 ones | 130 -> 30 twos

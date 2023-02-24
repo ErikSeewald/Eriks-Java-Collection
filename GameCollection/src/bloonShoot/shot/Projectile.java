@@ -35,41 +35,43 @@ public class Projectile
 	private short timeSinceLastBounce; 
 	private short timeSinceHitBlock;
 	
+	private boolean isFlying;
+	
 	public void initialize(int[] origin, int PIXEL_SIZE)
 	{
 		ORIGIN[0] = origin[0] - PIXEL_SIZE*8; 
 		ORIGIN[1] = origin[1] - PIXEL_SIZE*8; 
 		timeSinceHitBlock = 0;
 		timeSinceLastBounce = 100;
+		isFlying = false;
 	}
 	
-	public boolean fly(int PANEL_HEIGHT)
+	public void fly(int PANEL_HEIGHT)
 	{
-		if (ORIGIN[1] > PANEL_HEIGHT) {return false;} //HAS HIT FLOOR
+		if (ORIGIN[1] > PANEL_HEIGHT) {isFlying = false; return;} //HAS HIT FLOOR
 		
 		ORIGIN[0]+= SPEED[0]; 
 		ORIGIN[1]+= SPEED[1]; 
 		SPEED[1]+= 0.5; //GRAVITY
 		
 		timeSinceLastBounce++;
-		return true;
 	}
 	
-	public boolean hitReaction(int hittableID)
+	public boolean isFlying() {return isFlying;}
+	
+	public boolean isAlive() {return timeSinceHitBlock < 50;}
+	
+	public void hitReaction(int hittableID)
 	{
-		boolean isAlive = true;
-		
 		switch (hittableID)
 		{
-			case HittableIDs.block: if (timeSinceHitBlock > 50) {isAlive = false;} else {timeSinceHitBlock++; SPEED[0] = 0; SPEED[1] = 0;}
+			case HittableIDs.block: if (timeSinceHitBlock < 50) {timeSinceHitBlock++; SPEED[0] = 0; SPEED[1] = 0;}
 			break;
 			case HittableIDs.bounceblock: if (timeSinceLastBounce > 20) {bounce(2);}
 			break;
 			case HittableIDs.woodblock: if (timeSinceLastBounce > 20) {bounce(4);}
 			break;
 		}
-		
-		return isAlive;
 	}
 	
 	private void bounce(int factor)
@@ -80,11 +82,18 @@ public class Projectile
 	}
 	
 	public void setSpeed(float[] vector)
-	{SPEED[0] = vector[0]/5; SPEED[1] = vector[1]/5;}
+	{
+		SPEED[0] = vector[0]/5; 
+		SPEED[1] = vector[1]/5;
+		isFlying = true;
+	}
 	
 	public int[] getOrigin()
 	{return ORIGIN;}
 	
 	public void setNewOrigin(int[] origin, int PIXEL_SIZE)
-	{ORIGIN[0] = origin[0] - PIXEL_SIZE*8; ORIGIN[1] = origin[1] - PIXEL_SIZE*8;}
+	{
+		ORIGIN[0] = origin[0] - PIXEL_SIZE*8; 
+		ORIGIN[1] = origin[1] - PIXEL_SIZE*8;
+	}
 }

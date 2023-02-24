@@ -36,8 +36,8 @@ public class BounceBlock extends Block
 	private boolean flickering = false;
 	private short flickerAnimationFrame;
 
-	public BounceBlock(int[] origin, int pixelSize) 
-	{super(origin, pixelSize); flickerAnimationFrame = 0;}
+	public BounceBlock(int[] origin) 
+	{super(origin); flickerAnimationFrame = 0;}
 	
 	public int getHittableID()
 	{return HITTABLE_ID;}
