@@ -15,7 +15,7 @@ public class MouseHandler
 	public class ClickListener extends MouseAdapter
 	{
 		public void mousePressed(MouseEvent e) 
-		{shotHandler.setDragValid(e.getX(), e.getY());}
+		{shotHandler.validDragCheck(e.getX(), e.getY());}
 	}
 	   
 	public class DragListener extends MouseMotionAdapter
