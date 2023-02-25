@@ -12,13 +12,14 @@ public class EJC_RandGrowth extends JFrame implements EJC_Interface
 	private RandGrowthPanel panel;
 	private RG_GUI_Panel GUIpanel;
 	
-	public EJC_RandGrowth()
+	@Override
+	public void start(WindowEventHandler eventHandler)
 	{
-		panel = new RandGrowthPanel();
-		GUIpanel = new RG_GUI_Panel(panel.getGrowthHandler());
-
+		this.addWindowListener(eventHandler);
 		this.setTitle("Rand Growth");
 		
+		panel = new RandGrowthPanel();
+		GUIpanel = new RG_GUI_Panel(panel.getGrowthHandler());
 		this.setLayout(new BorderLayout());
 		this.add(GUIpanel, BorderLayout.EAST);
 		this.add(panel, BorderLayout.WEST);
@@ -27,10 +28,6 @@ public class EJC_RandGrowth extends JFrame implements EJC_Interface
 		this.setResizable(false);
 		this.setVisible(true);	
 	}
-	
-	@Override
-	public void start(WindowEventHandler eventHandler)
-	{this.addWindowListener(eventHandler);}
 	
 	@Override
 	public void stop()
