@@ -11,14 +11,16 @@ public class EJC_RandBattle extends JFrame implements EJC_Interface
 	private static final long serialVersionUID = 411705531616331949L;
 	private static final int index = 13;
 	
-	RB_Panel panel;
+	private RB_Panel panel;
 	
-	public EJC_RandBattle()
+	@Override
+	public void start(WindowEventHandler eventHandler)
 	{
+		this.addWindowListener(eventHandler);
+		this.setTitle("Rand Battle");
 		panel = new RB_Panel();
 		this.add(panel);
 		this.pack();
-		this.setTitle("Rand Battle");
 		
 		this.addKeyListener(new KeyListener() 
 		{
@@ -40,10 +42,6 @@ public class EJC_RandBattle extends JFrame implements EJC_Interface
 		this.setResizable(false);
 		this.setVisible(true);
 	}
-	
-	@Override
-	public void start(WindowEventHandler eventHandler)
-	{this.addWindowListener(eventHandler);}
 	
 	@Override
 	public void stop() {panel.stopTimer(); panel = null;}
