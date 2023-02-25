@@ -9,13 +9,13 @@ public class EJC_RandGrowth extends JFrame implements EJC_Interface
 	private static final long serialVersionUID = -7593694436385018187L;
 	private static final int index = 14;
 	
-	RandGrowthPanel panel;
-	RG_GUI_Panel GUIpanel;
+	private RandGrowthPanel panel;
+	private RG_GUI_Panel GUIpanel;
 	
 	public EJC_RandGrowth()
 	{
 		panel = new RandGrowthPanel();
-		GUIpanel = new RG_GUI_Panel(panel);
+		GUIpanel = new RG_GUI_Panel(panel.getGrowthHandler());
 
 		this.setTitle("Rand Growth");
 		
@@ -34,7 +34,7 @@ public class EJC_RandGrowth extends JFrame implements EJC_Interface
 	
 	@Override
 	public void stop()
-	{panel.timer.stop(); panel = null;}
+	{panel.stop(); panel = null;}
 	
 	@Override
 	public int getIndex() {return index;}
