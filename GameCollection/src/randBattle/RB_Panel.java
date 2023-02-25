@@ -1,103 +1,74 @@
 package randBattle;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Random;
 import javax.swing.JPanel;
-import javax.swing.Timer;
+import Main.EJC_Util;
 
-public class RB_Panel extends JPanel implements ActionListener
+public class RB_Panel extends JPanel
 {
 	private static final long serialVersionUID = -8706000019243206523L;
 	
 	private int PANEL_WIDTH = 1320;
 	private int PANEL_HEIGHT = (int) (PANEL_WIDTH *0.6);
 	
-	private final Color BACKGROUND = new Color(50,50,60);
-	
-	private int NPC_COUNT = 30;
-	private NPC[] NPCs;
 	private boolean showStats = false;
 	private boolean onlyShowHealth = false;
-	private boolean finished;
 	
-	Timer timer;
-	
-	private Random random;
+	private BattleHandler battleHandler;
 	
 	RB_Panel()
 	{
-		this.setPreferredSize(new Dimension( PANEL_WIDTH, PANEL_HEIGHT));
-		random = new Random();
+		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+		battleHandler = new BattleHandler(this, PANEL_WIDTH, PANEL_HEIGHT);
 		start();
 	}
 	
-	
 	public void start()
 	{
-		//init NPCs
-		NPCs = null;
-		System.gc();
-		NPCs = new NPC[NPC_COUNT];
-		
-		for (int i = 0; i < NPC_COUNT; i++)
-		{NPCs[i] = new NPC(PANEL_WIDTH,PANEL_HEIGHT);}
-		
-		//set targets
-		for (int i = 0; i < NPC_COUNT; i++)
-		{
-			int target = i;
-			while (i == target) {target = random.nextInt(NPC_COUNT);}
-			NPCs[i].setTarget(NPCs[target]);
-		}
-		
-		//timer
-		if (timer != null)
-		{timer.stop();}
-		timer = new Timer(16, this);
-		timer.start();
-		
-		finished = false;
+		battleHandler.start();
 		repaint();
 	}
+	
+	public void stopTimer()
+	{battleHandler.stopTimer();}
+	
+	public void showStats()
+	{showStats = !showStats;}
+	
+	public void onlyShowHealth()
+	{onlyShowHealth = !onlyShowHealth;}
+	
+	//---------------------------------------PAINT---------------------------------------
+	
+	private static final Color background_col = new Color(50,50,60);
+	private static final Color npc_col = new Color(100,100, 145);
+	private static final Color damage_col = new Color (220, 100, 100);
 	
 	public void paint(Graphics g)
 	{
 		Graphics2D g2D = (Graphics2D) g;
 		
 		//Background
-		g2D.setPaint(BACKGROUND);
+		g2D.setPaint(background_col);
 		g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
 		
 		//NPCs
-		for (int i = 0; i < NPC_COUNT; i++)
+		NPC[] NPCs = battleHandler.getNPCs();
+		for (NPC npc : NPCs)
 		{
-			if (NPCs[i].isAlive)
-			{
-				if (NPCs[i].damageAnimation == 0) {g2D.setColor(NPCs[i].getColor());}
-				else {g2D.setColor(new Color (220, 100, 100));}
-				
-				int size = NPCs[i].getSize();
-				g2D.fillRect((int)NPCs[i].getX(), (int)NPCs[i].getY(), size, size);
-			}
+			if (!npc.isAlive) {continue;}
+			
+			g2D.setColor(npc.damageFrames == 0 ? npc_col : damage_col);
+			g2D.fillRect((int) npc.x, (int) npc.y, npc.SIZE, npc.SIZE);
+			
+			g2D.setColor(Color.red);
+			g2D.fillRect((int) npc.PROJECTILE_X+2, (int) npc.PROJECTILE_Y+2, 4, 4);
 		}
 		
-		//PROJECTILES
-		for (int i = 0; i < NPC_COUNT; i++)
-		{
-			if (NPCs[i].isAlive)
-			{
-				g2D.setColor(Color.red);
-				g2D.fillRect((int)NPCs[i].getProjectileX()+2, (int)NPCs[i].getProjectileY()+2, 4, 4);
-			}
-		}
-		
-		if (finished) 
+		if (battleHandler.hasFinished()) 
 		{
 			g2D.setFont(new Font("", Font.BOLD, 144));
 			g2D.drawString("FINISHED", PANEL_WIDTH/4, PANEL_HEIGHT/4);
@@ -108,99 +79,17 @@ public class RB_Panel extends JPanel implements ActionListener
 		
 		g2D.setPaint(Color.white);
 		g2D.setFont(new Font("", Font.BOLD, 9));
-		for (int i = 0; i <NPC_COUNT; i++)
-		{
-			if (NPCs[i].isAlive)
-			{
-				g2D.drawString(NPCs[i].getHealth()+ "hp", (int)NPCs[i].getX(), (int)NPCs[i].getY());
-				
-				if (!onlyShowHealth)
-				{
-					g2D.drawString(NPCs[i].getDamage()+ "dmg", (int)NPCs[i].getX(), (int)NPCs[i].getY()-10);
-					g2D.drawString(round(NPCs[i].getMoveSpeed(),2)+ "speed", (int)NPCs[i].getX(), (int)NPCs[i].getY()-20);
-					g2D.drawString(round(NPCs[i].getProjectileSpeed(),2)+ "dmg speed", (int)NPCs[i].getX(), (int)NPCs[i].getY()-30);
-				}
-			}
-		}
-		
-	}
-	
-	public static double round(double value, int places) 
-	{
-	    long factor = (long) Math.pow(10, places);
-	    value = value * factor;
-	    long tmp = Math.round(value);
-	    return (double) tmp / factor;
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) 
-	{
-		if (hasFinished())
-		{timer.stop(); repaint(); return;}
-		
-		for (int i = 0; i < NPC_COUNT; i++)
-		{
-			if (NPCs[i].isAlive)
-			{	
-				//new target if old one died
-				if (!NPCs[i].getTarget().isAlive) 
-				{
-					int target = i;
-					while (i == target || !NPCs[target].isAlive) 
-					{
-						target = random.nextInt(NPC_COUNT);
-					}
-					NPCs[i].setTarget(NPCs[target]);
-				}
-				
-				NPCs[i].move();
-				NPCs[i].shoot();
-				
-				int hitNum = getHitNum(i);
-				if (hitNum != -1)
-				{NPCs[hitNum].takeDamage(NPCs[i].getDamage());}		
-			}
-		}
-		repaint();
-	}
-	
-	private boolean hasFinished()
-	{
-		int aliveCount = 0;
 		for (NPC npc : NPCs)
 		{
-			if (npc.isAlive)
-			{++aliveCount;}
-		}
-		
-		finished = aliveCount == 1;		
-		return finished;
+			if (!npc.isAlive) {continue;}
+			
+			g2D.drawString(npc.HEALTH+ "hp", (int) npc.x, (int) npc.y);
+
+			if (onlyShowHealth) {continue;}
+			
+			g2D.drawString(npc.DAMAGE+ "dmg", (int) npc.x, (int) npc.y-10);
+			g2D.drawString(EJC_Util.round(npc.MOVE_SPEED,2)+ "speed", (int) npc.x, (int) npc.y-20);
+			g2D.drawString(EJC_Util.round(npc.PROJECTILE_SPEED,2)+ "dmg speed", (int) npc.x, (int) npc.y-30);
+		}	
 	}
-		
-	
-	private int getHitNum(int NPCnum)
-	{
-		double PROJECTILE_X = NPCs[NPCnum].getProjectileX();
-		double PROJECTILE_Y = NPCs[NPCnum].getProjectileY();
-		
-		for (int i = 0; i < NPC_COUNT; i++)
-		{
-			if (i != NPCnum)
-			{
-				if (PROJECTILE_X > NPCs[i].getX() && PROJECTILE_X < NPCs[i].getX()+NPCs[i].getSize()
-					&& PROJECTILE_Y > NPCs[i].getY() && PROJECTILE_Y < NPCs[i].getY()+NPCs[i].getSize())
-				{return i;}
-			}
-		}
-		return -1;
-	}
-	
-	public void stopTimer()
-	{timer.stop();}
-	
-	public void showStats()
-	{showStats = !showStats;}
-	public void onlyShowHealth()
-	{onlyShowHealth = !onlyShowHealth;}
 }

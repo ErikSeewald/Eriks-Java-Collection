@@ -23,4 +23,12 @@ public class EJC_Util
 		float length = (float) Math.sqrt(Math.pow(x, 2)+Math.pow(y, 2));
 		return new float[] {x/length, y/length};
 	}
+	
+	public static double round(double value, int places) 
+	{
+	    long factor = (long) Math.pow(10, places);
+	    value = value * factor;
+	    long tmp = Math.round(value);
+	    return (double) tmp / factor;
+	}
 }
