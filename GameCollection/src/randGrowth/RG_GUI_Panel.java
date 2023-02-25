@@ -15,41 +15,30 @@ import javax.swing.JTextField;
 public class RG_GUI_Panel extends JPanel implements MouseListener
 {
 	private static final long serialVersionUID = -5876435514501823550L;
-	
-	private static final int PANEL_WIDTH = 300;
-	private static final int PANEL_HEIGHT = 780;
+	private static final int WIDTH = 300, HEIGHT = 780;
 	
 	private boolean buttonSizeIncreased = false;
 	
-	private JTextField pixelSizeInput;
-	private JTextField simSpeedInput;
-	private JTextField deathChanceInput;
-	private JTextField reviveChanceInput;
+	private JTextField pixelSizeInput, simSpeedInput, deathChanceInput, reviveChanceInput;
+	private JLabel dieRateLabel, reviveRateLabel, sizeLabel, speedLabel;
 	
-	private JLabel dieRateLabel;
-	private JLabel reviveRateLabel;
-	private JLabel sizeLabel;
-	private JLabel speedLabel;
-	
-	private final Color textColor = new Color(90, 90, 110);
-	private final Color borderColor = new Color(120,120,150);
+	private static final Color textColor = new Color(90, 90, 110);
+	private static final Color borderColor = new Color(120,120,150);
 	
 	private JLabel startButton;
+	private static final Color buttonColor1 = new Color(170, 170, 210);
+	private static final Color buttonColor2 = new Color(200, 200, 240);
+	private static final Color buttonColor3 = new Color(215, 215, 255);
 	
-	private final Color buttonColor1 = new Color(170, 170, 210);
-	private final Color buttonColor2 = new Color(200, 200, 240);
-	private final Color buttonColor3 = new Color(215, 215, 255);
+	private int buttonSizeX = 150, buttonSizeY = 70;
 	
-	private int buttonSizeX = 150;
-	private int buttonSizeY = 70;
+	private GrowthHandler growthHandler;
 	
-	private RandGrowthPanel panel;
-	
-	RG_GUI_Panel(RandGrowthPanel panel)
+	RG_GUI_Panel(GrowthHandler growthHandler)
 	{
-		this.panel = panel;
+		this.growthHandler = growthHandler;
 		
-		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.setBackground(new Color(220,220,250));
 		this.setBorder(BorderFactory.createLineBorder(borderColor, 8));
 
@@ -62,48 +51,31 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 		
 		//INPUTS
 		pixelSizeInput = new JTextField("3");
-		setTextFieldSettings(pixelSizeInput);
-		pixelSizeInput.setBounds(93, 210, 110, 45);
-		
+		initTextField(pixelSizeInput, 93, 210, 110, 45);
 		simSpeedInput = new JTextField("15");
-		setTextFieldSettings(simSpeedInput);
-		simSpeedInput.setBounds(93, 360, 110, 45);
-		
+		initTextField(simSpeedInput, 93, 360, 110, 45);
 		deathChanceInput = new JTextField("25");
-		setTextFieldSettings(deathChanceInput);
-		deathChanceInput.setBounds(93, 510, 110, 45);
-		
+		initTextField(deathChanceInput, 93, 510, 110, 45);
 		reviveChanceInput = new JTextField("35");
-		setTextFieldSettings(reviveChanceInput);
-		reviveChanceInput.setBounds(93, 660, 110, 45);
+		initTextField(reviveChanceInput, 93, 660, 110, 45);
 		
 		//LABELS
-		dieRateLabel = new JLabel("Chance for a pixel to die each frame");
-		setLabelSettings(dieRateLabel);
-		dieRateLabel.setBounds(35, 470, 250, 45);
-		
-		reviveRateLabel = new JLabel("Chance to bring a surrounding pixel to life");
-		setLabelSettings(reviveRateLabel);
-		reviveRateLabel.setBounds(17, 620, 270, 45);
-		
-		sizeLabel = new JLabel("Pixel size");
-		setLabelSettings(sizeLabel);
-		sizeLabel.setBounds(115, 170, 130, 45);
-		
-		speedLabel = new JLabel("Simulation Speed");
-		setLabelSettings(speedLabel);
-		speedLabel.setBounds(90, 320, 130, 45);	
+		setLabelSettings(dieRateLabel, "Chance for a pixel to die each frame", 35, 470, 250, 45 );
+		setLabelSettings(reviveRateLabel, "Chance to bring a surrounding pixel to life", 17, 620, 270, 45);
+		setLabelSettings(sizeLabel, "Pixel size", 115, 170, 130, 45);
+		setLabelSettings(speedLabel, "Simulation Speed", 90, 320, 130, 45);
 	}
 	
-	private void setTextFieldSettings(JTextField textField)
+	private void initTextField(JTextField textField, int a, int b, int c, int d)
 	{
+		textField.setBounds(a,b,c,d);
 		textField.setBorder(BorderFactory.createLineBorder(new Color(130, 130, 150), 3));
 		textField.setFont(new Font("", Font.PLAIN, 15));
 		textField.setHorizontalAlignment(JTextField.CENTER);
 		this.add(textField);
 		
 		textField.addKeyListener(new KeyAdapter() 
-		{
+				{	
 			public void keyPressed(KeyEvent e) 
 			{
 				if ((e.getKeyChar() >= '0' && e.getKeyChar() <= '9') || e.getKeyChar() == '') //-> Delete
@@ -117,8 +89,10 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 		});
 	}
 	
-	private void setLabelSettings(JLabel label)
+	private void setLabelSettings(JLabel label, String name, int a, int b, int c , int d)
 	{
+		label = new JLabel(name);
+		label.setBounds(a,b,c,d);
 		label.setForeground(textColor);
 		label.setFont(new Font("", Font.BOLD, 13));
 		this.add(label);
@@ -142,28 +116,27 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 		{	
 			buttonAnimation(startButton, -(buttonSizeX /30));
 			startButton.setBackground(buttonColor2);
-			
-			int deathChance = 1;
-			int reviveChance = 1;
-			int pixelSize = 1;
-			int simSpeed = 1;
-			
-			String deathChanceStr = deathChanceInput.getText();
-			if (!deathChanceStr.isEmpty()) {deathChance = Integer.parseInt(deathChanceStr);}
-			
-			String reviveChanceStr = reviveChanceInput.getText();
-			if (!reviveChanceStr.isEmpty()) {reviveChance = Integer.parseInt(reviveChanceStr);}
-
-			String pixelSizeStr = pixelSizeInput.getText();
-			if (!pixelSizeStr.isEmpty()) {pixelSize = Integer.parseInt(pixelSizeStr);}
-			
-			String simSpeedStr = simSpeedInput.getText();
-			if (!simSpeedStr.isEmpty()) {simSpeed = Integer.parseInt(simSpeedStr);}
-			if (simSpeed != 0) {simSpeed = 1000/simSpeed;}
-			else {simSpeed = 1000000;}
-			
-			panel.reset(deathChance, reviveChance, pixelSize, simSpeed);
+			readInputs();
 		}
+	}
+	
+	private void readInputs()
+	{
+		int deathChance = 1, reviveChance = 1, pixelSize = 1, simSpeed = 1;
+		
+		String deathChanceStr = deathChanceInput.getText();
+		if (!deathChanceStr.isEmpty()) {deathChance = Integer.parseInt(deathChanceStr);}
+		
+		String reviveChanceStr = reviveChanceInput.getText();
+		if (!reviveChanceStr.isEmpty()) {reviveChance = Integer.parseInt(reviveChanceStr);}
+
+		String pixelSizeStr = pixelSizeInput.getText();
+		if (!pixelSizeStr.isEmpty()) {pixelSize = Integer.parseInt(pixelSizeStr);}
+		
+		String simSpeedStr = simSpeedInput.getText();
+		if (!simSpeedStr.isEmpty()) {simSpeed = Integer.parseInt(simSpeedStr);}
+		
+		growthHandler.reset(deathChance, reviveChance, pixelSize, simSpeed);
 	}
 	
 	@Override
