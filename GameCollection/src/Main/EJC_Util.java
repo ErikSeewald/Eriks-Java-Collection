@@ -20,7 +20,7 @@ public class EJC_Util
 	
 	public static float[] normalize(float x , float y)
 	{	
-		float length = (float) Math.sqrt(Math.pow(x, 2)+Math.pow(y, 2));
+		float length = (float) Math.sqrt(x*x + y*y);
 		return new float[] {x/length, y/length};
 	}
 	

@@ -1,4 +1,4 @@
-package snakesAndLadders;
+package snakesAndLadders.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,38 +9,33 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import snakesAndLadders.board.BoardHandler;
+
 public class SnL_GUI extends JPanel implements MouseListener
 {
 	private static final long serialVersionUID = -587643554501823550L;
+	private static final int PANEL_WIDTH = 300, PANEL_HEIGHT = 780;
+
+	private JLabel playerCountLabel;
+	private JLabel currentPlayerLabel;
 	
-	private static final int PANEL_WIDTH = 300;
-	private static final int PANEL_HEIGHT = 780;
+	private static final Color textColor = new Color(90, 90, 110);
+	private static final Color borderColor = new Color(120,120,150);
 	
+	private JLabel startButton, autoMoveButton, playerCountButton;
 	private boolean buttonSizeIncreased = false;
 	
-	private JLabel playerCountLabel;
-	JLabel currentPlayerLabel;
+	private static final Color buttonColor1 = new Color(170, 170, 210);
+	private static final Color buttonColor2 = new Color(200, 200, 240);
+	private static final Color buttonColor3 = new Color(215, 215, 255);
 	
-	private final Color textColor = new Color(90, 90, 110);
-	private final Color borderColor = new Color(120,120,150);
+	private int buttonSizeX = 150, buttonSizeY = 70;
 	
-	private JLabel startButton;
-	private JLabel autoMoveButton;
-	private JLabel playerCountButton;
-	
-	private final Color buttonColor1 = new Color(170, 170, 210);
-	private final Color buttonColor2 = new Color(200, 200, 240);
-	private final Color buttonColor3 = new Color(215, 215, 255);
-	
-	private int buttonSizeX = 150;
-	private int buttonSizeY = 70;
-	
-	private SnL_Panel panel;
-	
+	private BoardHandler boardHandler;
 	private SpinDie die;
 	private JLabel dieButton;
 	
-	SnL_GUI()
+	public SnL_GUI()
 	{
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		this.setBackground(new Color(220,220,250));
@@ -50,51 +45,47 @@ public class SnL_GUI extends JPanel implements MouseListener
 		
 		//BUTTONS
 		startButton = new JLabel("    Start");
-		startButton.setBounds(73, 60, buttonSizeX, buttonSizeY);
-		setButtonSettings(startButton);
-		
-		autoMoveButton = new JLabel(" Auto Move");
-		autoMoveButton.setBounds(60, 650,180,60);
-		setButtonSettings(autoMoveButton);
-		enableAutoMoveButton(false);
+		setButtonSettings(startButton, 73, 60, buttonSizeX, buttonSizeY);
 		
 		playerCountButton = new JLabel("  1");
-		playerCountButton.setBounds(120, 220, 60, 60);
-		setButtonSettings(playerCountButton);
+		setButtonSettings(playerCountButton, 120, 220, 60, 60);
+		
+		autoMoveButton = new JLabel(" Auto Move");
+		setButtonSettings(autoMoveButton, 60, 650,180,60);
+		enableAutoMoveButton(false);
 		
 		//LABELS
-		playerCountLabel = new JLabel("Player count");
-		setLabelSettings(playerCountLabel);
-		playerCountLabel.setBounds(87, 170, 250, 45);
+		playerCountLabel = new JLabel( "Player count");
+		setLabelSettings(playerCountLabel, 87, 170, 250, 45);
 		
 		currentPlayerLabel = new JLabel("Player 1");
-		setLabelSettings(currentPlayerLabel);
-		currentPlayerLabel.setBounds(85, 420, 270, 45);
+		setLabelSettings(currentPlayerLabel,85, 420, 270, 45 );
 		currentPlayerLabel.setFont(new Font("", Font.BOLD, 35));
 		
 		//DIE
 		die = new SpinDie(this);
-		die.setBounds(100, 500, die.SIZE, die.SIZE);
+		die.setBounds(100, 500, SpinDie.SIZE, SpinDie.SIZE);
 		
 		dieButton = new JLabel("  Roll");
-		dieButton.setBounds(100, 500, die.SIZE, die.SIZE);
-		setButtonSettings(dieButton);
+		setButtonSettings(dieButton, 100, 500, SpinDie.SIZE, SpinDie.SIZE);
 		
 		this.add(die);
 	}
 	
-	public void addPanel(SnL_Panel panel)
-	{this.panel = panel;}
+	public void addBoardHandler(BoardHandler boardHandler)
+	{this.boardHandler = boardHandler;}
 	
-	private void setLabelSettings(JLabel label)
+	private void setLabelSettings(JLabel label, int a, int b, int c, int d)
 	{
+		label.setBounds(a,b,c,d);
 		label.setForeground(textColor);
 		label.setFont(new Font("", Font.BOLD, 20));
 		this.add(label);
 	}
 	
-	private void setButtonSettings(JLabel button)
+	private void setButtonSettings(JLabel button, int a, int b, int c, int d)
 	{
+		button.setBounds(a,b,c,d);
 		button.setBackground(buttonColor1);
 		button.setForeground(textColor);
 		button.setOpaque(true);
@@ -114,13 +105,13 @@ public class SnL_GUI extends JPanel implements MouseListener
 		
 		if (e.getSource()==startButton) 
 		{
-			panel.start(Integer.parseInt(playerCountButton.getText().trim()));
+			boardHandler.start(Integer.parseInt(playerCountButton.getText().trim()));
 		}
 		
 		else if (e.getSource()==autoMoveButton) 
 		{	
 			enableAutoMoveButton(false);
-			panel.autoMove();
+			boardHandler.autoMove();
 		}
 		
 		else if (e.getSource()==playerCountButton)
@@ -133,7 +124,7 @@ public class SnL_GUI extends JPanel implements MouseListener
 		else if (e.getSource()==dieButton) 
 		{	
 			dieButton.setVisible(false);
-			panel.setRolledGridPosition(die.roll());
+			boardHandler.setRolledGridPosition(die.roll());
 			enableStartButton(false);
 		}		
 	}
@@ -195,9 +186,14 @@ public class SnL_GUI extends JPanel implements MouseListener
 	public void enableStartButton(boolean enable)
 	{startButton.setVisible(enable);}
 	
-	public void enableManualMove()
-	{panel.moveAvailable = true;}
+	public void enableMove()
+	{
+		autoMoveButton.setVisible(true);
+		boardHandler.setMoveAvailable(true);
+	}
 	
 	public void stopRollTimer()
-	{die.rollTimer.stop();}
+	{die.stop();}
+	
+	public void setCurrentPlayerLabel(String text) {currentPlayerLabel.setText(text);}
 }
