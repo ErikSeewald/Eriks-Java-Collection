@@ -233,7 +233,7 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 			if (finished)
 			{
 				g2D.setPaint(Player.color);
-				g2D.drawString("FINISHED", (int) (PANEL_HEIGHT/1.53), PANEL_HEIGHT/10);
+				g2D.drawString("FINISHED", (int) (PANEL_HEIGHT/1.55), PANEL_HEIGHT/10);
 				return;
 			}
 			
