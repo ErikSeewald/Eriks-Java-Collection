@@ -17,21 +17,22 @@ public class Player
 		return false;
 	}
 	
-	public void move(char key) 
+	public boolean move(char key) 
 	{
 		switch (key)
 		{
-			case 'a': if (isValidMove(this.x-1, this.y)) {this.x--;} else {return;}
+			case 'a': if (isValidMove(this.x-1, this.y)) {this.x--;} else {return false;}
 			break;
-			case 's': if (isValidMove(this.x, this.y+1)) {this.y++;} else {return;}
+			case 's': if (isValidMove(this.x, this.y+1)) {this.y++;} else {return false;}
 			break;
-			case 'd': if (isValidMove(this.x+1, this.y)) {this.x++;} else {return;}
+			case 'd': if (isValidMove(this.x+1, this.y)) {this.x++;} else {return false;}
 			break;
-			case 'w': if (isValidMove(this.x, this.y-1)) {this.y--;} else {return;}
+			case 'w': if (isValidMove(this.x, this.y-1)) {this.y--;} else {return false;}
 			break;
 		}
 			
 		this.move_count++;
+		return true;
 	}
 	
 	private boolean isValidMove(int x, int y)

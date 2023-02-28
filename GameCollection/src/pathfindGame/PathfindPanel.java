@@ -77,12 +77,16 @@ public class PathfindPanel extends JPanel
 	{
 		if (finished) {return;}
 		
-		player.move(key);
-			
-		for (Chaser chaser : chasers)
-		{chaser.nextStep();}
+		boolean move_worked = player.move(key);
 		
-		finished = player.deathCheck(chasers);
+		if (move_worked)
+		{
+			for (Chaser chaser : chasers)
+			{chaser.nextStep();}
+			
+			finished = player.deathCheck(chasers);
+		}
+		
 		repaint();
 	}
 	
