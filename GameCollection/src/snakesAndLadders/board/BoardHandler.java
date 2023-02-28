@@ -139,7 +139,7 @@ public class BoardHandler implements ActionListener
 	
 	public Player getCurrentPlayer() {return currentPlayer;}
 	
-	public void finish()
+	private void finish()
 	{
 		finished = true; 
 		GUI.enableDieButton(false);  
@@ -161,7 +161,7 @@ public class BoardHandler implements ActionListener
 		public static final boolean ladder = true;
 	}
 	
-	public void SnLCheck(int playerPos)
+	private void SnLCheck(int playerPos)
 	{
 		if (snakeAndLadderIterations < 6) //prevent infinite loops
 		{
