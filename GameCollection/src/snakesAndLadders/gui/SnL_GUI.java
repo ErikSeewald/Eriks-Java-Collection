@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import Main.EJC_GUI;
 import snakesAndLadders.board.BoardHandler;
 
 public class SnL_GUI extends JPanel implements MouseListener
@@ -24,10 +25,6 @@ public class SnL_GUI extends JPanel implements MouseListener
 	
 	private JLabel startButton, autoMoveButton, playerCountButton;
 	private boolean buttonSizeIncreased = false;
-	
-	private static final Color buttonColor1 = new Color(170, 170, 210);
-	private static final Color buttonColor2 = new Color(200, 200, 240);
-	private static final Color buttonColor3 = new Color(215, 215, 255);
 	
 	private int buttonSizeX = 150, buttonSizeY = 70;
 	
@@ -86,7 +83,7 @@ public class SnL_GUI extends JPanel implements MouseListener
 	private void setButtonSettings(JLabel button, int a, int b, int c, int d)
 	{
 		button.setBounds(a,b,c,d);
-		button.setBackground(buttonColor1);
+		button.setBackground(EJC_GUI.b_color_basic);
 		button.setForeground(textColor);
 		button.setOpaque(true);
 		button.setBorder(BorderFactory.createLineBorder(borderColor, 3));
@@ -101,7 +98,7 @@ public class SnL_GUI extends JPanel implements MouseListener
 		JLabel button = (JLabel) e.getSource();
 		
 		buttonAnimation(button, -(buttonSizeX /30));
-		button.setBackground(buttonColor2);
+		button.setBackground(EJC_GUI.b_color_highlight);
 		
 		if (e.getSource()==startButton) 
 		{
@@ -135,21 +132,21 @@ public class SnL_GUI extends JPanel implements MouseListener
 		JLabel button = (JLabel) e.getSource();
 		
 		buttonAnimation(button, -(buttonSizeX /30));
-		button.setBackground(buttonColor3);
+		button.setBackground(EJC_GUI.b_color_pressed);
 	}
 	
 	@Override
 	public void mouseEntered(MouseEvent e) 
 	{
 		if (e.getSource() == playerCountButton)
-		{playerCountButton.setBackground(buttonColor2);}
+		{playerCountButton.setBackground(EJC_GUI.b_color_highlight);}
 		
 		else
 		{
 			JLabel button = (JLabel) e.getSource();
 			
 			buttonAnimation(button, (buttonSizeX /30));
-			button.setBackground(buttonColor2);
+			button.setBackground(EJC_GUI.b_color_highlight);
 		}
 	}
 
@@ -159,7 +156,7 @@ public class SnL_GUI extends JPanel implements MouseListener
 		JLabel button = (JLabel) e.getSource();
 		
 		if (buttonSizeIncreased) {buttonAnimation(button, -(buttonSizeX /30));}
-		button.setBackground(buttonColor1);
+		button.setBackground(EJC_GUI.b_color_basic);
 	}
 	
 	@Override
