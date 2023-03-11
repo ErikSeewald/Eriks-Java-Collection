@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import Main.EJC_GUI;
+
 public class GUI extends JPanel implements MouseListener
 {
 	private static final long serialVersionUID = -5876435514501823550L;
@@ -40,10 +42,6 @@ public class GUI extends JPanel implements MouseListener
 	private JLabel startButton = new JLabel("    Start");
 	private JLabel addButton = new JLabel("  +");
 	private JLabel removeButton = new JLabel("  -");
-	
-	private static final Color b_color_basic = new Color(170, 170, 210);
-	private static final Color b_color_highlight = new Color(200, 200, 240);
-	private static final Color b_color_pressed = new Color(215, 215, 255);
 	
 	private InsectsPanel panel;
 	
@@ -85,7 +83,7 @@ public class GUI extends JPanel implements MouseListener
 		if (e.getSource()==startButton) 
 		{
 			if (buttonSizeIncreased) {buttonAnimation(startButton, -(150 /30));}
-			startButton.setBackground(b_color_pressed);
+			startButton.setBackground(EJC_GUI.b_color_pressed);
 		}
 		
 		else 
@@ -97,7 +95,7 @@ public class GUI extends JPanel implements MouseListener
 					button.getWidth()-6, button.getHeight()-6
 			);
 			
-			button.setBackground(b_color_pressed);
+			button.setBackground(EJC_GUI.b_color_pressed);
 		}
 	}
 	
@@ -107,13 +105,13 @@ public class GUI extends JPanel implements MouseListener
 		if (e.getSource()==startButton) 
 		{
 			buttonAnimation(startButton, (150 /30));
-			startButton.setBackground(b_color_highlight);
+			startButton.setBackground(EJC_GUI.b_color_highlight);
 		}
 		
 		else 
 		{
 			JLabel button = (JLabel) e.getSource();
-			button.setBackground(b_color_highlight);
+			button.setBackground(EJC_GUI.b_color_highlight);
 		}
 	}
 
@@ -123,13 +121,13 @@ public class GUI extends JPanel implements MouseListener
 		if (e.getSource()==startButton) 
 		{
 			if (buttonSizeIncreased) {buttonAnimation(startButton, -(150 /30));}
-			startButton.setBackground(b_color_basic);
+			startButton.setBackground(EJC_GUI.b_color_basic);
 		}
 		
 		else 
 		{
 			JLabel button = (JLabel) e.getSource();
-			button.setBackground(b_color_basic);
+			button.setBackground(EJC_GUI.b_color_basic);
 		}
 	}
 	
@@ -244,7 +242,7 @@ public class GUI extends JPanel implements MouseListener
 	private void setButtonSettings(JLabel button, int a, int b, int c, int d)
 	{
 		button.setBounds(a,b,c,d);
-		button.setBackground(b_color_basic);
+		button.setBackground(EJC_GUI.b_color_basic);
 		button.setForeground(textColor);
 		button.setOpaque(true);
 		button.setBorder(BorderFactory.createLineBorder(borderColor, 3));

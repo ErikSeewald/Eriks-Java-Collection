@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import Main.EJC_GUI;
+
 public class RG_GUI_Panel extends JPanel implements MouseListener
 {
 	private static final long serialVersionUID = -5876435514501823550L;
@@ -26,9 +28,6 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 	private static final Color borderColor = new Color(120,120,150);
 	
 	private JLabel startButton;
-	private static final Color buttonColor1 = new Color(170, 170, 210);
-	private static final Color buttonColor2 = new Color(200, 200, 240);
-	private static final Color buttonColor3 = new Color(215, 215, 255);
 	
 	private int buttonSizeX = 150, buttonSizeY = 70;
 	
@@ -100,7 +99,7 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 	
 	private void setButtonSettings(JLabel button)
 	{
-		button.setBackground(buttonColor1);
+		button.setBackground(EJC_GUI.b_color_basic);
 		button.setForeground(textColor);
 		button.setOpaque(true);
 		button.setBorder(BorderFactory.createLineBorder(borderColor, 3));
@@ -115,7 +114,7 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 		if (e.getSource()==startButton) 
 		{	
 			buttonAnimation(startButton, -(buttonSizeX /30));
-			startButton.setBackground(buttonColor2);
+			startButton.setBackground(EJC_GUI.b_color_highlight);
 			readInputs();
 		}
 	}
@@ -145,7 +144,7 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 		if (e.getSource()==startButton) 
 		{
 			if (buttonSizeIncreased) {buttonAnimation(startButton, -(buttonSizeX /30));}
-			startButton.setBackground(buttonColor3);
+			startButton.setBackground(EJC_GUI.b_color_pressed);
 		}
 	}
 	
@@ -155,7 +154,7 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 		if (e.getSource()==startButton) 
 		{
 			buttonAnimation(startButton, (buttonSizeX /30));
-			startButton.setBackground(buttonColor2);
+			startButton.setBackground(EJC_GUI.b_color_highlight);
 		}
 	}
 
@@ -165,7 +164,7 @@ public class RG_GUI_Panel extends JPanel implements MouseListener
 		if (e.getSource()==startButton) 
 		{
 			if (buttonSizeIncreased) {buttonAnimation(startButton, -(buttonSizeX /30));}
-			startButton.setBackground(buttonColor1);
+			startButton.setBackground(EJC_GUI.b_color_basic);
 		}
 	}
 	
