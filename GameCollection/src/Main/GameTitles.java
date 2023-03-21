@@ -208,6 +208,19 @@ public enum GameTitles {
 					"Try to reach square 53!",
 					"",
 			}
+	),
+	
+	BombSorting
+	(
+			new String[]
+			{
+					"BOMB SORTING",
+					"This is a minigame inspired by 'Sort or Splode' from Mario 64 DS",
+					"",
+					"",
+					"",
+					"",
+			}
 	);
 
 	String[] guide = new String[6];
