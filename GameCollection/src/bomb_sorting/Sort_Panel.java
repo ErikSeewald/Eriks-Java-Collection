@@ -31,7 +31,7 @@ public class Sort_Panel extends JPanel
 	{
 		plate_width = (int) (PANEL_WIDTH / 3.5);
 		plate_height = PANEL_HEIGHT / 2;
-		plate_x_left = PANEL_HEIGHT / 60;
+		plate_x_left = PANEL_HEIGHT / 40;
 		plate_x_right = PANEL_WIDTH - plate_width - plate_x_left;
 		plate_y = (int) (PANEL_HEIGHT / 2.6);
 	}
@@ -41,10 +41,10 @@ public class Sort_Panel extends JPanel
 	
 	//---------------------------------------PAINT---------------------------------------
 	
-	private static final Color background_col = new Color(50, 50, 55);
-	private static final Color border_col = new Color(80, 80, 85);
-	private static final Color left_plate_col = new Color(205, 30, 30);
-	private static final Color right_plate_col = new Color(30, 30, 30);
+	private static final Color background_col = new Color(50, 50, 60);
+	private static final Color border_col = new Color(80, 80, 90);
+	private static final Color left_plate_col = new Color(205, 70, 75);
+	private static final Color right_plate_col = new Color(30, 30, 35);
 	
 	public void paint(Graphics g)
 	{
