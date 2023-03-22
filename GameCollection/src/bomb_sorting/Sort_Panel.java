@@ -98,13 +98,11 @@ public class Sort_Panel extends JPanel
 		//BACKGROUND
 		g2D.setPaint(background_col);
 		g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
-		
-		
+				
 		//PLATES
 		g2D.setPaint(left_plate_col);
 		g2D.fillRect(plate_red_x, plate_y, plate_width, plate_height);
 		
-
 		g2D.setPaint(right_plate_col);
 		g2D.fillRect(plate_black_x, plate_y, plate_width, plate_height);
 		
