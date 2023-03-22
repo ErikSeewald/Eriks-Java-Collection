@@ -1,3 +1,3 @@
 # Eriks-Java-Collection
-A small collection of Java Graphics projects
+A collection of small Java Graphics projects
 
