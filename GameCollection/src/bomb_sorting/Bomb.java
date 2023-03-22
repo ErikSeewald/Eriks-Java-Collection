@@ -12,7 +12,7 @@ public class Bomb
 	
 	public static int size = 20; //changed in Sort_Panel.initSizes
 	
-	public int timer = 9;
+	public int timer = 6;
 	public byte sort_state = Bomb.not_sorted;
 	public boolean isHeld = false;
 	
