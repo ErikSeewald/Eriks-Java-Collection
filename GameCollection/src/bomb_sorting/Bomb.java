@@ -6,11 +6,14 @@ public class Bomb
 {
 	public static final byte BLACK = 1;
 	public static final byte RED = 2;
+	public static final byte not_sorted = 0;
+	public static final byte sorted = 1;
+	public static final byte sorted_incorrectly = 2;
 	
 	public static int size = 20; //changed in Sort_Panel.initSizes
 	
 	public int timer = 9;
-	public boolean isSorted = false;
+	public byte sort_state = Bomb.not_sorted;
 	public boolean isHeld = false;
 	
 	public int x, y;
@@ -34,12 +37,14 @@ public class Bomb
 	{
 		if (this.isHeld) {return;}
 		
+		int speed = this.sort_state == Bomb.sorted ? 2 : 5;
+		
 		switch (random.nextInt(5))
 		{
-			case 1: this.x+=random.nextInt(10); break;
-			case 2: this.x-=random.nextInt(10); break;
-			case 3: this.y+=random.nextInt(10); break;
-			case 4: this.y-=random.nextInt(10); break;
+			case 1: this.x+=random.nextInt(speed); break;
+			case 2: this.x-=random.nextInt(speed); break;
+			case 3: this.y+=random.nextInt(speed); break;
+			case 4: this.y-=random.nextInt(speed); break;
 		}
 	}
 }
