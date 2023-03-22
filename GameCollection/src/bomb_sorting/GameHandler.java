@@ -12,6 +12,7 @@ public class GameHandler implements ActionListener
 	private int score;
 	private Timer score_timer;
 	private Timer movement_timer;
+	private int time_since_explosion;
 	
 	// SPAWNER COORDINATES
 	private int spawner;
@@ -41,6 +42,7 @@ public class GameHandler implements ActionListener
 	
 	public void start()
 	{
+		time_since_explosion = 0;
 		score = 0;
 		bombs.clear();
 		System.gc();
@@ -115,7 +117,7 @@ public class GameHandler implements ActionListener
 		if (bomb == null) {return Bomb.not_sorted;}
 		
 		// CHECK FOR Y
-		if (!(bomb.y > plate_y && bomb.y < plate_y + plate_height))
+		if (!(bomb.y > plate_y && bomb.y < plate_y + plate_height) || bomb.isHeld)
 		{return Bomb.not_sorted;}
 		
 		// CHECK FOR X
@@ -165,7 +167,11 @@ public class GameHandler implements ActionListener
 			
 			// restart after explosion event
 			if (!movement_timer.isRunning())
-			{start();}
+			{
+				time_since_explosion++;
+				if (time_since_explosion > 2)
+				{this.start();}
+			}
 		}
 	}
 }

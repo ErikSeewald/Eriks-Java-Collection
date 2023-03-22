@@ -216,9 +216,9 @@ public enum GameTitles {
 			{
 					"BOMB SORTING",
 					"This is a minigame inspired by 'Sort or Splode' from Mario 64 DS",
+					"Sort the bombs by their colors before their countdown reaches zero",
+					"Move them by dragging your mouse.",
 					"+/- to change screen size",
-					"",
-					"",
 					"",
 			}
 	);
