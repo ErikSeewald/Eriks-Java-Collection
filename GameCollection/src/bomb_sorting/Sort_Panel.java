@@ -37,7 +37,7 @@ public class Sort_Panel extends JPanel
 		this.addMouseListener(mouseHandler.new ReleaseListener());
 		
 		this.init_sizes();
-		this.start();
+		gameHandler.start();
 	}
 	
 	public void changeSize(int change)
@@ -78,9 +78,6 @@ public class Sort_Panel extends JPanel
 		gameHandler.setPlateCoordinates(plate_red_x, plate_black_x, plate_y, plate_width, plate_height);
 		gameHandler.setSpawnerCoordinates(PANEL_HEIGHT / 6);
 	}
-	
-	public void start()
-	{gameHandler.start();}
 	
 	public void stop()
 	{gameHandler.stop(); gameHandler = null; mouseHandler = null; System.gc();}
@@ -128,6 +125,10 @@ public class Sort_Panel extends JPanel
 		//GUI BOARD
 		g2D.setPaint(border_col);
 		g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT / 6);
+		
+		g2D.setPaint(iron_col);
+		g2D.setFont(new Font("", Font.BOLD, PANEL_HEIGHT / 10));
+		g2D.drawString("SCORE: " + gameHandler.getScore(), (int) (PANEL_WIDTH / 2.9), PANEL_HEIGHT / 8);
 	}
 	
 	private void paintBomb(Graphics2D g2D, Bomb bomb, int x, int y)
@@ -142,6 +143,10 @@ public class Sort_Panel extends JPanel
 		
 		//TIMER
 		if (bomb.sort_state == Bomb.sorted) {return;}
-		g2D.drawString(""+bomb.timer, x + (int) (Bomb.size / 2.8), y + (int) (Bomb.size * 0.7));	
+		
+		if (bomb.sort_state == Bomb.sorted_incorrectly || bomb.timer < 1)
+		{g2D.drawString("X", x + (int) (Bomb.size / 2.8), y + (int) (Bomb.size * 0.7));	}
+		else 
+		{g2D.drawString(""+bomb.timer, x + (int) (Bomb.size / 2.8), y + (int) (Bomb.size * 0.7));}	
 	}
 }

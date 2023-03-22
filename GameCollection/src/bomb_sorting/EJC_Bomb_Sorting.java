@@ -35,7 +35,6 @@ public class EJC_Bomb_Sorting extends JFrame implements EJC_Interface
 				
 				if (key == '+') {panel.changeSize(10); pack();}
 				else if (key == '-') {panel.changeSize(-10); pack();}
-				else if (key == 'r') {panel.start();}
 				
 			}
 			@Override

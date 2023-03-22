@@ -72,12 +72,16 @@ public class GameHandler implements ActionListener
 		Bomb bomb;
 				
 		do
-		{bomb = new Bomb(type, random.nextInt(panel.getWidth()), random.nextInt(spawner * 2) + spawner);}
+		{
+			bomb = new Bomb(type, 
+					random.nextInt(panel.getWidth() - (Bomb.size * 2)) + Bomb.size, 
+					random.nextInt(spawner * 2) + spawner);
+		}
 		while (checkIfSorted(bomb) != Bomb.not_sorted);
-				
+
 		bombs.add(bomb);
 	}
-	
+
 	private void bombTimerCheck()
 	{
 		score = 0;
@@ -86,15 +90,13 @@ public class GameHandler implements ActionListener
 		{
 			bomb.sort_state = checkIfSorted(bomb);
 			if (bomb.sort_state == Bomb.sorted)
-			{continue;}
+			{score++; continue;}
 			
 			if (bomb.sort_state == Bomb.sorted_incorrectly)
 			{explosionEvent(bomb); return;}
 			
 			bomb.timer--;
 			if (bomb.timer < 1) {explosionEvent(bomb); return;}
-			
-			score++;
 		}
 	}
 	
@@ -140,9 +142,11 @@ public class GameHandler implements ActionListener
 	
 	public void explosionEvent(Bomb bomb)
 	{
-		bombs.clear();
-		score = 0;
+		movement_timer.stop();
 		
+		bombs.removeIf(b -> b != bomb); // remove all bombs except for the exploding one
+		score = 0;
+		panel.repaint();
 	}
 
 	@Override
@@ -156,8 +160,12 @@ public class GameHandler implements ActionListener
 		
 		else if (e.getSource() == score_timer)
 		{
-			bombTimerCheck();
 			addBomb();
+			bombTimerCheck();
+			
+			// restart after explosion event
+			if (!movement_timer.isRunning())
+			{start();}
 		}
 	}
 }
