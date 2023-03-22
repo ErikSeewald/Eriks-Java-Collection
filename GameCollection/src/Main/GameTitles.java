@@ -50,7 +50,7 @@ public enum GameTitles {
 					"Type 0 to delete a number.",
 					"Keys:",
 					"S -- Solve | R -- Reset",
-					"+/- -- Change screen size",
+					"+/- to change screen size",
 			}
 	),
 	
@@ -63,7 +63,7 @@ public enum GameTitles {
 					"The chasers only move when you move and can break obstacles in 3 hits.",
 					"Keys:",
 					"R -- Reset board | T -- Generate new board",
-					"+/- -- Change screen size | Use the menu bar to input a board seed.",
+					"+/- to change screen size | Use the menu bar to input a board seed.",
 			}
 	),
 	
@@ -128,7 +128,7 @@ public enum GameTitles {
 					"Use the Object Menu in the top left to drawn an object into the rectangle,",
 					"save it and then move it with W,A,S,D. Use shift to move faster.",
 					"Use the Pixel Menu to change the size of the pixel grid.",
-					"+/- - Change screen size| F - Fly mode | R - Reset | Shift click - Erase pixel",
+					"+/- to change screen size| F - Fly mode | R - Reset | Shift click - Erase pixel",
 			}
 	),
 	
@@ -153,7 +153,7 @@ public enum GameTitles {
 					"Move gravity points with the mouse held down",
 					"Keys:",
 					"1 - Add another gravity point | 2 - Remove last gravity point",
-					"+/- - Change screen size",
+					"+/- to change screen size",
 					"G - Activate gradient rendering | N - Turn off arrow normalization",
 			}
 	),
@@ -167,7 +167,7 @@ public enum GameTitles {
 					"my own sprite renderer. Shoot the balloons using the slingshot with the",
 					"mouse held down. Press the right arrow key to load the next level,",
 					"left for the previous level. R - Restart level | G - Show level grid",
-					"+/- - Change resolution"
+					"+/- to change resolution"
 			}
 	),
 	
@@ -216,7 +216,7 @@ public enum GameTitles {
 			{
 					"BOMB SORTING",
 					"This is a minigame inspired by 'Sort or Splode' from Mario 64 DS",
-					"",
+					"+/- to change screen size",
 					"",
 					"",
 					"",

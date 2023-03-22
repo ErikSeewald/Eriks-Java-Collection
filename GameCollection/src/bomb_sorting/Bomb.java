@@ -1,5 +1,7 @@
 package bomb_sorting;
 
+import java.util.Random;
+
 public class Bomb 
 {
 	public static final byte BLACK = 1;
@@ -9,6 +11,7 @@ public class Bomb
 	
 	public int timer = 9;
 	public boolean isSorted = false;
+	public boolean isHeld = false;
 	
 	public int x, y;
 	
@@ -25,5 +28,18 @@ public class Bomb
 		this.type = type;
 		this.x = x;
 		this.y = y;
+	}
+	
+	public void move(Random random)
+	{
+		if (this.isHeld) {return;}
+		
+		switch (random.nextInt(5))
+		{
+			case 1: this.x+=random.nextInt(10); break;
+			case 2: this.x-=random.nextInt(10); break;
+			case 3: this.y+=random.nextInt(10); break;
+			case 4: this.y-=random.nextInt(10); break;
+		}
 	}
 }

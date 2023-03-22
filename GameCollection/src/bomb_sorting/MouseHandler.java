@@ -18,7 +18,6 @@ public class MouseHandler
 	{
 		public void mousePressed(MouseEvent e) 
 		{
-			selectedBomb = null;
 			int x = e.getX();
 			int y = e.getY();
 			
@@ -27,6 +26,7 @@ public class MouseHandler
 				if (x > bomb.x && x < bomb.x + Bomb.size && y > bomb.y && y < bomb.y + Bomb.size)
 				{
 					selectedBomb = bomb;
+					bomb.isHeld = true;
 					return;
 				}
 			}
@@ -48,6 +48,11 @@ public class MouseHandler
 	public class ReleaseListener extends MouseAdapter
 	{
 		public void mouseReleased(MouseEvent e) 
-		{selectedBomb = null;}
+		{
+			if (selectedBomb == null) {return;}
+			
+			selectedBomb.isHeld = false;
+			selectedBomb = null;
+		}
 	}
 }
