@@ -12,7 +12,7 @@ public class Player
 	public ScoreHandler score;
 	
 	Player(int PANEL_SIZE)
-	{this.initialize(PANEL_SIZE); score = new ScoreHandler();}
+	{this.initialize(PANEL_SIZE); score = new ScoreHandler(); this.moveAllowed = false;}
 	
 	public void initialize(int PANEL_SIZE)
 	{

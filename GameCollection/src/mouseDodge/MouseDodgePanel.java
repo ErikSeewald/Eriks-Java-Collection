@@ -100,7 +100,7 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 		if (paused) {return;}
 		
 		//PLAYER
-		player.score.reset();;
+		player.score.reset();
 		
 		if (finished)
 		{
