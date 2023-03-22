@@ -51,6 +51,10 @@ public class MouseHandler
 		{
 			if (selectedBomb == null) {return;}
 			
+			selectedBomb.sort_state = gameHandler.checkIfSorted(selectedBomb);		
+			if (selectedBomb.sort_state == Bomb.sorted_incorrectly)
+			{gameHandler.explosionEvent(selectedBomb);}
+			
 			selectedBomb.isHeld = false;
 			selectedBomb = null;
 		}

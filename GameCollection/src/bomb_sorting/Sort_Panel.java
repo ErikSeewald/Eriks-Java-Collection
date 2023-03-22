@@ -21,11 +21,7 @@ public class Sort_Panel extends JPanel
 	private int plate_red_x;
 	private int plate_black_x;
 	private int plate_y;
-	
-	// BOMB SPAWNER
-	private int spawner_x;
-	private int spawner_y;
-	
+
 	// HANDLERS
 	private GameHandler gameHandler;
 	private MouseHandler mouseHandler;
@@ -77,13 +73,10 @@ public class Sort_Panel extends JPanel
 		plate_red_x = PANEL_HEIGHT / 40;
 		plate_black_x = PANEL_WIDTH - plate_width - plate_red_x;
 		plate_y = (int) (PANEL_HEIGHT / 2.6);
-		Bomb.size = PANEL_HEIGHT / 18;
-		
-		spawner_x = (int) (PANEL_WIDTH / 2.35);
-		spawner_y = PANEL_HEIGHT / 6;
-		gameHandler.setSpawnerCoordinates(spawner_x, spawner_y);
+		Bomb.size = PANEL_HEIGHT / 16;
+
 		gameHandler.setPlateCoordinates(plate_red_x, plate_black_x, plate_y, plate_width, plate_height);
-		
+		gameHandler.setSpawnerCoordinates(PANEL_HEIGHT / 6);
 	}
 	
 	public void start()
@@ -126,17 +119,14 @@ public class Sort_Panel extends JPanel
 		
 		//BOMBS
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
+		g2D.setFont(new Font("", Font.PLAIN, Bomb.size / 2));
 		for (Bomb bomb: gameHandler.bombs)
 		{
 			paintBomb(g2D, bomb, bomb.x, bomb.y);
 		}
 		
-		//BOMB SPAWNER
-		g2D.setPaint(border_col);
-		g2D.fillRect(spawner_x, spawner_y - 5, PANEL_WIDTH / 6, PANEL_HEIGHT / 15);
-		
 		//GUI BOARD
+		g2D.setPaint(border_col);
 		g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT / 6);
 	}
 	
@@ -151,8 +141,7 @@ public class Sort_Panel extends JPanel
 		g2D.fillRect(x + Bomb.size / 4, y - Bomb.size / 10, Bomb.size / 2, Bomb.size / 5);
 		
 		//TIMER
-		g2D.setFont(new Font("", Font.PLAIN, Bomb.size / 2));
-		g2D.drawString(""+bomb.timer, x + (int) (Bomb.size / 2.8), y + (int) (Bomb.size * 0.7));
-		
+		if (bomb.sort_state == Bomb.sorted) {return;}
+		g2D.drawString(""+bomb.timer, x + (int) (Bomb.size / 2.8), y + (int) (Bomb.size * 0.7));	
 	}
 }

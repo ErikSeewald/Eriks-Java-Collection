@@ -13,9 +13,8 @@ public class GameHandler implements ActionListener
 	private Timer score_timer;
 	private Timer movement_timer;
 	
-	// SPAWNER
-	private int spawner_x;
-	private int spawner_y;
+	// SPAWNER COORDINATES
+	private int spawner;
 	
 	// PLATES
 	private int plate_black_right;
@@ -54,8 +53,8 @@ public class GameHandler implements ActionListener
 	
 	public int getScore() {return score;}
 	
-	public void setSpawnerCoordinates(int x, int y)
-	{this.spawner_x = x + Bomb.size * 2; this.spawner_y = y + Bomb.size * 2;}
+	public void setSpawnerCoordinates(int coords)
+	{this.spawner = coords;}
 	
 	public void setPlateCoordinates(int red_x, int black_x, int y, int width, int height)
 	{
@@ -70,41 +69,79 @@ public class GameHandler implements ActionListener
 	private void addBomb()
 	{
 		byte type = (byte) (random.nextInt(Bomb.RED) + Bomb.BLACK);
-		bombs.add(new Bomb(type, spawner_x, spawner_y));
+		Bomb bomb;
+				
+		do
+		{bomb = new Bomb(type, random.nextInt(panel.getWidth()), random.nextInt(spawner * 2) + spawner);}
+		while (checkIfSorted(bomb) != Bomb.not_sorted);
+				
+		bombs.add(bomb);
 	}
 	
 	private void bombTimerCheck()
 	{
+		score = 0;
+		
 		for (Bomb bomb: bombs)
 		{
-			checkIfSorted(bomb);
-			if (bomb.isSorted) {continue;}
+			bomb.sort_state = checkIfSorted(bomb);
+			if (bomb.sort_state == Bomb.sorted)
+			{continue;}
+			
+			if (bomb.sort_state == Bomb.sorted_incorrectly)
+			{explosionEvent(bomb); return;}
 			
 			bomb.timer--;
-			if (bomb.timer < 1) {explosionEvent(bomb);}
+			if (bomb.timer < 1) {explosionEvent(bomb); return;}
+			
+			score++;
 		}
 	}
 	
-	private void checkIfSorted(Bomb bomb)
+	/**
+	 * Returns one of three possible sorting states
+	 * @param bomb the bomb to be checked
+	 * @return
+	 * <ul>
+	 * <li>{@link Bomb#not_sorted}</li>
+	 * <li>{@link Bomb#sorted}</li>
+	 * <li>{@link Bomb#sorted_incorrectly}</li>
+	 * </ul>
+	 */
+	public byte checkIfSorted(Bomb bomb)
 	{
+		if (bomb == null) {return Bomb.not_sorted;}
+		
 		// CHECK FOR Y
 		if (!(bomb.y > plate_y && bomb.y < plate_y + plate_height))
-		{bomb.isSorted = false; return;}
+		{return Bomb.not_sorted;}
 		
 		// CHECK FOR X
 		if (bomb.type == Bomb.RED)
 		{
-			bomb.isSorted = bomb.x > plate_red_left && bomb.x < plate_red_right;
+			if (bomb.x > plate_red_left && bomb.x < plate_red_right) 
+			{return Bomb.sorted;}
+			
+			else if (bomb.x > plate_black_left && bomb.x < plate_black_right)
+			{return Bomb.sorted_incorrectly;}
 		}
 		
 		else
 		{
-			bomb.isSorted = bomb.x > plate_black_left && bomb.x < plate_black_right;
+			if (bomb.x > plate_black_left && bomb.x < plate_black_right) 
+			{return Bomb.sorted;}
+			
+			else if (bomb.x > plate_red_left && bomb.x < plate_red_right)
+			{return Bomb.sorted_incorrectly;}
 		}
+		
+		return Bomb.not_sorted;
 	}
 	
-	private void explosionEvent(Bomb bomb)
+	public void explosionEvent(Bomb bomb)
 	{
+		bombs.clear();
+		score = 0;
 		
 	}
 
