@@ -50,12 +50,12 @@ public class MouseHandler
 		public void mouseReleased(MouseEvent e) 
 		{
 			if (selectedBomb == null) {return;}
+			selectedBomb.isHeld = false;
 			
 			selectedBomb.sort_state = gameHandler.checkIfSorted(selectedBomb);		
 			if (selectedBomb.sort_state == Bomb.sorted_incorrectly)
 			{gameHandler.explosionEvent(selectedBomb);}
-			
-			selectedBomb.isHeld = false;
+	
 			selectedBomb = null;
 		}
 	}
