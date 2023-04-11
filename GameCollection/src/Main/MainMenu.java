@@ -12,6 +12,7 @@ import bloonShoot.EJC_BloonShoot;
 import bomb_sorting.EJC_Bomb_Sorting;
 import clothSim.EJC_ClothSim;
 import gravityVectors.EJC_GravityVectors;
+import infdungeons.EJC_InfDungeons;
 import insects.EJC_Insects;
 import mouseDodge.EJC_MouseDodge;
 import parallelUniverses.EJC_ParallelUniverses;
@@ -79,7 +80,7 @@ public class MainMenu extends JFrame implements MouseListener
 				new GButton("      Pathfind", 4), new GButton("    Parallel U.", 5), new GButton("    Reflection", 6), new GButton(" Mouse Dodge", 7), 
 				new GButton("   Sidescroller", 8), new GButton(" Pixel Collision", 9), new GButton("    Cloth Sim", 10), new GButton(" Gravity Vects", 11),
 				new GButton("  Bloon Shoot", 12), new GButton("  Rand Battle", 13), new GButton(" Rand Growth", 14), new GButton("     Ladders", 15), 
-				new GButton(" Bomb Sorting", 16), new GButton("", 17), new GButton("", 18), new GButton("", 19), 
+				new GButton(" Bomb Sorting", 16), new GButton(" Inf Dungeons", 17), new GButton("", 18), new GButton("", 19), 
 				new GButton("", 20), new GButton("", 21), new GButton("", 22), new GButton("", 23), 
 		};
 		
@@ -161,6 +162,7 @@ public class MainMenu extends JFrame implements MouseListener
 			case 14: new EJC_RandGrowth().start(eventHandler); break;
 			case 15: new EJC_SnakesAndLadders().start(eventHandler); break;
 			case 16: new EJC_Bomb_Sorting().start(eventHandler); break;
+			case 17: new EJC_InfDungeons().start(eventHandler); break;
 			
 			default: return;
 		}

@@ -88,7 +88,7 @@ public class GameHandler implements ActionListener
 	{
 		score = 0;
 		
-		for (Bomb bomb: bombs)
+		for (Bomb bomb : bombs)
 		{
 			bomb.sort_state = checkIfSorted(bomb);
 			if (bomb.sort_state == Bomb.sorted)

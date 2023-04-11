@@ -28,7 +28,7 @@ public class Sort_Panel extends JPanel
 	
 	Sort_Panel()
 	{
-		this.setPreferredSize(new Dimension(PANEL_WIDTH,PANEL_HEIGHT));
+		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		gameHandler = new GameHandler(this);
 		
 		mouseHandler = new MouseHandler(this, gameHandler);
