@@ -221,6 +221,19 @@ public enum GameTitles {
 					"+/- to change screen size",
 					"",
 			}
+	),
+	
+	InfDungeons
+	(
+			new String[]
+			{
+					"INFINITE DUNGEONS",
+					"This is a small dungeon crawler with randomly generated dungeons.",
+					"",
+					"",
+					"",
+					"",
+			}
 	);
 
 	String[] guide = new String[6];
