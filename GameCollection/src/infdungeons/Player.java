@@ -2,11 +2,10 @@ package infdungeons;
 
 public class Player 
 {
-	private int size;
-	private int sword_length;
-	
 	int x, y;
 	int speed;
+	int size;
+	boolean isAttacking;
 	
 	public static final class Direction
 	{
@@ -14,16 +13,18 @@ public class Player
 	};
 	int direction;
 	
-	Player()
-	{this.size = 10; this.sword_length = 10; this.x = 10; this.y = 10; this.speed = 10; direction = Direction.NORTH;}
-	
-	public void setSize(int size) 
+	public void move(int x, int y)
 	{
-		this.size = size;
-		this.sword_length = size / 2;
+		if (x != 0)
+		{
+			this.x+=x;
+			this.direction = x > 0 ? Direction.EAST : Direction.WEST;
+		}
+		
+		else
+		{
+			this.y+=y;
+			this.direction = y > 0 ? Direction.SOUTH : Direction.NORTH;
+		}
 	}
-	
-	public int getSize() {return this.size;}
-	
-	public int getSwordLength() {return this.sword_length;}
 }

@@ -40,6 +40,9 @@ public class EJC_InfDungeons extends JFrame implements EJC_Interface
 			{
 				int code = e.getKeyCode();
 				pressedKeys.add(code);
+				
+				if (code == 521) {panel.changeSize(10); pack();} // +
+				else if (code == 45) {panel.changeSize(-10); pack();} // -
 			
 			}
 			@Override
@@ -56,10 +59,18 @@ public class EJC_InfDungeons extends JFrame implements EJC_Interface
 			{
 				int x = 0, y = 0, speed = panel.getPlayerSpeed();
 
+				boolean is_attacking = pressedKeys.contains(32);
+				panel.player.isAttacking = is_attacking;
+				
+				if (is_attacking)
+				{speed /= 2;}
+				
 				if (pressedKeys.contains(68)) {x = speed;} 	//D
 				if (pressedKeys.contains(65)) {x = -speed;} //A
 				if (pressedKeys.contains(87)) {y = -speed;} //W
 				if (pressedKeys.contains(83)) {y = speed;} 	//S
+				
+				
 
 				if(x == 0 && y == 0)
 				{return;}
