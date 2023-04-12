@@ -56,13 +56,13 @@ public class DungeonHandler
 		}
 		
 		// ADD BIDIRECTIONAL PATH
-		player.getRoom().neighbors[direction.ordinal()] = next_room;
-		next_room.neighbors[reverse(direction).ordinal()] = player.getRoom();
+		cur_room.neighbors[direction.ordinal()] = next_room;
+		next_room.neighbors[reverse(direction).ordinal()] = cur_room;
 		player.setRoom(next_room);
 	}
 	
 	private Direction reverse(Direction direction)
 	{
-		return Direction.values()[((direction.angle + 180) % 360) / 90];
+		return Direction.values()[(direction.ordinal() + 2) % 4];
 	}
 }
