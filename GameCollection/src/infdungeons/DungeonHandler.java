@@ -48,12 +48,21 @@ public class DungeonHandler
 		// store bits of first int in upper half long and second int in lower half
 		long key = ((long) new_coords[0] << 32) | new_coords[1]; 
 		
-		if (rooms.containsKey(key)) {player.setRoom(rooms.get(key));}
-		
-		else
+		next_room = rooms.get(key);
+		if (next_room == null)
 		{
-			player.setRoom(new Room(random, new_coords));
-			rooms.put(key, player.getRoom());
+			next_room = new Room(random, new_coords);
+			rooms.put(key, next_room);
 		}
+		
+		// ADD BIDIRECTIONAL PATH
+		player.getRoom().neighbors[direction.ordinal()] = next_room;
+		next_room.neighbors[reverse(direction).ordinal()] = player.getRoom();
+		player.setRoom(next_room);
+	}
+	
+	private Direction reverse(Direction direction)
+	{
+		return Direction.values()[((direction.angle + 180) % 360) / 90];
 	}
 }
