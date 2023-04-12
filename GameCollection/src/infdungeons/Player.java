@@ -6,12 +6,16 @@ public class Player
 	int speed;
 	int size;
 	boolean isAttacking;
+	private Room currentRoom;
 	
-	public static final class Direction
+	public static enum Direction
 	{
-		final static int NORTH = 0, EAST = 90, SOUTH = 180, WEST = 270;
+		NORTH(0), EAST(90), SOUTH(180), WEST(270);
+		
+		int angle;
+		Direction(int angle) {this.angle = angle;}
 	};
-	int direction;
+	Direction direction;
 	
 	public void move(int x, int y)
 	{
@@ -27,4 +31,8 @@ public class Player
 			this.direction = y > 0 ? Direction.SOUTH : Direction.NORTH;
 		}
 	}
+	
+	public Room getRoom() {return currentRoom;}
+	
+	public void setRoom(Room room) {currentRoom = room;}
 }

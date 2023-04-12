@@ -5,10 +5,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
-
 import javax.swing.JFrame;
 import javax.swing.Timer;
-
 import Main.EJC_Interface;
 import Main.WindowEventHandler;
 
@@ -23,7 +21,7 @@ public class EJC_InfDungeons extends JFrame implements EJC_Interface
 	
 	@Override
 	public void start(WindowEventHandler eventHandler)
-	{
+	{	
 		this.addWindowListener(eventHandler);
 		this.setTitle("Inf Dungeons");
 		this.setResizable(false);

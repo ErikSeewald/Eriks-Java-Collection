@@ -18,12 +18,14 @@ public class Inf_Panel extends JPanel
 	private int PANEL_WIDTH = (int) (PANEL_HEIGHT * 1.52);
 	
 	protected Player player;
+	private GameHandler gameHandler;
 	
 	Inf_Panel()
 	{
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
-		player = new Player();
+		gameHandler = new GameHandler();
+		player = gameHandler.player;
 		player.size = PANEL_HEIGHT / 26;
 		player.speed = PANEL_HEIGHT / 120;
 	}
@@ -98,7 +100,7 @@ public class Inf_Panel extends JPanel
 	{
 		g2D.setPaint(sword_col);
 		
-		boolean facing_north_south = player.direction % 180 == 0;
+		boolean facing_north_south = player.direction.angle % 180 == 0;
 		
 		int sword_width = facing_north_south ? player_size / 4 : player_size;
 		int sword_height = facing_north_south ? player_size : player_size / 4;
