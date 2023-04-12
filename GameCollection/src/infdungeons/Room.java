@@ -5,7 +5,8 @@ import infdungeons.Player.Direction;
 
 public class Room 
 {
-	Room NORTH, EAST, SOUTH, WEST;
+	Room[] neighbors; // directions following order N-E-S-W
+	final int[] coordinates;
 	
 	public static final class Door
 	{
@@ -14,8 +15,10 @@ public class Room
 	}
 	private byte[] doors; // door directions following order N-E-S-W
 	
-	Room(Random random)
+	Room(Random random, int[] coordinates)
 	{
+		this.coordinates = coordinates;
+		
 		doors = new byte[4];
 		generateDoors(random);
 	}

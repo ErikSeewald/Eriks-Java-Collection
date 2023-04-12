@@ -18,13 +18,13 @@ public class Inf_Panel extends JPanel
 	private int PANEL_WIDTH = (int) (PANEL_HEIGHT * 1.52);
 	
 	protected Player player;
-	private GameHandler gameHandler;
+	private DungeonHandler gameHandler;
 	
 	Inf_Panel()
 	{
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
-		gameHandler = new GameHandler();
+		gameHandler = new DungeonHandler();
 		player = gameHandler.player;
 		player.size = PANEL_HEIGHT / 26;
 		player.speed = PANEL_HEIGHT / 120;
