@@ -11,7 +11,7 @@ public class Room
 	public static final class Door
 	{
 		public static final byte locked = 0, open = 1, blocked = -1;
-		public static final byte[] state_chances = {20, 40, 40};
+		public static final byte[] state_chances = {10, 60, 30};
 	}
 	private byte[] doors; // door directions following order N-E-S-W
 	
@@ -19,6 +19,7 @@ public class Room
 	{
 		this.coordinates = coordinates;
 		
+		neighbors = new Room[4];
 		doors = new byte[4];
 		generateDoors(random);
 	}
