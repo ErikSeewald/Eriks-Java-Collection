@@ -34,9 +34,9 @@ public class DungeonHandler
 	public void changeRoomSize(int width, int height)
 	{
 		room_width = (int) (width * 0.918);
-		room_height = (int) (height * 0.869);
+		room_height = (int) (height * 0.81);
 		top_left_x = (int) (width * 0.043);
-		top_left_y = (int) (height * 0.063);
+		top_left_y = (int) (height * 0.125);
 		
 		door_coords[0][0] = width / 2;
 		door_coords[0][1] = top_left_y;
