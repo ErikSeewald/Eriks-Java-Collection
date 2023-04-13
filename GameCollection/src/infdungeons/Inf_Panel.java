@@ -123,10 +123,10 @@ public class Inf_Panel extends JPanel
 		//SWORD
 		if (player.isAttacking) {drawSword(g2D, player.size);}
 		
-		//DEBUG
+		//GUI
 		g2D.setPaint(Color.white);
-		g2D.setFont(new Font("", Font.BOLD, 50));
-		g2D.drawString(player.getRoom().coordinates[0] + "," + player.getRoom().coordinates[1], PANEL_WIDTH/2, PANEL_HEIGHT/2);
+		g2D.setFont(new Font("", Font.BOLD, player.size));
+		g2D.drawString(curRoom.coordinates[0] + "," + curRoom.coordinates[1], room[0], room[1] - player.size);
 	}
 	
 	private void drawSword(Graphics2D g2D, int player_size)
