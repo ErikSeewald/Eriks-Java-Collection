@@ -15,6 +15,28 @@ public class Room
 	}
 	private byte[] doors; // door directions following order N-E-S-W
 	
+	public class Chest
+	{
+		boolean opened;
+		byte content;
+		int x, y;
+		
+		public static final byte key = 1;
+		
+		Chest(Random random, int x, int y)
+		{
+			this.x = x;
+			this.y = y;
+			
+			this.opened = false;
+			switch (1) // replace with random when more items are added
+			{
+				case 1: this.content = Chest.key;
+			}
+		}
+	}
+	private Chest chest;
+	
 	Room(Random random, int[] coordinates)
 	{
 		this.coordinates = coordinates;
@@ -22,6 +44,7 @@ public class Room
 		neighbors = new Room[4];
 		doors = new byte[4];
 		generateDoors(random);
+		generateChest(random);
 	}
 	
 	private void generateDoors(Random random)
@@ -33,6 +56,11 @@ public class Room
 			else if (r < Door.state_chances[0] + Door.state_chances[1]) {doors[i] = Door.open;}
 			else {doors[i] = Door.blocked;}
 		}
+	}
+	
+	private void generateChest(Random random)
+	{
+		this.chest = new Chest(random, 200, 200);
 	}
 	
 	public byte getDoor(Direction direction)

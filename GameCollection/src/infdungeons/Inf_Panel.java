@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 
@@ -26,7 +27,7 @@ public class Inf_Panel extends JPanel
 	{
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
-		gameHandler = new DungeonHandler();
+		gameHandler = new DungeonHandler(this);
 		gameHandler.changeRoomSize(PANEL_WIDTH, PANEL_HEIGHT);
 		player = gameHandler.player;
 		player.size = PANEL_HEIGHT / 26;
@@ -57,11 +58,15 @@ public class Inf_Panel extends JPanel
 		player_stroke = new BasicStroke(tile_stroke.getLineWidth() /2);
 		wall_stroke = new BasicStroke(tile_stroke.getLineWidth() * 2);
 		
+		tile_size = PANEL_HEIGHT / 17;
+		
 		gameHandler.changeRoomSize(PANEL_WIDTH, PANEL_HEIGHT);
 		
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		repaint();
 	}
+	
+	public int getTileSize() {return tile_size;}
 	
 	//---------------------------------------PAINT---------------------------------------
 	
@@ -69,10 +74,15 @@ public class Inf_Panel extends JPanel
 	private static final Color tile_col = new Color(50, 50, 70);
 	private static final Color player_col = new Color(120, 220, 90);
 	private static final Color sword_col = new Color(220, 220, 225);
+	private static final Color door_open_col = new Color(38, 126, 255);
+	private static final Color door_closed_col = new Color(255, 160, 28);
+	private static final Color gui_col = new Color(180, 220, 255);
 	
 	private BasicStroke tile_stroke = new BasicStroke(PANEL_HEIGHT / 85);
 	private BasicStroke player_stroke = new BasicStroke(tile_stroke.getLineWidth() /2);
 	private BasicStroke wall_stroke = new BasicStroke(tile_stroke.getLineWidth() * 2);
+	
+	private int tile_size = PANEL_HEIGHT / 17;
 	
 	public void paint(Graphics g)
 	{
@@ -86,7 +96,6 @@ public class Inf_Panel extends JPanel
 		g2D.setPaint(tile_col);
 		g2D.setStroke(tile_stroke);
 		
-		int tile_size = PANEL_HEIGHT / 17;
 		for (int i = 0; i < 27; i++)
 		{g2D.drawLine(i*tile_size, 0, i*tile_size, PANEL_HEIGHT);} //vertical
 		
@@ -108,7 +117,7 @@ public class Inf_Panel extends JPanel
 			byte door_state = curRoom.getDoor(directions[i]);
 			if (door_state == Door.blocked) {continue;}
 			
-			g2D.setPaint(door_state == Door.open ? Color.green : Color.red);
+			g2D.setPaint(door_state == Door.open ? door_open_col : door_closed_col);
 			g2D.fillRect(doors[i][0], doors[i][1], tile_size, tile_size);
 		}
 		
@@ -124,9 +133,13 @@ public class Inf_Panel extends JPanel
 		if (player.isAttacking) {drawSword(g2D, player.size);}
 		
 		//GUI
-		g2D.setPaint(Color.white);
-		g2D.setFont(new Font("", Font.BOLD, player.size));
-		g2D.drawString(curRoom.coordinates[0] + "," + curRoom.coordinates[1], room[0], room[1] - player.size);
+		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		int gui_size = (int) (tile_size * 0.75);
+		g2D.setPaint(gui_col);
+		g2D.setFont(new Font("", Font.BOLD, gui_size));
+		g2D.drawString("Floor " +curRoom.coordinates[0] + "," + curRoom.coordinates[1], room[0], room[1] - gui_size);
+		
+		g2D.drawString("Keys: " + player.key_count, room[0] + gui_size * 8, room[1] - gui_size);
 	}
 	
 	private void drawSword(Graphics2D g2D, int player_size)
