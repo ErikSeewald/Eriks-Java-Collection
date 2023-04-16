@@ -69,10 +69,10 @@ public class EJC_InfDungeons extends JFrame implements EJC_Interface
 				if (pressedKeys.contains(87)) {y = -speed;} //W
 				if (pressedKeys.contains(83)) {y = speed;} 	//S
 
-				if(x == 0 && y == 0)
-				{return;}
+				if(x != 0 || y != 0)
+				{panel.player.move(x, y);}
 
-				panel.movePlayer(x, y);
+				panel.updateDungeon();
 			}	
 		});
 

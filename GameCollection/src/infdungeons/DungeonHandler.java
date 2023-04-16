@@ -1,5 +1,6 @@
 package infdungeons;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import infdungeons.Player.Direction;
@@ -13,16 +14,22 @@ public class DungeonHandler
 	private Random random;
 	
 	private HashMap<String, Room> rooms;
+	private Room first_room;
 	
 	private int room_width, room_height;
 	private int top_left_x, top_left_y;
 	private int tile_field_x, tile_field_y, tile_size;
 	
 	private int[][] door_coords;
+
+	private ArrayList<Enemy> enemies; // current enemies on screen
+	// As soon as we leave a room, only the information about the enemies spawning tiles is saved, not the enemy objects
 	
 	DungeonHandler(Inf_Panel panel, int PANEL_WIDTH, int PANEL_HEIGHT)
 	{
 		this.panel = panel;
+		
+		enemies = new ArrayList<>();
 
 		door_coords = new int[4][2];
 		setRoomSize(PANEL_WIDTH,PANEL_HEIGHT);
@@ -30,11 +37,12 @@ public class DungeonHandler
 		random = new Random();
 		rooms = new HashMap<>();
 		
-		player = new Player(this);
-		Room first_room = new Room(random, new int[] {0,0});
+
+		first_room = new Room(random, new int[] {0,0});
 		rooms.put(makeHashKey(first_room.coordinates), first_room);
 		first_room.setDoor(Direction.NORTH, Door.open); // do not trap player in first room
-		player.setRoom(first_room);	
+		
+		player = new Player(this, first_room);
 	}
 	
 	public void setRoomSize(int width, int height)
@@ -207,7 +215,53 @@ public class DungeonHandler
 			case SOUTH: player.y += player.size; break;
 			case WEST: player.x -= player.size / 2; break;
 		}
+		
+		loadEnemies();
 	}
+	
+	private void loadEnemies()
+	{
+		enemies.removeAll(enemies);
+		System.gc();
+		
+		Room room = player.getRoom();
+		for (int i = 0; i < Room.tiles_x; i++)
+		{
+			for (int j = 0; j < Room.tiles_y; j++)
+			{
+				if (room.tiles[i][j] == Room.reddorb_tile) 
+				{enemies.add(new Reddorb(i * tile_size + tile_field_x, j * tile_size  + tile_field_y, player.size, i, j));}
+			}
+		}
+	}
+	
+	public void update()
+	{
+		// ENEMIES
+		Room room = player.getRoom();
+		for (Enemy enemy : enemies)
+		{
+			if (random.nextBoolean()) {continue;}
+			
+			enemy.move(random);
+			enemy.attack(player);
+			
+			if (!enemy.isAlive)
+			{room.tiles[enemy.index0][enemy.index1] = Room.empty_tile;}
+		}
+		
+		enemies.removeIf((e) -> !e.isAlive);
+		
+		// PLAYER
+		if (player.invincible_time > 0) {player.invincible_time--;}
+		if (!player.isAlive)
+		{
+			player.respawn(first_room);
+			loadEnemies();
+		}
+	}
+	
+	public ArrayList<Enemy> getEnemies() {return enemies;}
 	
 	private static Direction reverse(Direction direction)
 	{
