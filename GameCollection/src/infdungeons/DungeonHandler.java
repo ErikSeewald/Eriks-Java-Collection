@@ -15,12 +15,16 @@ public class DungeonHandler
 	
 	private int room_width, room_height;
 	private int top_left_x, top_left_y;
+	private int tile_field_x, tile_field_y, tile_size;
 	
 	private int[][] door_coords;
 	
-	DungeonHandler(Inf_Panel panel)
+	DungeonHandler(Inf_Panel panel, int PANEL_WIDTH, int PANEL_HEIGHT)
 	{
 		this.panel = panel;
+
+		door_coords = new int[4][2];
+		setRoomSize(PANEL_WIDTH,PANEL_HEIGHT);
 		
 		random = new Random();
 		rooms = new HashMap<>();
@@ -29,12 +33,10 @@ public class DungeonHandler
 		Room first_room = new Room(random, new int[] {0,0});
 		rooms.put(makeHashKey(first_room.coordinates), first_room);
 		first_room.setDoor(Direction.NORTH, Door.open); // do not trap player in first room
-		player.setRoom(first_room);
-		
-		door_coords = new int[4][2];
+		player.setRoom(first_room);	
 	}
 	
-	public void changeRoomSize(int width, int height)
+	public void setRoomSize(int width, int height)
 	{
 		room_width = (int) (width * 0.918);
 		room_height = (int) (height * 0.81);
@@ -54,6 +56,10 @@ public class DungeonHandler
 		
 		door_coords[3][0] = top_left_x  - door_offset;
 		door_coords[3][1] = height / 2;
+		
+		tile_field_x = (int) (top_left_x + room_width / 12.5);
+		tile_field_y = (int) (top_left_y + room_height / 7.3);
+		tile_size = (int) (room_width / 23.5);
 	}
 	
 	/**
@@ -76,6 +82,17 @@ public class DungeonHandler
 	public int[] getRoomRect()
 	{return new int[] {top_left_x, top_left_y, room_width, room_height};}
 	
+	/**
+	 * Returns int[3] array of values indicating where the tile array starts
+	 * & the tile size
+	 * @return
+	 * <ul> <li>{@link [0] tile_field_x}</li>
+	 * 		<li>{@link [1] tile_field_y}</li>
+	 * 		<li>{@link [2] tile_size}</li> </ul>
+	 */
+	public int[] getTileValues()
+	{return new int[] {tile_field_x, tile_field_y, tile_size};}
+	
 	public boolean playerInDoor(Direction direction)
 	{
 		int[] door = door_coords[direction.ordinal()];
@@ -91,14 +108,15 @@ public class DungeonHandler
 		{
 			if (room.getDoor(direction) == Door.open && playerInDoor(direction))
 			{doorEvent(direction); return;}
-			else if (room.getDoor(direction) == Door.locked)
+			
+			else if (room.getDoor(direction) == Door.locked && playerInDoor(direction))
 			{keyEvent(direction); return;}
 		}
 	}
 	
 	private void keyEvent(Direction direction)
 	{
-		if (player.key_count < 1 || !playerInDoor(direction)) {return;}
+		if (player.key_count < 1) {return;}
 		
 		player.key_count--;
 		player.getRoom().setDoor(direction, Door.open);
@@ -155,10 +173,10 @@ public class DungeonHandler
 		
 		switch (entrance_direction)
 		{
-			case NORTH: player.y -= player.size; break;
+			case NORTH: player.y -= player.size / 2; break;
 			case EAST: player.x += player.size; break;
 			case SOUTH: player.y += player.size; break;
-			case WEST: player.x -= player.size; break;
+			case WEST: player.x -= player.size / 2; break;
 		}
 	}
 	

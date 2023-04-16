@@ -229,8 +229,8 @@ public enum GameTitles {
 			{
 					"INFINITE DUNGEONS",
 					"This is a small dungeon crawler with randomly generated dungeons.",
-					"",
-					"",
+					"Press SPACE to use your sword. Press E to open or unlock doors with keys.",
+					"Blue - open : Orange - locked. ",
 					"",
 					"",
 			}

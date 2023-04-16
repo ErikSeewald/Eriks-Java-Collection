@@ -35,20 +35,26 @@ public class Room
 			}
 		}
 	}
-	private Chest chest;
+	Chest chest;
+	
+	byte[][] tiles; // tiles to spawn blocks, enemies, chests etc in
+	public static final int tiles_x = 21, tiles_y = 11;
+	public static final byte empty_tile = 0, chest_tile = 1, block_tile = 2, enemy_tile = 3;
 	
 	Room(Random random, int[] coordinates)
 	{
 		this.coordinates = coordinates;
+		tiles = new byte[tiles_x][tiles_y];
 		
 		neighbors = new Room[4];
 		doors = new byte[4];
 		generateDoors(random);
 		generateChest(random);
+		generateBlocks(random);
 	}
 	
 	private void generateDoors(Random random)
-	{
+	{		
 		for(int i = 0; i < 4; i++)
 		{
 			int r = random.nextInt(100);
@@ -60,7 +66,36 @@ public class Room
 	
 	private void generateChest(Random random)
 	{
-		this.chest = new Chest(random, 200, 200);
+		int[] index = getValidIndex(random);
+		if (index == null) {return;}
+		
+ 		this.chest = new Chest(random, index[0], index[1]);
+	}
+	
+	private void generateBlocks(Random random)
+	{
+		int block_count = random.nextInt(45);
+		for (int i = 0; i < block_count; i++)
+		{
+			int[] index = getValidIndex(random);
+			if (index == null) {return;}
+			tiles[index[0]][index[1]] = block_tile;
+		}
+	}
+	
+	private int[] getValidIndex(Random random)
+	{
+		int[] index = new int[2];
+		int check = 0, check_max = tiles_x * tiles_y;
+		do
+		{
+			index[0] = random.nextInt(tiles_x);
+			index[1] = random.nextInt(tiles_y);
+			check++;
+			if (check >= check_max) {return null;}
+		}
+		while (tiles[index[0]][index[1]] != empty_tile);
+		return index;
 	}
 	
 	public byte getDoor(Direction direction)
