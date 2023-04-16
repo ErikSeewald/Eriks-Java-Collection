@@ -43,7 +43,7 @@ public class Inf_Panel extends JPanel
 		repaint();
 	}
 	
-	public void doorEvent() {dungeonHandler.doorEvent(); repaint();}
+	public void interactEvent() {dungeonHandler.interactEvent(); repaint();}
 	
 	public void changeSize(int amount)
 	{
@@ -78,6 +78,8 @@ public class Inf_Panel extends JPanel
 	private static final Color gui_col = new Color(180, 220, 255);
 	private static final Color block_col_1 = new Color(50, 60, 90);
 	private static final Color block_col_2 = block_col_1.darker();
+	private static final Color chest_col = new Color(155, 50, 255);
+	private static final Color chest_border_col = new Color(105, 50, 225);
 	
 	private BasicStroke tile_stroke = new BasicStroke(PANEL_HEIGHT / 85);
 	private BasicStroke player_stroke = new BasicStroke(tile_stroke.getLineWidth() /2);
@@ -123,6 +125,7 @@ public class Inf_Panel extends JPanel
 		}
 		
 		//TILE ARRAY
+		g2D.setStroke(tile_stroke);
 		drawTiles(g2D, curRoom);
 		
 		//PLAYER
@@ -165,6 +168,15 @@ public class Inf_Panel extends JPanel
 					g2D.setPaint(block_col_1);
 					int offset = size / 4;
 					g2D.fillRect(tile_values[0] + size * i + offset, tile_values[1] + size * j + offset, offset * 2, offset * 2);
+				}
+				
+				else if (tile == Room.chest_tile)
+				{
+					int offset = size / 3;
+					g2D.setPaint(chest_col);
+					g2D.fillRect(tile_values[0] + size * i + offset, tile_values[1] + size * j + offset, offset, offset);
+					g2D.setPaint(chest_border_col);
+					g2D.drawRect(tile_values[0] + size * i + offset, tile_values[1] + size * j + offset, offset, offset);
 				}
 			}
 		}

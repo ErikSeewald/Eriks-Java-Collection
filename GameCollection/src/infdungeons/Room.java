@@ -11,24 +11,22 @@ public class Room
 	public static final class Door
 	{
 		public static final byte locked = 0, open = 1, blocked = -1;
-		public static final byte[] state_chances = {10, 60, 30};
+		public static final byte[] state_chances = {20, 40, 40};
 	}
 	private byte[] doors; // door directions following order N-E-S-W
 	
 	public class Chest
-	{
-		boolean opened;
-		byte content;
-		int x, y;
-		
+	{	
 		public static final byte key = 1;
+		byte content;
 		
-		Chest(Random random, int x, int y)
+		int i, j; //tile array indices
+				
+		Chest(Random random, int i, int j)
 		{
-			this.x = x;
-			this.y = y;
+			this.i = i;
+			this.j = j;
 			
-			this.opened = false;
 			switch (1) // replace with random when more items are added
 			{
 				case 1: this.content = Chest.key;
@@ -66,10 +64,13 @@ public class Room
 	
 	private void generateChest(Random random)
 	{
+		if (random.nextInt(4) != 1) {return;}
+		
 		int[] index = getValidIndex(random);
 		if (index == null) {return;}
 		
  		this.chest = new Chest(random, index[0], index[1]);
+ 		tiles[index[0]][index[1]] = chest_tile;
 	}
 	
 	private void generateBlocks(Random random)
