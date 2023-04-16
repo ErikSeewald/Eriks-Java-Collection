@@ -3,6 +3,7 @@ package infdungeons;
 import java.util.HashMap;
 import java.util.Random;
 import infdungeons.Player.Direction;
+import infdungeons.Room.Chest;
 import infdungeons.Room.Door;
 
 public class DungeonHandler 
@@ -101,16 +102,44 @@ public class DungeonHandler
 				&& player.y > door[1] - offset && player.y < door[1] + offset;
 	}
 	
-	public void doorEvent()
+	public void interactEvent()
 	{
+		//CHEST
+		Chest chest = player.getRoom().chest;
+		if (playerAtChest(chest)) 
+		{chestEvent(chest); return;}
+		
+		//DOORS
 		Room room = player.getRoom();
 		for (Direction direction : Direction.values())
 		{
 			if (room.getDoor(direction) == Door.open && playerInDoor(direction))
 			{doorEvent(direction); return;}
-			
+				
 			else if (room.getDoor(direction) == Door.locked && playerInDoor(direction))
 			{keyEvent(direction); return;}
+		}	
+	}
+	
+	private boolean playerAtChest(Chest chest)
+	{
+		if (chest == null) {return false;}
+		int x = chest.i * tile_size + tile_field_x, y = chest.j * tile_size + tile_field_y;
+		int offset = player.size * 2;
+		
+		return player.x > x - offset && player.x < x + offset
+				&& player.y > y - offset && player.y < y + offset;
+	}
+	
+	private void chestEvent(Chest chest)
+	{
+		Room room = player.getRoom();
+		room.chest = null;
+		room.tiles[chest.i][chest.j] = Room.empty_tile;
+		
+		switch (chest.content)
+		{
+			case Chest.key: player.key_count++; break;
 		}
 	}
 	

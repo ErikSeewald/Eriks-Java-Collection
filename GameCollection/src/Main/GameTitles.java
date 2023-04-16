@@ -228,10 +228,10 @@ public enum GameTitles {
 			new String[]
 			{
 					"INFINITE DUNGEONS",
-					"This is a small dungeon crawler with randomly generated dungeons.",
-					"Press SPACE to use your sword. Press E to open or unlock doors with keys.",
-					"Blue - open : Orange - locked. ",
-					"",
+					"This is a small, randomly generated dungeon crawler.",
+					"Press SPACE to use your sword. Press E to interact with doors, chests and keys.",
+					"Blue - open door : Orange - locked door. Purple - chest",
+					"+/- to change screen size",
 					"",
 			}
 	);
