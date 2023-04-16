@@ -241,13 +241,13 @@ public class DungeonHandler
 		Room room = player.getRoom();
 		for (Enemy enemy : enemies)
 		{
-			if (random.nextBoolean()) {continue;}
-			
-			enemy.move(random);
-			enemy.attack(player);
-			
 			if (!enemy.isAlive)
 			{room.tiles[enemy.index0][enemy.index1] = Room.empty_tile;}
+			
+			if (random.nextBoolean()) {continue;}
+			
+			enemy.move(random, this.getRoomRect());
+			enemy.attack(player);
 		}
 		
 		enemies.removeIf((e) -> !e.isAlive);
@@ -259,6 +259,45 @@ public class DungeonHandler
 			player.respawn(first_room);
 			loadEnemies();
 		}
+		
+		if (player.isAttacking)
+		{
+			int[] dmg_box = getDamageBox();
+			
+			for (Enemy enemy : enemies)
+			{
+				if (enemy.x > dmg_box[0] && enemy.y > dmg_box[1] 
+					&& enemy.x < dmg_box[2] && enemy.y < dmg_box[3])
+				{enemy.getHit(Player.attack_dmg);}
+			}
+		}
+	}
+		
+	private int[] getDamageBox()
+	{
+		int[] dmg_box = new int[4]; // {e>x, e>y, e<x, e<y}
+		
+		switch (player.direction)
+		{
+			case NORTH: 
+				dmg_box[0] = player.x - player.size; dmg_box[1] = player.y - player.size * 2; 
+				dmg_box[2] = player.x + player.size * 2; dmg_box[3] = player.y;
+				break;
+			case EAST:
+				dmg_box[0] = player.x; dmg_box[1] = player.y - player.size; 
+				dmg_box[2] = player.x + player.size * 2; dmg_box[3] = player.y + player.size * 2;
+				break;
+			case SOUTH:
+				dmg_box[0] = player.x - player.size; dmg_box[1] = player.y; 
+				dmg_box[2] = player.x + player.size * 2; dmg_box[3] = player.y + player.size * 2;
+				break;
+			case WEST:
+				dmg_box[0] = player.x - player.size * 2; dmg_box[1] = player.y - player.size; 
+				dmg_box[2] = player.x; dmg_box[3] = player.y + player.size * 2;
+				break;
+		}
+		
+		return dmg_box;
 	}
 	
 	public ArrayList<Enemy> getEnemies() {return enemies;}

@@ -59,10 +59,14 @@ public class EJC_InfDungeons extends JFrame implements EJC_Interface
 				int x = 0, y = 0, speed = panel.getPlayerSpeed();
 
 				boolean is_attacking = pressedKeys.contains(32);
-				panel.player.isAttacking = is_attacking;
 				
-				if (is_attacking)
-				{speed /= 2;}
+				if (panel.player.isAttacking && !is_attacking) {panel.player.isAttacking = false;} // && !is_attacking for extra sword frame
+				else if (is_attacking)
+				{
+					panel.player.isAttacking = is_attacking;
+					pressedKeys.remove(32);
+					speed /= 2;
+				}
 				
 				if (pressedKeys.contains(68)) {x = speed;} 	//D
 				if (pressedKeys.contains(65)) {x = -speed;} //A

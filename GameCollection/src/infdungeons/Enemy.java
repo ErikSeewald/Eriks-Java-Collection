@@ -22,7 +22,7 @@ public class Enemy
 		if (this.hp <= 0) {this.isAlive = false;} 
 	}
 	
-	public void move(Random random)
+	public void move(Random random, int[] room)
 	{}
 	
 	public byte getType()

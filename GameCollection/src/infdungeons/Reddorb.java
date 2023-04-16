@@ -5,7 +5,7 @@ import java.util.Random;
 public class Reddorb extends Enemy
 {
 	public static final int attack_dmg = 2;
-	public static final int starting_hp = 10;
+	public static final int starting_hp = 5;
 	
 	/**
      * Creates a Reddorb enemy object
@@ -34,21 +34,20 @@ public class Reddorb extends Enemy
 		{player.getHit(Reddorb.attack_dmg);}
 	}
 	
-	@Override
-	public void getHit(int damage)
-	{
-		
-	}
 	
 	@Override
-	public void move(Random random)
+	public void move(Random random, int[] room)
 	{
 		switch (random.nextInt(5)) //0 = no movement
 		{ 
-			case 1: x+= this.speed; break;
-			case 2: x-= this.speed; break;
-			case 3: y+= this.speed; break;
-			case 4: y-= this.speed; break;
+			case 1: this.x+= this.speed; if (this.x > room[0] + room[2]) {this.x -= this.speed;}
+			break;
+			case 2: this.x-= this.speed; if (this.x < room[0]) {this.x += this.speed;}
+			break;
+			case 3: this.y+= this.speed; if (this.y > room[1] + room[3]) {this.x -= this.speed;}
+			break;
+			case 4: this.y-= this.speed; if (this.y < room[1]) {this.x += this.speed;}
+			break;
 		}
 	}
 	
