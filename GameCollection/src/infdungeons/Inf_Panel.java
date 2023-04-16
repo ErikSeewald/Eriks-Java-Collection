@@ -21,15 +21,14 @@ public class Inf_Panel extends JPanel
 	private int PANEL_WIDTH = (int) (PANEL_HEIGHT * 1.52);
 	
 	protected Player player;
-	private DungeonHandler gameHandler;
+	private DungeonHandler dungeonHandler;
 	
 	Inf_Panel()
 	{
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
-		gameHandler = new DungeonHandler(this);
-		gameHandler.changeRoomSize(PANEL_WIDTH, PANEL_HEIGHT);
-		player = gameHandler.player;
+		dungeonHandler = new DungeonHandler(this, PANEL_WIDTH, PANEL_HEIGHT);
+		player = dungeonHandler.player;
 		player.size = PANEL_HEIGHT / 26;
 		player.speed = PANEL_HEIGHT / 100;
 	}
@@ -44,7 +43,7 @@ public class Inf_Panel extends JPanel
 		repaint();
 	}
 	
-	public void doorEvent() {gameHandler.doorEvent(); repaint();}
+	public void doorEvent() {dungeonHandler.doorEvent(); repaint();}
 	
 	public void changeSize(int amount)
 	{
@@ -58,15 +57,15 @@ public class Inf_Panel extends JPanel
 		player_stroke = new BasicStroke(tile_stroke.getLineWidth() /2);
 		wall_stroke = new BasicStroke(tile_stroke.getLineWidth() * 2);
 		
-		tile_size = PANEL_HEIGHT / 17;
+		bg_tile_size = PANEL_HEIGHT / 17;
 		
-		gameHandler.changeRoomSize(PANEL_WIDTH, PANEL_HEIGHT);
+		dungeonHandler.setRoomSize(PANEL_WIDTH, PANEL_HEIGHT);
 		
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		repaint();
 	}
 	
-	public int getTileSize() {return tile_size;}
+	public int getTileSize() {return bg_tile_size;}
 	
 	//---------------------------------------PAINT---------------------------------------
 	
@@ -77,12 +76,14 @@ public class Inf_Panel extends JPanel
 	private static final Color door_open_col = new Color(38, 126, 255);
 	private static final Color door_closed_col = new Color(255, 160, 28);
 	private static final Color gui_col = new Color(180, 220, 255);
+	private static final Color block_col_1 = new Color(50, 60, 90);
+	private static final Color block_col_2 = block_col_1.darker();
 	
 	private BasicStroke tile_stroke = new BasicStroke(PANEL_HEIGHT / 85);
 	private BasicStroke player_stroke = new BasicStroke(tile_stroke.getLineWidth() /2);
 	private BasicStroke wall_stroke = new BasicStroke(tile_stroke.getLineWidth() * 2);
 	
-	private int tile_size = PANEL_HEIGHT / 17;
+	private int bg_tile_size = PANEL_HEIGHT / 17; // size of tiles in the background
 	
 	public void paint(Graphics g)
 	{
@@ -97,19 +98,19 @@ public class Inf_Panel extends JPanel
 		g2D.setStroke(tile_stroke);
 		
 		for (int i = 0; i < 27; i++)
-		{g2D.drawLine(i*tile_size, 0, i*tile_size, PANEL_HEIGHT);} //vertical
+		{g2D.drawLine(i*bg_tile_size, 0, i*bg_tile_size, PANEL_HEIGHT);} //vertical
 		
 		for (int i = 0; i < 18; i++)
-		{g2D.drawLine(0 , i * tile_size, PANEL_WIDTH, i * tile_size);} //horizontal
+		{g2D.drawLine(0 , i * bg_tile_size, PANEL_WIDTH, i * bg_tile_size);} //horizontal
 		
 		//WALL
 		g2D.setPaint(tile_col.darker());
 		g2D.setStroke(wall_stroke);
-		int[] room = gameHandler.getRoomRect();
+		int[] room = dungeonHandler.getRoomRect();
 		g2D.drawRect(room[0], room[1], room[2], room[3]);
 		
 		//DOORS
-		int[][] doors = gameHandler.getDoors();
+		int[][] doors = dungeonHandler.getDoors();
 		Direction[] directions = Direction.values();
 		Room curRoom = player.getRoom();
 		for (int i = 0; i < 4; i++)
@@ -118,8 +119,11 @@ public class Inf_Panel extends JPanel
 			if (door_state == Door.blocked) {continue;}
 			
 			g2D.setPaint(door_state == Door.open ? door_open_col : door_closed_col);
-			g2D.fillRect(doors[i][0], doors[i][1], tile_size, tile_size);
+			g2D.fillRect(doors[i][0], doors[i][1], bg_tile_size, bg_tile_size);
 		}
+		
+		//TILE ARRAY
+		drawTiles(g2D, curRoom);
 		
 		//PLAYER
 		g2D.setPaint(player_col);
@@ -134,12 +138,36 @@ public class Inf_Panel extends JPanel
 		
 		//GUI
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		int gui_size = (int) (tile_size * 0.75);
+		int gui_size = (int) (bg_tile_size * 0.75);
 		g2D.setPaint(gui_col);
 		g2D.setFont(new Font("", Font.BOLD, gui_size));
-		g2D.drawString("Floor " +curRoom.coordinates[0] + "," + curRoom.coordinates[1], room[0], room[1] - gui_size);
+		g2D.drawString("Room " +curRoom.coordinates[0] + "," + curRoom.coordinates[1], room[0], room[1] - gui_size);
 		
 		g2D.drawString("Keys: " + player.key_count, room[0] + gui_size * 8, room[1] - gui_size);
+	}
+	
+	private void drawTiles(Graphics2D g2D, Room curRoom)
+	{
+		int[] tile_values = dungeonHandler.getTileValues();
+		int size = tile_values[2];
+		byte tile;
+		for (int i = 0; i < Room.tiles_x; i++)
+		{
+			for (int j = 0; j < Room.tiles_y; j++)
+			{
+				tile = curRoom.tiles[i][j];
+				if (tile == Room.empty_tile) {continue;}
+				
+				else if (tile == Room.block_tile)
+				{
+					g2D.setPaint(block_col_2);
+					g2D.fillRect(tile_values[0] + size * i, tile_values[1] + size * j, size, size);
+					g2D.setPaint(block_col_1);
+					int offset = size / 4;
+					g2D.fillRect(tile_values[0] + size * i + offset, tile_values[1] + size * j + offset, offset * 2, offset * 2);
+				}
+			}
+		}
 	}
 	
 	private void drawSword(Graphics2D g2D, int player_size)

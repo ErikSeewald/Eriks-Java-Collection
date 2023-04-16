@@ -13,8 +13,12 @@ public class Player
 	Player(DungeonHandler dungeonHandler)
 	{
 		this.dungeonHandler = dungeonHandler;
-		this.key_count = 2;
-		this.x = 300; this.y = 300;
+		this.key_count = 0;
+		
+		// SPAWN POINT
+		int[] entrance_door = dungeonHandler.getDoors()[2];
+		this.x = entrance_door[0];
+		this.y = entrance_door[1] - dungeonHandler.getTileValues()[2] / 3; // offset to not glitch into wall
 	}
 	
 	public static enum Direction
