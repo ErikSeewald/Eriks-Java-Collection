@@ -5,15 +5,28 @@ public class Player
 	int x, y;
 	int speed;
 	int size;
+	int hp;
 	boolean isAttacking;
 	private Room currentRoom;
 	private DungeonHandler dungeonHandler;
 	int key_count;
 	
-	Player(DungeonHandler dungeonHandler)
+	int invincible_time;
+	boolean isAlive;
+	
+	Player(DungeonHandler dungeonHandler, Room room)
 	{
 		this.dungeonHandler = dungeonHandler;
+		this.respawn(room);	
+	}
+	
+	public void respawn(Room room)
+	{
+		this.currentRoom = room;
 		this.key_count = 0;
+		this.hp = 15;
+		this.invincible_time = 0;
+		this.isAlive = true;
 		
 		// SPAWN POINT
 		int[] entrance_door = dungeonHandler.getDoors()[2];
@@ -51,7 +64,7 @@ public class Player
 		if (this.x < room[0] || this.x > room[0] + room[2] - this.size) {this.x -=x;}
 		if (this.y < room[1] || this.y > room[1] + room[3] - this.size) {this.y -=y;}
 		
-		// TILE ARRAY COLLISION
+		// BLOCK COLLISION
 		int[] tile_values = dungeonHandler.getTileValues();
 		int tile_x = (this.x - tile_values[0]) / tile_values[2];
 		int tile_y = (this.y - tile_values[1]) / tile_values[2];
@@ -60,7 +73,7 @@ public class Player
 		{
 			for (int j = 0; j < Room.tiles_y; j++)
 			{
-				if (this.currentRoom.tiles[i][j] == Room.empty_tile) {continue;}
+				if (this.currentRoom.tiles[i][j] != Room.block_tile) {continue;}
 				
 				// to far away from tile for collision
 				if (i + 1 < tile_x || i - 1 > tile_x || j + 1 < tile_y || j - 1 > tile_y) {continue;}
@@ -92,4 +105,14 @@ public class Player
 	public Room getRoom() {return currentRoom;}
 	
 	public void setRoom(Room room) {currentRoom = room;}
+	
+	public void getHit(int damage)
+	{
+		if (this.invincible_time > 0) {return;}
+		
+		this.hp -= damage;
+		if (this.hp <= 0) {this.isAlive = false; return;}
+		
+		this.invincible_time = 10;
+	}
 }

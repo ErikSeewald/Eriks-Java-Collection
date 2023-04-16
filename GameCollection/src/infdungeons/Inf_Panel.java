@@ -37,18 +37,19 @@ public class Inf_Panel extends JPanel
 	
 	public int getPlayerSpeed() {return player.speed;}
 	
-	public void movePlayer(int x, int y)
-	{
-		player.move(x, y);
-		repaint();
-	}
+	public void updateDungeon() {dungeonHandler.update(); repaint();}
 	
 	public void interactEvent() {dungeonHandler.interactEvent(); repaint();}
 	
 	public void changeSize(int amount)
 	{
+		double[] playerLocRatio = {(double) player.x / PANEL_WIDTH, (double) player.y / PANEL_HEIGHT};
+		
 		PANEL_HEIGHT += amount;
 		PANEL_WIDTH = (int) (PANEL_HEIGHT * 1.52);
+		
+		player.x = (int) (playerLocRatio[0] * PANEL_WIDTH);
+		player.y = (int) (playerLocRatio[1] * PANEL_HEIGHT);
 		
 		player.size = PANEL_HEIGHT / 26;
 		player.speed = PANEL_HEIGHT / 100;
@@ -80,6 +81,7 @@ public class Inf_Panel extends JPanel
 	private static final Color block_col_2 = block_col_1.darker();
 	private static final Color chest_col = new Color(155, 50, 255);
 	private static final Color chest_border_col = new Color(105, 50, 225);
+	private static final Color reddorb_col = new Color(255, 80, 80);
 	
 	private BasicStroke tile_stroke = new BasicStroke(PANEL_HEIGHT / 85);
 	private BasicStroke player_stroke = new BasicStroke(tile_stroke.getLineWidth() /2);
@@ -136,17 +138,32 @@ public class Inf_Panel extends JPanel
 		g2D.setStroke(player_stroke);
 		g2D.drawRect(player.x, player.y, player.size, player.size);
 		
+		//ENEMIES
+		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		for (Enemy enemy : dungeonHandler.getEnemies())
+		{
+			switch (enemy.getType())
+			{
+				case Enemy.type_reddorb: drawReddorb(g2D, enemy.x, enemy.y, enemy.size);
+			}
+		}
+		
 		//SWORD
 		if (player.isAttacking) {drawSword(g2D, player.size);}
 		
 		//GUI
-		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		int gui_size = (int) (bg_tile_size * 0.75);
 		g2D.setPaint(gui_col);
 		g2D.setFont(new Font("", Font.BOLD, gui_size));
 		g2D.drawString("Room " +curRoom.coordinates[0] + "," + curRoom.coordinates[1], room[0], room[1] - gui_size);
-		
-		g2D.drawString("Keys: " + player.key_count, room[0] + gui_size * 8, room[1] - gui_size);
+		g2D.drawString("HP: " + player.hp, room[0] + gui_size * 10, room[1] - gui_size);
+		g2D.drawString("Keys: " + player.key_count, room[0] + gui_size * 20, room[1] - gui_size);
+	}
+	
+	private void drawReddorb(Graphics2D g2D, int x, int y, int size)
+	{
+		g2D.setPaint(reddorb_col);
+		g2D.fillOval(x, y, size, size);
 	}
 	
 	private void drawTiles(Graphics2D g2D, Room curRoom)

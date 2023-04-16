@@ -27,9 +27,9 @@ public class Room
 			this.i = i;
 			this.j = j;
 			
-			switch (1) // replace with random when more items are added
+			switch (0) // replace with random when more items are added
 			{
-				case 1: this.content = Chest.key;
+				case 0: this.content = Chest.key;
 			}
 		}
 	}
@@ -37,7 +37,7 @@ public class Room
 	
 	byte[][] tiles; // tiles to spawn blocks, enemies, chests etc in
 	public static final int tiles_x = 21, tiles_y = 11;
-	public static final byte empty_tile = 0, chest_tile = 1, block_tile = 2, enemy_tile = 3;
+	public static final byte empty_tile = 0, chest_tile = 1, block_tile = 2, reddorb_tile = 3;
 	
 	Room(Random random, int[] coordinates)
 	{
@@ -49,6 +49,7 @@ public class Room
 		generateDoors(random);
 		generateChest(random);
 		generateBlocks(random);
+		generateEnemies(random);
 	}
 	
 	private void generateDoors(Random random)
@@ -81,6 +82,25 @@ public class Room
 			int[] index = getValidIndex(random);
 			if (index == null) {return;}
 			tiles[index[0]][index[1]] = block_tile;
+		}
+	}
+	
+	private void generateEnemies(Random random)
+	{
+		int enemy_count = random.nextInt(16);
+		
+		for (int i = 0; i < enemy_count; i++)
+		{
+			int[] index = getValidIndex(random);
+			if (index == null) {return;}
+			
+			byte type = Room.empty_tile;
+			switch (0) // change for more types of enemies later
+			{
+				case 0: type = Room.reddorb_tile; break;
+			}
+			
+			tiles[index[0]][index[1]] = type;
 		}
 	}
 	
