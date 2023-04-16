@@ -14,6 +14,8 @@ public class Player
 	int invincible_time;
 	boolean isAlive;
 	
+	public static final int attack_dmg = 5;
+	
 	Player(DungeonHandler dungeonHandler, Room room)
 	{
 		this.dungeonHandler = dungeonHandler;
