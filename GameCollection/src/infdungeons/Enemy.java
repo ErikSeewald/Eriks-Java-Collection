@@ -27,4 +27,7 @@ public class Enemy
 	
 	public byte getType()
 	{return -1;}
+	
+	public void setSize(int size)
+	{this.size = size;}
 }

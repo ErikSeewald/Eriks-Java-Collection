@@ -19,8 +19,7 @@ public class Reddorb extends Enemy
 	{
 		this.x = x;
 		this.y = y;
-		this.size = size;
-		this.speed = size / 3;
+		this.setSize(size);
 		this.index0 = index0;
 		this.index1 = index1;
 		this.hp = Reddorb.starting_hp;
@@ -53,4 +52,11 @@ public class Reddorb extends Enemy
 	
 	@Override
 	public byte getType() {return Enemy.type_reddorb;}
+	
+	@Override
+	public void setSize(int size) 
+	{
+		this.size = size;
+		this.speed = size / 3;
+	}
 }
