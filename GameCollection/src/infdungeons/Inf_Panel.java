@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -43,17 +44,36 @@ public class Inf_Panel extends JPanel
 	
 	public void changeSize(int amount)
 	{
+		// SAVE RELATIVE POSITIONS
 		double[] playerLocRatio = {(double) player.x / PANEL_WIDTH, (double) player.y / PANEL_HEIGHT};
+		
+		ArrayList<Enemy> enemies = dungeonHandler.getEnemies();
+		double[][] enemyLocRatio = new double[2][enemies.size()];
+		for (int i = 0; i < enemies.size(); i++)
+		{
+			enemyLocRatio[0][i] = (double) enemies.get(i).x / PANEL_WIDTH;
+			enemyLocRatio[1][i] = (double) enemies.get(i).y / PANEL_HEIGHT;
+		}
 		
 		PANEL_HEIGHT += amount;
 		PANEL_WIDTH = (int) (PANEL_HEIGHT * 1.52);
 		
+		// LOAD RELATIVE POSITIONS
 		player.x = (int) (playerLocRatio[0] * PANEL_WIDTH);
 		player.y = (int) (playerLocRatio[1] * PANEL_HEIGHT);
 		
 		player.size = PANEL_HEIGHT / 26;
 		player.speed = PANEL_HEIGHT / 100;
 		
+		for (int i = 0; i < enemies.size(); i++)
+		{
+			Enemy enemy = enemies.get(i);
+			enemy.x = (int) (enemyLocRatio[0][i] * PANEL_WIDTH);
+			enemy.y = (int) (enemyLocRatio[1][i] * PANEL_HEIGHT);
+			enemy.setSize(player.size); // also handles enemy.speed
+		}
+		
+		// OTHERS
 		tile_stroke = new BasicStroke(PANEL_HEIGHT / 85);
 		player_stroke = new BasicStroke(tile_stroke.getLineWidth() /2);
 		wall_stroke = new BasicStroke(tile_stroke.getLineWidth() * 2);
