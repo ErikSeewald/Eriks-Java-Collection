@@ -245,7 +245,6 @@ public class DungeonHandler
 			{room.tiles[enemy.index0][enemy.index1] = Room.empty_tile;}
 			
 			if (random.nextBoolean()) {continue;}
-			
 			enemy.move(random, this.getRoomRect());
 			enemy.attack(player);
 		}
