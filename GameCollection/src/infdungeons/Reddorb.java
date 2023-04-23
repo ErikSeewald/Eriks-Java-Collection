@@ -28,8 +28,10 @@ public class Reddorb extends Enemy
 	@Override
 	public void attack(Player player)
 	{
-		if (player.x > this.x - size && player.x < this.x + size
-				&& player.y > this.y - size && player.y < this.y + size )
+		int buffer = size / 2;
+		
+		if (player.x > this.x - buffer && player.x < this.x + size
+				&& player.y > this.y - buffer && player.y < this.y + size )
 		{player.getHit(Reddorb.attack_dmg);}
 	}
 	

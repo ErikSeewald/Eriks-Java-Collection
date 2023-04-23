@@ -47,16 +47,16 @@ public class Player
 	
 	public void move(int x, int y)
 	{
+		boolean movingAlongX = false;
 		if (x != 0)
 		{
-			y = 0; // to indicate that we picked x later
+			movingAlongX = true;
 			this.x+=x;
 			this.direction = x > 0 ? Direction.EAST : Direction.WEST;
 		}
 		
 		else
 		{
-			x = 0;
 			this.y+=y;
 			this.direction = y > 0 ? Direction.SOUTH : Direction.NORTH;
 		}
@@ -71,23 +71,51 @@ public class Player
 		int tile_x = (this.x - tile_values[0]) / tile_values[2];
 		int tile_y = (this.y - tile_values[1]) / tile_values[2];
 		
+		if (checkAllBlocksForCollision(tile_values, tile_x, tile_y))
+		{
+			if (movingAlongX)
+			{
+				this.x -= x;
+				slideAlongTile(tile_values, tile_x, tile_y, 0, y);
+			}
+			
+			else 
+			{
+				this.y -= y;
+				slideAlongTile(tile_values, tile_x, tile_y, x, 0);
+			}
+		}	
+	}
+	
+	private void slideAlongTile(int[] tile_values, int tile_x, int tile_y, int x, int y)
+	{
+		this.x += x;
+		this.y += y;
+		
+		if (checkAllBlocksForCollision(tile_values, tile_x, tile_y))
+		{
+			this.x -= x;
+			this.y -= y;
+		}
+	}
+	
+	private boolean checkAllBlocksForCollision(int[] tile_values, int tile_x, int tile_y)
+	{
 		for (int i = 0; i < Room.tiles_x; i++)
 		{
 			for (int j = 0; j < Room.tiles_y; j++)
 			{
-				if (this.currentRoom.tiles[i][j] != Room.block_tile) {continue;}
-				
 				// to far away from tile for collision
 				if (i + 1 < tile_x || i - 1 > tile_x || j + 1 < tile_y || j - 1 > tile_y) {continue;}
 				
+				if (this.currentRoom.tiles[i][j] != Room.block_tile) {continue;}
+				
 				else if (isInsideBlock(i,j, tile_values))
-				{
-					if (x != 0) {this.x -= x;}
-					else {this.y -= y;}
-				}
+				{return true;}
 			}
 		}
-		
+			
+		return false;
 	}
 	
 	private boolean isInsideBlock(int i, int j, int[] tile_values)

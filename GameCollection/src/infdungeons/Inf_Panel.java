@@ -93,6 +93,7 @@ public class Inf_Panel extends JPanel
 	private static final Color background_col = new Color(55, 55, 75);
 	private static final Color tile_col = new Color(50, 50, 70);
 	private static final Color player_col = new Color(120, 220, 90);
+	private static final Color player_hurt_col = new Color(255, 40, 80);
 	private static final Color sword_col = new Color(220, 220, 225);
 	private static final Color door_open_col = new Color(38, 126, 255);
 	private static final Color door_closed_col = new Color(255, 160, 28);
@@ -151,10 +152,11 @@ public class Inf_Panel extends JPanel
 		drawTiles(g2D, curRoom);
 		
 		//PLAYER
-		g2D.setPaint(player_col);
+		Color p_color = player.invincible_time > 0 ? player_hurt_col : player_col;
+		g2D.setPaint(p_color);
 		g2D.fillRect(player.x, player.y, player.size, player.size);
 		
-		g2D.setPaint(player_col.darker());
+		g2D.setPaint(p_color.darker());
 		g2D.setStroke(player_stroke);
 		g2D.drawRect(player.x, player.y, player.size, player.size);
 		
@@ -176,8 +178,10 @@ public class Inf_Panel extends JPanel
 		g2D.setPaint(gui_col);
 		g2D.setFont(new Font("", Font.BOLD, gui_size));
 		g2D.drawString("Room " +curRoom.coordinates[0] + "," + curRoom.coordinates[1], room[0], room[1] - gui_size);
-		g2D.drawString("HP: " + player.hp, room[0] + gui_size * 10, room[1] - gui_size);
 		g2D.drawString("Keys: " + player.key_count, room[0] + gui_size * 20, room[1] - gui_size);
+		
+		if (player.invincible_time > 0) {g2D.setPaint(p_color);}
+		g2D.drawString("HP: " + player.hp, room[0] + gui_size * 10, room[1] - gui_size);
 	}
 	
 	private void drawReddorb(Graphics2D g2D, int x, int y, int size)
