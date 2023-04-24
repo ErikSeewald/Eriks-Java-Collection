@@ -4,22 +4,27 @@ public class Player
 {
 	int x, y;
 	int speed;
-	int size;
+	private int size;
 	int hp;
 	boolean isAttacking;
 	private Room currentRoom;
 	private DungeonHandler dungeonHandler;
 	int key_count;
+	int bomb_count;
+	int bomb_radius;
 	
-	int invincible_time;
+	private int invincible_time;
+	private int key_animation;
+	private int bomb_obtain_animation;
 	boolean isAlive;
 	
 	public static final int attack_dmg = 5;
 	
-	Player(DungeonHandler dungeonHandler, Room room)
+	Player(DungeonHandler dungeonHandler, Room room, int size)
 	{
 		this.dungeonHandler = dungeonHandler;
 		this.respawn(room);	
+		this.setSize(size);
 	}
 	
 	public void respawn(Room room)
@@ -145,4 +150,43 @@ public class Player
 		
 		this.invincible_time = 10;
 	}
+	
+	public void obtainKey()
+	{
+		this.key_count++;
+		this.key_animation = 10;
+	}
+	
+	public void useKey()
+	{
+		this.key_count--;
+		this.key_animation = 10;
+	}
+	
+	public void obtainBomb()
+	{
+		this.bomb_count++;
+		this.bomb_obtain_animation = 10;
+	}
+	
+	public void updateTimers()
+	{
+		if (this.invincible_time > 0) {this.invincible_time--;}
+		if (this.key_animation > 0) {this.key_animation--;}
+		if (this.bomb_obtain_animation > 0) {this.bomb_obtain_animation--;}
+	}
+	
+	public boolean isInvincible() {return this.invincible_time > 0;}
+	
+	public boolean isInKeyAnimation() {return this.key_animation > 0;}
+	
+	public boolean isInBombObtainAnimation() {return this.bomb_obtain_animation > 0;}
+	
+	public void setSize(int size)
+	{
+		this.size = size;
+		this.bomb_radius = size * 2;
+	}
+	
+	public int getSize() {return this.size;}
 }
