@@ -42,7 +42,7 @@ public class DungeonHandler
 		rooms.put(makeHashKey(first_room.coordinates), first_room);
 		first_room.setDoor(Direction.NORTH, Door.open); // do not trap player in first room
 		
-		player = new Player(this, first_room);
+		player = new Player(this, first_room, PANEL_HEIGHT / 26);
 	}
 	
 	public void setRoomSize(int width, int height)
@@ -105,7 +105,7 @@ public class DungeonHandler
 	public boolean playerInDoor(Direction direction)
 	{
 		int[] door = door_coords[direction.ordinal()];
-		int offset = player.size * 2;
+		int offset = player.getSize() * 2;
 		return player.x > door[0] - offset && player.x < door[0] + offset
 				&& player.y > door[1] - offset && player.y < door[1] + offset;
 	}
@@ -133,7 +133,7 @@ public class DungeonHandler
 	{
 		if (chest == null) {return false;}
 		int x = chest.i * tile_size + tile_field_x, y = chest.j * tile_size + tile_field_y;
-		int offset = player.size * 2;
+		int offset = player.getSize() * 2;
 		
 		return player.x > x - offset && player.x < x + offset
 				&& player.y > y - offset && player.y < y + offset;
@@ -147,7 +147,8 @@ public class DungeonHandler
 		
 		switch (chest.content)
 		{
-			case Chest.key: player.key_count++; break;
+			case Chest.key: player.obtainKey(); break;
+			case Chest.bomb: player.obtainBomb(); break;
 		}
 	}
 	
@@ -155,7 +156,7 @@ public class DungeonHandler
 	{
 		if (player.key_count < 1) {return;}
 		
-		player.key_count--;
+		player.useKey();
 		player.getRoom().setDoor(direction, Door.open);
 		doorEvent(direction);
 	}
@@ -210,10 +211,10 @@ public class DungeonHandler
 		
 		switch (entrance_direction)
 		{
-			case NORTH: player.y -= player.size / 2; break;
-			case EAST: player.x += player.size; break;
-			case SOUTH: player.y += player.size; break;
-			case WEST: player.x -= player.size / 2; break;
+			case NORTH: player.y -= player.getSize() / 2; break;
+			case EAST: player.x += player.getSize(); break;
+			case SOUTH: player.y += player.getSize(); break;
+			case WEST: player.x -= player.getSize() / 2; break;
 		}
 		
 		loadEnemies();
@@ -230,7 +231,7 @@ public class DungeonHandler
 			for (int j = 0; j < Room.tiles_y; j++)
 			{
 				if (room.tiles[i][j] == Room.reddorb_tile) 
-				{enemies.add(new Reddorb(i * tile_size + tile_field_x, j * tile_size  + tile_field_y, player.size, i, j));}
+				{enemies.add(new Reddorb(i * tile_size + tile_field_x, j * tile_size  + tile_field_y, player.getSize(), i, j));}
 			}
 		}
 	}
@@ -252,7 +253,7 @@ public class DungeonHandler
 		enemies.removeIf((e) -> !e.isAlive);
 		
 		// PLAYER
-		if (player.invincible_time > 0) {player.invincible_time--;}
+		player.updateTimers();
 		if (!player.isAlive)
 		{
 			player.respawn(first_room);
@@ -272,27 +273,30 @@ public class DungeonHandler
 		}
 	}
 		
-	private int[] getDamageBox()
+	public int[] getDamageBox()
 	{
+		if (player.direction == null) {return null;}
+		
 		int[] dmg_box = new int[4]; // {e>x, e>y, e<x, e<y}
+		int buffer_1 = player.getSize() >> 1, buffer_2 = player.getSize() << 1;
 		
 		switch (player.direction)
 		{
 			case NORTH: 
-				dmg_box[0] = player.x - player.size; dmg_box[1] = player.y - player.size * 2; 
-				dmg_box[2] = player.x + player.size * 2; dmg_box[3] = player.y;
+				dmg_box[0] = player.x - buffer_1; dmg_box[1] = player.y - buffer_2 - buffer_1; 
+				dmg_box[2] = player.x + buffer_2; dmg_box[3] = player.y;
 				break;
 			case EAST:
-				dmg_box[0] = player.x; dmg_box[1] = player.y - player.size; 
-				dmg_box[2] = player.x + player.size * 2; dmg_box[3] = player.y + player.size * 2;
+				dmg_box[0] = player.x; dmg_box[1] = player.y - buffer_1; 
+				dmg_box[2] = player.x + buffer_2 + buffer_1; dmg_box[3] = player.y + buffer_2;
 				break;
 			case SOUTH:
-				dmg_box[0] = player.x - player.size; dmg_box[1] = player.y; 
-				dmg_box[2] = player.x + player.size * 2; dmg_box[3] = player.y + player.size * 2;
+				dmg_box[0] = player.x - buffer_1; dmg_box[1] = player.y; 
+				dmg_box[2] = player.x + buffer_2; dmg_box[3] = player.y + buffer_2 + buffer_1;
 				break;
 			case WEST:
-				dmg_box[0] = player.x - player.size * 2; dmg_box[1] = player.y - player.size; 
-				dmg_box[2] = player.x; dmg_box[3] = player.y + player.size * 2;
+				dmg_box[0] = player.x - buffer_2; dmg_box[1] = player.y - buffer_1; 
+				dmg_box[2] = player.x; dmg_box[3] = player.y + buffer_2;
 				break;
 		}
 		

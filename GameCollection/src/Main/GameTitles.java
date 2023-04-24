@@ -230,9 +230,9 @@ public enum GameTitles {
 					"INFINITE DUNGEONS",
 					"This is a small, randomly generated dungeon crawler.",
 					"Press SPACE to use your sword. Press E to interact with doors, chests and keys.",
-					"Blue - open door : Orange - locked door. Purple - chest",
+					"Press Q to drop a bomb. You can see your item counts at the top of the window.",
+					"Blue = open door | Orange = locked door | Purple = chest",
 					"+/- to change screen size",
-					"",
 			}
 	);
 

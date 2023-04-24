@@ -30,7 +30,6 @@ public class Inf_Panel extends JPanel
 		
 		dungeonHandler = new DungeonHandler(this, PANEL_WIDTH, PANEL_HEIGHT);
 		player = dungeonHandler.player;
-		player.size = PANEL_HEIGHT / 26;
 		player.speed = PANEL_HEIGHT / 100;
 	}
 	
@@ -62,7 +61,7 @@ public class Inf_Panel extends JPanel
 		player.x = (int) (playerLocRatio[0] * PANEL_WIDTH);
 		player.y = (int) (playerLocRatio[1] * PANEL_HEIGHT);
 		
-		player.size = PANEL_HEIGHT / 26;
+		player.setSize(PANEL_HEIGHT / 26);
 		player.speed = PANEL_HEIGHT / 100;
 		
 		for (int i = 0; i < enemies.size(); i++)
@@ -70,7 +69,7 @@ public class Inf_Panel extends JPanel
 			Enemy enemy = enemies.get(i);
 			enemy.x = (int) (enemyLocRatio[0][i] * PANEL_WIDTH);
 			enemy.y = (int) (enemyLocRatio[1][i] * PANEL_HEIGHT);
-			enemy.setSize(player.size); // also handles enemy.speed
+			enemy.setSize(player.getSize()); // also handles enemy.speed
 		}
 		
 		// OTHERS
@@ -102,6 +101,7 @@ public class Inf_Panel extends JPanel
 	private static final Color block_col_2 = block_col_1.darker();
 	private static final Color chest_col = new Color(155, 50, 255);
 	private static final Color chest_border_col = new Color(105, 50, 225);
+	private static final Color bomb_col = new Color(20, 20, 40);
 	private static final Color reddorb_col = new Color(255, 80, 80);
 	
 	private BasicStroke tile_stroke = new BasicStroke(PANEL_HEIGHT / 85);
@@ -152,13 +152,13 @@ public class Inf_Panel extends JPanel
 		drawTiles(g2D, curRoom);
 		
 		//PLAYER
-		Color p_color = player.invincible_time > 0 ? player_hurt_col : player_col;
+		Color p_color = player.isInvincible() ? player_hurt_col : player_col;
 		g2D.setPaint(p_color);
-		g2D.fillRect(player.x, player.y, player.size, player.size);
+		g2D.fillRect(player.x, player.y, player.getSize(), player.getSize());
 		
 		g2D.setPaint(p_color.darker());
 		g2D.setStroke(player_stroke);
-		g2D.drawRect(player.x, player.y, player.size, player.size);
+		g2D.drawRect(player.x, player.y, player.getSize(), player.getSize());
 		
 		//ENEMIES
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -171,17 +171,32 @@ public class Inf_Panel extends JPanel
 		}
 		
 		//SWORD
-		if (player.isAttacking) {drawSword(g2D, player.size);}
+		if (player.isAttacking) {drawSword(g2D, player.getSize());}
+		
+		//BOMB
+//		g2D.setPaint(bomb_col);
+//		g2D.fillRect(200, 200, player.getSize(), player.getSize());
 		
 		//GUI
 		int gui_size = (int) (bg_tile_size * 0.75);
 		g2D.setPaint(gui_col);
 		g2D.setFont(new Font("", Font.BOLD, gui_size));
 		g2D.drawString("Room " +curRoom.coordinates[0] + "," + curRoom.coordinates[1], room[0], room[1] - gui_size);
+				
+		g2D.setPaint(player.isInvincible() ? p_color : gui_col);
+		g2D.drawString("HP: " + player.hp, room[0] + gui_size * 10, room[1] - gui_size);
+		
+		g2D.setPaint(player.isInKeyAnimation() ? chest_col : gui_col);
 		g2D.drawString("Keys: " + player.key_count, room[0] + gui_size * 20, room[1] - gui_size);
 		
-		if (player.invincible_time > 0) {g2D.setPaint(p_color);}
-		g2D.drawString("HP: " + player.hp, room[0] + gui_size * 10, room[1] - gui_size);
+		g2D.setPaint(player.isInBombObtainAnimation() ? chest_col : gui_col);
+		g2D.drawString("Bombs: " + player.bomb_count, room[0] + gui_size * 27, room[1] - gui_size);
+		
+		//DEBUG
+//		int[] box = dungeonHandler.getDamageBox();
+//		if (box == null) {return;}
+//		g2D.setPaint(Color.red);
+//		g2D.drawRect(box[0], box[1], box[2] - box[0], box[3] - box[1]);
 	}
 	
 	private void drawReddorb(Graphics2D g2D, int x, int y, int size)
