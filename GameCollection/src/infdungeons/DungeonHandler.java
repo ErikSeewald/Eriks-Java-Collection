@@ -25,11 +25,14 @@ public class DungeonHandler
 	private ArrayList<Enemy> enemies; // current enemies on screen
 	// As soon as we leave a room, only the information about the enemies spawning tiles is saved, not the enemy objects
 	
+	private ArrayList<Bomb> dropped_bombs;
+	
 	DungeonHandler(Inf_Panel panel, int PANEL_WIDTH, int PANEL_HEIGHT)
 	{
 		this.panel = panel;
 		
 		enemies = new ArrayList<>();
+		dropped_bombs = new ArrayList<>();
 
 		door_coords = new int[4][2];
 		setRoomSize(PANEL_WIDTH,PANEL_HEIGHT);
@@ -236,9 +239,25 @@ public class DungeonHandler
 		}
 	}
 	
+	public void bombDropEvent()
+	{
+		Bomb bomb = player.dropBomb();
+		if (bomb != null)
+		{
+			bomb.startTimer();
+			dropped_bombs.add(bomb);
+		}
+	}
+	
 	public void update()
 	{
-		// ENEMIES
+		updateEnemies();
+		updatePlayer();
+		updateBombs();
+	}
+	
+	private void updateEnemies()
+	{
 		Room room = player.getRoom();
 		for (Enemy enemy : enemies)
 		{
@@ -251,8 +270,10 @@ public class DungeonHandler
 		}
 		
 		enemies.removeIf((e) -> !e.isAlive);
-		
-		// PLAYER
+	}
+	
+	private void updatePlayer()
+	{
 		player.updateTimers();
 		if (!player.isAlive)
 		{
@@ -271,6 +292,21 @@ public class DungeonHandler
 				{enemy.getHit(Player.attack_dmg);}
 			}
 		}
+	}
+	
+	private void updateBombs()
+	{
+		for (Bomb bomb : dropped_bombs)
+		{
+			if (bomb.isExploding) 
+			{
+				
+			}
+			
+			else {bomb.countDown();}
+		}
+		
+		dropped_bombs.removeIf((b) -> b.hasExplosionFinished());
 	}
 		
 	public int[] getDamageBox()
@@ -304,6 +340,8 @@ public class DungeonHandler
 	}
 	
 	public ArrayList<Enemy> getEnemies() {return enemies;}
+	
+	public ArrayList<Bomb> getDroppedBombs() {return dropped_bombs;}
 	
 	private static Direction reverse(Direction direction)
 	{

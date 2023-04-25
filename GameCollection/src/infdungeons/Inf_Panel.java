@@ -24,6 +24,8 @@ public class Inf_Panel extends JPanel
 	protected Player player;
 	private DungeonHandler dungeonHandler;
 	
+	private boolean debugMode = false;
+	
 	Inf_Panel()
 	{
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
@@ -40,6 +42,8 @@ public class Inf_Panel extends JPanel
 	public void updateDungeon() {dungeonHandler.update(); repaint();}
 	
 	public void interactEvent() {dungeonHandler.interactEvent(); repaint();}
+	
+	public void bombDropEvent() {dungeonHandler.bombDropEvent(); repaint();}
 	
 	public void changeSize(int amount)
 	{
@@ -87,6 +91,13 @@ public class Inf_Panel extends JPanel
 	
 	public int getTileSize() {return bg_tile_size;}
 	
+	public void switchDebugMode() 
+	{
+		debugMode = !debugMode;
+		if (!debugMode) // reset when exiting Debug Mode
+		{player.respawn(player.getRoom());}
+	}
+	
 	//---------------------------------------PAINT---------------------------------------
 	
 	private static final Color background_col = new Color(55, 55, 75);
@@ -99,9 +110,10 @@ public class Inf_Panel extends JPanel
 	private static final Color gui_col = new Color(180, 220, 255);
 	private static final Color block_col_1 = new Color(50, 60, 90);
 	private static final Color block_col_2 = block_col_1.darker();
-	private static final Color chest_col = new Color(155, 50, 255);
-	private static final Color chest_border_col = new Color(105, 50, 225);
+	private static final Color chest_col = new Color(185, 70, 255);
+	private static final Color chest_border_col = new Color(125, 60, 235);
 	private static final Color bomb_col = new Color(20, 20, 40);
+	private static final Color explosion_col = new Color(255, 120, 50);
 	private static final Color reddorb_col = new Color(255, 80, 80);
 	
 	private BasicStroke tile_stroke = new BasicStroke(PANEL_HEIGHT / 85);
@@ -173,9 +185,8 @@ public class Inf_Panel extends JPanel
 		//SWORD
 		if (player.isAttacking) {drawSword(g2D, player.getSize());}
 		
-		//BOMB
-//		g2D.setPaint(bomb_col);
-//		g2D.fillRect(200, 200, player.getSize(), player.getSize());
+		//BOMBS
+		drawBombs(g2D);
 		
 		//GUI
 		int gui_size = (int) (bg_tile_size * 0.75);
@@ -189,20 +200,37 @@ public class Inf_Panel extends JPanel
 		g2D.setPaint(player.isInKeyAnimation() ? chest_col : gui_col);
 		g2D.drawString("Keys: " + player.key_count, room[0] + gui_size * 20, room[1] - gui_size);
 		
-		g2D.setPaint(player.isInBombObtainAnimation() ? chest_col : gui_col);
+		g2D.setPaint(player.isInBombGUIAnimation() ? chest_col : gui_col);
 		g2D.drawString("Bombs: " + player.bomb_count, room[0] + gui_size * 27, room[1] - gui_size);
 		
 		//DEBUG
-//		int[] box = dungeonHandler.getDamageBox();
-//		if (box == null) {return;}
-//		g2D.setPaint(Color.red);
-//		g2D.drawRect(box[0], box[1], box[2] - box[0], box[3] - box[1]);
+		if (debugMode) {runDebugCode(g2D);}
 	}
 	
 	private void drawReddorb(Graphics2D g2D, int x, int y, int size)
 	{
 		g2D.setPaint(reddorb_col);
 		g2D.fillOval(x, y, size, size);
+	}
+	
+	private void drawBombs(Graphics2D g2D)
+	{
+		ArrayList<Bomb> bombs = dungeonHandler.getDroppedBombs();
+
+		for (Bomb bomb : bombs)
+		{
+			if (bomb.isExploding)
+			{
+				g2D.setPaint(explosion_col);
+				g2D.fillRect(bomb.x - bomb.dmg_radius / 2, bomb.y - bomb.dmg_radius / 2, bomb.dmg_radius, bomb.dmg_radius);
+			}
+			
+			else
+			{
+				g2D.setPaint(bomb_col);
+				g2D.fillRect(bomb.x, bomb.y, bomb.size, bomb.size);
+			}
+		}
 	}
 	
 	private void drawTiles(Graphics2D g2D, Room curRoom)
@@ -262,5 +290,17 @@ public class Inf_Panel extends JPanel
 		}
 		
 		g2D.fillRect(player.x + offset_x, player.y + offset_y, sword_width, sword_height);
+	}
+	
+	private void runDebugCode(Graphics2D g2D)
+	{
+		player.bomb_count = 100;
+		player.key_count = 100;
+		player.hp = 100;
+		
+		int[] box = dungeonHandler.getDamageBox();
+		if (box == null) {return;}
+		g2D.setPaint(Color.red);
+		g2D.drawRect(box[0], box[1], box[2] - box[0], box[3] - box[1]);
 	}
 }
