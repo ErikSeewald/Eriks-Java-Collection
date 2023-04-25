@@ -222,7 +222,7 @@ public class Inf_Panel extends JPanel
 			if (bomb.isExploding)
 			{
 				g2D.setPaint(explosion_col);
-				g2D.fillRect(bomb.x - bomb.dmg_radius / 2, bomb.y - bomb.dmg_radius / 2, bomb.dmg_radius, bomb.dmg_radius);
+				g2D.fillRect(bomb.x - bomb.dmg_radius, bomb.y - bomb.dmg_radius, bomb.dmg_radius * 2, bomb.dmg_radius * 2);
 			}
 			
 			else
