@@ -2,7 +2,7 @@ package infdungeons;
 
 import java.util.Random;
 
-public class Enemy 
+public abstract class Enemy 
 {
 	protected int index0, index1; // tile array index
 	protected int x, y;
@@ -13,8 +13,7 @@ public class Enemy
 	
 	public static final byte type_reddorb = 3;
 	
-	public void attack(Player player)
-	{}
+	public void attack(Player player) {}
 	
 	public void getHit(int damage)
 	{
@@ -22,12 +21,9 @@ public class Enemy
 		if (this.hp <= 0) {this.isAlive = false;} 
 	}
 	
-	public void move(Random random, int[] room)
-	{}
+	public void move(Random random, int[] room) {}
 	
-	public byte getType()
-	{return -1;}
+	public byte getType() {return -1;}
 	
-	public void setSize(int size)
-	{this.size = size;}
+	public void setSize(int size) {}
 }

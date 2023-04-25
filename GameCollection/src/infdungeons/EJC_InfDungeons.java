@@ -42,6 +42,8 @@ public class EJC_InfDungeons extends JFrame implements EJC_Interface
 				if (code == 521) {panel.changeSize(10); pack();} // +
 				else if (code == 45) {panel.changeSize(-10); pack();} // -
 				else if (code == 69) {panel.interactEvent();} // E
+				else if (code == 81) {panel.bombDropEvent();} // Q
+				else if (code == 10) {panel.switchDebugMode();} // Enter
 			
 			}
 			@Override
