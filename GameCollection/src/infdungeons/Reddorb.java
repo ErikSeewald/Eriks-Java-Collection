@@ -1,7 +1,5 @@
 package infdungeons;
 
-import java.util.Random;
-
 public class Reddorb extends Enemy
 {
 	public static final int attack_dmg = 2;
@@ -33,23 +31,6 @@ public class Reddorb extends Enemy
 		if (player.x > this.x - buffer && player.x < this.x + size
 				&& player.y > this.y - buffer && player.y < this.y + size )
 		{player.getHit(Reddorb.attack_dmg);}
-	}
-	
-	
-	@Override
-	public void move(Random random, int[] room)
-	{
-		switch (random.nextInt(5)) //0 = no movement
-		{ 
-			case 1: this.x+= this.speed; if (this.x > room[0] + room[2]) {this.x -= this.speed;}
-			break;
-			case 2: this.x-= this.speed; if (this.x < room[0]) {this.x += this.speed;}
-			break;
-			case 3: this.y+= this.speed; if (this.y > room[1] + room[3]) {this.x -= this.speed;}
-			break;
-			case 4: this.y-= this.speed; if (this.y < room[1]) {this.x += this.speed;}
-			break;
-		}
 	}
 	
 	@Override

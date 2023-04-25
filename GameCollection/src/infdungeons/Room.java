@@ -8,6 +8,8 @@ public class Room
 	Room[] neighbors; // directions following order N-E-S-W
 	final int[] coordinates;
 	
+	boolean enemies_cleared = false;
+	
 	public static final class Door
 	{
 		public static final byte locked = 0, open = 1, blocked = -1;
@@ -17,6 +19,8 @@ public class Room
 	
 	public class Chest
 	{	
+		public static final byte chance_1_in_4 = 1, chance_1_in_2 = 2;
+		
 		public static final byte key = 1, bomb = 2;
 		byte content;
 		
@@ -48,7 +52,7 @@ public class Room
 		neighbors = new Room[4];
 		doors = new byte[4];
 		generateDoors(random);
-		generateChest(random);
+		generateChest(random, Chest.chance_1_in_4);
 		generateBlocks(random);
 		generateEnemies(random);
 	}
@@ -64,12 +68,19 @@ public class Room
 		}
 	}
 	
-	private void generateChest(Random random)
+	/**
+     * Generates chests based on random chance
+     * @param random the Random object to be used
+     * @param chance Chest.chance_1_in_4 or Chest.chance_1_in_2
+     */
+	public void generateChest(Random random, byte chance)
 	{
-		if (random.nextInt(4) != 1) {return;}
+		if (random.nextInt(4) >= chance) {return;}
 		
 		int[] index = getValidIndex(random);
 		if (index == null) {return;}
+		
+		if (this.chest != null) {tiles[this.chest.i][this.chest.j] = empty_tile;}
 		
  		this.chest = new Chest(random, index[0], index[1]);
  		tiles[index[0]][index[1]] = chest_tile;

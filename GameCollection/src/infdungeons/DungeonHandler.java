@@ -220,6 +220,7 @@ public class DungeonHandler
 			case WEST: player.x -= player.getSize() / 2; break;
 		}
 		
+		dropped_bombs.removeAll(dropped_bombs);
 		loadEnemies();
 	}
 	
@@ -259,17 +260,25 @@ public class DungeonHandler
 	private void updateEnemies()
 	{
 		Room room = player.getRoom();
+		int[] room_rect = this.getRoomRect();
 		for (Enemy enemy : enemies)
 		{
 			if (!enemy.isAlive)
 			{room.tiles[enemy.index0][enemy.index1] = Room.empty_tile;}
 			
 			if (random.nextBoolean()) {continue;}
-			enemy.move(random, this.getRoomRect());
+			enemy.move(random, room_rect);
 			enemy.attack(player);
 		}
 		
 		enemies.removeIf((e) -> !e.isAlive);
+		
+		if (!room.enemies_cleared && enemies.size() == 0) 
+		{
+			// random chance to spawn chest after player defeats all enemies
+			room.generateChest(random, Chest.chance_1_in_2);
+			room.enemies_cleared = true;
+		}
 	}
 	
 	private void updatePlayer()
@@ -300,13 +309,24 @@ public class DungeonHandler
 		{
 			if (bomb.isExploding) 
 			{
+				//PLAYER
+				if (isInsideBomb(bomb, player.x, player.y, player.getSize())) {player.getHit(Bomb.dmg);}
 				
+				//ENEMIES
+				for (Enemy enemy: enemies)
+				{if (isInsideBomb(bomb, enemy.x, enemy.y, enemy.size)) {enemy.getHit(Bomb.dmg);}}
 			}
 			
 			else {bomb.countDown();}
 		}
 		
 		dropped_bombs.removeIf((b) -> b.hasExplosionFinished());
+	}
+	
+	private boolean isInsideBomb(Bomb bomb, int x, int y, int size)
+	{
+		return x + size > bomb.x - bomb.dmg_radius && x < bomb.x + bomb.dmg_radius
+				&& y + size > bomb.y - bomb.dmg_radius && y < bomb.y + bomb.dmg_radius;
 	}
 		
 	public int[] getDamageBox()

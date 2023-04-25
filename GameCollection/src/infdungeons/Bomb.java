@@ -6,6 +6,7 @@ public class Bomb
 	int timer;
 	int size;
 	int dmg_radius;
+	public static final int dmg = 8;
 
 	private int explosion_animation;
 	public boolean isExploding = false;
