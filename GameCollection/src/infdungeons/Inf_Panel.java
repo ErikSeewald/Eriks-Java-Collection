@@ -194,7 +194,8 @@ public class Inf_Panel extends JPanel
 		g2D.setFont(new Font("", Font.BOLD, gui_size));
 		g2D.drawString("Room " +curRoom.coordinates[0] + "," + curRoom.coordinates[1], room[0], room[1] - gui_size);
 				
-		g2D.setPaint(player.isInvincible() ? p_color : gui_col);
+		g2D.setPaint(player.isInvincible() ? p_color : gui_col); // damage or standard color
+		if (player.isInHealingAnimation()) {g2D.setPaint(player_col);}
 		g2D.drawString("HP: " + player.hp, room[0] + gui_size * 10, room[1] - gui_size);
 		
 		g2D.setPaint(player.isInKeyAnimation() ? chest_col : gui_col);

@@ -150,8 +150,13 @@ public class DungeonHandler
 		
 		switch (chest.content)
 		{
-			case Chest.key: player.obtainKey(); break;
-			case Chest.bomb: player.obtainBomb(); break;
+			case Chest.key: player.obtainKey(); 
+			break;
+			case Chest.bomb: player.obtainBomb(random.nextInt(4) + 1); 
+			break;
+			case Chest.enemy: enemies.add(new Reddorb(chest.i * tile_size + tile_field_x, chest.j * tile_size  + tile_field_y, player.getSize(), 0, 0));
+			break;
+			case Chest.health: player.heal(random.nextInt(Player.starting_hp) + 1);
 		}
 	}
 	

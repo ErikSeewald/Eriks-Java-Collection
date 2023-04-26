@@ -21,7 +21,7 @@ public class Room
 	{	
 		public static final byte chance_1_in_4 = 1, chance_1_in_2 = 2;
 		
-		public static final byte key = 1, bomb = 2;
+		public static final byte key = 1, bomb = 2, enemy = 3, health = 4;
 		byte content;
 		
 		int i, j; //tile array indices
@@ -31,10 +31,12 @@ public class Room
 			this.i = i;
 			this.j = j;
 			
-			switch (random.nextInt(2)) // replace with random when more items are added
+			switch (random.nextInt(4))
 			{
 				case 0: this.content = Chest.key; break;
 				case 1: this.content = Chest.bomb; break;
+				case 2: this.content = Chest.enemy; break;
+				case 3: this.content = Chest.health; break;
 			}
 		}
 	}
