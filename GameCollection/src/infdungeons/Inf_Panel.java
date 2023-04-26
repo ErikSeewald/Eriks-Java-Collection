@@ -115,6 +115,8 @@ public class Inf_Panel extends JPanel
 	private static final Color bomb_col = new Color(20, 20, 40);
 	private static final Color explosion_col = new Color(255, 120, 50);
 	private static final Color reddorb_col = new Color(255, 80, 80);
+	private static final Color yellorb_col = new Color(255, 200, 80);
+	private static final Color yellorb_hurt_col = new Color(225, 110, 40);
 	
 	private BasicStroke tile_stroke = new BasicStroke(PANEL_HEIGHT / 85);
 	private BasicStroke player_stroke = new BasicStroke(tile_stroke.getLineWidth() /2);
@@ -178,7 +180,8 @@ public class Inf_Panel extends JPanel
 		{
 			switch (enemy.getType())
 			{
-				case Enemy.type_reddorb: drawReddorb(g2D, enemy.x, enemy.y, enemy.size);
+				case Enemy.type_reddorb: drawReddorb(g2D, enemy.x, enemy.y, enemy.size); break;
+				case Enemy.type_yellorb: drawYellorb(g2D, enemy); break;
 			}
 		}
 		
@@ -212,6 +215,12 @@ public class Inf_Panel extends JPanel
 	{
 		g2D.setPaint(reddorb_col);
 		g2D.fillOval(x, y, size, size);
+	}
+	
+	private void drawYellorb(Graphics2D g2D, Enemy yellorb)
+	{
+		g2D.setPaint(yellorb.hp == Yellorb.starting_hp ? yellorb_col : yellorb_hurt_col);
+		g2D.fillOval(yellorb.x, yellorb.y, yellorb.size, yellorb.size);
 	}
 	
 	private void drawBombs(Graphics2D g2D)

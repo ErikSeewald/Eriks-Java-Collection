@@ -241,6 +241,9 @@ public class DungeonHandler
 			{
 				if (room.tiles[i][j] == Room.reddorb_tile) 
 				{enemies.add(new Reddorb(i * tile_size + tile_field_x, j * tile_size  + tile_field_y, player.getSize(), i, j));}
+				
+				else if (room.tiles[i][j] == Room.yellorb_tile) 
+				{enemies.add(new Yellorb(i * tile_size + tile_field_x, j * tile_size  + tile_field_y, player.getSize(), i, j));}
 			}
 		}
 	}
