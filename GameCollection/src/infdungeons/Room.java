@@ -44,7 +44,7 @@ public class Room
 	
 	byte[][] tiles; // tiles to spawn blocks, enemies, chests etc in
 	public static final int tiles_x = 21, tiles_y = 11;
-	public static final byte empty_tile = 0, chest_tile = 1, block_tile = 2, reddorb_tile = 3;
+	public static final byte empty_tile = 0, chest_tile = 1, block_tile = 2, reddorb_tile = 3, yellorb_tile = 4;
 	
 	Room(Random random, int[] coordinates)
 	{
@@ -109,10 +109,9 @@ public class Room
 			if (index == null) {return;}
 			
 			byte type = Room.empty_tile;
-			switch (0) // change for more types of enemies later
-			{
-				case 0: type = Room.reddorb_tile; break;
-			}
+			int rand = random.nextInt(4);
+			if (rand < 3) {type = Room.reddorb_tile;}
+			else {type = Room.yellorb_tile;}
 			
 			tiles[index[0]][index[1]] = type;
 		}

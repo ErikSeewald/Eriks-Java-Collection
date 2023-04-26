@@ -11,9 +11,16 @@ public abstract class Enemy
 	protected int size;
 	protected int speed;
 	
-	public static final byte type_reddorb = 3;
+	public static final byte type_reddorb = 3, type_yellorb = 4;
 	
-	public void attack(Player player) {}
+	public void attack(Player player) 
+	{
+		int buffer = size / 2;
+		
+		if (player.x > this.x - buffer && player.x < this.x + size
+				&& player.y > this.y - buffer && player.y < this.y + size )
+		{player.getHit(Reddorb.attack_dmg);}
+	}
 	
 	public void getHit(int damage)
 	{
@@ -38,5 +45,9 @@ public abstract class Enemy
 	
 	public byte getType() {return -1;}
 	
-	public void setSize(int size) {}
+	public void setSize(int size) 
+	{
+		this.size = size;
+		this.speed = size / 3;
+	}
 }

@@ -24,22 +24,5 @@ public class Reddorb extends Enemy
 	}
 	
 	@Override
-	public void attack(Player player)
-	{
-		int buffer = size / 2;
-		
-		if (player.x > this.x - buffer && player.x < this.x + size
-				&& player.y > this.y - buffer && player.y < this.y + size )
-		{player.getHit(Reddorb.attack_dmg);}
-	}
-	
-	@Override
 	public byte getType() {return Enemy.type_reddorb;}
-	
-	@Override
-	public void setSize(int size) 
-	{
-		this.size = size;
-		this.speed = size / 3;
-	}
 }
