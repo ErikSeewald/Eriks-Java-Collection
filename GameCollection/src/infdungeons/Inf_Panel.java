@@ -11,8 +11,13 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import infdungeons.Player.Direction;
 import infdungeons.Room.Door;
+import infdungeons.enemies.Enemy;
+import infdungeons.enemies.Projectile;
+import infdungeons.enemies.Yellorb;
+import infdungeons.player.Bomb;
+import infdungeons.player.Player;
+import infdungeons.player.Player.Direction;
 
 public class Inf_Panel extends JPanel
 {
@@ -73,7 +78,9 @@ public class Inf_Panel extends JPanel
 			Enemy enemy = enemies.get(i);
 			enemy.x = (int) (enemyLocRatio[0][i] * PANEL_WIDTH);
 			enemy.y = (int) (enemyLocRatio[1][i] * PANEL_HEIGHT);
-			enemy.setSize(player.getSize()); // also handles enemy.speed
+			if (enemy.getType() != Enemy.type_projectile)
+			{enemy.setSize(player.getSize());} // also handles enemy.speed
+			else {enemy.setSize(player.getSize() / 2);}
 		}
 		
 		// OTHERS
@@ -92,7 +99,7 @@ public class Inf_Panel extends JPanel
 	public int getTileSize() {return bg_tile_size;}
 	
 	public void switchDebugMode() 
-	{
+	{	
 		debugMode = !debugMode;
 		if (!debugMode) // reset when exiting Debug Mode
 		{player.respawn(player.getRoom());}
@@ -182,6 +189,7 @@ public class Inf_Panel extends JPanel
 			{
 				case Enemy.type_reddorb: drawReddorb(g2D, enemy.x, enemy.y, enemy.size); break;
 				case Enemy.type_yellorb: drawYellorb(g2D, enemy); break;
+				case Enemy.type_projectile: drawProjectile(g2D, (Projectile) enemy); break;
 			}
 		}
 		
@@ -221,6 +229,13 @@ public class Inf_Panel extends JPanel
 	{
 		g2D.setPaint(yellorb.hp == Yellorb.starting_hp ? yellorb_col : yellorb_hurt_col);
 		g2D.fillOval(yellorb.x, yellorb.y, yellorb.size, yellorb.size);
+	}
+	
+	private void drawProjectile(Graphics2D g2D, Projectile projectile)
+	{
+		if (projectile.parent_type == Enemy.type_yellorb) {g2D.setPaint(yellorb_col);}
+		
+		g2D.fillRect(projectile.x, projectile.y, projectile.size, projectile.size);
 	}
 	
 	private void drawBombs(Graphics2D g2D)

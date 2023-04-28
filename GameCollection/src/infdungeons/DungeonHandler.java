@@ -3,9 +3,16 @@ package infdungeons;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import infdungeons.Player.Direction;
+
 import infdungeons.Room.Chest;
 import infdungeons.Room.Door;
+import infdungeons.enemies.Enemy;
+import infdungeons.enemies.Projectile;
+import infdungeons.enemies.Reddorb;
+import infdungeons.enemies.Yellorb;
+import infdungeons.player.Bomb;
+import infdungeons.player.Player;
+import infdungeons.player.Player.Direction;
 
 public class DungeonHandler 
 {
@@ -24,6 +31,7 @@ public class DungeonHandler
 
 	private ArrayList<Enemy> enemies; // current enemies on screen
 	// As soon as we leave a room, only the information about the enemies spawning tiles is saved, not the enemy objects
+	private ArrayList<Enemy> enemy_add_queue;
 	
 	private ArrayList<Bomb> dropped_bombs;
 	
@@ -32,6 +40,7 @@ public class DungeonHandler
 		this.panel = panel;
 		
 		enemies = new ArrayList<>();
+		enemy_add_queue = new ArrayList<>();
 		dropped_bombs = new ArrayList<>();
 
 		door_coords = new int[4][2];
@@ -271,16 +280,31 @@ public class DungeonHandler
 		int[] room_rect = this.getRoomRect();
 		for (Enemy enemy : enemies)
 		{
-			if (!enemy.isAlive)
+			if (!enemy.isAlive && enemy.getType() != Enemy.type_projectile)
 			{room.tiles[enemy.index0][enemy.index1] = Room.empty_tile;}
 			
 			if (random.nextBoolean()) {continue;}
 			enemy.move(random, room_rect);
 			enemy.attack(player);
+			
+			// YELLORB SPECIFIC
+			if (enemy.getType() != Enemy.type_yellorb) {continue;}
+			Projectile projectile = ((Yellorb) enemy).getProjectile();
+			if (projectile != null)
+			{enemy_add_queue.add(projectile);}
 		}
 		
+		//ADD ENEMIES WAITING IN QUEUE
+		if (!enemy_add_queue.isEmpty())
+		{
+			enemies.addAll(enemy_add_queue);
+			enemy_add_queue.removeAll(enemy_add_queue);
+		}
+		
+		//REMOVE DEAD ENEMIES
 		enemies.removeIf((e) -> !e.isAlive);
 		
+		// IF ALL ENEMIES WERE KILLED
 		if (!room.enemies_cleared && enemies.size() == 0) 
 		{
 			// random chance to spawn chest after player defeats all enemies

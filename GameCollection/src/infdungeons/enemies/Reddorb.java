@@ -1,4 +1,4 @@
-package infdungeons;
+package infdungeons.enemies;
 
 public class Reddorb extends Enemy
 {
@@ -9,11 +9,11 @@ public class Reddorb extends Enemy
      * Creates a Reddorb enemy object
      * @param x the x coordinate
      * @param y the y coordinate
-     * @param size the Reddorbs screen size
+     * @param size the Reddorb's screen size
      * @param index0 first index of Reddorb in tile array
      * @param index1 second index of Reddorb in tile array
      */
-	Reddorb(int x, int y, int size, int index0, int index1)
+	public Reddorb(int x, int y, int size, int index0, int index1)
 	{
 		this.x = x;
 		this.y = y;
@@ -21,6 +21,7 @@ public class Reddorb extends Enemy
 		this.index0 = index0;
 		this.index1 = index1;
 		this.hp = Reddorb.starting_hp;
+		this.dmg = Reddorb.attack_dmg;
 	}
 	
 	@Override
