@@ -1,7 +1,8 @@
 package infdungeons;
 
 import java.util.Random;
-import infdungeons.Player.Direction;
+
+import infdungeons.player.Player.Direction;
 
 public class Room 
 {
@@ -42,7 +43,7 @@ public class Room
 	}
 	Chest chest;
 	
-	byte[][] tiles; // tiles to spawn blocks, enemies, chests etc in
+	public byte[][] tiles; // tiles to spawn blocks, enemies, chests etc in
 	public static final int tiles_x = 21, tiles_y = 11;
 	public static final byte empty_tile = 0, chest_tile = 1, block_tile = 2, reddorb_tile = 3, yellorb_tile = 4;
 	
@@ -82,7 +83,7 @@ public class Room
 		int[] index = getValidIndex(random);
 		if (index == null) {return;}
 		
-		if (this.chest != null) {tiles[this.chest.i][this.chest.j] = empty_tile;}
+		if (this.chest != null) {tiles[this.chest.i][this.chest.j] = empty_tile;} // clear previous chest
 		
  		this.chest = new Chest(random, index[0], index[1]);
  		tiles[index[0]][index[1]] = chest_tile;

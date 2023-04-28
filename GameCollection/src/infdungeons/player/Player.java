@@ -1,27 +1,30 @@
-package infdungeons;
+package infdungeons.player;
+
+import infdungeons.DungeonHandler;
+import infdungeons.Room;
 
 public class Player 
 {
-	int x, y;
-	int speed;
+	public int x, y;
+	public int speed;
 	private int size;
-	int hp;
-	boolean isAttacking;
+	public int hp;
+	public boolean isAttacking;
 	private Room currentRoom;
 	private DungeonHandler dungeonHandler;
-	int key_count;
-	int bomb_count;
+	public int key_count;
+	public int bomb_count;
 	
 	private int invincible_time;
 	private int key_animation;
 	private int bomb_gui_animation;
 	private int heal_animation;
-	boolean isAlive;
+	public boolean isAlive;
 	
 	public static final int attack_dmg = 5;
 	public static final int starting_hp = 15;
 	
-	Player(DungeonHandler dungeonHandler, Room room, int size)
+	public Player(DungeonHandler dungeonHandler, Room room, int size)
 	{
 		this.dungeonHandler = dungeonHandler;
 		this.respawn(room);	
@@ -50,10 +53,10 @@ public class Player
 	{
 		NORTH(0), EAST(90), SOUTH(180), WEST(270);
 		
-		int angle;
+		public int angle;
 		Direction(int angle) {this.angle = angle;}
 	};
-	Direction direction;
+	public Direction direction;
 	
 	public void move(int x, int y)
 	{

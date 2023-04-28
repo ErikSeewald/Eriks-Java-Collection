@@ -1,11 +1,11 @@
-package infdungeons;
+package infdungeons.player;
 
 public class Bomb 
 {
-	int x, y;
-	int timer;
-	int size;
-	int dmg_radius;
+	public int x, y;
+	public int timer;
+	public int size;
+	public int dmg_radius;
 	public static final int dmg = 8;
 
 	private int explosion_animation;

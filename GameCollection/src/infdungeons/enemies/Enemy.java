@@ -1,17 +1,21 @@
-package infdungeons;
+package infdungeons.enemies;
 
 import java.util.Random;
 
+import infdungeons.player.Player;
+
 public abstract class Enemy 
 {
-	protected int index0, index1; // tile array index
-	protected int x, y;
-	protected int hp;
-	protected boolean isAlive = true;
-	protected int size;
-	protected int speed;
+	public int index0, index1; // tile array index
+	public int x, y;
+	public int hp;
+	public boolean isAlive = true;
+	public int size;
+	public int speed;
 	
-	public static final byte type_reddorb = 3, type_yellorb = 4;
+	public int dmg;
+	
+	public static final byte type_reddorb = 3, type_yellorb = 4, type_projectile = 5;
 	
 	public void attack(Player player) 
 	{
@@ -19,7 +23,7 @@ public abstract class Enemy
 		
 		if (player.x > this.x - buffer && player.x < this.x + size
 				&& player.y > this.y - buffer && player.y < this.y + size )
-		{player.getHit(Reddorb.attack_dmg);}
+		{player.getHit(this.dmg);}
 	}
 	
 	public void getHit(int damage)
