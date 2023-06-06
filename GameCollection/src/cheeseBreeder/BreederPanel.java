@@ -6,10 +6,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 
 import cheeseBreeder.cheese.Cheese;
+import cheeseBreeder.cheese.Cheese.Hole;
 import cheeseBreeder.cheese.Emmentaler;
 
 public class BreederPanel extends JPanel
@@ -38,7 +41,9 @@ public class BreederPanel extends JPanel
 		g2D.setPaint(background_col);
 		g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
 		
-		drawCheese(g2D, new Emmentaler(20, 20));
+		//CHEESE
+		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		drawCheese(g2D, new Emmentaler(250, 250));
 	}
 	
 	public void drawCheese(Graphics2D g2D, Cheese cheese)
@@ -51,24 +56,28 @@ public class BreederPanel extends JPanel
 		
 		//CORE
 		g2D.setPaint(cheese.getCoreColor());
-		g2D.fillPolygon
-		(
-				new int[] {cheese.x, cheese.x + Cheese.size, cheese.x}, 
-				new int[] {cheese.y + Cheese.size, cheese.y + Cheese.size / 2, cheese.y}, 
-				3
-		);
+		
+		Polygon core = new Polygon();
+		core.addPoint(cheese.x, cheese.y + Cheese.size);
+        core.addPoint(cheese.x + Cheese.size, cheese.y + Cheese.size / 2);
+        core.addPoint(cheese.x, cheese.y);
+		g2D.fillPolygon(core);
+		
+		g2D.setClip(core); // make sure no other things we draw clips outside of the cheese triangle
 		
 		//RIND
 		g2D.setPaint(cheese.getRindColor());
 		int rind_size = cheese.getRindSize();
-		g2D.setStroke(new BasicStroke(rind_size));
-		g2D.drawLine(cheese.x, cheese.y + rind_size / 2, cheese.x, cheese.y + Cheese.size - rind_size / 2);
-		
+		g2D.fillRect(cheese.x, cheese.y, rind_size, Cheese.size);
+
 		//HOLES
-		for (int i = 0; i < cheese.getHoleCount(); i++)
+		g2D.setPaint(cheese.getHoleColor());
+		for (Hole hole : cheese.getHoles())
 		{
-			
+			g2D.fillOval(cheese.x + hole.x, cheese.y + hole.y, hole.size, hole.size);
 		}
+		
+		g2D.setClip(null); // reset the clip
 	}
 	
 }

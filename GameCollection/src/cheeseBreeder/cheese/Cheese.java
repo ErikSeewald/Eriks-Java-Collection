@@ -1,7 +1,6 @@
 package cheeseBreeder.cheese;
 
 import java.awt.Color;
-import java.util.ArrayList;
 
 public abstract class Cheese 
 {
@@ -11,12 +10,13 @@ public abstract class Cheese
 	
 	protected int rind_size, hole_count;
 	
-	protected ArrayList<Hole> holes;
+	protected Hole[] holes;
 	
 	public class Hole 
 	{
-		int x, y;
-		int size;
+		// x and y are relative to the x and y coordinates of the cheese the hole belongs to
+		public int x, y;
+		public int size;
 		
 		Hole(int x, int y, int size)
 		{
@@ -33,8 +33,6 @@ public abstract class Cheese
 	{
 		this.x = x;
 		this.y = y;
-		
-		holes = new ArrayList<>();
 	}
 	
 	public String getName() {return name;}
@@ -48,4 +46,6 @@ public abstract class Cheese
 	public Color getHoleColor() {return hole_color;}
 	
 	public int getHoleCount() {return hole_count;}
+	
+	public Hole[] getHoles() {return holes.clone();}
 }
