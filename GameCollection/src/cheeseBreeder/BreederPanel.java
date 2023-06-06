@@ -44,6 +44,7 @@ public class BreederPanel extends JPanel
 		drawCheese(g2D, new Camembert(800, 100));
 		drawCheese(g2D, new Cheddar(100, 400));
 		drawCheese(g2D, new Mozarella(450, 400));
+		drawCheese(g2D, new BlueCheese(800, 400));
 	}
 	
 	public void drawCheese(Graphics2D g2D, Cheese cheese)
