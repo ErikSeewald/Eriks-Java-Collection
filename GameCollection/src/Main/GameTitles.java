@@ -234,6 +234,19 @@ public enum GameTitles {
 					"Blue = open door | Orange = locked door | Purple = chest",
 					"+/- to change screen size | ENTER to enter/exit Debug Mode",
 			}
+	),
+	
+	CheeseBreeder
+	(
+			new String[]
+			{
+					"CHEESE BREEDER",
+					"Breed the default variants of cheese together to create new types of cheese",
+					"with properties genetically inherited from their parents.",
+					"",
+					"",
+					"",
+			}
 	);
 
 	String[] guide = new String[6];
