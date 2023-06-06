@@ -1,6 +1,5 @@
 package cheeseBreeder;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -8,12 +7,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
-
 import javax.swing.JPanel;
-
-import cheeseBreeder.cheese.Cheese;
+import cheeseBreeder.cheese.*;
 import cheeseBreeder.cheese.Cheese.Hole;
-import cheeseBreeder.cheese.Emmentaler;
 
 public class BreederPanel extends JPanel
 {
@@ -43,7 +39,11 @@ public class BreederPanel extends JPanel
 		
 		//CHEESE
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		drawCheese(g2D, new Emmentaler(250, 250));
+		drawCheese(g2D, new Emmentaler(100, 100));
+		drawCheese(g2D, new Gouda(450, 100));
+		drawCheese(g2D, new Camembert(800, 100));
+		drawCheese(g2D, new Cheddar(100, 400));
+		drawCheese(g2D, new Mozarella(450, 400));
 	}
 	
 	public void drawCheese(Graphics2D g2D, Cheese cheese)
@@ -52,7 +52,6 @@ public class BreederPanel extends JPanel
 		g2D.setFont(cheese_font);
 		g2D.setPaint(text_col);
 		g2D.drawString(cheese.getName(), cheese.x, cheese.y + Cheese.size * 5/4);
-		
 		
 		//CORE
 		g2D.setPaint(cheese.getCoreColor());
@@ -79,5 +78,4 @@ public class BreederPanel extends JPanel
 		
 		g2D.setClip(null); // reset the clip
 	}
-	
 }
