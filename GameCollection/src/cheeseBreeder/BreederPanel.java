@@ -8,8 +8,9 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
 import javax.swing.JPanel;
-import cheeseBreeder.cheese.*;
+import cheeseBreeder.cheese.Cheese;
 import cheeseBreeder.cheese.Cheese.Hole;
+import cheeseBreeder.cheese.CheeseChild;
 
 public class BreederPanel extends JPanel
 {
@@ -18,15 +19,29 @@ public class BreederPanel extends JPanel
 	private int PANEL_HEIGHT = 700;
 	private int PANEL_WIDTH = (int) (PANEL_HEIGHT * 1.52);
 	
+	private CheeseHandler cheeseHandler;
+	
 	BreederPanel()
 	{
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+		
+		cheeseHandler = new CheeseHandler(this);
+		this.addMouseListener(cheeseHandler.new ClickListener());
+		this.addMouseMotionListener(cheeseHandler.new DragListener());
+		this.addMouseListener(cheeseHandler.new ReleaseListener());
 	}
+	
+	public void spawnCheese(String id) {cheeseHandler.spawnElementalCheese(id); repaint();}
+	
+	public void breed() {cheeseHandler.breed(); repaint();}
+	
+	public void reset() {cheeseHandler.reset(); repaint();}
 	
 	//---------------------------------------PAINT---------------------------------------
 	
 	private static final Color background_col = new Color(55, 55, 70);
 	private static final Color text_col = new Color(220, 220, 250);
+	private static final Color selected_col = new Color(255, 120, 80);
 	private static final Font cheese_font = new Font("", Font.BOLD, 20);
 	
 	public void paint(Graphics g)
@@ -39,13 +54,10 @@ public class BreederPanel extends JPanel
 		
 		//CHEESE
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//		drawCheese(g2D, new Emmentaler(100, 100));
-//		drawCheese(g2D, new Gouda(450, 100));
-//		drawCheese(g2D, new Camembert(800, 100));
-//		drawCheese(g2D, new Cheddar(100, 400));
-//		drawCheese(g2D, new Mozarella(450, 400));
-//		drawCheese(g2D, new BlueCheese(800, 400));
-		drawCheese(g2D, new Breedery().breed(new Emmentaler(100, 100), new Mozarella(450, 100)));
+		for (Cheese cheese : cheeseHandler.getCheeses())
+		{
+			drawCheese(g2D, cheese);
+		}
 	}
 	
 	public void drawCheese(Graphics2D g2D, Cheese cheese)
@@ -58,7 +70,7 @@ public class BreederPanel extends JPanel
 		
 		//NAME
 		g2D.setFont(cheese_font);
-		g2D.setPaint(text_col);
+		g2D.setPaint(cheese.isSelected() ? selected_col : text_col);
 		g2D.drawString(cheese.getName(), cheese.x, cheese.y + Cheese.size * 5/4);
 		
 		//CORE

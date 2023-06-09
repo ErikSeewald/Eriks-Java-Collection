@@ -16,8 +16,8 @@ public class Emmentaler extends Cheese
 		
 		this.rind_size = 10;
 		
-		this.hole_count_min = 3;
-		this.hole_count_max = 5;
+		this.hole_count_min = 4;
+		this.hole_count_max = 10;
 		this.hole_size_min = 5;
 		this.hole_size_max = Cheese.size / 5;
 		this.generateHoles();

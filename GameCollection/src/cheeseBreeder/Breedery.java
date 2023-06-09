@@ -17,7 +17,7 @@ public class Breedery
 	
 	public Cheese breed(Cheese c1, Cheese c2)
 	{
-		CheeseChild child = new CheeseChild(c1.x, c2.y);
+		CheeseChild child = new CheeseChild((c1.x + c2.x) / 2, (c1.y + c2.y) / 2);
 		child.setName(breedName(c1, c2));
 		breedColors(c1, c2, child);
 		child.setRindSize(breedRindSize(c1, c2));
@@ -111,7 +111,7 @@ public class Breedery
 	
 	private int mixValueRandomly(double a, double b)
 	{
-		double factor = random.nextDouble(1.5);
+		double factor = random.nextDouble(1.1);
 		if (factor < 0.4) {factor = 0.4;}
 		double second_factor = factor <= 1 ? (1 - factor) : 0;
 		return (int) ((a * factor + b * second_factor));

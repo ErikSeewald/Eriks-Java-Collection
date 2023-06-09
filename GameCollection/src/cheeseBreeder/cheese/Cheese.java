@@ -39,6 +39,7 @@ public abstract class Cheese
 	}
 	
 	private Random random;
+	private boolean selected;
 	
 	Cheese(int x, int y)
 	{
@@ -48,6 +49,10 @@ public abstract class Cheese
 		
 		random = new Random();
 	}
+	
+	public boolean isSelected() {return selected;}
+	
+	public void setSelected(boolean state) {selected = state;}
 	
 	public void generateHoles()
 	{	
