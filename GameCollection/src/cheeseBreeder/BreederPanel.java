@@ -39,16 +39,23 @@ public class BreederPanel extends JPanel
 		
 		//CHEESE
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		drawCheese(g2D, new Emmentaler(100, 100));
-		drawCheese(g2D, new Gouda(450, 100));
-		drawCheese(g2D, new Camembert(800, 100));
-		drawCheese(g2D, new Cheddar(100, 400));
-		drawCheese(g2D, new Mozarella(450, 400));
-		drawCheese(g2D, new BlueCheese(800, 400));
+//		drawCheese(g2D, new Emmentaler(100, 100));
+//		drawCheese(g2D, new Gouda(450, 100));
+//		drawCheese(g2D, new Camembert(800, 100));
+//		drawCheese(g2D, new Cheddar(100, 400));
+//		drawCheese(g2D, new Mozarella(450, 400));
+//		drawCheese(g2D, new BlueCheese(800, 400));
+		drawCheese(g2D, new Breedery().breed(new Emmentaler(100, 100), new Mozarella(450, 100)));
 	}
 	
 	public void drawCheese(Graphics2D g2D, Cheese cheese)
 	{	
+		if (cheese instanceof CheeseChild && !((CheeseChild) cheese).isGrownUp())
+		{throw new IllegalArgumentException("Cannot draw CheeseChild with grownUp == false");}
+		
+		if (!cheese.holesCreated())
+		{throw new IllegalArgumentException("Cannot draw Cheese with holesCreated == false");}
+		
 		//NAME
 		g2D.setFont(cheese_font);
 		g2D.setPaint(text_col);
