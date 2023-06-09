@@ -22,6 +22,7 @@ public abstract class Cheese
 	protected int hole_count, hole_count_min, hole_count_max;
 	protected int hole_size_min, hole_size_max;
 	protected Hole[] holes;
+	private boolean holesCreated;
 	
 	public class Hole 
 	{
@@ -43,13 +44,14 @@ public abstract class Cheese
 	{
 		this.x = x;
 		this.y = y;
+		this.holesCreated = false;
 		
 		random = new Random();
 	}
 	
-	protected void generateHoles()
+	public void generateHoles()
 	{	
-		if (this.hole_count_max < 1) {return;}
+		if (this.hole_count_max < 1) {this.holesCreated = true; return;}
 		
 		this.hole_count = random.nextInt(hole_count_max - hole_count_min) + hole_count_min;
 		holes = new Hole[hole_count];
@@ -64,6 +66,8 @@ public abstract class Cheese
 					random.nextInt(hole_size_max - hole_size_min) + hole_size_min
 			);
 		}
+		
+		this.holesCreated = true;
 	}
 	
 	public String getName() {return name;}
@@ -83,4 +87,15 @@ public abstract class Cheese
 		if (this.holes == null) {return new Hole[] {};}
 		return holes.clone();
 	}
+	
+	public boolean holesCreated()
+	{return holesCreated;}
+	
+	public int getHoleCountMin() {return hole_count_min;}
+	
+	public int getHoleCountMax() {return hole_count_max;}
+	
+	public int getHoleSizeMin() {return hole_size_min;}
+	
+	public int getHoleSizeMax() {return hole_size_max;}
 }
