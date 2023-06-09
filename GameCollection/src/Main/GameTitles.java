@@ -243,9 +243,9 @@ public enum GameTitles {
 					"CHEESE BREEDER",
 					"Breed the default variants of cheese together to create new types of cheese",
 					"with properties genetically inherited from their parents.",
-					"",
-					"",
-					"",
+					"Use the menu bar to select from a variety of elemental cheeses to breed with.",
+					"Once you have spawned two cheeses with the menu and selected them both by clicking",
+					"on them with your mouse, press b to breed them together. Press r to reset all.",
 			}
 	);
 
