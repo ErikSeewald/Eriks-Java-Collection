@@ -5,13 +5,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 
-import cheeseBreeder.cheese.BlueCheese;
-import cheeseBreeder.cheese.Camembert;
-import cheeseBreeder.cheese.Cheddar;
 import cheeseBreeder.cheese.Cheese;
-import cheeseBreeder.cheese.Emmentaler;
-import cheeseBreeder.cheese.Gouda;
-import cheeseBreeder.cheese.Mozarella;
+import cheeseBreeder.cheese.ElementalCheeses.BlueCheese;
+import cheeseBreeder.cheese.ElementalCheeses.Brownie;
+import cheeseBreeder.cheese.ElementalCheeses.Camembert;
+import cheeseBreeder.cheese.ElementalCheeses.Cheddar;
+import cheeseBreeder.cheese.ElementalCheeses.Emmentaler;
+import cheeseBreeder.cheese.ElementalCheeses.Gouda;
+import cheeseBreeder.cheese.ElementalCheeses.Mozarella;
+import cheeseBreeder.cheese.ElementalCheeses.PinkCheese;
+import cheeseBreeder.cheese.ElementalCheeses.Pommier;
 
 public class CheeseHandler 
 {
@@ -44,7 +47,10 @@ public class CheeseHandler
 			case "Camembert": cheeses.add(new Camembert(800, 100)); break;
 			case "Cheddar": cheeses.add(new Cheddar(100, 400)); break;
 			case "Mozarella": cheeses.add(new Mozarella(450, 400)); break;
-			case "Blue Cheese": cheeses.add(new BlueCheese(800, 400));
+			case "Blue Cheese": cheeses.add(new BlueCheese(800, 400)); break;
+			case "Pink Cheese": cheeses.add(new PinkCheese(150, 150)); break;
+			case "Pommier": cheeses.add(new Pommier(500, 150)); break;
+			case "Brownie": cheeses.add(new Brownie(850, 150)); break;
 		}
 	}
 	

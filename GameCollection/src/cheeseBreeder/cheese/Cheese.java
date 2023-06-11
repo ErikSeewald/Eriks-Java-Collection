@@ -41,7 +41,7 @@ public abstract class Cheese
 	private Random random;
 	private boolean selected;
 	
-	Cheese(int x, int y)
+	protected Cheese(int x, int y)
 	{
 		this.x = x;
 		this.y = y;
