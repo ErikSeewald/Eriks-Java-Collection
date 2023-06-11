@@ -25,7 +25,8 @@ public class EJC_CheeseBreeder extends JFrame implements EJC_Interface, ActionLi
 	private JMenuItem[] cheese_items = 
 	{
 			new JMenuItem("Emmentaler"), new JMenuItem("Gouda"), new JMenuItem("Camembert"), 
-			new JMenuItem("Cheddar"), new JMenuItem("Mozarella"), new JMenuItem("Blue Cheese")
+			new JMenuItem("Cheddar"), new JMenuItem("Mozarella"), new JMenuItem("Blue Cheese"),
+			new JMenuItem("Pink Cheese"), new JMenuItem("Pommier"), new JMenuItem("Brownie")
 	};
 	
 	@Override
