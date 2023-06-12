@@ -93,6 +93,28 @@ public class ElementalCheeses
 		}
 	}
 	
+	public static class CheeseCoal extends Cheese
+	{
+		public CheeseCoal(int x, int y) 
+		{
+			super(x, y);
+			
+			this.name = "Cheese Coal";
+			
+			this.core_color = new Color(15, 25, 45);
+			this.rind_color = core_color;
+			this.hole_color = new Color(25, 55, 65);
+			
+			this.rind_size = 0;
+			
+			this.hole_count_min = 0;
+			this.hole_count_max = 10;
+			this.hole_size_min = 3;
+			this.hole_size_max = Cheese.size / 15;
+			this.generateHoles();
+		}
+	}
+	
 	public static class Emmentaler extends Cheese
 	{
 		public Emmentaler(int x, int y)
