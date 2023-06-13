@@ -26,6 +26,28 @@ public class ElementalCheeses
 		}
 	}
 	
+	public static class Fraise extends Cheese //French for strawberry
+	{
+		public Fraise(int x, int y)
+		{
+			super(x, y);
+			
+			this.name = "Fraise";
+			
+			this.core_color = new Color(145, 50, 45);
+			this.rind_color = new Color(45, 125, 55);
+			this.hole_color = new Color(65, 55, 50);
+			
+			this.rind_size = 7;
+			
+			this.hole_count_min = 7;
+			this.hole_count_max = 21;
+			this.hole_size_min = 5;
+			this.hole_size_max = Cheese.size / 14;
+			this.generateHoles();
+		}
+	}
+	
 	public static class Brownie extends Cheese
 	{
 		public Brownie(int x, int y) 
@@ -66,6 +88,29 @@ public class ElementalCheeses
 			this.hole_count_max = 0;
 			this.hole_size_min = 0;
 			this.hole_size_max = 0;
+			this.generateHoles();
+		}
+		
+	}
+	
+	public static class Coffee extends Cheese
+	{
+		public Coffee(int x, int y) 
+		{
+			super(x, y);
+			
+			this.name = "Coffee";
+			
+			this.core_color = new Color(100, 75, 50);
+			this.rind_color = new Color(160, 140, 115);
+			this.hole_color = new Color(130, 105, 80);;
+			
+			this.rind_size = 13;
+			
+			this.hole_count_min = 4;
+			this.hole_count_max = 11;
+			this.hole_size_min = 3;
+			this.hole_size_max = Cheese.size / 13;
 			this.generateHoles();
 		}
 		

@@ -11,7 +11,9 @@ import cheeseBreeder.cheese.ElementalCheeses.Brownie;
 import cheeseBreeder.cheese.ElementalCheeses.Camembert;
 import cheeseBreeder.cheese.ElementalCheeses.Cheddar;
 import cheeseBreeder.cheese.ElementalCheeses.CheeseCoal;
+import cheeseBreeder.cheese.ElementalCheeses.Coffee;
 import cheeseBreeder.cheese.ElementalCheeses.Emmentaler;
+import cheeseBreeder.cheese.ElementalCheeses.Fraise;
 import cheeseBreeder.cheese.ElementalCheeses.Gouda;
 import cheeseBreeder.cheese.ElementalCheeses.Mozarella;
 import cheeseBreeder.cheese.ElementalCheeses.PinkCheese;
@@ -53,6 +55,8 @@ public class CheeseHandler
 			case "Pommier": cheeses.add(new Pommier(500, 150)); break;
 			case "Brownie": cheeses.add(new Brownie(850, 150)); break;
 			case "Cheese Coal": cheeses.add(new CheeseCoal(150, 450)); break;
+			case "Coffee": cheeses.add(new Coffee(500, 450)); break;
+			case "Fraise": cheeses.add(new Fraise(850, 450)); break;
 		}
 	}
 	
