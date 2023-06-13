@@ -27,7 +27,7 @@ public class EJC_CheeseBreeder extends JFrame implements EJC_Interface, ActionLi
 			new JMenuItem("Emmentaler"), new JMenuItem("Gouda"), new JMenuItem("Camembert"), 
 			new JMenuItem("Cheddar"), new JMenuItem("Mozarella"), new JMenuItem("Blue Cheese"),
 			new JMenuItem("Pink Cheese"), new JMenuItem("Pommier"), new JMenuItem("Brownie"),
-			new JMenuItem("Cheese Coal")
+			new JMenuItem("Cheese Coal"), new JMenuItem("Coffee"), new JMenuItem("Fraise")
 	};
 	
 	@Override
