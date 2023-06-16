@@ -247,6 +247,19 @@ public enum GameTitles {
 					"Once you have spawned two cheeses with the menu and selected them both by clicking",
 					"on them with your mouse, press b to breed them together. Press r to reset all.",
 			}
+	),
+	
+	TaxCollector
+	(
+			new String[]
+			{
+					"TAX COLLECTOR",
+					"",
+					"",
+					"",
+					"",
+					"",
+			}
 	);
 
 	String[] guide = new String[6];
