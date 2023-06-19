@@ -1,14 +1,15 @@
 package taxCollector;
 
-public class House 
+public class House extends MapItem
 {
 	private double tax;
 	
 	private int time_until_next_tax;
 	private int cooldown;
 	
-	House()
+	House(int i, int j)
 	{
+		super(i, j);
 		time_until_next_tax = 0;
 	}
 	
