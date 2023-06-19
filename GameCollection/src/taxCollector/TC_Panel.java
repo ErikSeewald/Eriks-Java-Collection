@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -21,11 +22,13 @@ public class TC_Panel extends JPanel
 	{
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
-		mapHandler = new MapHandler(this, PANEL_HEIGHT, PANEL_WIDTH);
+		mapHandler = new MapHandler(this);
 		taxCollector = mapHandler.getTaxCollector();
 		tile_size = mapHandler.getTileSize();
 		
 		draw_grid = true;
+		
+		updateMapReferences();
 	}
 	
 	public void move(MapHandler.Directions direction)
@@ -51,6 +54,13 @@ public class TC_Panel extends JPanel
 	
 	private int scroll_x, scroll_y;
 	
+	private ArrayList<House> houses;
+	
+	public void updateMapReferences()
+	{
+		houses = mapHandler.getAllHousesOnScreen();
+	}
+	
 	public void paint(Graphics g)
 	{
 		Graphics2D g2D = (Graphics2D) g;
@@ -71,6 +81,10 @@ public class TC_Panel extends JPanel
 		g2D.setPaint(tax_collector_col);
 		int tcSize = taxCollector.size;
 		g2D.fillRect(taxCollector.x - tcSize / 2, taxCollector.y - tcSize / 2, tcSize, tcSize);
+		
+		//HOUSES
+		for(House house : houses) //List updated by mapHandler when scrolling
+		{drawHouse(g2D, house);}
 	}
 	
 	private void drawGrid(Graphics2D g2D)
@@ -88,5 +102,17 @@ public class TC_Panel extends JPanel
 			g2D.drawLine(0, i* tile_size, PANEL_WIDTH, i * tile_size);
 			g2D.drawString("" + (i + mapHandler.getTopLeftY()), tile_size / 4, i * tile_size);
 		}
+	}
+	
+	private void drawHouse(Graphics2D g2D, House house)
+	{
+		g2D.setPaint(Color.red);
+		g2D.fillRect
+		(
+				(house.i * tile_size) - (MapHandler.house_size_tiles / 2) * tile_size, 
+				(house.j * tile_size) - (MapHandler.house_size_tiles / 2) * tile_size, 
+				MapHandler.house_size_tiles * tile_size, 
+				MapHandler.house_size_tiles * tile_size
+		);
 	}
 }
