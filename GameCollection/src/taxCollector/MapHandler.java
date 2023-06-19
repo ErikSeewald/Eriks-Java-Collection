@@ -50,21 +50,26 @@ public class MapHandler
 			break;
 		}
 		
-		//MOVE SCREEN (scroll one tile at a time)
+		this.scroll();
+	}
+	
+	private void scroll()
+	{
 		int index_x = taxCollector.x / tile_size;
 		int index_y = taxCollector.y / tile_size;
 		
+		//X
 		if (index_x > top_left_x + tiles_on_screen_x * 0.8)
-		{top_left_x++;}
+		{top_left_x++; taxCollector.x += tile_size / 2;}
 		
 		else if (index_x < top_left_x + tiles_on_screen_x * 0.2)
-		{top_left_x--;}
+		{top_left_x--; taxCollector.x -= tile_size / 2;}
 		
+		//Y
 		if (index_y > top_left_y + tiles_on_screen_y * 0.8)
-		{top_left_y++;}
+		{top_left_y++; taxCollector.y += tile_size / 2;}
 		
 		else if (index_y < top_left_y + tiles_on_screen_y * 0.2)
-		{top_left_y--;}
-		
+		{top_left_y--; taxCollector.y -= tile_size / 2;}
 	}
 }
