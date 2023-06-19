@@ -2,10 +2,8 @@ package taxCollector;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 
 import javax.swing.JPanel;
 
@@ -58,16 +56,16 @@ public class TC_Panel extends JPanel
 		Graphics2D g2D = (Graphics2D) g;
 		super.paint(g2D);
 		
+		//BACKGROUND
+		g2D.setPaint(background_col);
+		g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
+		
+		if (draw_grid) {drawGrid(g2D);}
+		
 		//SCREEN COORDINATES
 		scroll_x = -(mapHandler.getTopLeftX() * tile_size);
 		scroll_y = -(mapHandler.getTopLeftY() * tile_size);
-		g2D.translate(scroll_x, scroll_y);
-		
-		//BACKGROUND
-		g2D.setPaint(background_col);
-		g2D.fillRect(-scroll_x, -scroll_y, PANEL_WIDTH, PANEL_HEIGHT);
-		
-		if (draw_grid) {drawGrid(g2D);}
+		g2D.translate(scroll_x, scroll_y); // works like glTransform, i.e every following x coordinate will get scroll_x added to it
 		
 		//TAX COLLECTOR
 		g2D.setPaint(tax_collector_col);
@@ -76,10 +74,8 @@ public class TC_Panel extends JPanel
 	}
 	
 	private void drawGrid(Graphics2D g2D)
-	{
-		g2D.translate(-scroll_x, -scroll_y);
-		
-		g2D.setPaint(Color.white);
+	{	
+		g2D.setPaint(Color.LIGHT_GRAY);
 		for (int i = 1; i <= MapHandler.tiles_on_screen_x; i++)
 		{
 			g2D.drawLine(i * tile_size, 0, i * tile_size, PANEL_HEIGHT);
@@ -92,7 +88,5 @@ public class TC_Panel extends JPanel
 			g2D.drawLine(0, i* tile_size, PANEL_WIDTH, i * tile_size);
 			g2D.drawString("" + (i + mapHandler.getTopLeftY()), tile_size / 4, i * tile_size);
 		}
-		
-		g2D.translate(scroll_x, scroll_y);
 	}
 }
