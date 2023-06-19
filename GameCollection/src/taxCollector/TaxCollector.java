@@ -6,10 +6,15 @@ public class TaxCollector
 	
 	int x,y;
 	
-	TaxCollector(int x, int y)
+	int size;
+	double speed;
+	
+	TaxCollector(int x, int y, int size)
 	{
 		this.x = x;
 		this.y = y;
+		this.size = size;
+		this.speed = size / 3;
 		this.collected = 0;
 	}
 	
