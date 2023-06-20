@@ -47,6 +47,7 @@ public class TC_Panel extends JPanel
 	
 	private static final Color background_col = new Color(55, 55, 70);
 	private static final Color tax_collector_col = new Color(30, 30, 35);
+	private static final Color house_col_1 = new Color(150, 100, 55);
 	
 	private boolean draw_grid;
 	
@@ -77,14 +78,14 @@ public class TC_Panel extends JPanel
 		scroll_y = -(mapHandler.getTopLeftY() * tile_size);
 		g2D.translate(scroll_x, scroll_y); // works like glTransform, i.e every following x coordinate will get scroll_x added to it
 		
+		//HOUSES
+		for(House house : houses) //List updated by mapHandler when scrolling
+		{drawHouse(g2D, house);}
+		
 		//TAX COLLECTOR
 		g2D.setPaint(tax_collector_col);
 		int tcSize = taxCollector.size;
 		g2D.fillRect(taxCollector.x - tcSize / 2, taxCollector.y - tcSize / 2, tcSize, tcSize);
-		
-		//HOUSES
-		for(House house : houses) //List updated by mapHandler when scrolling
-		{drawHouse(g2D, house);}
 	}
 	
 	private void drawGrid(Graphics2D g2D)
@@ -106,7 +107,7 @@ public class TC_Panel extends JPanel
 	
 	private void drawHouse(Graphics2D g2D, House house)
 	{
-		g2D.setPaint(Color.red);
+		g2D.setPaint(house_col_1);
 		g2D.fillRect
 		(
 				(house.i * tile_size) - (MapHandler.house_size_tiles / 2) * tile_size, 
