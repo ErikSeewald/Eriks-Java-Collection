@@ -33,7 +33,7 @@ public class MapHandler
 		this.panel = panel;
 		
 		tile_size = 700 / 50; //700 == PANEL_HEIGHT
-		taxCollector = new TaxCollector((map_size/2 + 37) * tile_size, (map_size/2 + 27) * tile_size, (int) (tile_size * 1.5));
+		taxCollector = new TaxCollector((map_size/2 + 37) * tile_size, (map_size/2 + 27) * tile_size, (int) (tile_size * 1.5), tile_size);
 		top_left_x = top_left_y = map_size / 2;
 		irs = new IRS(top_left_x + tiles_on_screen_x / 2, top_left_y + tiles_on_screen_y / 2);
 		random = new Random();
@@ -61,7 +61,7 @@ public class MapHandler
 				if (random.nextInt(1000) == 1)
 				{
 					if (houseAllowed(i, j))
-					{map[i][j] = new House(i, j);}
+					{map[i][j] = new House(i, j, random);}
 				}
 			}
 		}
@@ -84,7 +84,7 @@ public class MapHandler
 	public void reset()
 	{
 		top_left_x = top_left_y = map_size / 2;
-		taxCollector = new TaxCollector((map_size/2 + 37) * tile_size, (map_size/2 + 27) * tile_size, (int) (tile_size * 1.5));
+		taxCollector = new TaxCollector((map_size/2 + 37) * tile_size, (map_size/2 + 27) * tile_size, (int) (tile_size * 1.5), tile_size);
 		irs = new IRS(top_left_x + tiles_on_screen_x / 2, top_left_y + tiles_on_screen_y / 2);
 		this.generateMap();
 		panel.updateMapReferences();
@@ -155,7 +155,7 @@ public class MapHandler
 			if (top_left_x + 1 < map_size - tiles_on_screen_x)
 			{
 				top_left_x++; 
-				taxCollector.x += tile_size / 2;
+				//taxCollector.x += tile_size / 2;
 				scrolled = true;
 			}
 			else if (index_x + 1 >= map_size) // only walk up to edge of map
@@ -167,7 +167,7 @@ public class MapHandler
 			if (top_left_x - 1 >= 0)
 			{
 				top_left_x--; 
-				taxCollector.x -= tile_size / 2;
+				//taxCollector.x -= tile_size / 2;
 				scrolled = true;
 			}
 			else if (index_x - 1 <= 0)
@@ -180,7 +180,7 @@ public class MapHandler
 			if (top_left_y + 1 < map_size - tiles_on_screen_y)
 			{
 				top_left_y++; 
-				taxCollector.y += tile_size / 2;
+				//taxCollector.y += tile_size / 2;
 				scrolled = true;
 			}
 			else if (index_y + 2 >= map_size)
@@ -192,7 +192,7 @@ public class MapHandler
 			if (top_left_y - 1 >= 0)
 			{
 				top_left_y--; 
-				taxCollector.y -= tile_size / 2;
+				//taxCollector.y -= tile_size / 2;
 				scrolled = true;
 			}
 			else if (index_y - 1 <= 0)

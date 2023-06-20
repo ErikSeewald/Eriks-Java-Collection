@@ -11,12 +11,12 @@ public class TaxCollector
 	
 	public static final int collect_tile_range = 2;
 	
-	TaxCollector(int x, int y, int size)
+	TaxCollector(int x, int y, int size, int speed)
 	{
 		this.x = x;
 		this.y = y;
 		this.size = size;
-		this.speed = size / 3;
+		this.speed = speed;
 		this.collected = 0;
 	}
 	

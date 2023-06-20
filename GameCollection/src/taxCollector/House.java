@@ -1,5 +1,7 @@
 package taxCollector;
 
+import java.util.Random;
+
 public class House extends MapItem
 {
 	private double tax;
@@ -7,14 +9,18 @@ public class House extends MapItem
 	private int time_until_next_tax;
 	private int cooldown;
 	
-	House(int i, int j)
+	House(int i, int j, Random random)
 	{
 		super(i, j);
 		time_until_next_tax = 0;
 		
-		// CHANGE LATER
-		tax = 10;
-		cooldown = 500;
+		initValues(random);
+	}
+	
+	private void initValues(Random random)
+	{
+		tax = random.nextDouble(500) + 10;
+		cooldown = random.nextInt(9000) + 1000;
 	}
 	
 	public double collectTax()
