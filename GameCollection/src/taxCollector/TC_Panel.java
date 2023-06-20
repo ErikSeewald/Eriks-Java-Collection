@@ -3,8 +3,10 @@ package taxCollector;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -18,6 +20,7 @@ public class TC_Panel extends JPanel
 	
 	private MapHandler mapHandler;
 	private TaxCollector taxCollector;
+	private IRS irs;
 	
 	TC_Panel()
 	{
@@ -25,9 +28,8 @@ public class TC_Panel extends JPanel
 		
 		mapHandler = new MapHandler(this);
 		taxCollector = mapHandler.getTaxCollector();
+		irs = mapHandler.getIRS();
 		tile_size = mapHandler.getTileSize();
-		
-		draw_grid = true;
 		
 		updateMapReferences();
 	}
@@ -46,13 +48,20 @@ public class TC_Panel extends JPanel
 	public void advanceFrame()
 	{
 		mapHandler.update();
-		System.out.println(taxCollector.getCollected());
 		repaint();
 	}
 	
-	public void collectAction()
+	public void interaction()
 	{
-		mapHandler.collectAction();
+		mapHandler.interaction();
+		repaint();
+	}
+	
+	public void restart()
+	{
+		mapHandler.reset();
+		this.taxCollector = mapHandler.getTaxCollector();
+		this.irs = mapHandler.getIRS();
 		repaint();
 	}
 	
@@ -62,6 +71,9 @@ public class TC_Panel extends JPanel
 	private static final Color tax_collector_col = new Color(30, 30, 35);
 	private static final Color house_col_1 = new Color(150, 100, 55);
 	private static final Color house_col_2 = new Color(240, 180, 45);
+	private static final Color ui_col = new Color(220, 220, 230);
+	private static final Color bankrupt_col = new Color(245, 120, 120);
+	public static final Color irs_col = new Color(80, 80, 85);
 	
 	private boolean draw_grid;
 	
@@ -85,6 +97,15 @@ public class TC_Panel extends JPanel
 		g2D.setPaint(background_col);
 		g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
 		
+		if (irs.isBankrupt())
+		{
+			g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2D.setPaint(bankrupt_col);
+			g2D.setFont(new Font("", Font.BOLD, 150));
+			g2D.drawString("BANKRUPT", (int) (PANEL_WIDTH * 0.11), (int) (PANEL_HEIGHT * 0.6));
+			return;
+		}
+		
 		if (draw_grid) {drawGrid(g2D);}
 		
 		//SCREEN COORDINATES
@@ -101,6 +122,28 @@ public class TC_Panel extends JPanel
 		g2D.setPaint(tax_collector_col);
 		int tcSize = taxCollector.size;
 		g2D.fillRect(taxCollector.x - tcSize / 2, taxCollector.y - tcSize / 2, tcSize, tcSize);
+		
+		//IRS
+		g2D.setPaint(irs_col);
+		g2D.fillRect
+		(
+				(irs.tile_x * tile_size) - (MapHandler.irs_size_tiles / 2) * tile_size, 
+				(irs.tile_y * tile_size) - (MapHandler.irs_size_tiles / 2) * tile_size, 
+				MapHandler.irs_size_tiles * tile_size, 
+				MapHandler.irs_size_tiles * tile_size
+		);
+		
+		//UI
+		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2D.setFont(new Font("", Font.BOLD, 20));
+		g2D.setPaint(ui_col);
+		
+		g2D.drawString("IRS", irs.tile_x * tile_size - 10, irs.tile_y * tile_size + 15);
+		
+		g2D.translate(-scroll_x, -scroll_y);
+		
+		g2D.drawString("Collected: " + taxCollector.getCollected(), (int) (PANEL_WIDTH * 0.6),PANEL_HEIGHT >> 4);
+		g2D.drawString("IRS Funds: " + irs.getFunds(), PANEL_WIDTH - PANEL_WIDTH / 5, PANEL_HEIGHT >> 4);
 	}
 	
 	private void drawGrid(Graphics2D g2D)

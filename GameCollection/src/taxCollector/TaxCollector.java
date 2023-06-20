@@ -29,10 +29,15 @@ public class TaxCollector
 		collected += house.collectTax();
 	}
 	
+	public double emptyCollected()
+	{
+		double temp = collected;
+		collected = 0;
+		return temp;
+	}
+	
 	public void getHit() 
 	{
 		collected *= 0.8;
 	}
-	
-	
 }

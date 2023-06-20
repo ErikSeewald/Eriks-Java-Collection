@@ -12,7 +12,7 @@ public class House extends MapItem
 		super(i, j);
 		time_until_next_tax = 0;
 		
-		 // CHANGE LATER
+		// CHANGE LATER
 		tax = 10;
 		cooldown = 500;
 	}

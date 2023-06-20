@@ -23,6 +23,7 @@ public class MapHandler
 	}
 	
 	public static final int house_size_tiles = 2; // houses are 2x2 tiles
+	public static final int irs_size_tiles = 3;
 	public static final int house_distance = 10; // how many tiles must be between two houses at minimum
 	
 	private static final int map_size = 1000;
@@ -31,11 +32,10 @@ public class MapHandler
 	{
 		this.panel = panel;
 		
-		top_left_x = top_left_y = map_size / 2;
 		tile_size = 700 / 50; //700 == PANEL_HEIGHT
 		taxCollector = new TaxCollector((map_size/2 + 37) * tile_size, (map_size/2 + 27) * tile_size, (int) (tile_size * 1.5));
-		irs = new IRS();
-		
+		top_left_x = top_left_y = map_size / 2;
+		irs = new IRS(top_left_x + tiles_on_screen_x / 2, top_left_y + tiles_on_screen_y / 2);
 		random = new Random();
 		
 		this.generateMap();
@@ -81,6 +81,15 @@ public class MapHandler
 	}
 	
 	// GAMEPLAY
+	public void reset()
+	{
+		top_left_x = top_left_y = map_size / 2;
+		taxCollector = new TaxCollector((map_size/2 + 37) * tile_size, (map_size/2 + 27) * tile_size, (int) (tile_size * 1.5));
+		irs = new IRS(top_left_x + tiles_on_screen_x / 2, top_left_y + tiles_on_screen_y / 2);
+		this.generateMap();
+		panel.updateMapReferences();
+	}
+	
 	public void update()
 	{
 		irs.updateFunds();
@@ -95,17 +104,23 @@ public class MapHandler
 		}
 	}
 	
-	public void collectAction()
+	public void interaction()
 	{
 		int index_x = taxCollector.x / tile_size;
 		int index_y = taxCollector.y / tile_size;
 		
-		for (int i = index_x - TaxCollector.collect_tile_range; i < index_x + TaxCollector.collect_tile_range; i++)
+		for (int i = index_x - TaxCollector.collect_tile_range; i < index_x + TaxCollector.collect_tile_range * 2; i++)
 		{
-			for (int j = index_y - TaxCollector.collect_tile_range; j < index_y + TaxCollector.collect_tile_range; j++)
+			for (int j = index_y - TaxCollector.collect_tile_range; j < index_y + TaxCollector.collect_tile_range * 2; j++)
 			{
 				if (map[i][j] instanceof House) {taxCollector.collect((House) map[i][j]);}
 			}
+		}
+		
+		//IRS
+		if (Math.abs(index_x - irs.tile_x) < 3 && Math.abs(index_y - irs.tile_y) < 3)
+		{
+			irs.addFunds(taxCollector.emptyCollected());
 		}
 	}
 	
@@ -211,4 +226,7 @@ public class MapHandler
 		
 		return houses;
 	}
+	
+	public IRS getIRS()
+	{return irs;}
 }
