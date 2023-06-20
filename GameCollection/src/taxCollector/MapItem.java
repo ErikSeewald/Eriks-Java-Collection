@@ -9,4 +9,6 @@ public abstract class MapItem
 		this.i = i;
 		this.j = j;
 	}
+	
+	public void update() {}
 }

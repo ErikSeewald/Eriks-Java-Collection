@@ -11,6 +11,10 @@ public class House extends MapItem
 	{
 		super(i, j);
 		time_until_next_tax = 0;
+		
+		 // CHANGE LATER
+		tax = 10;
+		cooldown = 500;
 	}
 	
 	public double collectTax()
@@ -22,4 +26,11 @@ public class House extends MapItem
 	}
 	
 	public boolean taxDue() {return time_until_next_tax == 0;}
+	
+	@Override
+	public void update() 
+	{
+		if (time_until_next_tax > 0)
+		{time_until_next_tax--;}
+	}
 }
