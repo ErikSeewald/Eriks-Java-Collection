@@ -254,10 +254,10 @@ public enum GameTitles {
 			new String[]
 			{
 					"TAX COLLECTOR",
-					"",
-					"",
-					"",
-					"",
+					"Run around the map with w,a,s,d and collect tax from homes while evading obstacles.",
+					"In the top right you can see the money you are currently holding and the funds that",
+					"the IRS has available. Do not let the IRS run out of funds! Return the collected tax",
+					"to the IRS Building. Press e to collect/return. Press r to restart.",
 					"",
 			}
 	);

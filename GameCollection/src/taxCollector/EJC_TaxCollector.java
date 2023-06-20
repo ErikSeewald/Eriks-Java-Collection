@@ -5,13 +5,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
-
 import javax.swing.JFrame;
 import javax.swing.Timer;
-
 import Main.EJC_Interface;
 import Main.WindowEventHandler;
-import infdungeons.player.Player.Direction;
 import taxCollector.MapHandler.Directions;
 
 public class EJC_TaxCollector extends JFrame implements EJC_Interface
@@ -48,7 +45,8 @@ public class EJC_TaxCollector extends JFrame implements EJC_Interface
 				
 				char c = e.getKeyChar();
 				if (c == 'g') {panel.switchGridBool();}
-				else if (c == 'c') {panel.collectAction();}
+				else if (c == 'e') {panel.interaction();}
+				else if (c == 'r') {panel.restart();}
 			}
 			@Override
 			public void keyReleased(KeyEvent e)
