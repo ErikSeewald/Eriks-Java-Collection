@@ -11,6 +11,8 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import Main.EJC_Util;
+
 public class TC_Panel extends JPanel
 {
 	private static final long serialVersionUID = -5017286155233171011L;
@@ -124,14 +126,7 @@ public class TC_Panel extends JPanel
 		g2D.fillRect(taxCollector.x - tcSize / 2, taxCollector.y - tcSize / 2, tcSize, tcSize);
 		
 		//IRS
-		g2D.setPaint(irs_col);
-		g2D.fillRect
-		(
-				(irs.tile_x * tile_size) - (MapHandler.irs_size_tiles / 2) * tile_size, 
-				(irs.tile_y * tile_size) - (MapHandler.irs_size_tiles / 2) * tile_size, 
-				MapHandler.irs_size_tiles * tile_size, 
-				MapHandler.irs_size_tiles * tile_size
-		);
+		drawIRS(g2D);
 		
 		//UI
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -142,8 +137,8 @@ public class TC_Panel extends JPanel
 		
 		g2D.translate(-scroll_x, -scroll_y);
 		
-		g2D.drawString("Collected: " + taxCollector.getCollected(), (int) (PANEL_WIDTH * 0.6),PANEL_HEIGHT >> 4);
-		g2D.drawString("IRS Funds: " + irs.getFunds(), PANEL_WIDTH - PANEL_WIDTH / 5, PANEL_HEIGHT >> 4);
+		g2D.drawString("Collected: " +  EJC_Util.round(taxCollector.getCollected(), 2), (int) (PANEL_WIDTH * 0.6),PANEL_HEIGHT >> 4);
+		g2D.drawString("IRS Funds: " + EJC_Util.round(irs.getFunds(), 2), PANEL_WIDTH - PANEL_WIDTH / 5, PANEL_HEIGHT >> 4);
 	}
 	
 	private void drawGrid(Graphics2D g2D)
@@ -183,6 +178,40 @@ public class TC_Panel extends JPanel
 				(house.j * tile_size) - (MapHandler.house_size_tiles / 2) * tile_size, 
 				MapHandler.house_size_tiles * tile_size, 
 				MapHandler.house_size_tiles * tile_size
+		);
+	}
+	
+	private void drawIRS(Graphics2D g2D)
+	{
+		g2D.setPaint(irs_col);
+		
+		//ON SCREEN
+		if (irs.tile_x >= mapHandler.getTopLeftX() && irs.tile_y >= mapHandler.getTopLeftY()
+				&& irs.tile_x < mapHandler.getTopLeftX() + MapHandler.tiles_on_screen_x
+				&& irs.tile_y < mapHandler.getTopLeftY() + MapHandler.tiles_on_screen_y)
+		{
+			g2D.fillRect
+			(
+					(irs.tile_x * tile_size) - (MapHandler.irs_size_tiles / 2) * tile_size, 
+					(irs.tile_y * tile_size) - (MapHandler.irs_size_tiles / 2) * tile_size, 
+					MapHandler.irs_size_tiles * tile_size, 
+					MapHandler.irs_size_tiles * tile_size
+			);
+			return;
+		}
+		
+		//OFFSCREEN
+		// put a triangle partly on the way of a vector towards the irs, one of the points on it, two of them on it's
+		// normal => triangle pointing towards irs
+		int x = taxCollector.x, y = taxCollector.y;
+		float[] vec = EJC_Util.normalize((irs.tile_x * tile_size) - x, (irs.tile_y * tile_size) - y);
+		float[] normal = {-vec[1], vec[0]};
+		
+		g2D.fillPolygon
+		(
+				new int[] {(int) (x + vec[0] * 50), (int) ((x + vec[0] * 20) + (normal[0] * 10)), (int) ((x + vec[0] * 20) - (normal[0] * 10))}, 
+				new int[] {(int) (y + vec[1] * 50), (int) ((y + vec[1] * 20) + (normal[1] * 10)), (int) ((y + vec[1] * 20) - (normal[1] * 10))},
+				3
 		);
 	}
 }
