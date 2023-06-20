@@ -8,6 +8,7 @@ public class MapHandler
 	private MapItem[][] map;
 	
 	private TaxCollector taxCollector;
+	private IRS irs;
 	private TC_Panel panel;
 	private Random random;
 	
@@ -33,6 +34,7 @@ public class MapHandler
 		top_left_x = top_left_y = map_size / 2;
 		tile_size = 700 / 50; //700 == PANEL_HEIGHT
 		taxCollector = new TaxCollector((map_size/2 + 37) * tile_size, (map_size/2 + 27) * tile_size, (int) (tile_size * 1.5));
+		irs = new IRS();
 		
 		random = new Random();
 		
@@ -79,6 +81,34 @@ public class MapHandler
 	}
 	
 	// GAMEPLAY
+	public void update()
+	{
+		irs.updateFunds();
+		
+		//MAP ITEMS
+		for (int i = 0; i < map_size; i++)
+		{
+			for (int j = 0; j < map_size; j++)
+			{
+				if (map[i][j] != null) {map[i][j].update();}
+			}
+		}
+	}
+	
+	public void collectAction()
+	{
+		int index_x = taxCollector.x / tile_size;
+		int index_y = taxCollector.y / tile_size;
+		
+		for (int i = index_x - TaxCollector.collect_tile_range; i < index_x + TaxCollector.collect_tile_range; i++)
+		{
+			for (int j = index_y - TaxCollector.collect_tile_range; j < index_y + TaxCollector.collect_tile_range; j++)
+			{
+				if (map[i][j] instanceof House) {taxCollector.collect((House) map[i][j]);}
+			}
+		}
+	}
+	
 	public void moveTaxCollector(Directions direction)
 	{	
 		switch (direction)

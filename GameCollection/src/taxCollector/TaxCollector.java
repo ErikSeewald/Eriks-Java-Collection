@@ -9,6 +9,8 @@ public class TaxCollector
 	int size;
 	double speed;
 	
+	public static final int collect_tile_range = 2;
+	
 	TaxCollector(int x, int y, int size)
 	{
 		this.x = x;
