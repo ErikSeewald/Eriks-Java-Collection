@@ -75,7 +75,8 @@ public class TC_Panel extends JPanel
 	private static final Color house_col_2 = new Color(240, 180, 45);
 	private static final Color ui_col = new Color(220, 220, 230);
 	private static final Color bankrupt_col = new Color(245, 120, 120);
-	public static final Color irs_col = new Color(80, 80, 85);
+	private static final Color irs_col = new Color(80, 80, 85);
+	private static final Color collect_col = new Color(120, 245, 120);
 	
 	private boolean draw_grid;
 	
@@ -131,13 +132,18 @@ public class TC_Panel extends JPanel
 		//UI
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2D.setFont(new Font("", Font.BOLD, 20));
-		g2D.setPaint(ui_col);
 		
+		g2D.setPaint(taxCollector.emptyAnimation() ? collect_col : ui_col);
 		g2D.drawString("IRS", irs.tile_x * tile_size - 10, irs.tile_y * tile_size + 15);
 		
 		g2D.translate(-scroll_x, -scroll_y);
 		
+		if (taxCollector.emptyAnimation()) {g2D.setPaint(bankrupt_col);}
+		else if (taxCollector.collectAnimation()) {g2D.setPaint(collect_col);}
 		g2D.drawString("Collected: " +  EJC_Util.round(taxCollector.getCollected(), 2), (int) (PANEL_WIDTH * 0.6),PANEL_HEIGHT >> 4);
+		
+		if (taxCollector.emptyAnimation()) {g2D.setPaint(collect_col);}
+		else {g2D.setPaint(ui_col);}
 		g2D.drawString("IRS Funds: " + EJC_Util.round(irs.getFunds(), 2), PANEL_WIDTH - PANEL_WIDTH / 5, PANEL_HEIGHT >> 4);
 	}
 	
@@ -185,6 +191,8 @@ public class TC_Panel extends JPanel
 	{
 		g2D.setPaint(irs_col);
 		
+		int animation = taxCollector.emptyAnimation() ? MapHandler.irs_size_tiles * 3 : 0;
+		
 		//ON SCREEN
 		if (irs.tile_x >= mapHandler.getTopLeftX() && irs.tile_y >= mapHandler.getTopLeftY()
 				&& irs.tile_x < mapHandler.getTopLeftX() + MapHandler.tiles_on_screen_x
@@ -192,10 +200,10 @@ public class TC_Panel extends JPanel
 		{
 			g2D.fillRect
 			(
-					(irs.tile_x * tile_size) - (MapHandler.irs_size_tiles / 2) * tile_size, 
-					(irs.tile_y * tile_size) - (MapHandler.irs_size_tiles / 2) * tile_size, 
-					MapHandler.irs_size_tiles * tile_size, 
-					MapHandler.irs_size_tiles * tile_size
+					(irs.tile_x * tile_size) - (MapHandler.irs_size_tiles / 2) * tile_size - animation / 2, 
+					(irs.tile_y * tile_size) - (MapHandler.irs_size_tiles / 2) * tile_size - animation / 2, 
+					MapHandler.irs_size_tiles * tile_size + animation, 
+					MapHandler.irs_size_tiles * tile_size + animation
 			);
 			return;
 		}
