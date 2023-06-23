@@ -4,6 +4,8 @@ import java.util.Random;
 
 public class House extends MapItem
 {
+	public static final int size_tiles = 2; // 2x2 tiles
+	
 	private double tax;
 	
 	private int time_until_next_tax;
@@ -39,4 +41,7 @@ public class House extends MapItem
 		if (time_until_next_tax > 0)
 		{time_until_next_tax--;}
 	}
+
+	@Override
+	public int getTileSize() {return size_tiles;}
 }

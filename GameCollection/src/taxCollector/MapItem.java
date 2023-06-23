@@ -11,4 +11,6 @@ public abstract class MapItem
 	}
 	
 	public void update() {}
+	
+	public abstract int getTileSize();
 }

@@ -44,7 +44,10 @@ public class EJC_TaxCollector extends JFrame implements EJC_Interface
 				pressedKeys.add(code);
 				
 				char c = e.getKeyChar();
-				if (c == 'g') {panel.switchGridBool();}
+				if (c == 'r') {panel.restart();}
+				
+				if (!panel.updateValid()) {return;}
+				else if (c == 'g') {panel.switchGridBool();}
 				else if (c == 'e') {panel.interaction();}
 				else if (c == 'r') {panel.restart();}
 			}
@@ -59,6 +62,8 @@ public class EJC_TaxCollector extends JFrame implements EJC_Interface
 		{	@Override
 			public void actionPerformed(ActionEvent e) 
 			{
+				if (!panel.updateValid()) {return;}
+			
 				if (pressedKeys.contains(68)) {panel.move(Direction.EAST);} 	//D
 				else if (pressedKeys.contains(65)) {panel.move(Direction.WEST);} //A
 				else if (pressedKeys.contains(87)) {panel.move(Direction.NORTH);} //W

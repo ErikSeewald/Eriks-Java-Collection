@@ -5,7 +5,7 @@ public class TaxCollector
 	public static final int collect_tile_range = 2;
 	private double collected;
 	
-	int x,y;
+	int x,y; // pixel values
 	int size;
 	double speed;
 	

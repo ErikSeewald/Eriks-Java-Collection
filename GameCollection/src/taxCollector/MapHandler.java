@@ -9,16 +9,11 @@ public class MapHandler
 	//MAP
 	private MapItem[][] map;
 	
-	public static final int house_size_tiles = 2; // houses are 2x2 tiles
-	public static final int irs_size_tiles = 3;
-	public static final int house_distance = 10; // how many tiles must be between two houses at minimum
-	
-	private static final int map_size = 1000;
-	
-	private int tile_size;
+	private static final int map_size = 1000; // index value
+	private int tile_size; // pixel value
 	
 	public static final int tiles_on_screen_x = 75, tiles_on_screen_y = 50;
-	private int top_left_x, top_left_y; // indices
+	private int top_left_x, top_left_y; // indices of where the screen is on the map
 	
 	//OTHERS
 	private TaxCollector taxCollector; // specific pointer, independent of map but still bound to a grid position
@@ -70,9 +65,11 @@ public class MapHandler
 			}
 		}
 	}
+
+	public static final int house_distance = 10;
 	
 	private boolean houseAllowed(int i, int j)
-	{
+	{	
 		for (int x = i - house_distance; x < i + house_distance; x++)
 		{
 			for (int y = j - house_distance; y < j + house_distance; y++)
@@ -93,7 +90,7 @@ public class MapHandler
 	}
 	
 	public void update()
-	{
+	{	
 		taxCollector.update();
 		
 		//MAP ITEMS
@@ -111,18 +108,15 @@ public class MapHandler
 		int index_x = taxCollector.x / tile_size;
 		int index_y = taxCollector.y / tile_size;
 		
-		for (int i = index_x - TaxCollector.collect_tile_range; i < index_x + TaxCollector.collect_tile_range * 2; i++)
+		for (int i = index_x - TaxCollector.collect_tile_range; i <= index_x + TaxCollector.collect_tile_range; i++)
 		{
-			for (int j = index_y - TaxCollector.collect_tile_range; j < index_y + TaxCollector.collect_tile_range * 2; j++)
+			for (int j = index_y - TaxCollector.collect_tile_range; j <= index_y + TaxCollector.collect_tile_range; j++)
 			{
+				if (map[i][j] == null) {continue;}
+				
 				if (map[i][j] instanceof House) {taxCollector.collect((House) map[i][j]);}
+				else if (map[i][j] instanceof IRS) {irs.addFunds(taxCollector.emptyCollected());}
 			}
-		}
-		
-		//IRS
-		if (Math.abs(index_x - irs.i) < 3 && Math.abs(index_y - irs.j) < 3)
-		{
-			irs.addFunds(taxCollector.emptyCollected());
 		}
 	}
 	
@@ -157,7 +151,6 @@ public class MapHandler
 			if (top_left_x + 1 < map_size - tiles_on_screen_x)
 			{
 				top_left_x++; 
-				//taxCollector.x += tile_size / 2;
 				scrolled = true;
 			}
 			else if (index_x + 1 >= map_size) // only walk up to edge of map
@@ -169,7 +162,6 @@ public class MapHandler
 			if (top_left_x - 1 >= 0)
 			{
 				top_left_x--; 
-				//taxCollector.x -= tile_size / 2;
 				scrolled = true;
 			}
 			else if (index_x - 1 <= 0)
@@ -182,7 +174,6 @@ public class MapHandler
 			if (top_left_y + 1 < map_size - tiles_on_screen_y)
 			{
 				top_left_y++; 
-				//taxCollector.y += tile_size / 2;
 				scrolled = true;
 			}
 			else if (index_y + 2 >= map_size)
@@ -194,7 +185,6 @@ public class MapHandler
 			if (top_left_y - 1 >= 0)
 			{
 				top_left_y--; 
-				//taxCollector.y -= tile_size / 2;
 				scrolled = true;
 			}
 			else if (index_y - 1 <= 0)
