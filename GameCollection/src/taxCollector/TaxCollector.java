@@ -38,7 +38,7 @@ public class TaxCollector
 	{
 		double temp = collected;
 		collected = 0;
-		if (temp > 0) {empty_animation = 30;}
+		if (temp > 0) {empty_animation = 15;}
 		return temp;
 	}
 	
@@ -48,15 +48,15 @@ public class TaxCollector
 		empty_animation = 20;
 	}
 	
-	public boolean collectAnimation()
+	public void update()
 	{
 		if (collect_animation > 0) {collect_animation--;}
-		return collect_animation > 0;
+		if (empty_animation > 0) {empty_animation--;}
 	}
 	
+	public boolean collectAnimation()
+	{return collect_animation > 0;}
+	
 	public boolean emptyAnimation()
-	{
-		if (empty_animation > 0) {empty_animation--;}
-		return empty_animation > 0;
-	}
+	{return empty_animation > 0;}
 }

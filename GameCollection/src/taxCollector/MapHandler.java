@@ -75,6 +75,7 @@ public class MapHandler
 			{
 				if (x < 0 || x >= map_size || y < 0 || y >= map_size) {continue;}
 				if (map[x][y] instanceof House) {return false;}
+				if (irs.tile_x == x && irs.tile_y == y) {return false;}
 			}
 		}
 		return true;
@@ -92,6 +93,7 @@ public class MapHandler
 	
 	public void update()
 	{
+		taxCollector.update();
 		irs.updateFunds();
 		
 		//MAP ITEMS
