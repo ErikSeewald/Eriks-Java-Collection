@@ -2,6 +2,8 @@ package taxCollector;
 
 public class IRS extends MapItem
 {
+	public static final int size_tiles = 3;
+	
 	private double funds;
 	
 	public IRS(int i, int j)
@@ -24,4 +26,7 @@ public class IRS extends MapItem
 	{funds += amount;}
 	
 	public boolean isBankrupt() {return funds <= 0;}
+
+	@Override
+	public int getTileSize() {return size_tiles;}
 }

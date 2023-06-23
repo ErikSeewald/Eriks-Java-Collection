@@ -22,6 +22,11 @@ public class TC_Panel extends JPanel
 	private MapHandler mapHandler;
 	private TaxCollector taxCollector;
 	private IRS irs;
+	private ArrayList<House> houses;
+	
+	private boolean draw_grid;
+	private int tile_size; //controlled by MapHandler	
+	private int scroll_x, scroll_y;
 	
 	TC_Panel()
 	{
@@ -66,6 +71,13 @@ public class TC_Panel extends JPanel
 		repaint();
 	}
 	
+	public void updateMapReferences()
+	{
+		houses = mapHandler.getAllHousesOnScreen();
+	}
+	
+	public boolean updateValid() {return !irs.isBankrupt();}
+	
 	//---------------------------------------PAINT---------------------------------------
 	
 	private static final Color background_col = new Color(55, 55, 70);
@@ -75,25 +87,12 @@ public class TC_Panel extends JPanel
 	private static final Color ui_col = new Color(220, 220, 230);
 	private static final Color bankrupt_col = new Color(245, 120, 120);
 	private static final Color irs_col = new Color(80, 80, 85);
+	private static final Color irs_collect_col = new Color(30, 170, 40);
 	private static final Color collect_col = new Color(120, 245, 120);
-	
-	private boolean draw_grid;
-	
-	private int tile_size; //controlled by MapHandler
-	
-	private int scroll_x, scroll_y;
-	
-	private ArrayList<House> houses;
-	
-	public void updateMapReferences()
-	{
-		houses = mapHandler.getAllHousesOnScreen();
-	}
 	
 	public void paint(Graphics g)
 	{
 		Graphics2D g2D = (Graphics2D) g;
-		super.paint(g2D);
 		
 		//BACKGROUND
 		g2D.setPaint(background_col);
@@ -141,8 +140,7 @@ public class TC_Panel extends JPanel
 		else if (taxCollector.collectAnimation()) {g2D.setPaint(collect_col);}
 		g2D.drawString("Collected: " +  EJC_Util.round(taxCollector.getCollected(), 2), (int) (PANEL_WIDTH * 0.6),PANEL_HEIGHT >> 4);
 		
-		if (taxCollector.emptyAnimation()) {g2D.setPaint(collect_col);}
-		else {g2D.setPaint(ui_col);}
+		g2D.setPaint(ui_col);
 		g2D.drawString("IRS Funds: " + EJC_Util.round(irs.getFunds(), 2), PANEL_WIDTH - PANEL_WIDTH / 5, PANEL_HEIGHT >> 4);
 	}
 	
@@ -152,8 +150,7 @@ public class TC_Panel extends JPanel
 		for (int i = 1; i <= MapHandler.tiles_on_screen_x; i++)
 		{
 			g2D.drawLine(i * tile_size, 0, i * tile_size, PANEL_HEIGHT);
-			if (i % 2 == 0) {continue;}
-			g2D.drawString("" + (i + mapHandler.getTopLeftX()), i * tile_size, tile_size);
+			if (i % 2 == 1) {g2D.drawString("" + (i + mapHandler.getTopLeftX()), i * tile_size, tile_size);}
 		}
 		
 		for (int i = 1; i <= MapHandler.tiles_on_screen_y; i++)
@@ -164,14 +161,14 @@ public class TC_Panel extends JPanel
 	}
 	
 	private void drawHouse(Graphics2D g2D, House house)
-	{
+	{		
 		g2D.setPaint(house_col_1);
 		g2D.fillRect
 		(
-				(house.i * tile_size) - (MapHandler.house_size_tiles / 2) * tile_size, 
-				(house.j * tile_size) - (MapHandler.house_size_tiles / 2) * tile_size, 
-				MapHandler.house_size_tiles * tile_size, 
-				MapHandler.house_size_tiles * tile_size
+				(house.i * tile_size) - (House.size_tiles / 2) * tile_size, 
+				(house.j * tile_size) - (House.size_tiles / 2) * tile_size, 
+				House.size_tiles * tile_size, 
+				House.size_tiles * tile_size
 		);
 		
 		if (!house.taxDue()) {return;}
@@ -179,18 +176,16 @@ public class TC_Panel extends JPanel
 		g2D.setPaint(house_col_2);
 		g2D.drawRect
 		(
-				(house.i * tile_size) - (MapHandler.house_size_tiles / 2) * tile_size, 
-				(house.j * tile_size) - (MapHandler.house_size_tiles / 2) * tile_size, 
-				MapHandler.house_size_tiles * tile_size, 
-				MapHandler.house_size_tiles * tile_size
+				(house.i * tile_size) - (House.size_tiles / 2) * tile_size, 
+				(house.j * tile_size) - (House.size_tiles / 2) * tile_size, 
+				House.size_tiles * tile_size, 
+				House.size_tiles * tile_size
 		);
 	}
 	
 	private void drawIRS(Graphics2D g2D)
 	{
-		g2D.setPaint(irs_col);
-		
-		int animation = taxCollector.emptyAnimation() ? MapHandler.irs_size_tiles * 3 : 0;
+		g2D.setPaint(taxCollector.emptyAnimation() ? irs_collect_col : irs_col);
 		
 		//ON SCREEN
 		if (irs.i >= mapHandler.getTopLeftX() && irs.j >= mapHandler.getTopLeftY()
@@ -199,10 +194,10 @@ public class TC_Panel extends JPanel
 		{
 			g2D.fillRect
 			(
-					(irs.i * tile_size) - (MapHandler.irs_size_tiles / 2) * tile_size - animation / 2, 
-					(irs.j * tile_size) - (MapHandler.irs_size_tiles / 2) * tile_size - animation / 2, 
-					MapHandler.irs_size_tiles * tile_size + animation, 
-					MapHandler.irs_size_tiles * tile_size + animation
+					(irs.i * tile_size) - (IRS.size_tiles / 2) * tile_size, 
+					(irs.j * tile_size) - (IRS.size_tiles / 2) * tile_size, 
+					IRS.size_tiles * tile_size, 
+					IRS.size_tiles * tile_size
 			);
 			return;
 		}
