@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import Main.EJC_Util;
 import Main.EJC_Util.Direction;
+import taxCollector.Tree.ColorStates;
 
 public class TC_Panel extends JPanel
 {
@@ -22,7 +23,7 @@ public class TC_Panel extends JPanel
 	private MapHandler mapHandler;
 	private TaxCollector taxCollector;
 	private IRS irs;
-	private ArrayList<House> houses;
+	private ArrayList<MapItem> mapItems;
 	
 	private boolean draw_grid;
 	private int tile_size; //controlled by MapHandler	
@@ -73,7 +74,7 @@ public class TC_Panel extends JPanel
 	
 	public void updateMapReferences()
 	{
-		houses = mapHandler.getAllHousesOnScreen();
+		mapItems = mapHandler.getAllMapItemsOnScreen();
 	}
 	
 	public boolean updateValid() {return !irs.isBankrupt();}
@@ -89,6 +90,8 @@ public class TC_Panel extends JPanel
 	private static final Color irs_col = new Color(80, 80, 85);
 	private static final Color irs_collect_col = new Color(30, 170, 40);
 	private static final Color collect_col = new Color(120, 245, 120);
+	private static final Color tree_crown_col = new Color(30, 120, 40);
+	private static final Color tree_trunk_col = new Color(120, 75, 35);
 	
 	public void paint(Graphics g)
 	{
@@ -114,10 +117,13 @@ public class TC_Panel extends JPanel
 		scroll_y = -(mapHandler.getTopLeftY() * tile_size);
 		g2D.translate(scroll_x, scroll_y); // works like glTransform, i.e every following x coordinate will get scroll_x added to it
 		
-		//HOUSES
+		//MAP ITEMS (Except for IRS)
 		g2D.setStroke(new BasicStroke(4));
-		for(House house : houses) //List updated by mapHandler when scrolling
-		{drawHouse(g2D, house);}
+		for(MapItem item : mapItems) //List updated by mapHandler when scrolling
+		{
+			if (item instanceof House) {drawHouse(g2D, (House) item);}
+			else if (item instanceof Tree) {drawTree(g2D, (Tree) item);}
+		}
 		
 		//TAX COLLECTOR
 		g2D.setPaint(tax_collector_col);
@@ -180,6 +186,33 @@ public class TC_Panel extends JPanel
 				(house.j * tile_size) - (House.size_tiles / 2) * tile_size, 
 				House.size_tiles * tile_size, 
 				House.size_tiles * tile_size
+		);
+	}
+	
+	private void drawTree(Graphics2D g2D, Tree tree)
+	{	
+		//TRUNK
+		g2D.setPaint(tree_trunk_col);
+		g2D.fillRect
+		(
+				(int) ((tree.i + Tree.trunk_width_tiles * 1.5) * tile_size), 
+				tree.j * tile_size, 
+				(int) (Tree.trunk_width_tiles * tile_size), 
+				(int) (Tree.trunk_height_tiles * tile_size)
+		);
+		
+		//CROWN
+		Color c = tree_crown_col;
+		if (tree.color_state == ColorStates.BRIGHTER) {c = c.brighter();}
+		else if (tree.color_state == ColorStates.DARKER) {c = c.darker();}
+		g2D.setPaint(c);
+		
+		g2D.fillRect
+		(
+				tree.i * tile_size,
+				(int) ((tree.j - Tree.trunk_height_tiles)* tile_size), 
+				Tree.size_tiles * tile_size, 
+				Tree.size_tiles * tile_size
 		);
 	}
 	

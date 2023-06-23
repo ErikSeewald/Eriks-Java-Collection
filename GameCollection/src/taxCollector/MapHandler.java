@@ -15,6 +15,10 @@ public class MapHandler
 	public static final int tiles_on_screen_x = 75, tiles_on_screen_y = 50;
 	private int top_left_x, top_left_y; // indices of where the screen is on the map
 	
+	//DISTANCES TO BE KEPT WITHIN MAP GENERATION
+	public static final int house_to_house_distance = 10;
+	public static final int tree_to_house_distance = 4;
+	
 	//OTHERS
 	private TaxCollector taxCollector; // specific pointer, independent of map but still bound to a grid position
 	private IRS irs; // both map item and specific pointer
@@ -49,6 +53,7 @@ public class MapHandler
 		//ORDER OF THESE FUNCTION CALLS IS VERY IMPORTANT DUE TO FUNCTIONS 
 		//ONLY ACCOUNTING FOR DISTANCE TO OBJECTS CREATED EARLIER
 		generateHouses();
+		generateTrees();
 	}
 	
 	private void generateHouses()
@@ -57,28 +62,44 @@ public class MapHandler
 		{
 			for (int j = 0; j < map_size; j++)
 			{
+				if (map[i][j] != null) {continue;}
 				if (random.nextInt(1000) == 1)
 				{
-					if (houseAllowed(i, j))
+					if (noHousesInDistance(i, j, house_to_house_distance))
 					{map[i][j] = new House(i, j, random);}
 				}
 			}
 		}
 	}
-
-	public static final int house_distance = 10;
 	
-	private boolean houseAllowed(int i, int j)
-	{	
-		for (int x = i - house_distance; x < i + house_distance; x++)
+	private boolean noHousesInDistance(int i, int j, int distance)
+	{
+		for (int x = i - distance; x < i + distance; x++)
 		{
-			for (int y = j - house_distance; y < j + house_distance; y++)
+			for (int y = j - distance; y < j + distance; y++)
 			{
 				if (x < 0 || x >= map_size || y < 0 || y >= map_size) {continue;}
 				if (map[x][y] instanceof House || map[x][y] instanceof IRS) {return false;}
 			}
 		}
 		return true;
+	}
+	
+	private void generateTrees()
+	{
+		for (int i = 0; i < map_size; i++)
+		{
+			for (int j = 0; j < map_size; j++)
+			{			
+				if (map[i][j] != null) {continue;}
+				if (random.nextInt(600) == 1)
+				{	
+					// only check for houses, trees are allowed to be right next to other trees
+					if (noHousesInDistance(i, j, tree_to_house_distance))
+					{map[i][j] = new Tree(i, j, random);}
+				}
+			}
+		}
 	}
 	
 	// GAMEPLAY
@@ -195,19 +216,19 @@ public class MapHandler
 	}
 	
 	// COMMUNICATION
-	public ArrayList<House> getAllHousesOnScreen()
+	public ArrayList<MapItem> getAllMapItemsOnScreen()
 	{
-		ArrayList<House> houses = new ArrayList<>();
+		ArrayList<MapItem> items = new ArrayList<>();
 		
 		for (int i = top_left_x; i <= top_left_x + tiles_on_screen_x; i++)
 		{
 			for (int j = top_left_y; j <= top_left_y + tiles_on_screen_y; j++)
 			{
-				if (map[i][j] instanceof House) {houses.add((House) map[i][j]);}
+				if (map[i][j] != null) {items.add(map[i][j]);}
 			}
 		}
 		
-		return houses;
+		return items;
 	}
 	
 	public int getTileSize() {return tile_size;}
