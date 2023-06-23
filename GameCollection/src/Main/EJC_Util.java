@@ -31,4 +31,12 @@ public class EJC_Util
 	    long tmp = Math.round(value);
 	    return (double) tmp / factor;
 	}
+	
+	public static enum Direction
+	{
+		NORTH(0), EAST(90), SOUTH(180), WEST(270);
+		
+		public int angle;
+		Direction(int angle) {this.angle = angle;}
+	};
 }

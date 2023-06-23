@@ -8,8 +8,8 @@ import java.util.HashSet;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 import Main.EJC_Interface;
+import Main.EJC_Util.Direction;
 import Main.WindowEventHandler;
-import taxCollector.MapHandler.Directions;
 
 public class EJC_TaxCollector extends JFrame implements EJC_Interface
 {
@@ -59,10 +59,10 @@ public class EJC_TaxCollector extends JFrame implements EJC_Interface
 		{	@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				if (pressedKeys.contains(68)) {panel.move(Directions.EAST);} 	//D
-				else if (pressedKeys.contains(65)) {panel.move(Directions.WEST);} //A
-				else if (pressedKeys.contains(87)) {panel.move(Directions.NORTH);} //W
-				else if (pressedKeys.contains(83)) {panel.move(Directions.SOUTH);} 	//S
+				if (pressedKeys.contains(68)) {panel.move(Direction.EAST);} 	//D
+				else if (pressedKeys.contains(65)) {panel.move(Direction.WEST);} //A
+				else if (pressedKeys.contains(87)) {panel.move(Direction.NORTH);} //W
+				else if (pressedKeys.contains(83)) {panel.move(Direction.SOUTH);} 	//S
 
 				panel.advanceFrame();
 			}	

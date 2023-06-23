@@ -2,14 +2,12 @@ package taxCollector;
 
 public class TaxCollector 
 {
+	public static final int collect_tile_range = 2;
 	private double collected;
 	
 	int x,y;
-	
 	int size;
 	double speed;
-	
-	public static final int collect_tile_range = 2;
 	
 	private int collect_animation;
 	private int empty_animation;
@@ -23,9 +21,7 @@ public class TaxCollector
 		this.collected = 0;
 	}
 	
-	public double getCollected()
-	{return collected;}
-	
+	//GAMEPLAY
 	public void collect(House house)
 	{
 		if (house == null) {throw new NullPointerException("House cannot be null");}
@@ -53,6 +49,10 @@ public class TaxCollector
 		if (collect_animation > 0) {collect_animation--;}
 		if (empty_animation > 0) {empty_animation--;}
 	}
+	
+	//COMMUNICATION
+	public double getCollected()
+	{return collected;}
 	
 	public boolean collectAnimation()
 	{return collect_animation > 0;}

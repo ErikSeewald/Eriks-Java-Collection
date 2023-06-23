@@ -2,25 +2,12 @@ package taxCollector;
 
 import java.util.ArrayList;
 import java.util.Random;
+import Main.EJC_Util.Direction;
 
 public class MapHandler 
-{
+{	
+	//MAP
 	private MapItem[][] map;
-	
-	private TaxCollector taxCollector;
-	private IRS irs;
-	private TC_Panel panel;
-	private Random random;
-	
-	private int tile_size;
-	
-	public static final int tiles_on_screen_x = 75, tiles_on_screen_y = 50;
-	private int top_left_x, top_left_y; // indices
-	
-	public static enum Directions
-	{
-		EAST, SOUTH, WEST, NORTH;
-	}
 	
 	public static final int house_size_tiles = 2; // houses are 2x2 tiles
 	public static final int irs_size_tiles = 3;
@@ -28,24 +15,41 @@ public class MapHandler
 	
 	private static final int map_size = 1000;
 	
+	private int tile_size;
+	
+	public static final int tiles_on_screen_x = 75, tiles_on_screen_y = 50;
+	private int top_left_x, top_left_y; // indices
+	
+	//OTHERS
+	private TaxCollector taxCollector; // specific pointer, independent of map but still bound to a grid position
+	private IRS irs; // both map item and specific pointer
+	private TC_Panel panel;
+	private Random random;
+	
 	MapHandler(TC_Panel panel)
 	{
 		this.panel = panel;
-		
-		tile_size = 700 / 50; //700 == PANEL_HEIGHT
-		taxCollector = new TaxCollector((map_size/2 + 37) * tile_size, (map_size/2 + 27) * tile_size, (int) (tile_size * 1.5), tile_size);
-		top_left_x = top_left_y = map_size / 2;
-		irs = new IRS(top_left_x + tiles_on_screen_x / 2, top_left_y + tiles_on_screen_y / 2);
-		random = new Random();
-		
+		this.random = new Random();
+		this.initMainValues();
 		this.generateMap();
 	}
 	
 	// MAP GENERATION
+	private void initMainValues()
+	{
+		tile_size = 700 / 50; //700 == PANEL_HEIGHT
+		taxCollector = new TaxCollector((map_size/2 + 37) * tile_size, (map_size/2 + 27) * tile_size, (int) (tile_size * 1.5), tile_size);
+		top_left_x = top_left_y = map_size / 2;
+	}
+	
 	public void generateMap()
 	{
 		map = new MapItem[map_size][map_size];
 		System.gc();
+		
+		//IRS
+		irs = new IRS(top_left_x + tiles_on_screen_x / 2, top_left_y + tiles_on_screen_y / 2);
+		map[irs.i][irs.j] = irs;
 		
 		//ORDER OF THESE FUNCTION CALLS IS VERY IMPORTANT DUE TO FUNCTIONS 
 		//ONLY ACCOUNTING FOR DISTANCE TO OBJECTS CREATED EARLIER
@@ -74,8 +78,7 @@ public class MapHandler
 			for (int y = j - house_distance; y < j + house_distance; y++)
 			{
 				if (x < 0 || x >= map_size || y < 0 || y >= map_size) {continue;}
-				if (map[x][y] instanceof House) {return false;}
-				if (irs.tile_x == x && irs.tile_y == y) {return false;}
+				if (map[x][y] instanceof House || map[x][y] instanceof IRS) {return false;}
 			}
 		}
 		return true;
@@ -84,9 +87,7 @@ public class MapHandler
 	// GAMEPLAY
 	public void reset()
 	{
-		top_left_x = top_left_y = map_size / 2;
-		taxCollector = new TaxCollector((map_size/2 + 37) * tile_size, (map_size/2 + 27) * tile_size, (int) (tile_size * 1.5), tile_size);
-		irs = new IRS(top_left_x + tiles_on_screen_x / 2, top_left_y + tiles_on_screen_y / 2);
+		this.initMainValues();
 		this.generateMap();
 		panel.updateMapReferences();
 	}
@@ -94,7 +95,6 @@ public class MapHandler
 	public void update()
 	{
 		taxCollector.update();
-		irs.updateFunds();
 		
 		//MAP ITEMS
 		for (int i = 0; i < map_size; i++)
@@ -120,13 +120,13 @@ public class MapHandler
 		}
 		
 		//IRS
-		if (Math.abs(index_x - irs.tile_x) < 3 && Math.abs(index_y - irs.tile_y) < 3)
+		if (Math.abs(index_x - irs.i) < 3 && Math.abs(index_y - irs.j) < 3)
 		{
 			irs.addFunds(taxCollector.emptyCollected());
 		}
 	}
 	
-	public void moveTaxCollector(Directions direction)
+	public void moveTaxCollector(Direction direction)
 	{	
 		switch (direction)
 		{
@@ -205,15 +205,6 @@ public class MapHandler
 	}
 	
 	// COMMUNICATION
-	
-	public TaxCollector getTaxCollector() {return taxCollector;}
-	
-	public int getTileSize() {return tile_size;}
-	
-	public int getTopLeftX() {return top_left_x;}
-	
-	public int getTopLeftY() {return top_left_y;}
-	
 	public ArrayList<House> getAllHousesOnScreen()
 	{
 		ArrayList<House> houses = new ArrayList<>();
@@ -229,6 +220,13 @@ public class MapHandler
 		return houses;
 	}
 	
-	public IRS getIRS()
-	{return irs;}
+	public int getTileSize() {return tile_size;}
+	
+	public int getTopLeftX() {return top_left_x;}
+	
+	public int getTopLeftY() {return top_left_y;}
+	
+	public TaxCollector getTaxCollector() {return taxCollector;}
+	
+	public IRS getIRS() {return irs;}
 }

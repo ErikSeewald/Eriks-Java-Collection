@@ -1,25 +1,24 @@
 package taxCollector;
 
-public class IRS 
+public class IRS extends MapItem
 {
 	private double funds;
-	int tile_x, tile_y;
 	
-	public IRS(int tile_x, int tile_y)
+	public IRS(int i, int j)
 	{
-		this.tile_x = tile_x;
-		this.tile_y = tile_y;
+		super(i,j);
 		this.funds = 1000;
 	}
 	
-	public double getFunds()
-	{return funds;}
-	
-	public void updateFunds()
+	@Override
+	public void update()
 	{
 		funds--;
 		if (funds < 0) {funds = 0;}
 	}
+	
+	public double getFunds()
+	{return funds;}
 	
 	public void addFunds(double amount)
 	{funds += amount;}

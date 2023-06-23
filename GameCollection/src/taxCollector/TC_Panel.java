@@ -8,10 +8,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
-
 import javax.swing.JPanel;
-
 import Main.EJC_Util;
+import Main.EJC_Util.Direction;
 
 public class TC_Panel extends JPanel
 {
@@ -36,7 +35,7 @@ public class TC_Panel extends JPanel
 		updateMapReferences();
 	}
 	
-	public void move(MapHandler.Directions direction)
+	public void move(Direction direction)
 	{
 		mapHandler.moveTaxCollector(direction);
 	}
@@ -134,7 +133,7 @@ public class TC_Panel extends JPanel
 		g2D.setFont(new Font("", Font.BOLD, 20));
 		
 		g2D.setPaint(taxCollector.emptyAnimation() ? collect_col : ui_col);
-		g2D.drawString("IRS", irs.tile_x * tile_size - 10, irs.tile_y * tile_size + 15);
+		g2D.drawString("IRS", irs.i * tile_size - 10, irs.j * tile_size + 15);
 		
 		g2D.translate(-scroll_x, -scroll_y);
 		
@@ -194,14 +193,14 @@ public class TC_Panel extends JPanel
 		int animation = taxCollector.emptyAnimation() ? MapHandler.irs_size_tiles * 3 : 0;
 		
 		//ON SCREEN
-		if (irs.tile_x >= mapHandler.getTopLeftX() && irs.tile_y >= mapHandler.getTopLeftY()
-				&& irs.tile_x < mapHandler.getTopLeftX() + MapHandler.tiles_on_screen_x
-				&& irs.tile_y < mapHandler.getTopLeftY() + MapHandler.tiles_on_screen_y)
+		if (irs.i >= mapHandler.getTopLeftX() && irs.j >= mapHandler.getTopLeftY()
+				&& irs.i < mapHandler.getTopLeftX() + MapHandler.tiles_on_screen_x
+				&& irs.j < mapHandler.getTopLeftY() + MapHandler.tiles_on_screen_y)
 		{
 			g2D.fillRect
 			(
-					(irs.tile_x * tile_size) - (MapHandler.irs_size_tiles / 2) * tile_size - animation / 2, 
-					(irs.tile_y * tile_size) - (MapHandler.irs_size_tiles / 2) * tile_size - animation / 2, 
+					(irs.i * tile_size) - (MapHandler.irs_size_tiles / 2) * tile_size - animation / 2, 
+					(irs.j * tile_size) - (MapHandler.irs_size_tiles / 2) * tile_size - animation / 2, 
 					MapHandler.irs_size_tiles * tile_size + animation, 
 					MapHandler.irs_size_tiles * tile_size + animation
 			);
@@ -212,7 +211,7 @@ public class TC_Panel extends JPanel
 		// put a triangle partly on the way of a vector towards the irs, one of the points on it, two of them on it's
 		// normal => triangle pointing towards irs
 		int x = taxCollector.x, y = taxCollector.y;
-		float[] vec = EJC_Util.normalize((irs.tile_x * tile_size) - x, (irs.tile_y * tile_size) - y);
+		float[] vec = EJC_Util.normalize((irs.i * tile_size) - x, (irs.j * tile_size) - y);
 		float[] normal = {-vec[1], vec[0]};
 		
 		g2D.fillPolygon

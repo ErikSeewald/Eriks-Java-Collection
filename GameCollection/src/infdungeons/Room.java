@@ -2,7 +2,7 @@ package infdungeons;
 
 import java.util.Random;
 
-import infdungeons.player.Player.Direction;
+import Main.EJC_Util.Direction;
 
 public class Room 
 {

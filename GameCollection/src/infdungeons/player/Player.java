@@ -1,5 +1,6 @@
 package infdungeons.player;
 
+import Main.EJC_Util.Direction;
 import infdungeons.DungeonHandler;
 import infdungeons.Room;
 
@@ -49,13 +50,6 @@ public class Player
 		this.y = entrance_door[1] - dungeonHandler.getTileValues()[2] / 3; // offset to not glitch into wall
 	}
 	
-	public static enum Direction
-	{
-		NORTH(0), EAST(90), SOUTH(180), WEST(270);
-		
-		public int angle;
-		Direction(int angle) {this.angle = angle;}
-	};
 	public Direction direction;
 	
 	public void move(int x, int y)
