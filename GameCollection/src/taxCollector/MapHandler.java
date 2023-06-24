@@ -3,6 +3,7 @@ package taxCollector;
 import java.util.ArrayList;
 import java.util.Random;
 import Main.EJC_Util.Direction;
+import taxCollector.MapItem.TempTile;
 
 public class MapHandler 
 {	
@@ -33,11 +34,12 @@ public class MapHandler
 		this.generateMap();
 	}
 	
-	// MAP GENERATION
+	//------MAP GENERATION------
+	
 	private void initMainValues()
 	{
 		tile_size = 700 / 50; //700 == PANEL_HEIGHT
-		taxCollector = new TaxCollector((map_size/2 + 37) * tile_size, (map_size/2 + 27) * tile_size, (int) (tile_size * 1.5), tile_size);
+		taxCollector = new TaxCollector(map_size/2 + 37, map_size/2 + 27, (int) (tile_size * 1.5));
 		top_left_x = top_left_y = map_size / 2;
 	}
 	
@@ -52,10 +54,87 @@ public class MapHandler
 		
 		//ORDER OF THESE FUNCTION CALLS IS VERY IMPORTANT DUE TO FUNCTIONS 
 		//ONLY ACCOUNTING FOR DISTANCE TO OBJECTS CREATED EARLIER
+		generateLakes();
 		generateHouses();
 		generateTrees();
 	}
 	
+	//LAKES
+	private void generateLakes()
+	{
+		// PLACE ORIGINS
+		for (int i = 0; i < map_size; i++)
+		{
+			for (int j = 0; j < map_size; j++)
+			{
+				// do not spawn a lake too close to the irs
+				if (i > irs.i - 30 && i < irs.i + 30 && j > irs.j - 30 && j < irs.j + 30)
+				{continue;}
+				
+				if (map[i][j] != null) {continue;}
+				if (random.nextInt(4000) == 1)
+				{expandLake(i,j);}
+			}
+		}
+		
+		// OVERDRAW SINGLE LAKE TILES WITH LARGER STAMP PATTERS FOR CONINUITY
+		for (int i = 0; i < map_size; i++)
+		{
+			for (int j = 0; j < map_size; j++)
+			{
+				if (map[i][j] instanceof Lake) 
+				{placeLakeStamp(i, j);}
+			}
+		}
+		
+		// FILL IN TEMPTILES
+		for (int i = 0; i < map_size; i++)
+		{
+			for (int j = 0; j < map_size; j++)
+			{
+				if (map[i][j] instanceof TempTile) 
+				{map[i][j] = new Lake(i, j);}
+			}
+		}
+		System.gc();
+	}
+	
+	private static final int lake_radius = 10;
+	private void expandLake(int i, int j)
+	{
+		map[i][j] = new Lake(i, j); // origin
+		
+		for (int x = i - lake_radius; x < i + lake_radius; x++)
+		{
+			for (int y = j - lake_radius; y < j + lake_radius; y++)
+			{
+				if (x < 0 || x >= map_size || y < 0 || y >= map_size) {continue;}
+				if (map[x][y] != null) {continue;}
+				
+				// Decrease probability of placing lake the further you are away from the origin
+				int dist = Math.abs(x - i) + Math.abs(y - j);
+				if (random.nextInt(dist * dist) == 1)
+				{map[x][y] = new Lake(x, y);}
+			}
+		}
+	}
+	
+	private void placeLakeStamp(int i, int j)
+	{
+		for (int x = i - 4; x < i + 4; x++)
+		{
+			for (int y = j - 5; y < j + 5; y++)
+			{
+				if (x < 0 || x >= map_size || y < 0 || y >= map_size) {continue;}
+				map[x][y] = new TempTile(x, y);
+				
+				// TempTile so we do not flood the world by having stamps be seen as lake origins
+				// -> change TempTiles to Lakes later
+			}
+		}
+	}
+	
+	//HOUSES
 	private void generateHouses()
 	{
 		for (int i = 0; i < map_size; i++)
@@ -65,26 +144,28 @@ public class MapHandler
 				if (map[i][j] != null) {continue;}
 				if (random.nextInt(1000) == 1)
 				{
-					if (noHousesInDistance(i, j, house_to_house_distance))
+					if (nothingElseInDistance(i, j, house_to_house_distance))
 					{map[i][j] = new House(i, j, random);}
 				}
 			}
 		}
 	}
 	
-	private boolean noHousesInDistance(int i, int j, int distance)
+	private boolean nothingElseInDistance(int i, int j, int distance)
 	{
 		for (int x = i - distance; x < i + distance; x++)
 		{
 			for (int y = j - distance; y < j + distance; y++)
 			{
 				if (x < 0 || x >= map_size || y < 0 || y >= map_size) {continue;}
-				if (map[x][y] instanceof House || map[x][y] instanceof IRS) {return false;}
+				if (map[x][y] instanceof House || map[x][y] instanceof IRS || map[x][y] instanceof Lake) 
+				{return false;}
 			}
 		}
 		return true;
 	}
 	
+	//TREES
 	private void generateTrees()
 	{
 		for (int i = 0; i < map_size; i++)
@@ -95,14 +176,15 @@ public class MapHandler
 				if (random.nextInt(600) == 1)
 				{	
 					// only check for houses, trees are allowed to be right next to other trees
-					if (noHousesInDistance(i, j, tree_to_house_distance))
+					if (nothingElseInDistance(i, j, tree_to_house_distance))
 					{map[i][j] = new Tree(i, j, random);}
 				}
 			}
 		}
 	}
 	
-	// GAMEPLAY
+	//------GAMEPLAY------
+	
 	public void reset()
 	{
 		this.initMainValues();
@@ -125,13 +207,10 @@ public class MapHandler
 	}
 	
 	public void interaction()
-	{
-		int index_x = taxCollector.x / tile_size;
-		int index_y = taxCollector.y / tile_size;
-		
-		for (int i = index_x - TaxCollector.collect_tile_range; i <= index_x + TaxCollector.collect_tile_range; i++)
+	{	
+		for (int i = taxCollector.i - TaxCollector.collect_tile_range; i <= taxCollector.i + TaxCollector.collect_tile_range; i++)
 		{
-			for (int j = index_y - TaxCollector.collect_tile_range; j <= index_y + TaxCollector.collect_tile_range; j++)
+			for (int j = taxCollector.j - TaxCollector.collect_tile_range; j <= taxCollector.j + TaxCollector.collect_tile_range; j++)
 			{
 				if (map[i][j] == null) {continue;}
 				
@@ -143,22 +222,25 @@ public class MapHandler
 	
 	public void moveTaxCollector(Direction direction)
 	{	
+		int i = taxCollector.i, j = taxCollector.j;
+		
 		switch (direction)
 		{
-		case EAST: taxCollector.x += taxCollector.speed;
-			break;
-		case SOUTH: taxCollector.y += taxCollector.speed;
-			break;
-		case WEST: taxCollector.x -= taxCollector.speed;
-			break;
-		case NORTH: taxCollector.y -= taxCollector.speed;
-			break;
+			case EAST: i++; break;
+			case SOUTH: j++; break;
+			case WEST: i--; break;
+			case NORTH: j--; break;
 		}
-		
-		int index_x = taxCollector.x / tile_size;
-		int index_y = taxCollector.y / tile_size;
-		
-		this.scroll(index_x, index_y);	
+			
+		if (i >= 0 && i < map_size && j >= 0 && j < map_size) 
+		{
+			// COLLISION
+			if (map[i][j] instanceof Lake) {return;}
+			
+			taxCollector.i = i;
+			taxCollector.j = j;
+			this.scroll(i, j);	
+		}
 	}
 	
 	private void scroll(int index_x, int index_y)
@@ -174,8 +256,6 @@ public class MapHandler
 				top_left_x++; 
 				scrolled = true;
 			}
-			else if (index_x + 1 >= map_size) // only walk up to edge of map
-			{taxCollector.x -= taxCollector.speed;}
 		}
 		
 		else if (index_x < top_left_x + tiles_on_screen_x * 0.2)
@@ -185,8 +265,6 @@ public class MapHandler
 				top_left_x--; 
 				scrolled = true;
 			}
-			else if (index_x - 1 <= 0)
-			{taxCollector.x += taxCollector.speed;}
 		}
 		
 		//Y
@@ -197,8 +275,6 @@ public class MapHandler
 				top_left_y++; 
 				scrolled = true;
 			}
-			else if (index_y + 2 >= map_size)
-			{taxCollector.y -= taxCollector.speed;}
 		}
 		
 		else if (index_y < top_left_y + tiles_on_screen_y * 0.2)
@@ -208,8 +284,6 @@ public class MapHandler
 				top_left_y--; 
 				scrolled = true;
 			}
-			else if (index_y - 1 <= 0)
-			{taxCollector.y += taxCollector.speed;}
 		}
 	
 		if (scrolled) {panel.updateMapReferences();}

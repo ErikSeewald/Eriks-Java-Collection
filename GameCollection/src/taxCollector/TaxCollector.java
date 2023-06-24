@@ -5,19 +5,17 @@ public class TaxCollector
 	public static final int collect_tile_range = 2;
 	private double collected;
 	
-	int x,y; // pixel values
+	int i, j;
 	int size;
-	double speed;
 	
 	private int collect_animation;
 	private int empty_animation;
 	
-	TaxCollector(int x, int y, int size, int speed)
+	TaxCollector(int i, int j, int size)
 	{
-		this.x = x;
-		this.y = y;
+		this.i = i;
+		this.j = j;
 		this.size = size;
-		this.speed = speed;
 		this.collected = 0;
 	}
 	
