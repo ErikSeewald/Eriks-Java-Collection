@@ -13,4 +13,13 @@ public abstract class MapItem
 	public void update() {}
 	
 	public abstract int getTileSize();
+	
+	// TEMP TILE TO MARK SPOTS ON THE MAP FOR A TASK TO BE DONE LATEE
+	public static class TempTile extends MapItem
+	{
+		TempTile(int i, int j) {super(i, j);}
+
+		@Override
+		public int getTileSize() {return 0;}
+	}
 }

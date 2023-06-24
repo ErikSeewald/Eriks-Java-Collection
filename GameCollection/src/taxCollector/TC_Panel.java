@@ -92,6 +92,7 @@ public class TC_Panel extends JPanel
 	private static final Color collect_col = new Color(120, 245, 120);
 	private static final Color tree_crown_col = new Color(30, 120, 40);
 	private static final Color tree_trunk_col = new Color(120, 75, 35);
+	private static final Color lake_col = new Color(50, 150, 200);
 	
 	public void paint(Graphics g)
 	{
@@ -123,12 +124,13 @@ public class TC_Panel extends JPanel
 		{
 			if (item instanceof House) {drawHouse(g2D, (House) item);}
 			else if (item instanceof Tree) {drawTree(g2D, (Tree) item);}
+			else if (item instanceof Lake) {drawLake(g2D, (Lake) item);}
 		}
 		
 		//TAX COLLECTOR
 		g2D.setPaint(tax_collector_col);
 		int tcSize = taxCollector.size;
-		g2D.fillRect(taxCollector.x - tcSize / 2, taxCollector.y - tcSize / 2, tcSize, tcSize);
+		g2D.fillRect(taxCollector.i * tile_size - tcSize / 2, taxCollector.j  * tile_size - tcSize / 2, tcSize, tcSize);
 		
 		//IRS
 		drawIRS(g2D);
@@ -216,6 +218,12 @@ public class TC_Panel extends JPanel
 		);
 	}
 	
+	private void drawLake(Graphics2D g2D, Lake lake)
+	{
+		g2D.setPaint(lake_col);
+		g2D.fillRect(lake.i * tile_size, lake.j * tile_size, Lake.size_tiles * tile_size, Lake.size_tiles * tile_size);
+	}
+	
 	private void drawIRS(Graphics2D g2D)
 	{
 		g2D.setPaint(taxCollector.emptyAnimation() ? irs_collect_col : irs_col);
@@ -238,7 +246,7 @@ public class TC_Panel extends JPanel
 		//OFFSCREEN
 		// put a triangle partly on the way of a vector towards the irs, one of the points on it, two of them on it's
 		// normal => triangle pointing towards irs
-		int x = taxCollector.x, y = taxCollector.y;
+		int x = taxCollector.i * tile_size, y = taxCollector.j * tile_size;
 		float[] vec = EJC_Util.normalize((irs.i * tile_size) - x, (irs.j * tile_size) - y);
 		float[] normal = {-vec[1], vec[0]};
 		
