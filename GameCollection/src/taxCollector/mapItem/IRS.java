@@ -9,6 +9,12 @@ public class IRS extends MapItem
 	public IRS(int i, int j)
 	{
 		super(i,j);
+	}
+	
+	public void reset(int i, int j)
+	{
+		this.i = i;
+		this.j = j;
 		this.funds = 1000;
 	}
 	

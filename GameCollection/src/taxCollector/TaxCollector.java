@@ -12,6 +12,7 @@ public class TaxCollector
 	
 	private int collect_animation;
 	private int empty_animation;
+	private int damage_animation;
 	
 	TaxCollector(int i, int j, int size)
 	{
@@ -41,13 +42,14 @@ public class TaxCollector
 	public void getHit() 
 	{
 		collected *= 0.8;
-		empty_animation = 20;
+		damage_animation = 10;
 	}
 	
 	public void update()
 	{
 		if (collect_animation > 0) {collect_animation--;}
 		if (empty_animation > 0) {empty_animation--;}
+		if (damage_animation > 0) {damage_animation--;}
 	}
 	
 	//COMMUNICATION
@@ -59,4 +61,7 @@ public class TaxCollector
 	
 	public boolean emptyAnimation()
 	{return empty_animation > 0;}
+	
+	public boolean damageAnimation()
+	{return damage_animation > 0;}
 }
