@@ -11,7 +11,13 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import Main.EJC_Util;
 import Main.EJC_Util.Direction;
-import taxCollector.Tree.ColorStates;
+import taxCollector.mapItem.House;
+import taxCollector.mapItem.IRS;
+import taxCollector.mapItem.Lake;
+import taxCollector.mapItem.MapItem;
+import taxCollector.mapItem.Road;
+import taxCollector.mapItem.Tree;
+import taxCollector.mapItem.Tree.ColorStates;
 
 public class TC_Panel extends JPanel
 {
@@ -125,6 +131,7 @@ public class TC_Panel extends JPanel
 			if (item instanceof House) {drawHouse(g2D, (House) item);}
 			else if (item instanceof Tree) {drawTree(g2D, (Tree) item);}
 			else if (item instanceof Lake) {drawLake(g2D, (Lake) item);}
+			else if (item instanceof Road) {drawRoad(g2D, (Road) item);}
 		}
 		
 		//TAX COLLECTOR
@@ -222,6 +229,12 @@ public class TC_Panel extends JPanel
 	{
 		g2D.setPaint(lake_col);
 		g2D.fillRect(lake.i * tile_size, lake.j * tile_size, Lake.size_tiles * tile_size, Lake.size_tiles * tile_size);
+	}
+	
+	private void drawRoad(Graphics2D g2D, Road road)
+	{
+		g2D.setPaint(Color.red);
+		g2D.fillRect(road.i * tile_size, road.j * tile_size, tile_size, tile_size);
 	}
 	
 	private void drawIRS(Graphics2D g2D)

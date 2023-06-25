@@ -1,10 +1,10 @@
-package taxCollector;
+package taxCollector.mapItem;
 
 public class Lake extends MapItem
 {
 	public static final int size_tiles = 1;
 	
-	Lake(int i, int j)
+	public Lake(int i, int j)
 	{
 		super(i, j);
 	}

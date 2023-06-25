@@ -39,4 +39,14 @@ public class EJC_Util
 		public int angle;
 		Direction(int angle) {this.angle = angle;}
 	};
+	
+	public static Direction reverse(Direction direction)
+	{
+		return Direction.values()[(direction.ordinal() + 2) % 4];
+	}
+	
+	public static Direction perpendicular(Direction direction)
+	{
+		return Direction.values()[(direction.ordinal() + 1) % 4];
+	}
 }

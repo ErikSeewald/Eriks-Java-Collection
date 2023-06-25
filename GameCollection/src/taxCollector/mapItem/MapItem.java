@@ -1,10 +1,10 @@
-package taxCollector;
+package taxCollector.mapItem;
 
 public abstract class MapItem 
 {
 	public int i, j; //map indices
 	
-	MapItem(int i, int j)
+	public MapItem(int i, int j)
 	{
 		this.i = i;
 		this.j = j;
@@ -17,7 +17,7 @@ public abstract class MapItem
 	// TEMP TILE TO MARK SPOTS ON THE MAP FOR A TASK TO BE DONE LATEE
 	public static class TempTile extends MapItem
 	{
-		TempTile(int i, int j) {super(i, j);}
+		public TempTile(int i, int j) {super(i, j);}
 
 		@Override
 		public int getTileSize() {return 0;}

@@ -2,8 +2,17 @@ package taxCollector;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Stack;
+
+import Main.EJC_Util;
 import Main.EJC_Util.Direction;
-import taxCollector.MapItem.TempTile;
+import taxCollector.mapItem.House;
+import taxCollector.mapItem.IRS;
+import taxCollector.mapItem.Lake;
+import taxCollector.mapItem.MapItem;
+import taxCollector.mapItem.Tree;
+import taxCollector.mapItem.MapItem.TempTile;
+import taxCollector.mapItem.Road;
 
 public class MapHandler 
 {	
@@ -55,8 +64,111 @@ public class MapHandler
 		//ORDER OF THESE FUNCTION CALLS IS VERY IMPORTANT DUE TO FUNCTIONS 
 		//ONLY ACCOUNTING FOR DISTANCE TO OBJECTS CREATED EARLIER
 		generateLakes();
+		generateRoads();
 		generateHouses();
 		generateTrees();
+	}
+	
+	//ROADS
+	
+	// road_iter_count times: pick a random corner on the edge of the map, then begin walking random distances
+	// in a direction, stopping, turning to a perpendicular direction and repeat until another edge of the map is reached.
+	// The path traced out by this forms the roads.
+	private static final int road_iter_count = 15;
+	
+	private class RoadPoint
+	{
+		int x, y;
+		Direction direction;
+		
+		RoadPoint(int x, int y, Direction direction)
+		{this.x = x; this.y = y; this.direction = direction;}
+	}
+	
+	private void generateRoads()
+	{
+		for (int i = 0; i < road_iter_count; i++)
+		{
+			RoadPoint p = pickRandomCornerPoint();
+
+			moveRoadPointOneStep(p);
+			
+			while (p.x > 0 && p.x < map_size - 1 && p.y > 0 && p.y < map_size - 1)
+			{
+				p.direction = EJC_Util.perpendicular(p.direction);
+				if (random.nextBoolean()) {p.direction = EJC_Util.reverse(p.direction);}
+				
+				moveRoadPointOneStep(p);
+			}
+		}
+	}
+	
+	private RoadPoint pickRandomCornerPoint()
+	{
+		// Direction in which to go -> NORTH means we start at bottom corner
+		Direction direction = Direction.values()[random.nextInt(4)];
+		int x = 0, y = 0;
+		
+		switch (direction)
+		{
+			case NORTH: x = random.nextInt(map_size - 10) + 10; y = map_size - 1; break;
+			case SOUTH: x = random.nextInt(map_size - 10) + 10; y = 0; 		break;
+			case EAST:  x = 0; y = random.nextInt(map_size -10) + 10; 		break;
+			case WEST:  x = map_size - 1; y = random.nextInt(map_size -10) + 10; break;
+		}
+		
+		return new RoadPoint(x, y, direction);
+	}
+	
+	// One Step being a walk of variable length in one direction
+	private static final int low_bound = map_size / 50, high_bound = low_bound * 5; 
+	private void moveRoadPointOneStep(RoadPoint p)
+	{
+		int distance = random.nextInt(high_bound - low_bound) + low_bound;
+		int i = p.x, j = p.y;
+		
+		if (p.direction == Direction.NORTH)
+		{
+			while (j > p.y - distance)
+			{
+				if (j < 0) {break;}
+				map[p.x][j] = new Road(p.x, j); 
+				j--;
+			}
+		}
+		
+		else if (p.direction == Direction.SOUTH)
+		{
+			while (j < p.y + distance)
+			{
+				if (j >= map_size) {break;}
+				map[p.x][j] = new Road(p.x, j);
+				j++;
+			}
+		}
+		
+		else if (p.direction == Direction.EAST)
+		{
+			while (i < p.x + distance)
+			{
+				if (i >= map_size) {break;}
+				map[i][p.y] = new Road(i, p.y); 
+				i++;
+			}
+		}
+		
+		else if (p.direction == Direction.WEST)
+		{
+			while (i > p.x - distance)
+			{
+				if (i < 0) {break;}
+				map[i][p.y] = new Road(i, p.y);
+				i--;
+			}
+		}
+		
+		p.x = i;
+		p.y = j;
 	}
 	
 	//LAKES
@@ -126,6 +238,7 @@ public class MapHandler
 			for (int y = j - 5; y < j + 5; y++)
 			{
 				if (x < 0 || x >= map_size || y < 0 || y >= map_size) {continue;}
+				if (map[x][y] != null) {continue;}
 				map[x][y] = new TempTile(x, y);
 				
 				// TempTile so we do not flood the world by having stamps be seen as lake origins
