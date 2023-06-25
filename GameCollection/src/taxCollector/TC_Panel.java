@@ -16,6 +16,7 @@ import taxCollector.mapItem.IRS;
 import taxCollector.mapItem.Lake;
 import taxCollector.mapItem.MapItem;
 import taxCollector.mapItem.Road;
+import taxCollector.mapItem.Road.RoadRail;
 import taxCollector.mapItem.Tree;
 import taxCollector.mapItem.Tree.ColorStates;
 
@@ -189,7 +190,7 @@ public class TC_Panel extends JPanel
 	}
 	
 	private void drawCar(Graphics2D g2D, Car car)
-	{
+	{	
 		g2D.setPaint(car_col);
 		g2D.fillRect(car.i * tile_size, car.j * tile_size, car.getSizeTilesX() * tile_size, car.getSizeTilesY() * tile_size);
 	}
@@ -251,7 +252,7 @@ public class TC_Panel extends JPanel
 	}
 	
 	private void drawRoad(Graphics2D g2D, Road road)
-	{
+	{		
 		g2D.setPaint(road_col);
 		g2D.fillRect(road.i * tile_size, road.j * tile_size, tile_size, tile_size);
 	}
