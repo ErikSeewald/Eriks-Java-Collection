@@ -1,17 +1,23 @@
 package taxCollector;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
+
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.Timer;
 import Main.EJC_Interface;
 import Main.EJC_Util.Direction;
 import Main.WindowEventHandler;
 
-public class EJC_TaxCollector extends JFrame implements EJC_Interface
+public class EJC_TaxCollector extends JFrame implements EJC_Interface, ActionListener
 {
 	private static final long serialVersionUID = -5389438519379536388L;
 	private static final int index = 19;
@@ -19,6 +25,7 @@ public class EJC_TaxCollector extends JFrame implements EJC_Interface
 	private TC_Panel panel;
 	private HashSet<Integer> pressedKeys = new HashSet<>();
 	private Timer timer;
+	private JMenuItem seedItem;
 	
 	@Override
 	public void start(WindowEventHandler eventHandler) 
@@ -75,6 +82,32 @@ public class EJC_TaxCollector extends JFrame implements EJC_Interface
 
 		timer.setInitialDelay(100);
 		timer.start();
+		
+		//MENU BAR
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBackground(new Color (100,100,120));
+		menuBar.setBorder(BorderFactory.createLineBorder(new Color (115,115,135), 2));
+				
+		JMenu fileMenu = new JMenu("Seed");	
+		fileMenu.setForeground(new Color (230,230,250));
+		fileMenu.setBorder(BorderFactory.createLineBorder(new Color (100,100,120)));
+				
+		seedItem = new JMenuItem("Set seed");
+		seedItem.addActionListener(this);
+				
+		fileMenu.add(seedItem);
+		menuBar.add(fileMenu);
+		this.setJMenuBar(menuBar);
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) 
+	{
+		if(e.getSource() == seedItem)
+		{
+			pressedKeys.removeAll(pressedKeys);
+			panel.createSeed();
+		}
 	}
 
 	@Override
