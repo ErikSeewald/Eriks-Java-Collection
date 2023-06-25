@@ -99,6 +99,7 @@ public class TC_Panel extends JPanel
 	private static final Color house_col_2 = new Color(240, 180, 45);
 	private static final Color ui_col = new Color(220, 220, 230);
 	private static final Color bankrupt_col = new Color(245, 120, 120);
+	private static final Color damage_col = new Color(245, 60, 60);
 	private static final Color irs_col = new Color(80, 80, 85);
 	private static final Color irs_collect_col = new Color(30, 170, 40);
 	private static final Color collect_col = new Color(120, 245, 120);
@@ -106,6 +107,7 @@ public class TC_Panel extends JPanel
 	private static final Color tree_trunk_col = new Color(120, 75, 35);
 	private static final Color lake_col = new Color(70, 120, 160);
 	private static final Color road_col = new Color(45, 45, 50);
+	private static final Color car_col = new Color(120, 120, 130);
 	
 	public void paint(Graphics g)
 	{
@@ -141,14 +143,17 @@ public class TC_Panel extends JPanel
 			else if (item instanceof Road) {drawRoad(g2D, (Road) item);}
 		}
 		
-		
 		//TAX COLLECTOR
-		g2D.setPaint(tax_collector_col);
+		g2D.setPaint(taxCollector.damageAnimation() ? damage_col : tax_collector_col);
 		int tcSize = taxCollector.size;
 		g2D.fillRect(taxCollector.i * tile_size - tcSize / 2, taxCollector.j  * tile_size - tcSize / 2, tcSize, tcSize);
 		
 		//IRS
 		drawIRS(g2D);
+		
+		//CARS
+		for (Car car : mapHandler.getAllCarsOnScreen())
+		{drawCar(g2D, car);}
 		
 		//UI
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -159,7 +164,7 @@ public class TC_Panel extends JPanel
 		
 		g2D.translate(-scroll_x, -scroll_y);
 		
-		if (taxCollector.emptyAnimation()) {g2D.setPaint(bankrupt_col);}
+		if (taxCollector.emptyAnimation() || taxCollector.damageAnimation()) {g2D.setPaint(bankrupt_col);}
 		else if (taxCollector.collectAnimation()) {g2D.setPaint(collect_col);}
 		g2D.drawString("Collected: " +  EJC_Util.round(taxCollector.getCollected(), 2), (int) (PANEL_WIDTH * 0.6),PANEL_HEIGHT >> 4);
 		
@@ -181,6 +186,12 @@ public class TC_Panel extends JPanel
 			g2D.drawLine(0, i* tile_size, PANEL_WIDTH, i * tile_size);
 			g2D.drawString("" + (i + mapHandler.getTopLeftY()), tile_size / 4, i * tile_size);
 		}
+	}
+	
+	private void drawCar(Graphics2D g2D, Car car)
+	{
+		g2D.setPaint(car_col);
+		g2D.fillRect(car.i * tile_size, car.j * tile_size, car.getSizeTilesX() * tile_size, car.getSizeTilesY() * tile_size);
 	}
 	
 	private void drawHouse(Graphics2D g2D, House house)

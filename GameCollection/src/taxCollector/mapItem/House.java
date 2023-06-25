@@ -22,7 +22,7 @@ public class House extends MapItem
 	private void initValues(Random random)
 	{
 		tax = random.nextDouble(500) + 10;
-		cooldown = random.nextInt(9000) + 1000;
+		cooldown = random.nextInt(90000) + 10000;
 	}
 	
 	public double collectTax()

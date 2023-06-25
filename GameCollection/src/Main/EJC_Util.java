@@ -31,7 +31,8 @@ public class EJC_Util
 	    long tmp = Math.round(value);
 	    return (double) tmp / factor;
 	}
-	
+
+	//DIRECTION
 	public static enum Direction
 	{
 		NORTH(0), EAST(90), SOUTH(180), WEST(270);
@@ -39,7 +40,7 @@ public class EJC_Util
 		public int angle;
 		Direction(int angle) {this.angle = angle;}
 	};
-	
+
 	public static Direction reverse(Direction direction)
 	{
 		return Direction.values()[(direction.ordinal() + 2) % 4];
@@ -48,5 +49,10 @@ public class EJC_Util
 	public static Direction perpendicular(Direction direction)
 	{
 		return Direction.values()[(direction.ordinal() + 1) % 4];
+	}
+	
+	public static boolean isPerpendicular(Direction d1, Direction d2)
+	{
+		return (d1.ordinal() + d2.ordinal()) % 2 == 1;
 	}
 }
