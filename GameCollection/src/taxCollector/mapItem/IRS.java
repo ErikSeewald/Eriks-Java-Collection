@@ -1,4 +1,4 @@
-package taxCollector;
+package taxCollector.mapItem;
 
 public class IRS extends MapItem
 {

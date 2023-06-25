@@ -1,4 +1,4 @@
-package taxCollector;
+package taxCollector.mapItem;
 
 import java.util.Random;
 
@@ -13,9 +13,9 @@ public class Tree extends MapItem
 		NORMAL, BRIGHTER, DARKER;
 	};
 	
-	ColorStates color_state;
+	public ColorStates color_state;
 
-	Tree(int i, int j, Random random)
+	public Tree(int i, int j, Random random)
 	{
 		super(i, j);
 		color_state = ColorStates.values()[random.nextInt(3)];

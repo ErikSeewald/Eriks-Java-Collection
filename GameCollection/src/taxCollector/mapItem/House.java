@@ -1,4 +1,4 @@
-package taxCollector;
+package taxCollector.mapItem;
 
 import java.util.Random;
 
@@ -11,7 +11,7 @@ public class House extends MapItem
 	private int time_until_next_tax;
 	private int cooldown;
 	
-	House(int i, int j, Random random)
+	public House(int i, int j, Random random)
 	{
 		super(i, j);
 		time_until_next_tax = 0;

@@ -1,5 +1,7 @@
 package taxCollector;
 
+import taxCollector.mapItem.House;
+
 public class TaxCollector 
 {
 	public static final int collect_tile_range = 2;

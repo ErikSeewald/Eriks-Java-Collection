@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+import Main.EJC_Util;
 import Main.EJC_Util.Direction;
 import infdungeons.Room.Chest;
 import infdungeons.Room.Door;
@@ -211,14 +212,14 @@ public class DungeonHandler
 		
 		// ADD BIDIRECTIONAL PATH
 		cur_room.neighbors[direction.ordinal()] = next_room;
-		next_room.neighbors[reverse(direction).ordinal()] = cur_room;
+		next_room.neighbors[EJC_Util.reverse(direction).ordinal()] = cur_room;
 		
 		changePlayerRoom(next_room, direction);
 	}
 	
 	private void changePlayerRoom(Room next_room, Direction entrance_direction)
 	{
-		Direction exit_direction = reverse(entrance_direction);
+		Direction exit_direction = EJC_Util.reverse(entrance_direction);
 		next_room.setDoor(exit_direction, Door.open);
 		
 		player.setRoom(next_room);
@@ -394,11 +395,6 @@ public class DungeonHandler
 	public ArrayList<Enemy> getEnemies() {return enemies;}
 	
 	public ArrayList<Bomb> getDroppedBombs() {return dropped_bombs;}
-	
-	private static Direction reverse(Direction direction)
-	{
-		return Direction.values()[(direction.ordinal() + 2) % 4];
-	}
 	
 	private static String makeHashKey(int[] coordinates)
 	{
