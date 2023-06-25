@@ -129,6 +129,18 @@ public class MapGenerator
 				moveRoadPointOneStep(p, map);
 			}
 		}
+		
+		//OVERWRITE ANY 2x2 ROADRAIL SQUARE CAUSED BY ROADS WITH 0 DISTANCE BETWEEN EACH OTHER
+		//OTHERWISE CARS WILL GLITCH OUT
+		for (int i = 4; i < MapHandler.map_size - 4; i++)
+		{
+			for (int j = 4; j < MapHandler.map_size - 4; j++)
+			{
+				if (map[i][j] instanceof RoadRail && map[i + 1][j] instanceof RoadRail
+						&& map[i][j + 1] instanceof RoadRail && map[i + 1][j + 1] instanceof RoadRail)
+				{map[i][j + 1] = new Road(i, j +1);}
+			}
+		}
 	}
 	
 	private static RoadPoint pickRandomCornerPoint(Direction direction)
