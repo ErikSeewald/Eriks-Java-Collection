@@ -473,6 +473,9 @@ public class MapHandler
 		return items;
 	}
 	
+	public void setSeed(long seed)
+	{random.setSeed(seed);}
+	
 	public int getTileSize() {return tile_size;}
 	
 	public int getTopLeftX() {return top_left_x;}

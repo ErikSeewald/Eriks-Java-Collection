@@ -85,6 +85,12 @@ public class TC_Panel extends JPanel
 	
 	public boolean updateValid() {return !irs.isBankrupt();}
 	
+	public void createSeed()
+	{
+		mapHandler.setSeed(EJC_Util.createSeed());
+		restart();
+	}
+	
 	//---------------------------------------PAINT---------------------------------------
 	
 	private static final Color background_col = new Color(55, 55, 70);
