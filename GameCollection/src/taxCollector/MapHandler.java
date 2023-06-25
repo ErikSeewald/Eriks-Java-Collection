@@ -48,7 +48,6 @@ public class MapHandler
 	private void initMainValues()
 	{
 		tile_size = 700 / 50; //700 == PANEL_HEIGHT
-		taxCollector = new TaxCollector(map_size/2 + 37, map_size/2 + 27, (int) (tile_size * 1.5));
 		top_left_x = top_left_y = map_size / 2;
 	}
 	
@@ -57,16 +56,29 @@ public class MapHandler
 		map = new MapItem[map_size][map_size];
 		System.gc();
 		
-		//IRS
-		irs = new IRS(top_left_x + tiles_on_screen_x / 2, top_left_y + tiles_on_screen_y / 2);
-		map[irs.i][irs.j] = irs;
-		
 		//ORDER OF THESE FUNCTION CALLS IS VERY IMPORTANT DUE TO FUNCTIONS 
 		//ONLY ACCOUNTING FOR DISTANCE TO OBJECTS CREATED EARLIER
-		generateLakes();
 		generateRoads();
+		placeIRS();
+		generateLakes();
 		generateHouses();
 		generateTrees();
+		
+		taxCollector = new TaxCollector(irs.i, irs.j, (int) (tile_size * 1.5));
+	}
+	
+	private void placeIRS()
+	{
+		int x = top_left_x + tiles_on_screen_x / 2, y = top_left_y + tiles_on_screen_y / 2;
+		
+		while (map[x][y] instanceof Lake || map[x][y] instanceof Road)
+		{
+			if (random.nextBoolean()) {x++;}
+			else {y++;}
+		}
+		
+		irs = new IRS(x, y);
+		map[irs.i][irs.j] = irs;
 	}
 	
 	//ROADS
@@ -87,11 +99,12 @@ public class MapHandler
 	
 	private void generateRoads()
 	{
+		Direction corner_dir = Direction.NORTH;
 		for (int i = 0; i < road_iter_count; i++)
 		{
-			RoadPoint p = pickRandomCornerPoint();
-
+			RoadPoint p = pickRandomCornerPoint(corner_dir);
 			moveRoadPointOneStep(p);
+			corner_dir = EJC_Util.perpendicular(corner_dir); // go around the 4 corners clockwise
 			
 			while (p.x > 0 && p.x < map_size - 1 && p.y > 0 && p.y < map_size - 1)
 			{
@@ -103,10 +116,9 @@ public class MapHandler
 		}
 	}
 	
-	private RoadPoint pickRandomCornerPoint()
+	private RoadPoint pickRandomCornerPoint(Direction direction)
 	{
 		// Direction in which to go -> NORTH means we start at bottom corner
-		Direction direction = Direction.values()[random.nextInt(4)];
 		int x = 0, y = 0;
 		
 		switch (direction)
@@ -121,7 +133,8 @@ public class MapHandler
 	}
 	
 	// One Step being a walk of variable length in one direction
-	private static final int low_bound = map_size / 50, high_bound = low_bound * 5; 
+	private static final int low_bound = map_size / 20, high_bound = low_bound * 5; 
+	private static final int road_radius = 5; // -> width = 10
 	private void moveRoadPointOneStep(RoadPoint p)
 	{
 		int distance = random.nextInt(high_bound - low_bound) + low_bound;
@@ -132,7 +145,14 @@ public class MapHandler
 			while (j > p.y - distance)
 			{
 				if (j < 0) {break;}
-				map[p.x][j] = new Road(p.x, j); 
+				
+				//expand horizontally
+				for (int k = p.x - road_radius; k < p.x + road_radius; k++)
+				{
+					if (k < 0 || k >= map_size) {continue;}
+					map[k][j] = new Road(k, j);
+				}
+				
 				j--;
 			}
 		}
@@ -142,7 +162,14 @@ public class MapHandler
 			while (j < p.y + distance)
 			{
 				if (j >= map_size) {break;}
-				map[p.x][j] = new Road(p.x, j);
+				
+				//expand horizontally
+				for (int k = p.x - road_radius; k < p.x + road_radius; k++)
+				{
+					if (k < 0 || k >= map_size) {continue;}
+					map[k][j] = new Road(k, j);
+				}
+				
 				j++;
 			}
 		}
@@ -152,7 +179,14 @@ public class MapHandler
 			while (i < p.x + distance)
 			{
 				if (i >= map_size) {break;}
-				map[i][p.y] = new Road(i, p.y); 
+				
+				//expand vertically
+				for (int k = p.y - road_radius; k < p.y + road_radius; k++)
+				{
+					if (k < 0 || k >= map_size) {continue;}
+					map[i][k] = new Road(i, k);
+				}
+				
 				i++;
 			}
 		}
@@ -162,7 +196,14 @@ public class MapHandler
 			while (i > p.x - distance)
 			{
 				if (i < 0) {break;}
-				map[i][p.y] = new Road(i, p.y);
+				
+				//expand vertically
+				for (int k = p.y - road_radius; k < p.y + road_radius; k++)
+				{
+					if (k < 0 || k >= map_size) {continue;}
+					map[i][k] = new Road(i, k);
+				}
+				
 				i--;
 			}
 		}
@@ -257,7 +298,7 @@ public class MapHandler
 				if (map[i][j] != null) {continue;}
 				if (random.nextInt(1000) == 1)
 				{
-					if (nothingElseInDistance(i, j, house_to_house_distance))
+					if (nothingElseInDistance(i, j, house_to_house_distance) && clearOfRoads(i, j))
 					{map[i][j] = new House(i, j, random);}
 				}
 			}
@@ -278,6 +319,20 @@ public class MapHandler
 		return true;
 	}
 	
+	private boolean clearOfRoads(int i, int j)
+	{
+		for (int x = i - 5; x < i + 5; x++)
+		{
+			for (int y = j - 5; y < j + 5; y++)
+			{
+				if (x < 0 || x >= map_size || y < 0 || y >= map_size) {continue;}
+				if (map[x][y] instanceof Road) 
+				{return false;}
+			}
+		}
+		return true;
+	}
+	
 	//TREES
 	private void generateTrees()
 	{
@@ -286,10 +341,10 @@ public class MapHandler
 			for (int j = 0; j < map_size; j++)
 			{			
 				if (map[i][j] != null) {continue;}
-				if (random.nextInt(600) == 1)
+				if (random.nextInt(100) == 1)
 				{	
 					// only check for houses, trees are allowed to be right next to other trees
-					if (nothingElseInDistance(i, j, tree_to_house_distance))
+					if (nothingElseInDistance(i, j, tree_to_house_distance) && clearOfRoads(i, j))
 					{map[i][j] = new Tree(i, j, random);}
 				}
 			}

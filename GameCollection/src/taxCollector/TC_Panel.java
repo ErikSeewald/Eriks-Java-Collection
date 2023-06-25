@@ -98,7 +98,8 @@ public class TC_Panel extends JPanel
 	private static final Color collect_col = new Color(120, 245, 120);
 	private static final Color tree_crown_col = new Color(30, 120, 40);
 	private static final Color tree_trunk_col = new Color(120, 75, 35);
-	private static final Color lake_col = new Color(50, 150, 200);
+	private static final Color lake_col = new Color(70, 120, 160);
+	private static final Color road_col = new Color(45, 45, 50);
 	
 	public void paint(Graphics g)
 	{
@@ -133,6 +134,7 @@ public class TC_Panel extends JPanel
 			else if (item instanceof Lake) {drawLake(g2D, (Lake) item);}
 			else if (item instanceof Road) {drawRoad(g2D, (Road) item);}
 		}
+		
 		
 		//TAX COLLECTOR
 		g2D.setPaint(tax_collector_col);
@@ -233,7 +235,7 @@ public class TC_Panel extends JPanel
 	
 	private void drawRoad(Graphics2D g2D, Road road)
 	{
-		g2D.setPaint(Color.red);
+		g2D.setPaint(road_col);
 		g2D.fillRect(road.i * tile_size, road.j * tile_size, tile_size, tile_size);
 	}
 	
