@@ -16,6 +16,7 @@ import javax.swing.Timer;
 import Main.EJC_Interface;
 import Main.EJC_Util.Direction;
 import Main.WindowEventHandler;
+import taxCollector.MapHandler.ResetActions;
 
 public class EJC_TaxCollector extends JFrame implements EJC_Interface, ActionListener
 {
@@ -51,12 +52,11 @@ public class EJC_TaxCollector extends JFrame implements EJC_Interface, ActionLis
 				pressedKeys.add(code);
 				
 				char c = e.getKeyChar();
-				if (c == 'r') {panel.restart();}
+				if (c == 'r') {panel.restart(ResetActions.newSeed);}
 				
 				if (!panel.updateValid()) {return;}
 				else if (c == 'g') {panel.switchGridBool();}
 				else if (c == 'e') {panel.interaction();}
-				else if (c == 'r') {panel.restart();}
 			}
 			@Override
 			public void keyReleased(KeyEvent e)

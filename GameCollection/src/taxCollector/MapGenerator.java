@@ -4,7 +4,6 @@ import java.util.Random;
 import Main.EJC_Util;
 import Main.EJC_Util.Direction;
 import taxCollector.mapItem.*;
-import taxCollector.mapItem.MapItem.TempTile;
 import taxCollector.mapItem.Road.RoadRail;
 
 public class MapGenerator 
@@ -244,6 +243,10 @@ public class MapGenerator
 	}
 	
 	//LAKES
+	// Place random origin points around the map, then place "stamp origins" around the lake origins
+	// decreasing in spawn probability the further apart they are. Those "stamp origins" are then
+	// overwritten by a 8x10 rectangle of lake tiles, a stamp. These stamps overlapping each other
+	// creates unique looking lake shapes.
 	private static void generateLakes(MapItem[][] map)
 	{
 		// PLACE ORIGINS
@@ -260,27 +263,6 @@ public class MapGenerator
 				{expandLake(i,j, map);}
 			}
 		}
-		
-		// OVERDRAW SINGLE LAKE TILES WITH LARGER STAMP PATTERS FOR CONINUITY
-		for (int i = 0; i < MapHandler.map_size; i++)
-		{
-			for (int j = 0; j < MapHandler.map_size; j++)
-			{
-				if (map[i][j] instanceof Lake) 
-				{placeLakeStamp(i, j, map);}
-			}
-		}
-		
-		// FILL IN TEMPTILES
-		for (int i = 0; i < MapHandler.map_size; i++)
-		{
-			for (int j = 0; j < MapHandler.map_size; j++)
-			{
-				if (map[i][j] instanceof TempTile) 
-				{map[i][j] = new Lake(i, j);}
-			}
-		}
-		System.gc();
 	}
 	
 	private static final int lake_radius = 10;
@@ -298,7 +280,7 @@ public class MapGenerator
 				// Decrease probability of placing lake the further you are away from the origin
 				int dist = Math.abs(x - i) + Math.abs(y - j);
 				if (random.nextInt(dist * dist) == 1)
-				{map[x][y] = new Lake(x, y);}
+				{placeLakeStamp(x, y, map);}
 			}
 		}
 	}
@@ -311,10 +293,7 @@ public class MapGenerator
 			{
 				if (x < 0 || x >= MapHandler.map_size || y < 0 || y >= MapHandler.map_size) {continue;}
 				if (map[x][y] != null) {continue;}
-				map[x][y] = new TempTile(x, y);
-				
-				// TempTile so we do not flood the world by having stamps be seen as lake origins
-				// -> change TempTiles to Lakes later
+				map[x][y] = new Lake(x, y);
 			}
 		}
 	}

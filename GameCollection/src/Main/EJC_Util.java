@@ -10,11 +10,13 @@ public class EJC_Util
 		{return 0;}
 		
 		long seed = 0;
-		byte[] str = seedStr.getBytes();
-					
-		for (byte b : str)
-		{seed+= (int) b;}
-				
+		
+		try {seed = Long.parseLong(seedStr);}
+		catch (NumberFormatException e)
+		{
+			for (char c : seedStr.toCharArray())
+			{seed += c;}
+		}
 		return seed;
 	}
 	

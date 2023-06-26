@@ -31,6 +31,7 @@ public class MapHandler
 	private IRS irs; // both map item and specific pointer
 	private TC_Panel panel;
 	private Random random;
+	private long seed;
 	
 	MapHandler(TC_Panel panel)
 	{
@@ -42,6 +43,9 @@ public class MapHandler
 		{cars[i] = new Car(0, 0, Direction.NORTH);}
 		
 		this.irs = new IRS(0, 0);
+		
+		this.seed = random.nextLong();
+		random.setSeed(seed);
 		
 		this.initMainValues();
 		this.generateMap();
@@ -66,8 +70,20 @@ public class MapHandler
 	
 	//------GAMEPLAY------
 	
-	public void reset()
+	public static class ResetActions
 	{
+		public static final boolean newSeed = true;
+		public static final boolean keepSeed = false;
+	}
+	
+	public void reset(boolean newSeed)
+	{
+		if (newSeed)
+		{
+			this.seed = random.nextLong();
+			random.setSeed(seed);
+		}
+		
 		this.initMainValues();
 		this.generateMap();
 		panel.updateMapReferences();
@@ -271,7 +287,9 @@ public class MapHandler
 	}
 	
 	public void setSeed(long seed)
-	{random.setSeed(seed);}
+	{random.setSeed(seed); this.seed = seed;}
+	
+	public long getSeed() {return this.seed;}
 	
 	public int getTileSize() {return tile_size;}
 	

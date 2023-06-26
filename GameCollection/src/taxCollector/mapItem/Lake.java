@@ -8,7 +8,4 @@ public class Lake extends MapItem
 	{
 		super(i, j);
 	}
-
-	@Override
-	public int getTileSize() {return size_tiles;}
 }
