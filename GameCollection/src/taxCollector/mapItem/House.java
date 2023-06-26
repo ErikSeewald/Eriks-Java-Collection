@@ -21,7 +21,7 @@ public class House extends MapItem
 	
 	private void initValues(Random random)
 	{
-		tax = random.nextDouble(300) + 10;
+		tax = random.nextDouble(200) + 10;
 		cooldown = random.nextInt(90000) + 10000;
 	}
 	
