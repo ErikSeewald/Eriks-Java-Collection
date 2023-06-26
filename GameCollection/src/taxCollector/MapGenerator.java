@@ -35,69 +35,9 @@ public class MapGenerator
 		generateTrees(map);
 	}
 	
-	private static void placeIRS(MapItem[][] map)
-	{
-		int x = top_left_x + MapHandler.tiles_on_screen_x / 2, y = top_left_y + MapHandler.tiles_on_screen_y / 2;
-		
-		while (map[x][y] instanceof Lake || map[x][y] instanceof Road)
-		{
-			if (random.nextBoolean()) {x++;}
-			else {y++;}
-		}
-		
-		irs.reset(x, y);;
-		map[irs.i][irs.j] = irs;
-	}
-	
-	//CARS
-	private static void generateCars(MapItem[][] map) // does not actually "generate" - merely moves the existing ones to new positions
-	{	
-		for (Car car : cars)
-		{
-			while (true) // exited out of if a valid position has been found
-			{
-				//Find spawnpoint by finding a random position on the map, then walking from there until a road is hit
-				car.i = random.nextInt(MapHandler.map_size);
-				car.j = random.nextInt(MapHandler.map_size);
-				
-				int i_add = car.i < MapHandler.map_size / 2 ? 1 : -1;
-				int j_add = car.j < MapHandler.map_size / 2 ? 1 : -1;
-		
-				while (car.i > 1 && car.i < MapHandler.map_size - 1 && car.j > 1 && car.j < MapHandler.map_size - 1)
-				{
-						car.i += i_add;
-						car.j += j_add;
-						if (map[car.i][car.j] instanceof RoadRail) {break;}
-				}
-				
-				//ALIGN THE CARS STARTING DIRECTION WITH THE ROAD
-				if ((car.i + 1 < MapHandler.map_size && map[car.i + 1][car.j] instanceof RoadRail)
-						|| (car.i - 1 > 0 && map[car.i - 1][car.j] instanceof RoadRail)) // horizontal
-				{
-					if (car.i > MapHandler.map_size / 2) {car.changeDirection(Direction.WEST);}
-					else {car.changeDirection(Direction.EAST);}
-				}
-				
-				else if ((car.j + 1 < MapHandler.map_size && map[car.i][car.j + 1] instanceof RoadRail)
-						|| (car.j - 1 > 0 && map[car.i][car.j - 1] instanceof RoadRail)) // vertical
-				{
-					if (car.j > MapHandler.map_size / 2) {car.changeDirection(Direction.NORTH);}
-					else {car.changeDirection(Direction.SOUTH);}
-				}
-				
-				car.start_i = car.i;
-				car.start_j = car.j;
-				car.start_direction = car.getDirection();
-				
-				// IS POSITION VALID?
-				if (car.i > 10 && car.i < MapHandler.map_size - 10 && car.j > 10 && car.j < MapHandler.map_size - 10)
-				{break;}
-			}
-		}
-	}
 	//ROADS
-	
-	// road_iter_count times: pick a random corner on the edge of the map, then begin walking random distances
+
+	// road_iter_count times: pick a random edge of the map, then begin walking random distances
 	// in a direction, stopping, turning to a perpendicular direction and repeat until another edge of the map is reached.
 	// The path traced out by this forms the roads.
 	private static final int road_iter_count = 15;
@@ -116,10 +56,11 @@ public class MapGenerator
 		Direction corner_dir = Direction.NORTH;
 		for (int i = 0; i < road_iter_count; i++)
 		{
+			corner_dir = EJC_Util.perpendicular(corner_dir); // go around the 4 corners clockwise
 			RoadPoint p = pickRandomCornerPoint(corner_dir);
 			moveRoadPointOneStep(p, map);
-			corner_dir = EJC_Util.perpendicular(corner_dir); // go around the 4 corners clockwise
 			
+			// WALK RANDOMLY UNTIL WE REACH AN EDGE OF THE MAP
 			while (p.x > 0 && p.x < MapHandler.map_size - 1 && p.y > 0 && p.y < MapHandler.map_size - 1)
 			{
 				p.direction = EJC_Util.perpendicular(p.direction);
@@ -172,13 +113,7 @@ public class MapGenerator
 			{
 				if (j < 0) {break;}
 				
-				//expand horizontally
-				for (int k = p.x - road_radius; k < p.x + road_radius; k++)
-				{
-					if (k < 0 || k >= MapHandler.map_size || map[k][j] instanceof RoadRail) 
-					{continue;}
-					map[k][j] = new Road(k, j);
-				}
+				expandHorizontally(p.x, j, map);
 				map[p.x][j] = new RoadRail(p.x, j);
 				j--;
 			}
@@ -190,13 +125,7 @@ public class MapGenerator
 			{
 				if (j >= MapHandler.map_size) {break;}
 				
-				//expand horizontally
-				for (int k = p.x - road_radius; k < p.x + road_radius; k++)
-				{
-					if (k < 0 || k >= MapHandler.map_size || map[k][j] instanceof RoadRail) 
-					{continue;}
-					map[k][j] = new Road(k, j);
-				}
+				expandHorizontally(p.x, j, map);
 				map[p.x][j] = new RoadRail(p.x, j);
 				j++;
 			}
@@ -208,13 +137,7 @@ public class MapGenerator
 			{
 				if (i >= MapHandler.map_size) {break;}
 				
-				//expand vertically
-				for (int k = p.y - road_radius; k < p.y + road_radius; k++)
-				{
-					if (k < 0 || k >= MapHandler.map_size || map[i][k] instanceof RoadRail) 
-					{continue;}
-					map[i][k] = new Road(i, k);
-				}
+				expandVertically(i, p.y, map);
 				map[i][p.y] = new RoadRail(i, p.y);
 				i++;
 			}
@@ -226,13 +149,7 @@ public class MapGenerator
 			{
 				if (i < 0) {break;}
 				
-				//expand vertically
-				for (int k = p.y - road_radius; k < p.y + road_radius; k++)
-				{
-					if (k < 0 || k >= MapHandler.map_size || map[i][k] instanceof RoadRail) 
-					{continue;}
-					map[i][k] = new Road(i, k);
-				}
+				expandVertically(i, p.y, map);
 				map[i][p.y] = new RoadRail(i, p.y);
 				i--;
 			}
@@ -242,11 +159,91 @@ public class MapGenerator
 		p.y = j;
 	}
 	
+	private static void expandHorizontally(int i, int j, MapItem[][] map)
+	{
+		for (int k = i - road_radius; k < i + road_radius; k++)
+		{
+			if (k < 0 || k >= MapHandler.map_size || map[k][j] instanceof RoadRail) 
+			{continue;}
+			map[k][j] = new Road(k, j);
+		}
+	}
+	
+	private static void expandVertically(int i, int j, MapItem[][] map)
+	{
+		for (int k = j - road_radius; k < j + road_radius; k++)
+		{
+			if (k < 0 || k >= MapHandler.map_size || map[i][k] instanceof RoadRail) 
+			{continue;}
+			map[i][k] = new Road(i, k);
+		}
+	}
+	
+	//CARS
+	private static void generateCars(MapItem[][] map) // does not actually "generate" - merely moves the existing ones to new positions
+	{	
+		for (Car car : cars)
+		{
+			while (true) // exited out of if a valid position has been found
+			{
+				//Find spawnpoint by finding a random position on the map, then walking from there until a road is hit
+				car.i = random.nextInt(MapHandler.map_size);
+				car.j = random.nextInt(MapHandler.map_size);
+				
+				int i_add = car.i < MapHandler.map_size / 2 ? 1 : -1;
+				int j_add = car.j < MapHandler.map_size / 2 ? 1 : -1;
+		
+				while (car.i > 1 && car.i < MapHandler.map_size - 1 && car.j > 1 && car.j < MapHandler.map_size - 1)
+				{
+						car.i += i_add;
+						car.j += j_add;
+						if (map[car.i][car.j] instanceof RoadRail) {break;}
+				}
+				
+				//ALIGN THE CARS STARTING DIRECTION WITH THE ROAD
+				if ((car.i + 1 < MapHandler.map_size && map[car.i + 1][car.j] instanceof RoadRail)
+						|| (car.i - 1 > 0 && map[car.i - 1][car.j] instanceof RoadRail)) // horizontal
+				{
+					if (car.i > MapHandler.map_size / 2) {car.changeDirection(Direction.WEST);}
+					else {car.changeDirection(Direction.EAST);}
+				}
+				
+				else if ((car.j + 1 < MapHandler.map_size && map[car.i][car.j + 1] instanceof RoadRail)
+						|| (car.j - 1 > 0 && map[car.i][car.j - 1] instanceof RoadRail)) // vertical
+				{
+					if (car.j > MapHandler.map_size / 2) {car.changeDirection(Direction.NORTH);}
+					else {car.changeDirection(Direction.SOUTH);}
+				}
+				
+				car.setStartingValues();
+				
+				// IS POSITION VALID, THEN MOVE ON TO NEXT CAR, OTHERWISE CONTINUE LOOPING
+				if (car.i > 10 && car.i < MapHandler.map_size - 10 && car.j > 10 && car.j < MapHandler.map_size - 10)
+				{break;}
+			}
+		}
+	}
+	
+	//IRS
+	private static void placeIRS(MapItem[][] map)
+	{
+		int x = top_left_x + MapHandler.tiles_on_screen_x / 2, y = top_left_y + MapHandler.tiles_on_screen_y / 2;
+		
+		while (map[x][y] instanceof Lake || map[x][y] instanceof Road)
+		{
+			if (random.nextBoolean()) {x++;}
+			else {y++;}
+		}
+		
+		irs.reset(x, y);;
+		map[irs.i][irs.j] = irs;
+	}
+	
 	//LAKES
 	// Place random origin points around the map, then place "stamp origins" around the lake origins
 	// decreasing in spawn probability the further apart they are. Those "stamp origins" are then
 	// overwritten by a 8x10 rectangle of lake tiles, a stamp. These stamps overlapping each other
-	// creates unique looking lake shapes.
+	// create unique looking lake shapes.
 	private static void generateLakes(MapItem[][] map)
 	{
 		// PLACE ORIGINS

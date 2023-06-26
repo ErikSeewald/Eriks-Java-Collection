@@ -109,8 +109,10 @@ public class MapHandler
 		{	
 			// Start at random direction, then loop over directions, if one is valid, go there
 			// -> random start index ensures that cars do not always turn in the same direction
+			// and do not always keep going forward
 			int dir_index = random.nextInt(4);
 			
+			// CASES: TURN RIGHT, TURN LEFT, DO NOTHING AND THEREBY GO FORWARD
 			for (int i = dir_index; i < dir_index + 4; i++)
 			{
 				cur_dir = dirs[i % 4];
@@ -122,9 +124,9 @@ public class MapHandler
 			
 			car.move();
 			
-			//RESPAWN
+			//RESPAWN IF CAR EXITS MAP
 			if (car.i <= 0 || car.i >= map_size - 1 || car.j <= 0 || car.j >= map_size - 1)
-			{car.i = car.start_i; car.j = car.start_j; car.changeDirection(car.start_direction);;}
+			{car.respawn();}
 			
 			//HIT TAXCOLLECTOR?
 			hitDetect(car);
@@ -300,4 +302,7 @@ public class MapHandler
 	public TaxCollector getTaxCollector() {return taxCollector;}
 	
 	public IRS getIRS() {return irs;}
+	
+	public void stop() 
+	{map = null; cars = null;}
 }

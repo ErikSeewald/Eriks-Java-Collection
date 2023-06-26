@@ -7,8 +7,9 @@ public class Car
 	private int size_tiles_x = 3, size_tiles_y = 2;
 	
 	int i, j;
-	int start_i, start_j;
 	private Direction direction;
+
+	int start_i, start_j;
 	Direction start_direction;
 	
 	Car(int i, int j, Direction direction)
@@ -51,4 +52,18 @@ public class Car
 	public int getSizeTilesY() {return size_tiles_y;}
 	
 	public Direction getDirection() {return direction;}
+	
+	public void respawn()
+	{
+		this.i = this.start_i; 
+		this.j = this.start_j; 
+		this.changeDirection(this.start_direction);
+	}
+	
+	public void setStartingValues()
+	{
+		this.start_i = this.i;
+		this.start_j = this.j;
+		this.start_direction = this.direction;
+	}
 }

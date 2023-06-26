@@ -48,6 +48,9 @@ public class TC_Panel extends JPanel
 		updateMapReferences();
 	}
 	
+	public void stop()
+	{mapHandler.stop(); mapHandler = null;}
+	
 	public void move(Direction direction)
 	{
 		mapHandler.moveTaxCollector(direction);
@@ -136,7 +139,7 @@ public class TC_Panel extends JPanel
 		//SCREEN COORDINATES
 		scroll_x = -(mapHandler.getTopLeftX() * tile_size);
 		scroll_y = -(mapHandler.getTopLeftY() * tile_size);
-		g2D.translate(scroll_x, scroll_y); // works like glTransform, i.e every following x coordinate will get scroll_x added to it
+		g2D.translate(scroll_x, scroll_y); // works like glTransform, i.e every following coordinate will get scroll added to it
 		
 		//MAP ITEMS (Except for IRS)
 		g2D.setStroke(new BasicStroke(4));
@@ -283,8 +286,8 @@ public class TC_Panel extends JPanel
 		}
 		
 		//OFFSCREEN
-		// put a triangle partly on the way of a vector towards the irs, one of the points on it, two of them on it's
-		// normal => triangle pointing towards irs
+		// put a triangle partly on the way of a vector towards the IRS, one of the points on it, two of them on it's
+		// normal => triangle pointing towards IRS
 		int x = taxCollector.i * tile_size, y = taxCollector.j * tile_size;
 		float[] vec = EJC_Util.normalize((irs.i * tile_size) - x, (irs.j * tile_size) - y);
 		float[] normal = {-vec[1], vec[0]};
