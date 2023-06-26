@@ -122,9 +122,6 @@ public class MapHandler
 			
 			//HIT TAXCOLLECTOR?
 			hitDetect(car);
-			
-			//OFFROAD INTO LAKE?
-			if (map[car.i][car.j] instanceof Lake) {car.respawn();}
 		}
 		
 		if (debug) {return;}
