@@ -182,9 +182,11 @@ public class TC_Panel extends JPanel
 		else if (taxCollector.collectAnimation()) {g2D.setPaint(collect_col);}
 		g2D.drawString("Collected: " +  EJC_Util.round(taxCollector.getCollected(), 2), (int) (PANEL_WIDTH * 0.6),PANEL_HEIGHT >> 4);
 		
-		g2D.setPaint(ui_col);
+		if (taxCollector.emptyAnimation()) {g2D.setPaint(collect_col);}
+		else {g2D.setPaint(ui_col);}
 		g2D.drawString("IRS Funds: " + EJC_Util.round(irs.getFunds(), 2), PANEL_WIDTH - PANEL_WIDTH / 5, PANEL_HEIGHT >> 4);
 		
+		g2D.setPaint(ui_col);
 		g2D.drawString("Seed: " + mapHandler.getSeed(), PANEL_WIDTH / 20, PANEL_HEIGHT >> 4);
 	}
 	
