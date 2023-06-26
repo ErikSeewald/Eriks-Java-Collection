@@ -7,9 +7,6 @@ public class Road extends MapItem
 		super(i, j);
 	}
 
-	@Override
-	public int getTileSize() {return 1;}
-
 	// SUBCLASS USED AS THE GUIDING RAIL FOR CARS -> ALWAYS AS THE CENTER OF THE ROAD
 	public static class RoadRail extends Road
 	{

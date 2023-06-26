@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import Main.EJC_Util;
 import Main.EJC_Util.Direction;
+import taxCollector.MapHandler.ResetActions;
 import taxCollector.mapItem.House;
 import taxCollector.mapItem.IRS;
 import taxCollector.mapItem.Lake;
@@ -70,9 +71,9 @@ public class TC_Panel extends JPanel
 		repaint();
 	}
 	
-	public void restart()
+	public void restart(boolean newSeed)
 	{
-		mapHandler.reset();
+		mapHandler.reset(newSeed);
 		this.taxCollector = mapHandler.getTaxCollector();
 		this.irs = mapHandler.getIRS();
 		repaint();
@@ -88,7 +89,7 @@ public class TC_Panel extends JPanel
 	public void createSeed()
 	{
 		mapHandler.setSeed(EJC_Util.createSeed());
-		restart();
+		restart(ResetActions.keepSeed);
 	}
 	
 	//---------------------------------------PAINT---------------------------------------
@@ -120,6 +121,10 @@ public class TC_Panel extends JPanel
 		if (irs.isBankrupt())
 		{
 			g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2D.setFont(new Font("", Font.BOLD, 20));
+			g2D.setPaint(ui_col);
+			g2D.drawString("Seed: " + mapHandler.getSeed(), PANEL_WIDTH / 20, PANEL_HEIGHT >> 4);
+			
 			g2D.setPaint(bankrupt_col);
 			g2D.setFont(new Font("", Font.BOLD, 150));
 			g2D.drawString("BANKRUPT", (int) (PANEL_WIDTH * 0.11), (int) (PANEL_HEIGHT * 0.6));
@@ -170,6 +175,8 @@ public class TC_Panel extends JPanel
 		
 		g2D.setPaint(ui_col);
 		g2D.drawString("IRS Funds: " + EJC_Util.round(irs.getFunds(), 2), PANEL_WIDTH - PANEL_WIDTH / 5, PANEL_HEIGHT >> 4);
+		
+		g2D.drawString("Seed: " + mapHandler.getSeed(), PANEL_WIDTH / 20, PANEL_HEIGHT >> 4);
 	}
 	
 	private void drawGrid(Graphics2D g2D)

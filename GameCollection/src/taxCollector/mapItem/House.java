@@ -41,7 +41,4 @@ public class House extends MapItem
 		if (time_until_next_tax > 0)
 		{time_until_next_tax--;}
 	}
-
-	@Override
-	public int getTileSize() {return size_tiles;}
 }

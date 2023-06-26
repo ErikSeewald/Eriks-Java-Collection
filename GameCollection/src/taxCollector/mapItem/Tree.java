@@ -20,7 +20,4 @@ public class Tree extends MapItem
 		super(i, j);
 		color_state = ColorStates.values()[random.nextInt(3)];
 	}
-	
-	@Override
-	public int getTileSize() {return 0;}
 }
