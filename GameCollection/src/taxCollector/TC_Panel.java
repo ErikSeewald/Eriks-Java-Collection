@@ -62,6 +62,12 @@ public class TC_Panel extends JPanel
 		repaint();
 	}
 	
+	public void switchDebugBool()
+	{
+		mapHandler.switchDebugBool();
+		repaint();
+	}
+	
 	public void advanceFrame()
 	{
 		mapHandler.update();

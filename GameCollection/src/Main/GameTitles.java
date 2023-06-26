@@ -257,8 +257,8 @@ public enum GameTitles {
 					"Run around the map with w,a,s,d and collect tax from homes while evading obstacles.",
 					"In the top right you can see the money you are currently holding and the funds that",
 					"the IRS has available. Do not let the IRS run out of funds! Return the collected tax",
-					"to the IRS Building. Press e to collect/return. Press r to restart.",
-					"Any time you are hit by a car, you lose a lot of money!",
+					"to the IRS Building. Any time you are hit by a car, you lose a lot of money!",
+					"Press e to collect/return, r to restart, g to show the grid and t to pause the timer.",
 			}
 	);
 

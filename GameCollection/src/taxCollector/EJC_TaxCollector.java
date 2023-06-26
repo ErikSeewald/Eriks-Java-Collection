@@ -57,7 +57,8 @@ public class EJC_TaxCollector extends JFrame implements EJC_Interface, ActionLis
 				if (!panel.updateValid()) {return;}
 				else if (c == 'g') {panel.switchGridBool();}
 				else if (c == 'e') {panel.interaction();}
-			}
+				else if (c == 't') {panel.switchDebugBool();}
+ 			}
 			@Override
 			public void keyReleased(KeyEvent e)
 			{pressedKeys.remove(e.getKeyCode());}

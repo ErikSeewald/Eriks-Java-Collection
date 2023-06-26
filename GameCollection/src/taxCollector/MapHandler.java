@@ -32,6 +32,7 @@ public class MapHandler
 	private TC_Panel panel;
 	private Random random;
 	private long seed;
+	private boolean debug;
 	
 	MapHandler(TC_Panel panel)
 	{
@@ -93,15 +94,6 @@ public class MapHandler
 	{	
 		taxCollector.update();
 		
-		//MAP ITEMS
-		for (int i = 0; i < map_size; i++)
-		{
-			for (int j = 0; j < map_size; j++)
-			{
-				if (map[i][j] != null) {map[i][j].update();}
-			}
-		}
-		
 		//CARS
 		Direction cur_dir;
 		Direction[] dirs = Direction.values();
@@ -133,6 +125,17 @@ public class MapHandler
 			
 			//OFFROAD INTO LAKE?
 			if (map[car.i][car.j] instanceof Lake) {car.respawn();}
+		}
+		
+		if (debug) {return;}
+		
+		//MAP ITEMS
+		for (int i = 0; i < map_size; i++)
+		{
+			for (int j = 0; j < map_size; j++)
+			{
+				if (map[i][j] != null) {map[i][j].update();}
+			}
 		}
 	}
 	
@@ -308,4 +311,6 @@ public class MapHandler
 	
 	public void stop() 
 	{map = null; cars = null;}
+	
+	public void switchDebugBool() {debug = !debug;}
 }
