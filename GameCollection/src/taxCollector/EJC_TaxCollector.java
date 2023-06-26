@@ -113,7 +113,7 @@ public class EJC_TaxCollector extends JFrame implements EJC_Interface, ActionLis
 	@Override
 	public void stop() 
 	{
-		timer.stop(); panel = null;
+		timer.stop(); panel.stop(); panel = null;
 	}
 
 	@Override
