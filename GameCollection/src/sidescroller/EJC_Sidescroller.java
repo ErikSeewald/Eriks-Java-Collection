@@ -1,16 +1,14 @@
 package sidescroller;
-import java.awt.Color;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.Timer;
+import Main.EJC_GUI.EJC_MenuBar;
 import Main.EJC_Interface;
 import Main.WindowEventHandler;
 
@@ -63,21 +61,15 @@ public class EJC_Sidescroller extends JFrame implements ActionListener, EJC_Inte
 		timer = new Timer(14, this);
 		timer.start();
 		
-		//MENU BAR
-		JMenuBar menuBar = new JMenuBar();
-		menuBar.setBackground(new Color (100,100,120));
-		menuBar.setBorder(BorderFactory.createLineBorder(new Color (115,115,135), 2));
-				
-		JMenu fileMenu = new JMenu("Seed");	
-		fileMenu.setForeground(new Color (230,230,250));
-		fileMenu.setBorder(BorderFactory.createLineBorder(new Color (100,100,120)));
-				
+		//MENU BAR 
 		seedItem = new JMenuItem("Set seed");
 		seedItem.addActionListener(this);
-				
-		fileMenu.add(seedItem);
-		menuBar.add(fileMenu);
-		this.setJMenuBar(menuBar);
+		
+		EJC_MenuBar menuBar = new EJC_MenuBar(this);
+		menuBar.addEJCMenu("Seed", new JMenuItem[] {seedItem});
+		menuBar.setTimersToControl(new Timer[] {timer});
+		menuBar.setKeyListToControl(pressedKeys);
+
 		this.setVisible(true);
 	}
 	
@@ -92,7 +84,11 @@ public class EJC_Sidescroller extends JFrame implements ActionListener, EJC_Inte
 	public void actionPerformed(ActionEvent e) 
 	{
 		if(e.getSource() == seedItem)
-		{panel.createSeed();}
+		{
+			timer.stop();
+			panel.createSeed();
+			timer.start();
+		}
 		
 		if (e.getSource() == timer)
 		{keyToMovement();}	

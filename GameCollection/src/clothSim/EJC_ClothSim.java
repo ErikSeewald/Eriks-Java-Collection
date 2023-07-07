@@ -1,15 +1,12 @@
 package clothSim;
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.Timer;
+import Main.EJC_GUI.EJC_MenuBar;
 import Main.EJC_Interface;
 import Main.WindowEventHandler;
 
@@ -56,26 +53,17 @@ public class EJC_ClothSim extends JFrame implements EJC_Interface, ActionListene
 		
 		timer = new Timer(30, this);
 		
-		JMenu fileMenu= new JMenu("Files");
-		fileMenu.setForeground(new Color (230,230,250));
-		fileMenu.setBorder(BorderFactory.createLineBorder(new Color (100,100,120)));
-		
+		//MENU BAR
 		fileLoad  = new JMenuItem("Load");
+		fileLoad.addActionListener(this);
 		fileSave  = new JMenuItem("Save");
-		setItemBasics(fileLoad, fileMenu);
-		setItemBasics(fileSave, fileMenu);
+		fileSave.addActionListener(this);
 		
-		JMenuBar menuBar = new JMenuBar();
-		menuBar.add(fileMenu);
-		menuBar.setBackground(new Color (100,100,120));
-		menuBar.setBorder(BorderFactory.createLineBorder(new Color (115,115,135), 2));
-		this.setJMenuBar(menuBar);
+		EJC_MenuBar menuBar = new EJC_MenuBar(this);
+		menuBar.addEJCMenu("Files", new JMenuItem[] {fileLoad, fileSave});
 		
 		this.setVisible(true);
 	}
-	
-	private void setItemBasics(JMenuItem item, JMenu menu)
-	{item.addActionListener(this); menu.add(item);}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) 
