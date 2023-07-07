@@ -5,12 +5,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.Timer;
+
+import Main.EJC_GUI.EJC_MenuBar;
 import Main.EJC_Interface;
 import Main.WindowEventHandler;
 
@@ -63,33 +66,22 @@ public class EJC_PixelCollision extends JFrame implements EJC_Interface, ActionL
 		keyHandler = new KeyHandler(pressedKeys, panel);
 		
 		//MENU BAR
-		JMenuBar menuBar = new JMenuBar();
-		JMenu objectMenu= new JMenu("Object");
-		JMenu pixelMenu = new JMenu ("Pixel Size");
+		EJC_MenuBar menuBar = new EJC_MenuBar(this);
+		menuBar.addEJCMenu("Object", new JMenuItem[] {objectNew, objectSave});
+		menuBar.addEJCMenu("Pixel size", pixel_items);
+		menuBar.setTimersToControl(new Timer[] {timer});
+		menuBar.setKeyListToControl(pressedKeys);
 
 		for (JMenuItem item : pixel_items)
-		{setItemBasics(item,pixelMenu);}
+		{item.addActionListener(this);}
 		
-		setItemBasics(objectNew, objectMenu);
-		setItemBasics(objectSave, objectMenu);
-		
-		setMenuBasics(objectMenu, menuBar);
-		setMenuBasics(pixelMenu, menuBar);
-			
-		menuBar.setBackground(new Color (100,100,120));
-		menuBar.setBorder(BorderFactory.createLineBorder(new Color (115,115,135), 2));
-		this.setJMenuBar(menuBar);
+		objectNew.addActionListener(this);
+		objectSave.addActionListener(this);
 		
 		this.add(panel);
 		this.pack();	
 		this.setVisible(true);
 		timer.start();
-	}
-	
-	public void setItemBasics(JMenuItem item, JMenu menu)
-	{
-		item.addActionListener(this);
-		menu.add(item);
 	}
 	
 	public void setMenuBasics(JMenu menu, JMenuBar menuBar)
