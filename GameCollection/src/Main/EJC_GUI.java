@@ -2,7 +2,6 @@ package Main;
 
 import java.awt.Color;
 import java.util.HashSet;
-
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JMenu;

@@ -24,27 +24,27 @@ public class DungeonHandler
 	private HashMap<String, Room> rooms;
 	private Room first_room;
 	
-	private int room_width, room_height;
-	private int top_left_x, top_left_y;
-	private int tile_field_x, tile_field_y, tile_size;
+	private int roomWidth, roomHeight;
+	private int topLeftX, topLeftY;
+	private int tileFieldX, tileFieldY, tileSize;
 	
-	private int[][] door_coords;
+	private int[][] doorCoords;
 
 	private ArrayList<Enemy> enemies; // current enemies on screen
 	// As soon as we leave a room, only the information about the enemies spawning tiles is saved, not the enemy objects
-	private ArrayList<Enemy> enemy_add_queue;
+	private ArrayList<Enemy> enemyAddQueue;
 	
-	private ArrayList<Bomb> dropped_bombs;
+	private ArrayList<Bomb> droppedBombs;
 	
 	DungeonHandler(Inf_Panel panel, int PANEL_WIDTH, int PANEL_HEIGHT)
 	{
 		this.panel = panel;
 		
 		enemies = new ArrayList<>();
-		enemy_add_queue = new ArrayList<>();
-		dropped_bombs = new ArrayList<>();
+		enemyAddQueue = new ArrayList<>();
+		droppedBombs = new ArrayList<>();
 
-		door_coords = new int[4][2];
+		doorCoords = new int[4][2];
 		setRoomSize(PANEL_WIDTH,PANEL_HEIGHT);
 		
 		random = new Random();
@@ -60,28 +60,28 @@ public class DungeonHandler
 	
 	public void setRoomSize(int width, int height)
 	{
-		room_width = (int) (width * 0.918);
-		room_height = (int) (height * 0.81);
-		top_left_x = (int) (width * 0.043);
-		top_left_y = (int) (height * 0.125);
+		roomWidth = (int) (width * 0.918);
+		roomHeight = (int) (height * 0.81);
+		topLeftX = (int) (width * 0.043);
+		topLeftY = (int) (height * 0.125);
 		
 		int door_offset = panel.getTileSize() / 2;
 		
-		door_coords[0][0] = width / 2;
-		door_coords[0][1] = top_left_y - door_offset;
+		doorCoords[0][0] = width / 2;
+		doorCoords[0][1] = topLeftY - door_offset;
 		
-		door_coords[1][0] = top_left_x + room_width - door_offset;
-		door_coords[1][1] = height / 2;
+		doorCoords[1][0] = topLeftX + roomWidth - door_offset;
+		doorCoords[1][1] = height / 2;
 		
-		door_coords[2][0] = width / 2;
-		door_coords[2][1] = top_left_y + room_height  - door_offset;
+		doorCoords[2][0] = width / 2;
+		doorCoords[2][1] = topLeftY + roomHeight  - door_offset;
 		
-		door_coords[3][0] = top_left_x  - door_offset;
-		door_coords[3][1] = height / 2;
+		doorCoords[3][0] = topLeftX  - door_offset;
+		doorCoords[3][1] = height / 2;
 		
-		tile_field_x = (int) (top_left_x + room_width / 12.5);
-		tile_field_y = (int) (top_left_y + room_height / 7.3);
-		tile_size = (int) (room_width / 23.5);
+		tileFieldX = (int) (topLeftX + roomWidth / 12.5);
+		tileFieldY = (int) (topLeftY + roomHeight / 7.3);
+		tileSize = (int) (roomWidth / 23.5);
 	}
 	
 	/**
@@ -92,7 +92,7 @@ public class DungeonHandler
 	 * 		<li>{@link [d][1] door y}</li> </ul>
 	 */
 	public int[][] getDoors()
-	{return door_coords.clone();}
+	{return doorCoords.clone();}
 	
 	/**
 	 * @return
@@ -102,7 +102,7 @@ public class DungeonHandler
 	 * 		<li>{@link [3] room_height}</li> </ul>
 	 */
 	public int[] getRoomRect()
-	{return new int[] {top_left_x, top_left_y, room_width, room_height};}
+	{return new int[] {topLeftX, topLeftY, roomWidth, roomHeight};}
 	
 	/**
 	 * Returns int[3] array of values indicating where the tile array starts
@@ -113,11 +113,11 @@ public class DungeonHandler
 	 * 		<li>{@link [2] tile_size}</li> </ul>
 	 */
 	public int[] getTileValues()
-	{return new int[] {tile_field_x, tile_field_y, tile_size};}
+	{return new int[] {tileFieldX, tileFieldY, tileSize};}
 	
 	public boolean playerInDoor(Direction direction)
 	{
-		int[] door = door_coords[direction.ordinal()];
+		int[] door = doorCoords[direction.ordinal()];
 		int offset = player.getSize() * 2;
 		return player.x > door[0] - offset && player.x < door[0] + offset
 				&& player.y > door[1] - offset && player.y < door[1] + offset;
@@ -145,7 +145,7 @@ public class DungeonHandler
 	private boolean playerAtChest(Chest chest)
 	{
 		if (chest == null) {return false;}
-		int x = chest.i * tile_size + tile_field_x, y = chest.j * tile_size + tile_field_y;
+		int x = chest.i * tileSize + tileFieldX, y = chest.j * tileSize + tileFieldY;
 		int offset = player.getSize() * 2;
 		
 		return player.x > x - offset && player.x < x + offset
@@ -164,7 +164,7 @@ public class DungeonHandler
 			break;
 			case Chest.bomb: player.obtainBomb(random.nextInt(4) + 1); 
 			break;
-			case Chest.enemy: enemies.add(new Reddorb(chest.i * tile_size + tile_field_x, chest.j * tile_size  + tile_field_y, player.getSize(), 0, 0));
+			case Chest.enemy: enemies.add(new Reddorb(chest.i * tileSize + tileFieldX, chest.j * tileSize  + tileFieldY, player.getSize(), 0, 0));
 			break;
 			case Chest.health: player.heal(random.nextInt(Player.starting_hp) + 1);
 		}
@@ -223,7 +223,7 @@ public class DungeonHandler
 		next_room.setDoor(exit_direction, Door.open);
 		
 		player.setRoom(next_room);
-		int[] exit_door = door_coords[exit_direction.ordinal()];
+		int[] exit_door = doorCoords[exit_direction.ordinal()];
 		player.x = exit_door[0];
 		player.y = exit_door[1];
 		
@@ -235,7 +235,7 @@ public class DungeonHandler
 			case WEST: player.x -= player.getSize() / 2; break;
 		}
 		
-		dropped_bombs.removeAll(dropped_bombs);
+		droppedBombs.removeAll(droppedBombs);
 		loadEnemies();
 	}
 	
@@ -250,10 +250,10 @@ public class DungeonHandler
 			for (int j = 0; j < Room.tiles_y; j++)
 			{
 				if (room.tiles[i][j] == Room.reddorb_tile) 
-				{enemies.add(new Reddorb(i * tile_size + tile_field_x, j * tile_size  + tile_field_y, player.getSize(), i, j));}
+				{enemies.add(new Reddorb(i * tileSize + tileFieldX, j * tileSize  + tileFieldY, player.getSize(), i, j));}
 				
 				else if (room.tiles[i][j] == Room.yellorb_tile) 
-				{enemies.add(new Yellorb(i * tile_size + tile_field_x, j * tile_size  + tile_field_y, player.getSize(), i, j));}
+				{enemies.add(new Yellorb(i * tileSize + tileFieldX, j * tileSize  + tileFieldY, player.getSize(), i, j));}
 			}
 		}
 	}
@@ -264,7 +264,7 @@ public class DungeonHandler
 		if (bomb != null)
 		{
 			bomb.startTimer();
-			dropped_bombs.add(bomb);
+			droppedBombs.add(bomb);
 		}
 	}
 	
@@ -292,25 +292,25 @@ public class DungeonHandler
 			if (enemy.getType() != Enemy.type_yellorb) {continue;}
 			Projectile projectile = ((Yellorb) enemy).getProjectile();
 			if (projectile != null)
-			{enemy_add_queue.add(projectile);}
+			{enemyAddQueue.add(projectile);}
 		}
 		
 		//ADD ENEMIES WAITING IN QUEUE
-		if (!enemy_add_queue.isEmpty())
+		if (!enemyAddQueue.isEmpty())
 		{
-			enemies.addAll(enemy_add_queue);
-			enemy_add_queue.removeAll(enemy_add_queue);
+			enemies.addAll(enemyAddQueue);
+			enemyAddQueue.removeAll(enemyAddQueue);
 		}
 		
 		//REMOVE DEAD ENEMIES
 		enemies.removeIf((e) -> !e.isAlive);
 		
 		// IF ALL ENEMIES WERE KILLED
-		if (!room.enemies_cleared && enemies.size() == 0) 
+		if (!room.enemiesCleared && enemies.size() == 0) 
 		{
 			// random chance to spawn chest after player defeats all enemies
 			room.generateChest(random, Chest.chance_1_in_2);
-			room.enemies_cleared = true;
+			room.enemiesCleared = true;
 		}
 	}
 	
@@ -338,7 +338,7 @@ public class DungeonHandler
 	
 	private void updateBombs()
 	{
-		for (Bomb bomb : dropped_bombs)
+		for (Bomb bomb : droppedBombs)
 		{
 			if (bomb.isExploding) 
 			{
@@ -353,13 +353,13 @@ public class DungeonHandler
 			else {bomb.countDown();}
 		}
 		
-		dropped_bombs.removeIf((b) -> b.hasExplosionFinished());
+		droppedBombs.removeIf((b) -> b.hasExplosionFinished());
 	}
 	
 	private boolean isInsideBomb(Bomb bomb, int x, int y, int size)
 	{
-		return x + size > bomb.x - bomb.dmg_radius && x < bomb.x + bomb.dmg_radius
-				&& y + size > bomb.y - bomb.dmg_radius && y < bomb.y + bomb.dmg_radius;
+		return x + size > bomb.x - bomb.dmgRadius && x < bomb.x + bomb.dmgRadius
+				&& y + size > bomb.y - bomb.dmgRadius && y < bomb.y + bomb.dmgRadius;
 	}
 		
 	public int[] getDamageBox()
@@ -394,7 +394,7 @@ public class DungeonHandler
 	
 	public ArrayList<Enemy> getEnemies() {return enemies;}
 	
-	public ArrayList<Bomb> getDroppedBombs() {return dropped_bombs;}
+	public ArrayList<Bomb> getDroppedBombs() {return droppedBombs;}
 	
 	private static String makeHashKey(int[] coordinates)
 	{

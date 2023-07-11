@@ -7,7 +7,7 @@ import Main.EJC_Util;
 public class Projectile extends Enemy
 {
     private float[] vec;
-    public byte parent_type;
+    public byte parentType;
     private int lifetime = Projectile.life_time;
     
     public static final int attack_dmg = 2, life_time = 600;
@@ -29,7 +29,7 @@ public class Projectile extends Enemy
 		this.setSize(size);
 		this.vec = EJC_Util.normalize((float) vec[0], (float) vec[1]);
 		
-		this.parent_type = parent_type;
+		this.parentType = parent_type;
 		
 		this.index0 = -1;
 		this.index1 = -1;

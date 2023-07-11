@@ -10,20 +10,20 @@ public class GameHandler implements ActionListener
 {
 	//TIMERS
 	private int score;
-	private Timer score_timer;
-	private Timer movement_timer;
-	private int time_since_explosion;
+	private Timer scoreTimer;
+	private Timer movementTimer;
+	private int timeSinceExplosion;
 	
 	// SPAWNER COORDINATES
 	private int spawner;
 	
 	// PLATES
-	private int plate_black_right;
-	private int plate_black_left;
-	private int plate_red_right;
-	private int plate_red_left;
-	private int plate_y;
-	private int plate_height;
+	private int plateBlackRight;
+	private int plateBlackLeft;
+	private int plateRedRight;
+	private int plateRedLeft;
+	private int plateY;
+	private int plateHeight;
 	
 	// OTHERS
 	private Random random;
@@ -36,22 +36,22 @@ public class GameHandler implements ActionListener
 		bombs = new ArrayList<>();
 		random = new Random();
 		
-		score_timer = new Timer(1000, this);
-		movement_timer = new Timer(16, this);
+		scoreTimer = new Timer(1000, this);
+		movementTimer = new Timer(16, this);
 	}
 	
 	public void start()
 	{
-		time_since_explosion = 0;
+		timeSinceExplosion = 0;
 		score = 0;
 		bombs.clear();
 		System.gc();
-		score_timer.start();
-		movement_timer.start();
+		scoreTimer.start();
+		movementTimer.start();
 	}
 	
 	public void stop()
-	{score_timer.stop(); score_timer = null; movement_timer.stop(); movement_timer = null; bombs.clear(); bombs = null;}
+	{scoreTimer.stop(); scoreTimer = null; movementTimer.stop(); movementTimer = null; bombs.clear(); bombs = null;}
 	
 	public int getScore() {return score;}
 	
@@ -60,12 +60,12 @@ public class GameHandler implements ActionListener
 	
 	public void setPlateCoordinates(int red_x, int black_x, int y, int width, int height)
 	{
-		plate_red_left = red_x;
-		plate_black_left = black_x;
-		plate_y = y;
-		plate_height = height;
-		plate_red_right = red_x + width;
-		plate_black_right = black_x + width;
+		plateRedLeft = red_x;
+		plateBlackLeft = black_x;
+		plateY = y;
+		plateHeight = height;
+		plateRedRight = red_x + width;
+		plateBlackRight = black_x + width;
 	}
 	
 	private void addBomb()
@@ -90,11 +90,11 @@ public class GameHandler implements ActionListener
 		
 		for (Bomb bomb : bombs)
 		{
-			bomb.sort_state = checkIfSorted(bomb);
-			if (bomb.sort_state == Bomb.sorted)
+			bomb.sortState = checkIfSorted(bomb);
+			if (bomb.sortState == Bomb.sorted)
 			{score++; continue;}
 			
-			if (bomb.sort_state == Bomb.sorted_incorrectly)
+			if (bomb.sortState == Bomb.sorted_incorrectly)
 			{explosionEvent(bomb); return;}
 			
 			bomb.timer--;
@@ -117,25 +117,25 @@ public class GameHandler implements ActionListener
 		if (bomb == null) {return Bomb.not_sorted;}
 		
 		// CHECK FOR Y
-		if (!(bomb.y > plate_y && bomb.y < plate_y + plate_height) || bomb.isHeld)
+		if (!(bomb.y > plateY && bomb.y < plateY + plateHeight) || bomb.isHeld)
 		{return Bomb.not_sorted;}
 		
 		// CHECK FOR X
 		if (bomb.type == Bomb.RED)
 		{
-			if (bomb.x > plate_red_left && bomb.x < plate_red_right) 
+			if (bomb.x > plateRedLeft && bomb.x < plateRedRight) 
 			{return Bomb.sorted;}
 			
-			else if (bomb.x > plate_black_left && bomb.x < plate_black_right)
+			else if (bomb.x > plateBlackLeft && bomb.x < plateBlackRight)
 			{return Bomb.sorted_incorrectly;}
 		}
 		
 		else
 		{
-			if (bomb.x > plate_black_left && bomb.x < plate_black_right) 
+			if (bomb.x > plateBlackLeft && bomb.x < plateBlackRight) 
 			{return Bomb.sorted;}
 			
-			else if (bomb.x > plate_red_left && bomb.x < plate_red_right)
+			else if (bomb.x > plateRedLeft && bomb.x < plateRedRight)
 			{return Bomb.sorted_incorrectly;}
 		}
 		
@@ -144,7 +144,7 @@ public class GameHandler implements ActionListener
 	
 	public void explosionEvent(Bomb bomb)
 	{
-		movement_timer.stop();
+		movementTimer.stop();
 		
 		bombs.removeIf(b -> b != bomb); // remove all bombs except for the exploding one
 		score = 0;
@@ -154,22 +154,22 @@ public class GameHandler implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		if (e.getSource() == movement_timer)
+		if (e.getSource() == movementTimer)
 		{
 			bombs.forEach(bomb -> bomb.move(random));
 			panel.repaint();
 		}
 		
-		else if (e.getSource() == score_timer)
+		else if (e.getSource() == scoreTimer)
 		{
 			addBomb();
 			bombTimerCheck();
 			
 			// restart after explosion event
-			if (!movement_timer.isRunning())
+			if (!movementTimer.isRunning())
 			{
-				time_since_explosion++;
-				if (time_since_explosion > 2)
+				timeSinceExplosion++;
+				if (timeSinceExplosion > 2)
 				{this.start();}
 			}
 		}

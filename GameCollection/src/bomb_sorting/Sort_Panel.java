@@ -16,11 +16,11 @@ public class Sort_Panel extends JPanel
 	private int PANEL_WIDTH = (int) (PANEL_HEIGHT * 1.5);
 	
 	// PLATES
-	private int plate_width;
-	private int plate_height;
-	private int plate_red_x;
-	private int plate_black_x;
-	private int plate_y;
+	private int plateWidth;
+	private int plateHeight;
+	private int plateRedX;
+	private int plateBlackX;
+	private int plateY;
 
 	// HANDLERS
 	private GameHandler gameHandler;
@@ -68,14 +68,14 @@ public class Sort_Panel extends JPanel
 	
 	private void init_sizes()
 	{
-		plate_width = (int) (PANEL_WIDTH / 3.5);
-		plate_height = PANEL_HEIGHT / 2;
-		plate_red_x = PANEL_HEIGHT / 40;
-		plate_black_x = PANEL_WIDTH - plate_width - plate_red_x;
-		plate_y = (int) (PANEL_HEIGHT / 2.6);
+		plateWidth = (int) (PANEL_WIDTH / 3.5);
+		plateHeight = PANEL_HEIGHT / 2;
+		plateRedX = PANEL_HEIGHT / 40;
+		plateBlackX = PANEL_WIDTH - plateWidth - plateRedX;
+		plateY = (int) (PANEL_HEIGHT / 2.6);
 		Bomb.size = PANEL_HEIGHT / 16;
 
-		gameHandler.setPlateCoordinates(plate_red_x, plate_black_x, plate_y, plate_width, plate_height);
+		gameHandler.setPlateCoordinates(plateRedX, plateBlackX, plateY, plateWidth, plateHeight);
 		gameHandler.setSpawnerCoordinates(PANEL_HEIGHT / 6);
 	}
 	
@@ -101,16 +101,16 @@ public class Sort_Panel extends JPanel
 				
 		//PLATES
 		g2D.setPaint(left_plate_col);
-		g2D.fillRect(plate_red_x, plate_y, plate_width, plate_height);
+		g2D.fillRect(plateRedX, plateY, plateWidth, plateHeight);
 		
 		g2D.setPaint(right_plate_col);
-		g2D.fillRect(plate_black_x, plate_y, plate_width, plate_height);
+		g2D.fillRect(plateBlackX, plateY, plateWidth, plateHeight);
 		
 		//PLATE BORDERS
 		g2D.setStroke(new BasicStroke(PANEL_HEIGHT / 60));
 		g2D.setPaint(border_col);
-		g2D.drawRect(plate_red_x, plate_y, plate_width, plate_height);
-		g2D.drawRect(plate_black_x, plate_y, plate_width, plate_height);
+		g2D.drawRect(plateRedX, plateY, plateWidth, plateHeight);
+		g2D.drawRect(plateBlackX, plateY, plateWidth, plateHeight);
 		
 		//BOMBS
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -140,9 +140,9 @@ public class Sort_Panel extends JPanel
 		g2D.fillRect(x + Bomb.size / 4, y - Bomb.size / 10, Bomb.size / 2, Bomb.size / 5);
 		
 		//TIMER
-		if (bomb.sort_state == Bomb.sorted) {return;}
+		if (bomb.sortState == Bomb.sorted) {return;}
 		
-		if (bomb.sort_state == Bomb.sorted_incorrectly || bomb.timer < 1)
+		if (bomb.sortState == Bomb.sorted_incorrectly || bomb.timer < 1)
 		{g2D.drawString("X", x + (int) (Bomb.size / 2.8), y + (int) (Bomb.size * 0.7));	}
 		else 
 		{g2D.drawString(""+bomb.timer, x + (int) (Bomb.size / 2.8), y + (int) (Bomb.size * 0.7));}	

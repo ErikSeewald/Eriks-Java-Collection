@@ -13,7 +13,7 @@ public class Bomb
 	public static int size = 20; //changed in Sort_Panel.initSizes
 	
 	public int timer = 6;
-	public byte sort_state = Bomb.not_sorted;
+	public byte sortState = Bomb.not_sorted;
 	public boolean isHeld = false;
 	
 	public int x, y;
@@ -37,7 +37,7 @@ public class Bomb
 	{
 		if (this.isHeld) {return;}
 		
-		int speed = this.sort_state == Bomb.sorted ? 2 : 5;
+		int speed = this.sortState == Bomb.sorted ? 2 : 5;
 		
 		switch (random.nextInt(5))
 		{

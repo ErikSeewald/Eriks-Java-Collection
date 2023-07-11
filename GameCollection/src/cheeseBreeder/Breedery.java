@@ -98,22 +98,22 @@ public class Breedery
 	// HOLES
 	private void breedHoleNumbers(Cheese c1, Cheese c2, CheeseChild child)
 	{
-		int hole_count_min = mixValueRandomly(c1.getHoleCountMin(), c2.getHoleCountMin());
-		int hole_count_max = mixValueRandomly(c1.getHoleCountMax(), c2.getHoleCountMax());
-		if (hole_count_max <= hole_count_min) {hole_count_max = hole_count_min + 1;}
+		int holeCountMin = mixValueRandomly(c1.getHoleCountMin(), c2.getHoleCountMin());
+		int holeCountMax = mixValueRandomly(c1.getHoleCountMax(), c2.getHoleCountMax());
+		if (holeCountMax <= holeCountMin) {holeCountMax = holeCountMin + 1;}
 		
-		int hole_size_min = mixValueRandomly(c1.getHoleSizeMin(), c2.getHoleSizeMin());
-		int hole_size_max = mixValueRandomly(c1.getHoleSizeMax(), c2.getHoleSizeMax());
-		if (hole_size_max <= hole_size_min) {hole_size_max = hole_size_min + 1;}
+		int holeSizeMin = mixValueRandomly(c1.getHoleSizeMin(), c2.getHoleSizeMin());
+		int holeSizeMax = mixValueRandomly(c1.getHoleSizeMax(), c2.getHoleSizeMax());
+		if (holeSizeMax <= holeSizeMin) {holeSizeMax = holeSizeMin + 1;}
 		
-		child.setHoleNumbers(hole_count_min, hole_count_max, hole_size_min, hole_size_max);
+		child.setHoleNumbers(holeCountMin, holeCountMax, holeSizeMin, holeSizeMax);
 	}
 	
 	private int mixValueRandomly(double a, double b)
 	{
 		double factor = random.nextDouble(1.1);
 		if (factor < 0.4) {factor = 0.4;}
-		double second_factor = factor <= 1 ? (1 - factor) : 0;
-		return (int) ((a * factor + b * second_factor));
+		double secondFactor = factor <= 1 ? (1 - factor) : 0;
+		return (int) ((a * factor + b * secondFactor));
 	}
 }

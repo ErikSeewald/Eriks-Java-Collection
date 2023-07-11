@@ -10,9 +10,9 @@ public class TaxCollector
 	int i, j;
 	int size;
 	
-	private int collect_animation;
-	private int empty_animation;
-	private int damage_animation;
+	private int collectAnimation;
+	private int emptyAnimation;
+	private int damageAnimation;
 	
 	TaxCollector(int i, int j, int size)
 	{
@@ -28,28 +28,28 @@ public class TaxCollector
 		if (house == null) {throw new NullPointerException("House cannot be null");}
 		double add = house.collectTax();
 		collected += add;
-		if (add > 0) {collect_animation = 20;}
+		if (add > 0) {collectAnimation = 20;}
 	}
 	
 	public double emptyCollected()
 	{
 		double temp = collected;
 		collected = 0;
-		if (temp > 0) {empty_animation = 15;}
+		if (temp > 0) {emptyAnimation = 15;}
 		return temp;
 	}
 	
 	public void getHit() 
 	{
 		collected *= 0.8;
-		damage_animation = 10;
+		damageAnimation = 10;
 	}
 	
 	public void update()
 	{
-		if (collect_animation > 0) {collect_animation--;}
-		if (empty_animation > 0) {empty_animation--;}
-		if (damage_animation > 0) {damage_animation--;}
+		if (collectAnimation > 0) {collectAnimation--;}
+		if (emptyAnimation > 0) {emptyAnimation--;}
+		if (damageAnimation > 0) {damageAnimation--;}
 	}
 	
 	//COMMUNICATION
@@ -57,11 +57,11 @@ public class TaxCollector
 	{return collected;}
 	
 	public boolean collectAnimation()
-	{return collect_animation > 0;}
+	{return collectAnimation > 0;}
 	
 	public boolean emptyAnimation()
-	{return empty_animation > 0;}
+	{return emptyAnimation > 0;}
 	
 	public boolean damageAnimation()
-	{return damage_animation > 0;}
+	{return damageAnimation > 0;}
 }

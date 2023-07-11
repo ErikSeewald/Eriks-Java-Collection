@@ -4,13 +4,13 @@ import Main.EJC_Util.Direction;
 
 public class Car 
 {
-	private int size_tiles_x = 3, size_tiles_y = 2;
+	private int sizeTilesX = 3, sizeTilesY = 2;
 	
 	int i, j;
 	private Direction direction;
 
 	int start_i, start_j;
-	Direction start_direction;
+	Direction startDirection;
 	
 	Car(int i, int j, Direction direction)
 	{
@@ -25,14 +25,14 @@ public class Car
 		
 		if (direction == Direction.NORTH || direction == Direction.SOUTH)
 		{
-			size_tiles_x = 2;
-			size_tiles_y = 3;
+			sizeTilesX = 2;
+			sizeTilesY = 3;
 		}
 		
 		else
 		{
-			size_tiles_x = 3;
-			size_tiles_y = 2;
+			sizeTilesX = 3;
+			sizeTilesY = 2;
 		}
 	}
 	
@@ -47,9 +47,9 @@ public class Car
 		}
 	}
 	
-	public int getSizeTilesX() {return size_tiles_x;}
+	public int getSizeTilesX() {return sizeTilesX;}
 	
-	public int getSizeTilesY() {return size_tiles_y;}
+	public int getSizeTilesY() {return sizeTilesY;}
 	
 	public Direction getDirection() {return direction;}
 	
@@ -57,13 +57,13 @@ public class Car
 	{
 		this.i = this.start_i; 
 		this.j = this.start_j; 
-		this.changeDirection(this.start_direction);
+		this.changeDirection(this.startDirection);
 	}
 	
 	public void setStartingValues()
 	{
 		this.start_i = this.i;
 		this.start_j = this.j;
-		this.start_direction = this.direction;
+		this.startDirection = this.direction;
 	}
 }

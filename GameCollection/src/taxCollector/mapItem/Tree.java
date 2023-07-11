@@ -13,11 +13,11 @@ public class Tree extends MapItem
 		NORMAL, BRIGHTER, DARKER;
 	};
 	
-	public ColorStates color_state;
+	public ColorStates colorState;
 
 	public Tree(int i, int j, Random random)
 	{
 		super(i, j);
-		color_state = ColorStates.values()[random.nextInt(3)];
+		colorState = ColorStates.values()[random.nextInt(3)];
 	}
 }

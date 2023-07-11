@@ -32,9 +32,9 @@ public class TC_Panel extends JPanel
 	private IRS irs;
 	private ArrayList<MapItem> mapItems;
 	
-	private boolean draw_grid;
-	private int tile_size; //controlled by MapHandler	
-	private int scroll_x, scroll_y;
+	private boolean drawGrid;
+	private int tileSize; //controlled by MapHandler	
+	private int scrollX, scrollY;
 	
 	TC_Panel()
 	{
@@ -43,7 +43,7 @@ public class TC_Panel extends JPanel
 		mapHandler = new MapHandler(this);
 		taxCollector = mapHandler.getTaxCollector();
 		irs = mapHandler.getIRS();
-		tile_size = mapHandler.getTileSize();
+		tileSize = mapHandler.getTileSize();
 		
 		updateMapReferences();
 	}
@@ -58,7 +58,7 @@ public class TC_Panel extends JPanel
 	
 	public void switchGridBool()
 	{
-		draw_grid = !draw_grid;
+		drawGrid = !drawGrid;
 		repaint();
 	}
 	
@@ -140,12 +140,12 @@ public class TC_Panel extends JPanel
 			return;
 		}
 		
-		if (draw_grid) {drawGrid(g2D);}
+		if (drawGrid) {drawGrid(g2D);}
 		
 		//SCREEN COORDINATES
-		scroll_x = -(mapHandler.getTopLeftX() * tile_size);
-		scroll_y = -(mapHandler.getTopLeftY() * tile_size);
-		g2D.translate(scroll_x, scroll_y); // works like glTransform, i.e every following coordinate will get scroll added to it
+		scrollX = -(mapHandler.getTopLeftX() * tileSize);
+		scrollY = -(mapHandler.getTopLeftY() * tileSize);
+		g2D.translate(scrollX, scrollY); // works like glTransform, i.e every following coordinate will get scroll added to it
 		
 		//MAP ITEMS (Except for IRS)
 		g2D.setStroke(new BasicStroke(4));
@@ -160,7 +160,7 @@ public class TC_Panel extends JPanel
 		//TAX COLLECTOR
 		g2D.setPaint(taxCollector.damageAnimation() ? damage_col : tax_collector_col);
 		int tcSize = taxCollector.size;
-		g2D.fillRect(taxCollector.i * tile_size - tcSize / 2, taxCollector.j  * tile_size - tcSize / 2, tcSize, tcSize);
+		g2D.fillRect(taxCollector.i * tileSize - tcSize / 2, taxCollector.j  * tileSize - tcSize / 2, tcSize, tcSize);
 		
 		//IRS
 		drawIRS(g2D);
@@ -174,9 +174,9 @@ public class TC_Panel extends JPanel
 		g2D.setFont(new Font("", Font.BOLD, 20));
 		
 		g2D.setPaint(taxCollector.emptyAnimation() ? collect_col : ui_col);
-		g2D.drawString("IRS", irs.i * tile_size - 10, irs.j * tile_size + 15);
+		g2D.drawString("IRS", irs.i * tileSize - 10, irs.j * tileSize + 15);
 		
-		g2D.translate(-scroll_x, -scroll_y);
+		g2D.translate(-scrollX, -scrollY);
 		
 		if (taxCollector.emptyAnimation() || taxCollector.damageAnimation()) {g2D.setPaint(bankrupt_col);}
 		else if (taxCollector.collectAnimation()) {g2D.setPaint(collect_col);}
@@ -195,21 +195,21 @@ public class TC_Panel extends JPanel
 		g2D.setPaint(Color.LIGHT_GRAY);
 		for (int i = 1; i <= MapHandler.tiles_on_screen_x; i++)
 		{
-			g2D.drawLine(i * tile_size, 0, i * tile_size, PANEL_HEIGHT);
-			if (i % 2 == 1) {g2D.drawString("" + (i + mapHandler.getTopLeftX()), i * tile_size, tile_size);}
+			g2D.drawLine(i * tileSize, 0, i * tileSize, PANEL_HEIGHT);
+			if (i % 2 == 1) {g2D.drawString("" + (i + mapHandler.getTopLeftX()), i * tileSize, tileSize);}
 		}
 		
 		for (int i = 1; i <= MapHandler.tiles_on_screen_y; i++)
 		{
-			g2D.drawLine(0, i* tile_size, PANEL_WIDTH, i * tile_size);
-			g2D.drawString("" + (i + mapHandler.getTopLeftY()), tile_size / 4, i * tile_size);
+			g2D.drawLine(0, i* tileSize, PANEL_WIDTH, i * tileSize);
+			g2D.drawString("" + (i + mapHandler.getTopLeftY()), tileSize / 4, i * tileSize);
 		}
 	}
 	
 	private void drawCar(Graphics2D g2D, Car car)
 	{	
 		g2D.setPaint(car_col);
-		g2D.fillRect(car.i * tile_size, car.j * tile_size, car.getSizeTilesX() * tile_size, car.getSizeTilesY() * tile_size);
+		g2D.fillRect(car.i * tileSize, car.j * tileSize, car.getSizeTilesX() * tileSize, car.getSizeTilesY() * tileSize);
 	}
 	
 	private void drawHouse(Graphics2D g2D, House house)
@@ -217,10 +217,10 @@ public class TC_Panel extends JPanel
 		g2D.setPaint(house_col_1);
 		g2D.fillRect
 		(
-				(house.i * tile_size) - (House.size_tiles / 2) * tile_size, 
-				(house.j * tile_size) - (House.size_tiles / 2) * tile_size, 
-				House.size_tiles * tile_size, 
-				House.size_tiles * tile_size
+				(house.i * tileSize) - (House.size_tiles / 2) * tileSize, 
+				(house.j * tileSize) - (House.size_tiles / 2) * tileSize, 
+				House.size_tiles * tileSize, 
+				House.size_tiles * tileSize
 		);
 		
 		if (!house.taxDue()) {return;}
@@ -228,10 +228,10 @@ public class TC_Panel extends JPanel
 		g2D.setPaint(house_col_2);
 		g2D.drawRect
 		(
-				(house.i * tile_size) - (House.size_tiles / 2) * tile_size, 
-				(house.j * tile_size) - (House.size_tiles / 2) * tile_size, 
-				House.size_tiles * tile_size, 
-				House.size_tiles * tile_size
+				(house.i * tileSize) - (House.size_tiles / 2) * tileSize, 
+				(house.j * tileSize) - (House.size_tiles / 2) * tileSize, 
+				House.size_tiles * tileSize, 
+				House.size_tiles * tileSize
 		);
 	}
 	
@@ -241,37 +241,37 @@ public class TC_Panel extends JPanel
 		g2D.setPaint(tree_trunk_col);
 		g2D.fillRect
 		(
-				(int) ((tree.i + Tree.trunk_width_tiles * 1.5) * tile_size), 
-				tree.j * tile_size, 
-				(int) (Tree.trunk_width_tiles * tile_size), 
-				(int) (Tree.trunk_height_tiles * tile_size)
+				(int) ((tree.i + Tree.trunk_width_tiles * 1.5) * tileSize), 
+				tree.j * tileSize, 
+				(int) (Tree.trunk_width_tiles * tileSize), 
+				(int) (Tree.trunk_height_tiles * tileSize)
 		);
 		
 		//CROWN
 		Color c = tree_crown_col;
-		if (tree.color_state == ColorStates.BRIGHTER) {c = c.brighter();}
-		else if (tree.color_state == ColorStates.DARKER) {c = c.darker();}
+		if (tree.colorState == ColorStates.BRIGHTER) {c = c.brighter();}
+		else if (tree.colorState == ColorStates.DARKER) {c = c.darker();}
 		g2D.setPaint(c);
 		
 		g2D.fillRect
 		(
-				tree.i * tile_size,
-				(int) ((tree.j - Tree.trunk_height_tiles)* tile_size), 
-				Tree.size_tiles * tile_size, 
-				Tree.size_tiles * tile_size
+				tree.i * tileSize,
+				(int) ((tree.j - Tree.trunk_height_tiles)* tileSize), 
+				Tree.size_tiles * tileSize, 
+				Tree.size_tiles * tileSize
 		);
 	}
 	
 	private void drawLake(Graphics2D g2D, Lake lake)
 	{
 		g2D.setPaint(lake_col);
-		g2D.fillRect(lake.i * tile_size, lake.j * tile_size, Lake.size_tiles * tile_size, Lake.size_tiles * tile_size);
+		g2D.fillRect(lake.i * tileSize, lake.j * tileSize, Lake.size_tiles * tileSize, Lake.size_tiles * tileSize);
 	}
 	
 	private void drawRoad(Graphics2D g2D, Road road)
 	{		
 		g2D.setPaint(road_col);
-		g2D.fillRect(road.i * tile_size, road.j * tile_size, tile_size, tile_size);
+		g2D.fillRect(road.i * tileSize, road.j * tileSize, tileSize, tileSize);
 	}
 	
 	private void drawIRS(Graphics2D g2D)
@@ -285,10 +285,10 @@ public class TC_Panel extends JPanel
 		{
 			g2D.fillRect
 			(
-					(irs.i * tile_size) - (IRS.size_tiles / 2) * tile_size, 
-					(irs.j * tile_size) - (IRS.size_tiles / 2) * tile_size, 
-					IRS.size_tiles * tile_size, 
-					IRS.size_tiles * tile_size
+					(irs.i * tileSize) - (IRS.size_tiles / 2) * tileSize, 
+					(irs.j * tileSize) - (IRS.size_tiles / 2) * tileSize, 
+					IRS.size_tiles * tileSize, 
+					IRS.size_tiles * tileSize
 			);
 			return;
 		}
@@ -296,8 +296,8 @@ public class TC_Panel extends JPanel
 		//OFFSCREEN
 		// put a triangle partly on the way of a vector towards the IRS, one of the points on it, two of them on it's
 		// normal => triangle pointing towards IRS
-		int x = taxCollector.i * tile_size, y = taxCollector.j * tile_size;
-		float[] vec = EJC_Util.normalize((irs.i * tile_size) - x, (irs.j * tile_size) - y);
+		int x = taxCollector.i * tileSize, y = taxCollector.j * tileSize;
+		float[] vec = EJC_Util.normalize((irs.i * tileSize) - x, (irs.j * tileSize) - y);
 		float[] normal = {-vec[1], vec[0]};
 		
 		g2D.fillPolygon

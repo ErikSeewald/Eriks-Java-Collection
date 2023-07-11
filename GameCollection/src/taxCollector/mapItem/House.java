@@ -8,13 +8,13 @@ public class House extends MapItem
 	
 	private double tax;
 	
-	private int time_until_next_tax;
+	private int timeUntilNextTax;
 	private int cooldown;
 	
 	public House(int i, int j, Random random)
 	{
 		super(i, j);
-		time_until_next_tax = 0;
+		timeUntilNextTax = 0;
 		
 		initValues(random);
 	}
@@ -27,18 +27,18 @@ public class House extends MapItem
 	
 	public double collectTax()
 	{
-		if (time_until_next_tax > 0) {return 0;}
+		if (timeUntilNextTax > 0) {return 0;}
 		
-		time_until_next_tax = cooldown;
+		timeUntilNextTax = cooldown;
 		return tax;
 	}
 	
-	public boolean taxDue() {return time_until_next_tax == 0;}
+	public boolean taxDue() {return timeUntilNextTax == 0;}
 	
 	@Override
 	public void update() 
 	{
-		if (time_until_next_tax > 0)
-		{time_until_next_tax--;}
+		if (timeUntilNextTax > 0)
+		{timeUntilNextTax--;}
 	}
 }
