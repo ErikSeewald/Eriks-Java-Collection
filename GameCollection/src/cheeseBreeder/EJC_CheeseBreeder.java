@@ -17,7 +17,7 @@ public class EJC_CheeseBreeder extends JFrame implements EJC_Interface, ActionLi
 
 	private BreederPanel panel;
 	
-	private JMenuItem[] cheese_items = 
+	private JMenuItem[] cheeseItems = 
 	{
 			new JMenuItem("Emmentaler"), new JMenuItem("Gouda"), new JMenuItem("Camembert"), 
 			new JMenuItem("Cheddar"), new JMenuItem("Mozarella"), new JMenuItem("Blue Cheese"),
@@ -54,9 +54,9 @@ public class EJC_CheeseBreeder extends JFrame implements EJC_Interface, ActionLi
 		
 		//MENU BAR
 		EJC_MenuBar menuBar = new EJC_MenuBar(this);
-		menuBar.addEJCMenu("Elemental cheeses", cheese_items);
+		menuBar.addEJCMenu("Elemental cheeses", cheeseItems);
 
-		for (JMenuItem item : cheese_items)
+		for (JMenuItem item : cheeseItems)
 		{item.addActionListener(this);}
 
 		this.setVisible(true);
@@ -66,7 +66,7 @@ public class EJC_CheeseBreeder extends JFrame implements EJC_Interface, ActionLi
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
-		for (JMenuItem item : cheese_items)
+		for (JMenuItem item : cheeseItems)
 		{
 			if (e.getSource() == item)
 			{

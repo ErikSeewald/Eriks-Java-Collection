@@ -30,19 +30,19 @@ public class CheeseChild extends Cheese
 	
 	public void setColors(Color coreColor, Color rindColor, Color holeColor)
 	{
-		this.core_color = coreColor;
-		this.rind_color = rindColor;
-		this.hole_color = holeColor;
+		this.coreColor = coreColor;
+		this.rindColor = rindColor;
+		this.holeColor = holeColor;
 	}
 	
 	public void setRindSize(int rindSize)
-	{this.rind_size = rindSize;}
+	{this.rindSize = rindSize;}
 	
 	public void setHoleNumbers(int hole_count_min, int hole_count_max, int hole_size_min, int hole_size_max)
 	{
-		this.hole_count_min = hole_count_min;
-		this.hole_count_max = hole_count_max;
-		this.hole_size_min = hole_size_min;
-		this.hole_size_max = hole_size_max;
+		this.holeCountMin = hole_count_min;
+		this.holeCountMax = hole_count_max;
+		this.holeSizeMin = hole_size_min;
+		this.holeSizeMax = hole_size_max;
 	}
 }

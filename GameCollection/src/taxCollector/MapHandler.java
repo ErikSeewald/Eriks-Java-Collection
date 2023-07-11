@@ -17,10 +17,10 @@ public class MapHandler
 	private MapItem[][] map;
 	
 	public static final int map_size = 1000; // index value
-	private int tile_size; // pixel value
+	private int tileSize; // pixel value
 	
 	public static final int tiles_on_screen_x = 75, tiles_on_screen_y = 50;
-	private int top_left_x, top_left_y; // indices of where the screen is on the map
+	private int topLeftX, topLeftY; // indices of where the screen is on the map
 	
 	//CARS
 	private Car[] cars;
@@ -56,8 +56,8 @@ public class MapHandler
 	
 	private void initMainValues()
 	{
-		tile_size = 700 / 50; //700 == PANEL_HEIGHT
-		top_left_x = top_left_y = map_size / 2;
+		tileSize = 700 / 50; //700 == PANEL_HEIGHT
+		topLeftX = topLeftY = map_size / 2;
 	}
 	
 	public void generateMap()
@@ -65,8 +65,8 @@ public class MapHandler
 		map = new MapItem[map_size][map_size];
 		System.gc();
 		
-		MapGenerator.generateMap(map, top_left_x, top_left_x, random, irs, cars);
-		taxCollector = new TaxCollector(irs.i, irs.j, (int) (tile_size * 1.5));
+		MapGenerator.generateMap(map, topLeftX, topLeftX, random, irs, cars);
+		taxCollector = new TaxCollector(irs.i, irs.j, (int) (tileSize * 1.5));
 	}
 	
 	//------GAMEPLAY------
@@ -220,40 +220,40 @@ public class MapHandler
 		boolean scrolled = false;
 		
 		//X
-		if (index_x > top_left_x + tiles_on_screen_x * 0.8)
+		if (index_x > topLeftX + tiles_on_screen_x * 0.8)
 		{
 			// don't scroll beyond bounds
-			if (top_left_x + 1 < map_size - tiles_on_screen_x)
+			if (topLeftX + 1 < map_size - tiles_on_screen_x)
 			{
-				top_left_x++; 
+				topLeftX++; 
 				scrolled = true;
 			}
 		}
 		
-		else if (index_x < top_left_x + tiles_on_screen_x * 0.2)
+		else if (index_x < topLeftX + tiles_on_screen_x * 0.2)
 		{
-			if (top_left_x - 1 >= 0)
+			if (topLeftX - 1 >= 0)
 			{
-				top_left_x--; 
+				topLeftX--; 
 				scrolled = true;
 			}
 		}
 		
 		//Y
-		if (index_y > top_left_y + tiles_on_screen_y * 0.8)
+		if (index_y > topLeftY + tiles_on_screen_y * 0.8)
 		{
-			if (top_left_y + 1 < map_size - tiles_on_screen_y)
+			if (topLeftY + 1 < map_size - tiles_on_screen_y)
 			{
-				top_left_y++; 
+				topLeftY++; 
 				scrolled = true;
 			}
 		}
 		
-		else if (index_y < top_left_y + tiles_on_screen_y * 0.2)
+		else if (index_y < topLeftY + tiles_on_screen_y * 0.2)
 		{
-			if (top_left_y - 1 >= 0)
+			if (topLeftY - 1 >= 0)
 			{
-				top_left_y--; 
+				topLeftY--; 
 				scrolled = true;
 			}
 		}
@@ -266,9 +266,9 @@ public class MapHandler
 	{
 		ArrayList<MapItem> items = new ArrayList<>();
 		
-		for (int i = top_left_x; i <= top_left_x + tiles_on_screen_x; i++)
+		for (int i = topLeftX; i <= topLeftX + tiles_on_screen_x; i++)
 		{
-			for (int j = top_left_y; j <= top_left_y + tiles_on_screen_y; j++)
+			for (int j = topLeftY; j <= topLeftY + tiles_on_screen_y; j++)
 			{
 				if (map[i][j] != null) {items.add(map[i][j]);}
 			}
@@ -283,8 +283,8 @@ public class MapHandler
 		
 		for (Car car : cars)
 		{
-			if (car.i >= top_left_x - 3 && car.i <= top_left_x + tiles_on_screen_x + 3
-					&& car.j >= top_left_y - 3 && car.j <= top_left_y + tiles_on_screen_y + 3)
+			if (car.i >= topLeftX - 3 && car.i <= topLeftX + tiles_on_screen_x + 3
+					&& car.j >= topLeftY - 3 && car.j <= topLeftY + tiles_on_screen_y + 3)
 			{c.add(car);}
 		}
 		
@@ -296,11 +296,11 @@ public class MapHandler
 	
 	public long getSeed() {return this.seed;}
 	
-	public int getTileSize() {return tile_size;}
+	public int getTileSize() {return tileSize;}
 	
-	public int getTopLeftX() {return top_left_x;}
+	public int getTopLeftX() {return topLeftX;}
 	
-	public int getTopLeftY() {return top_left_y;}
+	public int getTopLeftY() {return topLeftY;}
 	
 	public TaxCollector getTaxCollector() {return taxCollector;}
 	

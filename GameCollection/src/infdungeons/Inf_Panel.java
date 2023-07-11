@@ -83,11 +83,11 @@ public class Inf_Panel extends JPanel
 		}
 		
 		// OTHERS
-		tile_stroke = new BasicStroke(PANEL_HEIGHT / 85);
-		player_stroke = new BasicStroke(tile_stroke.getLineWidth() /2);
-		wall_stroke = new BasicStroke(tile_stroke.getLineWidth() * 2);
+		tileStroke = new BasicStroke(PANEL_HEIGHT / 85);
+		playerStroke = new BasicStroke(tileStroke.getLineWidth() /2);
+		wallStroke = new BasicStroke(tileStroke.getLineWidth() * 2);
 		
-		bg_tile_size = PANEL_HEIGHT / 17;
+		bgTileSize = PANEL_HEIGHT / 17;
 		
 		dungeonHandler.setRoomSize(PANEL_WIDTH, PANEL_HEIGHT);
 		
@@ -95,7 +95,7 @@ public class Inf_Panel extends JPanel
 		repaint();
 	}
 	
-	public int getTileSize() {return bg_tile_size;}
+	public int getTileSize() {return bgTileSize;}
 	
 	public void switchDebugMode() 
 	{	
@@ -124,11 +124,11 @@ public class Inf_Panel extends JPanel
 	private static final Color yellorb_col = new Color(255, 200, 80);
 	private static final Color yellorb_hurt_col = new Color(225, 110, 40);
 	
-	private BasicStroke tile_stroke = new BasicStroke(PANEL_HEIGHT / 85);
-	private BasicStroke player_stroke = new BasicStroke(tile_stroke.getLineWidth() /2);
-	private BasicStroke wall_stroke = new BasicStroke(tile_stroke.getLineWidth() * 2);
+	private BasicStroke tileStroke = new BasicStroke(PANEL_HEIGHT / 85);
+	private BasicStroke playerStroke = new BasicStroke(tileStroke.getLineWidth() /2);
+	private BasicStroke wallStroke = new BasicStroke(tileStroke.getLineWidth() * 2);
 	
-	private int bg_tile_size = PANEL_HEIGHT / 17; // size of tiles in the background
+	private int bgTileSize = PANEL_HEIGHT / 17; // size of tiles in the background
 	
 	public void paint(Graphics g)
 	{
@@ -140,17 +140,17 @@ public class Inf_Panel extends JPanel
 		
 		//TILES
 		g2D.setPaint(tile_col);
-		g2D.setStroke(tile_stroke);
+		g2D.setStroke(tileStroke);
 		
 		for (int i = 0; i < 27; i++)
-		{g2D.drawLine(i*bg_tile_size, 0, i*bg_tile_size, PANEL_HEIGHT);} //vertical
+		{g2D.drawLine(i*bgTileSize, 0, i*bgTileSize, PANEL_HEIGHT);} //vertical
 		
 		for (int i = 0; i < 18; i++)
-		{g2D.drawLine(0 , i * bg_tile_size, PANEL_WIDTH, i * bg_tile_size);} //horizontal
+		{g2D.drawLine(0 , i * bgTileSize, PANEL_WIDTH, i * bgTileSize);} //horizontal
 		
 		//WALL
 		g2D.setPaint(tile_col.darker());
-		g2D.setStroke(wall_stroke);
+		g2D.setStroke(wallStroke);
 		int[] room = dungeonHandler.getRoomRect();
 		g2D.drawRect(room[0], room[1], room[2], room[3]);
 		
@@ -164,11 +164,11 @@ public class Inf_Panel extends JPanel
 			if (door_state == Door.blocked) {continue;}
 			
 			g2D.setPaint(door_state == Door.open ? door_open_col : door_closed_col);
-			g2D.fillRect(doors[i][0], doors[i][1], bg_tile_size, bg_tile_size);
+			g2D.fillRect(doors[i][0], doors[i][1], bgTileSize, bgTileSize);
 		}
 		
 		//TILE ARRAY
-		g2D.setStroke(tile_stroke);
+		g2D.setStroke(tileStroke);
 		drawTiles(g2D, curRoom);
 		
 		//PLAYER
@@ -177,7 +177,7 @@ public class Inf_Panel extends JPanel
 		g2D.fillRect(player.x, player.y, player.getSize(), player.getSize());
 		
 		g2D.setPaint(p_color.darker());
-		g2D.setStroke(player_stroke);
+		g2D.setStroke(playerStroke);
 		g2D.drawRect(player.x, player.y, player.getSize(), player.getSize());
 		
 		//ENEMIES
@@ -199,7 +199,7 @@ public class Inf_Panel extends JPanel
 		drawBombs(g2D);
 		
 		//GUI
-		int gui_size = (int) (bg_tile_size * 0.75);
+		int gui_size = (int) (bgTileSize * 0.75);
 		g2D.setPaint(gui_col);
 		g2D.setFont(new Font("", Font.BOLD, gui_size));
 		g2D.drawString("Room " +curRoom.coordinates[0] + "," + curRoom.coordinates[1], room[0], room[1] - gui_size);
@@ -232,7 +232,7 @@ public class Inf_Panel extends JPanel
 	
 	private void drawProjectile(Graphics2D g2D, Projectile projectile)
 	{
-		if (projectile.parent_type == Enemy.type_yellorb) {g2D.setPaint(yellorb_col);}
+		if (projectile.parentType == Enemy.type_yellorb) {g2D.setPaint(yellorb_col);}
 		
 		g2D.fillRect(projectile.x, projectile.y, projectile.size, projectile.size);
 	}
@@ -246,7 +246,7 @@ public class Inf_Panel extends JPanel
 			if (bomb.isExploding)
 			{
 				g2D.setPaint(explosion_col);
-				g2D.fillRect(bomb.x - bomb.dmg_radius, bomb.y - bomb.dmg_radius, bomb.dmg_radius * 2, bomb.dmg_radius * 2);
+				g2D.fillRect(bomb.x - bomb.dmgRadius, bomb.y - bomb.dmgRadius, bomb.dmgRadius * 2, bomb.dmgRadius * 2);
 			}
 			
 			else

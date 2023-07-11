@@ -11,16 +11,16 @@ public abstract class Cheese
 	protected String name;
 	
 	//CORE
-	protected Color core_color;
+	protected Color coreColor;
 	
 	//RIND
-	protected Color rind_color;
-	protected int rind_size;
+	protected Color rindColor;
+	protected int rindSize;
 	
 	//HOLES
-	protected Color hole_color;
-	protected int hole_count, hole_count_min, hole_count_max;
-	protected int hole_size_min, hole_size_max;
+	protected Color holeColor;
+	protected int holeCount, holeCountMin, holeCountMax;
+	protected int holeSizeMin, holeSizeMax;
 	protected Hole[] holes;
 	private boolean holesCreated;
 	
@@ -56,19 +56,19 @@ public abstract class Cheese
 	
 	public void generateHoles()
 	{	
-		if (this.hole_count_max < 1) {this.holesCreated = true; return;}
+		if (this.holeCountMax < 1) {this.holesCreated = true; return;}
 		
-		this.hole_count = random.nextInt(hole_count_max - hole_count_min) + hole_count_min;
-		holes = new Hole[hole_count];
+		this.holeCount = random.nextInt(holeCountMax - holeCountMin) + holeCountMin;
+		holes = new Hole[holeCount];
 		
-		for (int i = 0; i < this.hole_count; i++)
+		for (int i = 0; i < this.holeCount; i++)
 		{
 			// create a new whole with x and y positions relative to this.x and this.y and size relative to Cheese.size
 			holes[i] = new Hole
 			(
 					(int) (Cheese.size * (random.nextFloat(0.6f) + 0.1f)), 
 					(int) (Cheese.size * (random.nextFloat(0.6f) + 0.1f)), 
-					random.nextInt(hole_size_max - hole_size_min) + hole_size_min
+					random.nextInt(holeSizeMax - holeSizeMin) + holeSizeMin
 			);
 		}
 		
@@ -77,15 +77,15 @@ public abstract class Cheese
 	
 	public String getName() {return name;}
 	
-	public int getRindSize() {return rind_size;}
+	public int getRindSize() {return rindSize;}
 	
-	public Color getRindColor() {return rind_color;}
+	public Color getRindColor() {return rindColor;}
 	
-	public Color getCoreColor() {return core_color;}
+	public Color getCoreColor() {return coreColor;}
 	
-	public Color getHoleColor() {return hole_color;}
+	public Color getHoleColor() {return holeColor;}
 	
-	public int getHoleCount() {return hole_count;}
+	public int getHoleCount() {return holeCount;}
 	
 	public Hole[] getHoles() 
 	{
@@ -96,11 +96,11 @@ public abstract class Cheese
 	public boolean holesCreated()
 	{return holesCreated;}
 	
-	public int getHoleCountMin() {return hole_count_min;}
+	public int getHoleCountMin() {return holeCountMin;}
 	
-	public int getHoleCountMax() {return hole_count_max;}
+	public int getHoleCountMax() {return holeCountMax;}
 	
-	public int getHoleSizeMin() {return hole_size_min;}
+	public int getHoleSizeMin() {return holeSizeMin;}
 	
-	public int getHoleSizeMax() {return hole_size_max;}
+	public int getHoleSizeMax() {return holeSizeMax;}
 }

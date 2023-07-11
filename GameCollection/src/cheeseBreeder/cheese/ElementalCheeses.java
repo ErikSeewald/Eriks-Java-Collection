@@ -12,16 +12,16 @@ public class ElementalCheeses
 			
 			this.name = "Blue Cheese";
 			
-			this.core_color = new Color(235, 195, 105);
-			this.rind_color = new Color(225, 215, 195);
-			this.hole_color = new Color(150, 170, 160);
+			this.coreColor = new Color(235, 195, 105);
+			this.rindColor = new Color(225, 215, 195);
+			this.holeColor = new Color(150, 170, 160);
 			
-			this.rind_size = 7;
+			this.rindSize = 7;
 			
-			this.hole_count_min = 8;
-			this.hole_count_max = 20;
-			this.hole_size_min = 5;
-			this.hole_size_max = Cheese.size / 10;
+			this.holeCountMin = 8;
+			this.holeCountMax = 20;
+			this.holeSizeMin = 5;
+			this.holeSizeMax = Cheese.size / 10;
 			this.generateHoles();
 		}
 	}
@@ -34,16 +34,16 @@ public class ElementalCheeses
 			
 			this.name = "Fraise";
 			
-			this.core_color = new Color(145, 50, 45);
-			this.rind_color = new Color(45, 125, 55);
-			this.hole_color = new Color(65, 55, 50);
+			this.coreColor = new Color(145, 50, 45);
+			this.rindColor = new Color(45, 125, 55);
+			this.holeColor = new Color(65, 55, 50);
 			
-			this.rind_size = 7;
+			this.rindSize = 7;
 			
-			this.hole_count_min = 7;
-			this.hole_count_max = 21;
-			this.hole_size_min = 5;
-			this.hole_size_max = Cheese.size / 14;
+			this.holeCountMin = 7;
+			this.holeCountMax = 21;
+			this.holeSizeMin = 5;
+			this.holeSizeMax = Cheese.size / 14;
 			this.generateHoles();
 		}
 	}
@@ -56,16 +56,16 @@ public class ElementalCheeses
 			
 			this.name = "Brownie";
 			
-			this.core_color = new Color(150, 90, 40);
-			this.rind_color = new Color(80, 40, 20);
-			this.hole_color = rind_color;
+			this.coreColor = new Color(150, 90, 40);
+			this.rindColor = new Color(80, 40, 20);
+			this.holeColor = rindColor;
 			
-			this.rind_size = 6;
+			this.rindSize = 6;
 			
-			this.hole_count_min = 2;
-			this.hole_count_max = 12;
-			this.hole_size_min = 3;
-			this.hole_size_max = Cheese.size / 12;
+			this.holeCountMin = 2;
+			this.holeCountMax = 12;
+			this.holeSizeMin = 3;
+			this.holeSizeMax = Cheese.size / 12;
 			this.generateHoles();
 		}
 	}
@@ -78,16 +78,16 @@ public class ElementalCheeses
 			
 			this.name = "Camembert";
 			
-			this.core_color = new Color(255, 215, 170);
-			this.rind_color = new Color(245, 235, 215);
-			this.hole_color = core_color;
+			this.coreColor = new Color(255, 215, 170);
+			this.rindColor = new Color(245, 235, 215);
+			this.holeColor = coreColor;
 			
-			this.rind_size = 20;
+			this.rindSize = 20;
 			
-			this.hole_count_min = 0;
-			this.hole_count_max = 0;
-			this.hole_size_min = 0;
-			this.hole_size_max = 0;
+			this.holeCountMin = 0;
+			this.holeCountMax = 0;
+			this.holeSizeMin = 0;
+			this.holeSizeMax = 0;
 			this.generateHoles();
 		}
 		
@@ -101,16 +101,16 @@ public class ElementalCheeses
 			
 			this.name = "Coffee";
 			
-			this.core_color = new Color(100, 75, 50);
-			this.rind_color = new Color(160, 140, 115);
-			this.hole_color = new Color(130, 105, 80);;
+			this.coreColor = new Color(100, 75, 50);
+			this.rindColor = new Color(160, 140, 115);
+			this.holeColor = new Color(130, 105, 80);;
 			
-			this.rind_size = 13;
+			this.rindSize = 13;
 			
-			this.hole_count_min = 4;
-			this.hole_count_max = 11;
-			this.hole_size_min = 3;
-			this.hole_size_max = Cheese.size / 13;
+			this.holeCountMin = 4;
+			this.holeCountMax = 11;
+			this.holeSizeMin = 3;
+			this.holeSizeMax = Cheese.size / 13;
 			this.generateHoles();
 		}
 		
@@ -124,16 +124,16 @@ public class ElementalCheeses
 			
 			this.name = "Cheddar";
 			
-			this.core_color = new Color(255, 150, 40);
-			this.rind_color = new Color(255, 100, 0);
-			this.hole_color = core_color;
+			this.coreColor = new Color(255, 150, 40);
+			this.rindColor = new Color(255, 100, 0);
+			this.holeColor = coreColor;
 			
-			this.rind_size = 3;
+			this.rindSize = 3;
 			
-			this.hole_count_min = 0;
-			this.hole_count_max = 0;
-			this.hole_size_min = 0;
-			this.hole_size_max = 0;
+			this.holeCountMin = 0;
+			this.holeCountMax = 0;
+			this.holeSizeMin = 0;
+			this.holeSizeMax = 0;
 			this.generateHoles();
 		}
 	}
@@ -146,16 +146,16 @@ public class ElementalCheeses
 			
 			this.name = "Cheese Coal";
 			
-			this.core_color = new Color(15, 25, 45);
-			this.rind_color = core_color;
-			this.hole_color = new Color(25, 55, 65);
+			this.coreColor = new Color(15, 25, 45);
+			this.rindColor = coreColor;
+			this.holeColor = new Color(25, 55, 65);
 			
-			this.rind_size = 0;
+			this.rindSize = 0;
 			
-			this.hole_count_min = 0;
-			this.hole_count_max = 10;
-			this.hole_size_min = 3;
-			this.hole_size_max = Cheese.size / 15;
+			this.holeCountMin = 0;
+			this.holeCountMax = 10;
+			this.holeSizeMin = 3;
+			this.holeSizeMax = Cheese.size / 15;
 			this.generateHoles();
 		}
 	}
@@ -168,16 +168,16 @@ public class ElementalCheeses
 			
 			this.name = "Emmentaler";
 			
-			this.core_color = new Color(245, 190, 80);
-			this.rind_color = new Color(230, 150, 20);
-			this.hole_color = new Color(230, 160, 30);
+			this.coreColor = new Color(245, 190, 80);
+			this.rindColor = new Color(230, 150, 20);
+			this.holeColor = new Color(230, 160, 30);
 			
-			this.rind_size = 10;
+			this.rindSize = 10;
 			
-			this.hole_count_min = 4;
-			this.hole_count_max = 10;
-			this.hole_size_min = 5;
-			this.hole_size_max = Cheese.size / 5;
+			this.holeCountMin = 4;
+			this.holeCountMax = 10;
+			this.holeSizeMin = 5;
+			this.holeSizeMax = Cheese.size / 5;
 			this.generateHoles();
 		}
 	}
@@ -190,16 +190,16 @@ public class ElementalCheeses
 			
 			this.name = "Gouda";
 			
-			this.core_color = new Color(240, 190, 45);
-			this.rind_color = new Color(230, 160, 40);
-			this.hole_color = new Color(225, 170, 30);
+			this.coreColor = new Color(240, 190, 45);
+			this.rindColor = new Color(230, 160, 40);
+			this.holeColor = new Color(225, 170, 30);
 			
-			this.rind_size = 5;
+			this.rindSize = 5;
 			
-			this.hole_count_min = 1;
-			this.hole_count_max = 6;
-			this.hole_size_min = 5;
-			this.hole_size_max = Cheese.size / 15;
+			this.holeCountMin = 1;
+			this.holeCountMax = 6;
+			this.holeSizeMin = 5;
+			this.holeSizeMax = Cheese.size / 15;
 			this.generateHoles();
 		}
 	}
@@ -212,16 +212,16 @@ public class ElementalCheeses
 			
 			this.name = "Mozarella";
 			
-			this.core_color = new Color(245, 235, 215);
-			this.rind_color = core_color;
-			this.hole_color = core_color;
+			this.coreColor = new Color(245, 235, 215);
+			this.rindColor = coreColor;
+			this.holeColor = coreColor;
 			
-			this.rind_size = 0;
+			this.rindSize = 0;
 			
-			this.hole_count_min = 0;
-			this.hole_count_max = 0;
-			this.hole_size_min = 0;
-			this.hole_size_max = 0;
+			this.holeCountMin = 0;
+			this.holeCountMax = 0;
+			this.holeSizeMin = 0;
+			this.holeSizeMax = 0;
 			this.generateHoles();
 		}
 	}
@@ -234,16 +234,16 @@ public class ElementalCheeses
 			
 			this.name = "Pink Cheese";
 			
-			this.core_color = new Color(225, 120, 225);
-			this.rind_color = new Color(190, 15, 210);
-			this.hole_color = new Color(90, 215, 120);
+			this.coreColor = new Color(225, 120, 225);
+			this.rindColor = new Color(190, 15, 210);
+			this.holeColor = new Color(90, 215, 120);
 			
-			this.rind_size = 17;
+			this.rindSize = 17;
 			
-			this.hole_count_min = 3;
-			this.hole_count_max = 30;
-			this.hole_size_min = 3;
-			this.hole_size_max = Cheese.size / 9;
+			this.holeCountMin = 3;
+			this.holeCountMax = 30;
+			this.holeSizeMin = 3;
+			this.holeSizeMax = Cheese.size / 9;
 			this.generateHoles();
 		}
 	}
@@ -256,16 +256,16 @@ public class ElementalCheeses
 			
 			this.name = "Pommier";
 			
-			this.core_color = new Color(90, 215, 120);
-			this.rind_color = new Color(20, 150, 90);
-			this.hole_color = new Color(255, 120, 120);
+			this.coreColor = new Color(90, 215, 120);
+			this.rindColor = new Color(20, 150, 90);
+			this.holeColor = new Color(255, 120, 120);
 			
-			this.rind_size = 4;
+			this.rindSize = 4;
 			
-			this.hole_count_min = 5;
-			this.hole_count_max = 23;
-			this.hole_size_min = 4;
-			this.hole_size_max = Cheese.size / 8;
+			this.holeCountMin = 5;
+			this.holeCountMax = 23;
+			this.holeSizeMin = 4;
+			this.holeSizeMax = Cheese.size / 8;
 			this.generateHoles();
 		}
 	}

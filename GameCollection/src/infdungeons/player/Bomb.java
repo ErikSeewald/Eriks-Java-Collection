@@ -5,10 +5,10 @@ public class Bomb
 	public int x, y;
 	public int timer;
 	public int size;
-	public int dmg_radius;
+	public int dmgRadius;
 	public static final int dmg = 8;
 
-	private int explosion_animation;
+	private int explosionAnimation;
 	public boolean isExploding = false;
 	
 	Bomb(int x, int y, int size)
@@ -16,8 +16,8 @@ public class Bomb
 		this.x = x;
 		this.y = y;
 		this.size = size;
-		this.dmg_radius = this.size * 8;
-		this.explosion_animation = -1;
+		this.dmgRadius = this.size * 8;
+		this.explosionAnimation = -1;
 		
 		this.timer = 0;
 	}
@@ -35,7 +35,7 @@ public class Bomb
 		this.timer--;
 		if (this.timer <= 0) 
 		{
-			this.explosion_animation = 8;
+			this.explosionAnimation = 8;
 			this.isExploding = true;
 		}
 	}
@@ -48,7 +48,7 @@ public class Bomb
 	{
 		if (!this.isExploding) {return false;}
 		
-		this.explosion_animation--;
-		return this.explosion_animation <= 0;
+		this.explosionAnimation--;
+		return this.explosionAnimation <= 0;
 	}
 }

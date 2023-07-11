@@ -16,10 +16,10 @@ public class Player
 	public int key_count;
 	public int bomb_count;
 	
-	private int invincible_time;
-	private int key_animation;
-	private int bomb_gui_animation;
-	private int heal_animation;
+	private int invincibleTime;
+	private int keyAnimation;
+	private int bombGuiAnimation;
+	private int healAnimation;
 	public boolean isAlive;
 	
 	public static final int attack_dmg = 5;
@@ -41,7 +41,7 @@ public class Player
 		this.key_count = 0;
 		this.bomb_count = 0;
 		this.hp = starting_hp;
-		this.invincible_time = 0;
+		this.invincibleTime = 0;
 		this.isAlive = true;
 		
 		// SPAWN POINT
@@ -145,30 +145,30 @@ public class Player
 	
 	public void getHit(int damage)
 	{
-		if (this.invincible_time > 0) {return;}
+		if (this.invincibleTime > 0) {return;}
 		
 		this.hp -= damage;
 		if (this.hp <= 0) {this.isAlive = false; return;}
 		
-		this.invincible_time = 10;
+		this.invincibleTime = 10;
 	}
 	
 	public void obtainKey()
 	{
 		this.key_count++;
-		this.key_animation = 10;
+		this.keyAnimation = 10;
 	}
 	
 	public void useKey()
 	{
 		this.key_count--;
-		this.key_animation = 10;
+		this.keyAnimation = 10;
 	}
 	
 	public void obtainBomb(int amount)
 	{
 		this.bomb_count += amount;
-		this.bomb_gui_animation = 10;
+		this.bombGuiAnimation = 10;
 	}
 	
 	public Bomb dropBomb()
@@ -176,7 +176,7 @@ public class Player
 		if (this.bomb_count <= 0) {return null;}
 		
 		this.bomb_count--;
-		this.bomb_gui_animation = 10;
+		this.bombGuiAnimation = 10;
 		
 		return new Bomb(this.x, this.y, this.size / 2);
 	}
@@ -185,24 +185,24 @@ public class Player
 	{
 		if (hp < 0) {return;} 
 		this.hp += hp;
-		this.heal_animation = 20;
+		this.healAnimation = 20;
 	}
 	
 	public void updateTimers()
 	{
-		if (this.invincible_time > 0) {this.invincible_time--;}
-		if (this.key_animation > 0) {this.key_animation--;}
-		if (this.bomb_gui_animation > 0) {this.bomb_gui_animation--;}
-		if (this.heal_animation > 0) {this.heal_animation--;}
+		if (this.invincibleTime > 0) {this.invincibleTime--;}
+		if (this.keyAnimation > 0) {this.keyAnimation--;}
+		if (this.bombGuiAnimation > 0) {this.bombGuiAnimation--;}
+		if (this.healAnimation > 0) {this.healAnimation--;}
 	}
 	
-	public boolean isInvincible() {return this.invincible_time > 0;}
+	public boolean isInvincible() {return this.invincibleTime > 0;}
 	
-	public boolean isInKeyAnimation() {return this.key_animation > 0;}
+	public boolean isInKeyAnimation() {return this.keyAnimation > 0;}
 	
-	public boolean isInHealingAnimation() {return this.heal_animation > 0;}
+	public boolean isInHealingAnimation() {return this.healAnimation > 0;}
 	
-	public boolean isInBombGUIAnimation() {return this.bomb_gui_animation > 0;}
+	public boolean isInBombGUIAnimation() {return this.bombGuiAnimation > 0;}
 	
 	public void setSize(int size)
 	{this.size = size;}

@@ -8,7 +8,7 @@ import taxCollector.mapItem.Road.RoadRail;
 
 public class MapGenerator 
 {
-	private static int top_left_x, top_left_y;
+	private static int topLeftX, topLeftY;
 	private static Random random;
 	private static IRS irs;
 	private static Car[] cars;
@@ -19,8 +19,8 @@ public class MapGenerator
 	
 	public static void generateMap(MapItem[][] map, int t_left_x, int t_left_y, Random r, IRS i, Car[] c)
 	{
-		top_left_x = t_left_x;
-		top_left_y = t_left_y;
+		topLeftX = t_left_x;
+		topLeftY = t_left_y;
 		random = r;
 		irs = i;
 		cars = c;
@@ -227,7 +227,7 @@ public class MapGenerator
 	//IRS
 	private static void placeIRS(MapItem[][] map)
 	{
-		int x = top_left_x + MapHandler.tiles_on_screen_x / 2, y = top_left_y + MapHandler.tiles_on_screen_y / 2;
+		int x = topLeftX + MapHandler.tiles_on_screen_x / 2, y = topLeftY + MapHandler.tiles_on_screen_y / 2;
 		
 		while (map[x][y] instanceof Lake || map[x][y] instanceof Road)
 		{

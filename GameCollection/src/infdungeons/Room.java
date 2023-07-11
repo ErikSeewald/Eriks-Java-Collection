@@ -9,7 +9,7 @@ public class Room
 	Room[] neighbors; // directions following order N-E-S-W
 	final int[] coordinates;
 	
-	boolean enemies_cleared = false;
+	boolean enemiesCleared = false;
 	
 	public static final class Door
 	{
