@@ -2,6 +2,8 @@ package Main;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import Main.menu.MainMenu;
+
 public class Main 
 {
 	public static void main(String[] args) 

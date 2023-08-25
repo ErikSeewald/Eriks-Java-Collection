@@ -1,13 +1,13 @@
-package Main;
+package Main.menu;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
+import Main.EJC_Interface;
 import bloonShoot.EJC_BloonShoot;
 import bomb_sorting.EJC_Bomb_Sorting;
 import cheeseBreeder.EJC_CheeseBreeder;
@@ -38,7 +38,7 @@ public class MainMenu extends JFrame implements MouseListener
 		public static final boolean sizeChange = false;
 	}
 	
-	MainMenu()
+	public MainMenu()
 	{
 		this.setTitle("Menu");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

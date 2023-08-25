@@ -10,7 +10,7 @@ import javax.swing.JMenuItem;
 import javax.swing.Timer;
 import Main.EJC_Interface;
 import Main.EJC_Util.Direction;
-import Main.WindowEventHandler;
+import Main.menu.WindowEventHandler;
 import Main.EJC_GUI.EJC_MenuBar;
 import taxCollector.MapHandler.ResetActions;
 

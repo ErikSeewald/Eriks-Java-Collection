@@ -1,5 +1,7 @@
 package Main;
 
+import Main.menu.WindowEventHandler;
+
 public interface EJC_Interface
 {
 	public void start(WindowEventHandler eventHandler);

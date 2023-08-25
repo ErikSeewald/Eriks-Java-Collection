@@ -1,4 +1,4 @@
-package Main;
+package Main.menu;
 
 public enum GameTitles {
 	

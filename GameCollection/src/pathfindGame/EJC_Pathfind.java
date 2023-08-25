@@ -6,8 +6,8 @@ import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import Main.EJC_GUI.EJC_MenuBar;
+import Main.menu.WindowEventHandler;
 import Main.EJC_Interface;
-import Main.WindowEventHandler;
 import pathfindGame.PathfindPanel.ControlBooleans;
 
 

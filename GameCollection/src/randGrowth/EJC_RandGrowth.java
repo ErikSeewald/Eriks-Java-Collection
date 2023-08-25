@@ -2,7 +2,7 @@ package randGrowth;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import Main.EJC_Interface;
-import Main.WindowEventHandler;
+import Main.menu.WindowEventHandler;
 
 public class EJC_RandGrowth extends JFrame implements EJC_Interface
 {

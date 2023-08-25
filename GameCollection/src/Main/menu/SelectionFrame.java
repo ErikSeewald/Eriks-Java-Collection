@@ -1,4 +1,4 @@
-package Main;
+package Main.menu;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
