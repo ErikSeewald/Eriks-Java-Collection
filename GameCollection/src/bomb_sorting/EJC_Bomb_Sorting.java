@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import Main.EJC_Interface;
-import Main.WindowEventHandler;
+import Main.menu.WindowEventHandler;
 
 public class EJC_Bomb_Sorting extends JFrame implements EJC_Interface
 {

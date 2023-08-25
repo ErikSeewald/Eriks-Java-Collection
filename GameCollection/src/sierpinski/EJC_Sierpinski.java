@@ -1,7 +1,7 @@
 package sierpinski;
 import javax.swing.JFrame;
 import Main.EJC_Interface;
-import Main.WindowEventHandler;
+import Main.menu.WindowEventHandler;
 
 public class EJC_Sierpinski extends JFrame implements EJC_Interface
 {

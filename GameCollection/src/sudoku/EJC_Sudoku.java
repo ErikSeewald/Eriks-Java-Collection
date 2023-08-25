@@ -3,7 +3,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import Main.EJC_Interface;
-import Main.WindowEventHandler;
+import Main.menu.WindowEventHandler;
 
 public class EJC_Sudoku extends JFrame implements EJC_Interface
 {
