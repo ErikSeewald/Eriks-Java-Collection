@@ -3,7 +3,7 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 
 import Main.menu.WindowEventHandler;
-import Main.EJC_Interface;
+import ejcMain.EJC_Interface;
 
 public class EJC_RandGrowth extends JFrame implements EJC_Interface
 {

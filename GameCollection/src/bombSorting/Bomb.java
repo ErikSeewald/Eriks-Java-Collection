@@ -1,4 +1,4 @@
-package bomb_sorting;
+package bombSorting;
 
 import java.util.Random;
 

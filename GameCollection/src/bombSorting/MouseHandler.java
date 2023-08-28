@@ -1,4 +1,4 @@
-package bomb_sorting;
+package bombSorting;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

@@ -10,13 +10,13 @@ import java.awt.RenderingHints;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
+import ejcMain.EJC_Util.Direction;
 import infdungeons.Room.Door;
 import infdungeons.enemies.Enemy;
 import infdungeons.enemies.Projectile;
 import infdungeons.enemies.Yellorb;
 import infdungeons.player.Bomb;
 import infdungeons.player.Player;
-import Main.EJC_Util.Direction;
 
 public class Inf_Panel extends JPanel
 {

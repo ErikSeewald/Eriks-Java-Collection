@@ -1,4 +1,4 @@
-package bomb_sorting;
+package bombSorting;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -2,7 +2,7 @@ package infdungeons.enemies;
 
 import java.util.Random;
 
-import Main.EJC_Util;
+import ejcMain.EJC_Util;
 
 public class Projectile extends Enemy
 {

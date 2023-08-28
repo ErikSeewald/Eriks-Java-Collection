@@ -1,8 +1,8 @@
-package Main;
+package ejcMain;
 
 import java.util.ArrayList;
 import bloonShoot.EJC_BloonShoot;
-import bomb_sorting.EJC_BombSorting;
+import bombSorting.EJC_BombSorting;
 import cheeseBreeder.EJC_CheeseBreeder;
 import clothSim.EJC_ClothSim;
 import gravityVectors.EJC_GravityVectors;

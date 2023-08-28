@@ -1,4 +1,4 @@
-package bomb_sorting;
+package bombSorting;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
