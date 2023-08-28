@@ -1,6 +1,7 @@
 package taxCollector;
 
 import java.util.Random;
+
 import Main.EJC_Util;
 import Main.EJC_Util.Direction;
 import taxCollector.mapItem.*;

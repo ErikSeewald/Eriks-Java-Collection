@@ -4,10 +4,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
-import Main.EJC_Interface;
-import Main.menu.WindowEventHandler;
 
-public class EJC_Bomb_Sorting extends JFrame implements EJC_Interface
+import Main.menu.WindowEventHandler;
+import Main.EJC_Interface;
+
+public class EJC_BombSorting extends JFrame implements EJC_Interface
 {
 	private static final long serialVersionUID = 7284705718024953236L;
 	private static final int index = 16;

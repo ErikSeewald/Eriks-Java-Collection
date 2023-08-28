@@ -1,8 +1,8 @@
 package infdungeons.player;
 
-import Main.EJC_Util.Direction;
 import infdungeons.DungeonHandler;
 import infdungeons.Room;
+import Main.EJC_Util.Direction;
 
 public class Player 
 {

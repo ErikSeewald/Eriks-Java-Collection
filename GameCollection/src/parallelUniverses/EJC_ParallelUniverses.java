@@ -6,8 +6,9 @@ import java.awt.event.KeyListener;
 import java.util.HashSet;
 import javax.swing.JFrame;
 import javax.swing.Timer;
-import Main.EJC_Interface;
+
 import Main.menu.WindowEventHandler;
+import Main.EJC_Interface;
 
 public class EJC_ParallelUniverses extends JFrame implements EJC_Interface
 {

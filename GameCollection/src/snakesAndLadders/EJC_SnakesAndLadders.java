@@ -2,8 +2,9 @@ package snakesAndLadders;
 
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
-import Main.EJC_Interface;
+
 import Main.menu.WindowEventHandler;
+import Main.EJC_Interface;
 import snakesAndLadders.gui.SnL_GUI;
 
 public class EJC_SnakesAndLadders extends JFrame implements EJC_Interface

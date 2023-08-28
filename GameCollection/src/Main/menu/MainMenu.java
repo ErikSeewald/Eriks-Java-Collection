@@ -7,26 +7,8 @@ import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import Main.EJC_Factory;
 import Main.EJC_Interface;
-import bloonShoot.EJC_BloonShoot;
-import bomb_sorting.EJC_Bomb_Sorting;
-import cheeseBreeder.EJC_CheeseBreeder;
-import clothSim.EJC_ClothSim;
-import gravityVectors.EJC_GravityVectors;
-import infdungeons.EJC_InfDungeons;
-import insects.EJC_Insects;
-import mouseDodge.EJC_MouseDodge;
-import parallelUniverses.EJC_ParallelUniverses;
-import particles.EJC_Particles;
-import pathfindGame.EJC_Pathfind;
-import pixelCollision.EJC_PixelCollision;
-import randBattle.EJC_RandBattle;
-import randGrowth.EJC_RandGrowth;
-import reflectionDemo.EJC_ReflectionDemo;
-import sidescroller.EJC_Sidescroller;
-import snakesAndLadders.EJC_SnakesAndLadders;
-import sudoku.EJC_Sudoku;
-import taxCollector.EJC_TaxCollector;
 
 public class MainMenu extends JFrame implements MouseListener
 {
@@ -140,38 +122,17 @@ public class MainMenu extends JFrame implements MouseListener
 		}
 	
 	//---------------------------------------GUI_CONTROL---------------------------------------
-	
+		
 	private void openWindow(GButton button)
 	{
 		if (gameOpened[button.index]) {return;}
 		
-		switch (button.index)
+		EJC_Interface newGame = EJC_Factory.buildGame(button.index);
+		if (newGame != null)
 		{
-			case 0: new EJC_Insects().start(eventHandler); break;
-			case 1: new EJC_Particles().start(eventHandler); break;
-			case 2: new SelectionFrame().start("Sierpinski", eventHandler); break;
-			case 3: new EJC_Sudoku().start(eventHandler); break;
-			case 4: new EJC_Pathfind().start(eventHandler); break;
-			case 5: new EJC_ParallelUniverses().start(eventHandler); break;
-			case 6: new EJC_ReflectionDemo().start(eventHandler); break;
-			case 7: new EJC_MouseDodge().start(eventHandler); break;
-			case 8: new EJC_Sidescroller().start(eventHandler); break;
-			case 9: new EJC_PixelCollision().start(eventHandler); break;
-			case 10: new EJC_ClothSim().start(eventHandler); break;
-			case 11: new EJC_GravityVectors().start(eventHandler); break;
-			case 12: new EJC_BloonShoot().start(eventHandler); break;
-			case 13: new EJC_RandBattle().start(eventHandler); break;
-			case 14: new EJC_RandGrowth().start(eventHandler); break;
-			case 15: new EJC_SnakesAndLadders().start(eventHandler); break;
-			case 16: new EJC_Bomb_Sorting().start(eventHandler); break;
-			case 17: new EJC_InfDungeons().start(eventHandler); break;
-			case 18: new EJC_CheeseBreeder().start(eventHandler); break;
-			case 19: new EJC_TaxCollector().start(eventHandler); break;
-			
-			default: return;
+			newGame.start(eventHandler);
+			gameOpened[button.index] = true;
 		}
-		
-		gameOpened[button.index] = true;		
 	}
 	
 	private void buttonAnimation(GButton button, int change)

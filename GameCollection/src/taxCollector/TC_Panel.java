@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+
 import Main.EJC_Util;
 import Main.EJC_Util.Direction;
 import taxCollector.MapHandler.ResetActions;
