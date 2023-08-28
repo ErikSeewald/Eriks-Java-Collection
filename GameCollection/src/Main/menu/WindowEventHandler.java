@@ -2,6 +2,7 @@ package Main.menu;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import Main.EJC_Interface;
 
 public class WindowEventHandler extends WindowAdapter

@@ -3,9 +3,6 @@ package infdungeons;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-
-import Main.EJC_Util;
-import Main.EJC_Util.Direction;
 import infdungeons.Room.Chest;
 import infdungeons.Room.Door;
 import infdungeons.enemies.Enemy;
@@ -14,6 +11,8 @@ import infdungeons.enemies.Reddorb;
 import infdungeons.enemies.Yellorb;
 import infdungeons.player.Bomb;
 import infdungeons.player.Player;
+import Main.EJC_Util;
+import Main.EJC_Util.Direction;
 
 public class DungeonHandler 
 {

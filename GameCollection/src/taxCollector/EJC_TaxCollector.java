@@ -8,10 +8,11 @@ import java.util.HashSet;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.Timer;
-import Main.EJC_Interface;
-import Main.EJC_Util.Direction;
+
 import Main.menu.WindowEventHandler;
+import Main.EJC_Interface;
 import Main.EJC_GUI.EJC_MenuBar;
+import Main.EJC_Util.Direction;
 import taxCollector.MapHandler.ResetActions;
 
 public class EJC_TaxCollector extends JFrame implements EJC_Interface, ActionListener
