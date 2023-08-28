@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
-import Main.EJC_Util;
+import ejcMain.EJC_Util;
 
 public class RB_Panel extends JPanel
 {

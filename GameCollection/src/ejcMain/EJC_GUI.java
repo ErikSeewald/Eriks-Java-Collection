@@ -1,4 +1,4 @@
-package Main;
+package ejcMain;
 
 import java.awt.Color;
 import java.util.HashSet;

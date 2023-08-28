@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.Timer;
 
 import Main.menu.WindowEventHandler;
-import Main.EJC_Interface;
+import ejcMain.EJC_Interface;
 
 public class EJC_InfDungeons extends JFrame implements EJC_Interface
 {

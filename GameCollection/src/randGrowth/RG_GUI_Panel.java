@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import Main.EJC_GUI;
+import ejcMain.EJC_GUI;
 
 public class RG_GUI_Panel extends JPanel implements MouseListener
 {

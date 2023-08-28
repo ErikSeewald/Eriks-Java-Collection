@@ -2,8 +2,8 @@ package taxCollector;
 
 import java.util.Random;
 
-import Main.EJC_Util;
-import Main.EJC_Util.Direction;
+import ejcMain.EJC_Util;
+import ejcMain.EJC_Util.Direction;
 import taxCollector.mapItem.*;
 import taxCollector.mapItem.Road.RoadRail;
 

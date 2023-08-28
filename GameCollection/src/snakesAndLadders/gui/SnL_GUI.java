@@ -9,7 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import Main.EJC_GUI;
+import ejcMain.EJC_GUI;
 import snakesAndLadders.board.BoardHandler;
 
 public class SnL_GUI extends JPanel implements MouseListener

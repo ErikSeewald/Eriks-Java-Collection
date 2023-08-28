@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Main.menu.WindowEventHandler;
-import Main.EJC_Interface;
+import ejcMain.EJC_Interface;
 
 public class EJC_Sierpinski extends JFrame implements EJC_Interface
 {

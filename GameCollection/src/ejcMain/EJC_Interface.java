@@ -1,4 +1,4 @@
-package Main;
+package ejcMain;
 
 import Main.menu.WindowEventHandler;
 

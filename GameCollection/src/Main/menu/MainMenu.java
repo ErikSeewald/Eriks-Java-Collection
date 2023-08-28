@@ -7,8 +7,9 @@ import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import Main.EJC_Factory;
-import Main.EJC_Interface;
+
+import ejcMain.EJC_Factory;
+import ejcMain.EJC_Interface;
 
 public class MainMenu extends JFrame implements MouseListener
 {
@@ -183,7 +184,7 @@ public class MainMenu extends JFrame implements MouseListener
 		buttonAnimation(button, (button.width /25));
 		button.setBackground(b_color_highlight);
 		
-		if (button.getText() != "") 
+		if (!button.getText().isEmpty()) 
 		{changeGuide(button.index);}
 	}
 

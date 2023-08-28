@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 
 import Main.menu.WindowEventHandler;
 import bloonShoot.level.LevelHandler.LoadOperations;
-import Main.EJC_Interface;
+import ejcMain.EJC_Interface;
 
 public class EJC_BloonShoot extends JFrame implements EJC_Interface
 {

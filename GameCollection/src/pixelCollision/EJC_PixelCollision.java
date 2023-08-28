@@ -14,8 +14,8 @@ import javax.swing.JMenuItem;
 import javax.swing.Timer;
 
 import Main.menu.WindowEventHandler;
-import Main.EJC_Interface;
-import Main.EJC_GUI.EJC_MenuBar;
+import ejcMain.EJC_Interface;
+import ejcMain.EJC_GUI.EJC_MenuBar;
 
 public class EJC_PixelCollision extends JFrame implements EJC_Interface, ActionListener
 {
