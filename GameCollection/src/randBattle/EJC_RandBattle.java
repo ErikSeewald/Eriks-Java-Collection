@@ -4,10 +4,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 
-import Main.menu.WindowEventHandler;
-import ejcMain.EJC_Interface;
+import ejcMain.EJC_Game;
+import ejcMain.EJC_WindowEventHandler;
 
-public class EJC_RandBattle extends JFrame implements EJC_Interface
+public class EJC_RandBattle extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = 411705531616331949L;
 	private static final int index = 13;
@@ -15,7 +15,7 @@ public class EJC_RandBattle extends JFrame implements EJC_Interface
 	private RB_Panel panel;
 	
 	@Override
-	public void start(WindowEventHandler eventHandler)
+	public void start(EJC_WindowEventHandler eventHandler)
 	{
 		this.addWindowListener(eventHandler);
 		this.setTitle("Rand Battle");

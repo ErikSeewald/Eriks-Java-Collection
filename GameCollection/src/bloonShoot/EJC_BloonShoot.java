@@ -3,11 +3,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 
-import Main.menu.WindowEventHandler;
 import bloonShoot.level.LevelHandler.LoadOperations;
-import ejcMain.EJC_Interface;
+import ejcMain.EJC_Game;
+import ejcMain.EJC_WindowEventHandler;
 
-public class EJC_BloonShoot extends JFrame implements EJC_Interface
+public class EJC_BloonShoot extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = -1952542729679771029L;
 	private static final int index = 12;
@@ -15,7 +15,7 @@ public class EJC_BloonShoot extends JFrame implements EJC_Interface
 	private BlS_Panel panel;
 
 	@Override
-	public void start(WindowEventHandler eventHandler)
+	public void start(EJC_WindowEventHandler eventHandler)
 	{
 		this.addWindowListener(eventHandler);
 		this.setTitle("Bloon Shooting");

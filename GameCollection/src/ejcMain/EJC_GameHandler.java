@@ -1,6 +1,7 @@
 package ejcMain;
 
 import java.util.ArrayList;
+
 import bloonShoot.EJC_BloonShoot;
 import bombSorting.EJC_BombSorting;
 import cheeseBreeder.EJC_CheeseBreeder;
@@ -22,14 +23,14 @@ import snakesAndLadders.EJC_SnakesAndLadders;
 import sudoku.EJC_Sudoku;
 import taxCollector.EJC_TaxCollector;
 
-public class EJC_Factory
+public class EJC_GameHandler 
 {
-	private static final ArrayList<Class<? extends EJC_Interface>> games = new ArrayList<>();
+	private static final ArrayList<Class<? extends EJC_Game>> games = new ArrayList<>();
 	static
 	{
 		games.add(EJC_Insects.class); 
 		games.add(EJC_Particles.class); 
-		games.add(EJC_Sierpinski.class); 
+		games.add(EJC_Sierpinski.class);
 		games.add(EJC_Sudoku.class);
 		
 		games.add(EJC_Pathfind.class); 
@@ -52,15 +53,24 @@ public class EJC_Factory
 		games.add(EJC_CheeseBreeder.class); 
 		games.add(EJC_TaxCollector.class);
 	}
-    
-    public static EJC_Interface buildGame(int index) 
+	
+	private static EJC_WindowEventHandler eventHandler = new EJC_WindowEventHandler();
+	private static boolean[] gameOpened = new boolean[24];
+	
+	public static void startGame(int index) 
     {
-    	if (index >= games.size()) {return null;}
+    	if (index >= games.size() || gameOpened[index]) {return;}
         try 
         {
-			return games.get(index).getConstructor().newInstance();
+			games.get(index).getConstructor().newInstance().start(eventHandler);
+			gameOpened[index] = true;
 		} 
         catch (Exception e) {System.out.println("FATAL ERROR: Failed to construct game instance");}
-        return null;
     }
+	
+	public static void closeGame(EJC_Game game)
+	{
+		game.stop();
+		gameOpened[game.getIndex()] = false;
+	}
 }

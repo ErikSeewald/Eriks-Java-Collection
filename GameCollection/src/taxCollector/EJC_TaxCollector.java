@@ -9,13 +9,13 @@ import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.Timer;
 
-import Main.menu.WindowEventHandler;
-import ejcMain.EJC_Interface;
+import ejcMain.EJC_Game;
+import ejcMain.EJC_WindowEventHandler;
 import ejcMain.EJC_GUI.EJC_MenuBar;
 import ejcMain.EJC_Util.Direction;
 import taxCollector.MapHandler.ResetActions;
 
-public class EJC_TaxCollector extends JFrame implements EJC_Interface, ActionListener
+public class EJC_TaxCollector extends JFrame implements EJC_Game, ActionListener
 {
 	private static final long serialVersionUID = -5389438519379536388L;
 	private static final int index = 19;
@@ -26,7 +26,7 @@ public class EJC_TaxCollector extends JFrame implements EJC_Interface, ActionLis
 	private JMenuItem seedItem;
 	
 	@Override
-	public void start(WindowEventHandler eventHandler) 
+	public void start(EJC_WindowEventHandler eventHandler) 
 	{
 		this.addWindowListener(eventHandler);
 		this.setTitle("Tax Collector");

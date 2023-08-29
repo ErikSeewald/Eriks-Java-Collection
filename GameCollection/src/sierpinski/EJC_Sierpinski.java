@@ -8,10 +8,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import Main.menu.WindowEventHandler;
-import ejcMain.EJC_Interface;
+import ejcMain.EJC_Game;
+import ejcMain.EJC_WindowEventHandler;
 
-public class EJC_Sierpinski extends JFrame implements EJC_Interface
+public class EJC_Sierpinski extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = 5764966202240396499L;
 	private static final int index = 2;
@@ -21,7 +21,7 @@ public class EJC_Sierpinski extends JFrame implements EJC_Interface
 	private JFrame instance = this;
 	
 	@Override
-	public void start(WindowEventHandler eventHandler)
+	public void start(EJC_WindowEventHandler eventHandler)
 	{	
 		this.setTitle("Sierpinski");
 		this.addWindowListener(eventHandler);

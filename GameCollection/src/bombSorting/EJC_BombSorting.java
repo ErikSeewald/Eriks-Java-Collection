@@ -5,10 +5,10 @@ import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 
-import Main.menu.WindowEventHandler;
-import ejcMain.EJC_Interface;
+import ejcMain.EJC_Game;
+import ejcMain.EJC_WindowEventHandler;
 
-public class EJC_BombSorting extends JFrame implements EJC_Interface
+public class EJC_BombSorting extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = 7284705718024953236L;
 	private static final int index = 16;
@@ -16,7 +16,7 @@ public class EJC_BombSorting extends JFrame implements EJC_Interface
 	private Sort_Panel panel;
 	
 	@Override
-	public void start(WindowEventHandler eventHandler)
+	public void start(EJC_WindowEventHandler eventHandler)
 	{
 		this.addWindowListener(eventHandler);
 		this.setTitle("Bomb Sorting");

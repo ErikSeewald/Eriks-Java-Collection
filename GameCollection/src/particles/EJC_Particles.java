@@ -3,10 +3,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 
-import Main.menu.WindowEventHandler;
-import ejcMain.EJC_Interface;
+import ejcMain.EJC_Game;
+import ejcMain.EJC_WindowEventHandler;
 
-public class EJC_Particles extends JFrame implements EJC_Interface
+public class EJC_Particles extends JFrame implements EJC_Game
 {	
 	private static final long serialVersionUID = -1650331621506133111L;
 	private static final int index = 1;
@@ -14,7 +14,7 @@ public class EJC_Particles extends JFrame implements EJC_Interface
 	private ParticlesPanel panel;
 	
 	@Override
-	public void start(WindowEventHandler eventHandler)
+	public void start(EJC_WindowEventHandler eventHandler)
 	{
 		this.addWindowListener(eventHandler);
 		panel = new ParticlesPanel();

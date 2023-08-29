@@ -7,11 +7,11 @@ import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 
-import Main.menu.WindowEventHandler;
-import ejcMain.EJC_Interface;
+import ejcMain.EJC_Game;
+import ejcMain.EJC_WindowEventHandler;
 import ejcMain.EJC_GUI.EJC_MenuBar;
 
-public class EJC_CheeseBreeder extends JFrame implements EJC_Interface, ActionListener
+public class EJC_CheeseBreeder extends JFrame implements EJC_Game, ActionListener
 {
 	private static final long serialVersionUID = 4927061210031934469L;
 	private static final int index = 18;
@@ -27,7 +27,7 @@ public class EJC_CheeseBreeder extends JFrame implements EJC_Interface, ActionLi
 	};
 	
 	@Override
-	public void start(WindowEventHandler eventHandler) 
+	public void start(EJC_WindowEventHandler eventHandler) 
 	{
 		this.addWindowListener(eventHandler);
 		this.setTitle("Cheese Breeder");

@@ -1,4 +1,4 @@
-package Main.menu;
+package ejcMain.menu;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -7,9 +7,7 @@ import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
-import ejcMain.EJC_Factory;
-import ejcMain.EJC_Interface;
+import ejcMain.EJC_GameHandler;
 
 public class MainMenu extends JFrame implements MouseListener
 {
@@ -35,9 +33,6 @@ public class MainMenu extends JFrame implements MouseListener
 	//---------------------------------------INITIALIZATION---------------------------------------
 	
 		private int resolution = 700;
-		
-		private WindowEventHandler eventHandler = new WindowEventHandler(this);
-		private boolean[] gameOpened = new boolean[24];
 		
 		//BUTTONS
 		private class GButton extends JLabel
@@ -123,24 +118,13 @@ public class MainMenu extends JFrame implements MouseListener
 		}
 	
 	//---------------------------------------GUI_CONTROL---------------------------------------
-		
-	private void openWindow(GButton button)
-	{
-		if (gameOpened[button.index]) {return;}
-		
-		EJC_Interface newGame = EJC_Factory.buildGame(button.index);
-		if (newGame != null)
-		{
-			newGame.start(eventHandler);
-			gameOpened[button.index] = true;
-		}
-	}
 	
 	private void buttonAnimation(GButton button, int change)
 	{
-		if ((change > 0 && button.sizeIncreased) || (change < 0 && !button.sizeIncreased)) {return;} //don't go beyond max/min size
-		button.sizeIncreased = change > 0;
+		if ((change > 0 && button.sizeIncreased) || (change < 0 && !button.sizeIncreased)) 
+		{return;} //don't go beyond max/min size
 		
+		button.sizeIncreased = change > 0;
 		button.setBounds
 		(
 		 button.getX()-(change/2), button.getY()-(change/2),
@@ -163,7 +147,7 @@ public class MainMenu extends JFrame implements MouseListener
 		buttonAnimation(button, -(button.width /25));
 		button.setBackground(b_color_highlight);
 		
-		openWindow(button);
+		EJC_GameHandler.startGame(button.index);
 	}
 	
 	@Override
@@ -200,14 +184,6 @@ public class MainMenu extends JFrame implements MouseListener
 	{
 		resolution+=amount;
 		initialize(MenuControl.sizeChange);
-		System.gc();
-	}
-	
-	public void closeGame(EJC_Interface game)
-	{
-		game.stop();
-		gameOpened[game.getIndex()] = false;
-		game = null;
 		System.gc();
 	}
 }
