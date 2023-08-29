@@ -9,11 +9,11 @@ import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.Timer;
 
-import Main.menu.WindowEventHandler;
-import ejcMain.EJC_Interface;
+import ejcMain.EJC_Game;
+import ejcMain.EJC_WindowEventHandler;
 import ejcMain.EJC_GUI.EJC_MenuBar;
 
-public class EJC_Sidescroller extends JFrame implements ActionListener, EJC_Interface
+public class EJC_Sidescroller extends JFrame implements ActionListener, EJC_Game
 {	
 	private static final long serialVersionUID = -7018763596595532898L;
 	private static final int index = 8;
@@ -24,7 +24,7 @@ public class EJC_Sidescroller extends JFrame implements ActionListener, EJC_Inte
 	private HashSet<Integer> pressedKeys;
 	private JMenuItem seedItem;
 	
-	public void start(WindowEventHandler eventHandler) 
+	public void start(EJC_WindowEventHandler eventHandler) 
 	{
 		this.addWindowListener(eventHandler);
 		this.setTitle("Sidescroller");

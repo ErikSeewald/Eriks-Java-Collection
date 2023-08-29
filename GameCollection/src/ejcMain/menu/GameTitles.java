@@ -1,4 +1,4 @@
-package Main.menu;
+package ejcMain.menu;
 
 public enum GameTitles {
 	

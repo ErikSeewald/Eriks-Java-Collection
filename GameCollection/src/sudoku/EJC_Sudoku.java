@@ -3,17 +3,17 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 
-import Main.menu.WindowEventHandler;
-import ejcMain.EJC_Interface;
+import ejcMain.EJC_Game;
+import ejcMain.EJC_WindowEventHandler;
 
-public class EJC_Sudoku extends JFrame implements EJC_Interface
+public class EJC_Sudoku extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = -7551546838805061960L;
 	private static final int index = 3;
 	
 	private SudokuPanel panel;
 	
-	public void start(WindowEventHandler eventHandler) 
+	public void start(EJC_WindowEventHandler eventHandler) 
 	{
 		this.setTitle("Sudoku");
 		this.setResizable(false);

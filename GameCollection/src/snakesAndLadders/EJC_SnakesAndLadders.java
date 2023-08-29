@@ -3,11 +3,11 @@ package snakesAndLadders;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 
-import Main.menu.WindowEventHandler;
-import ejcMain.EJC_Interface;
+import ejcMain.EJC_Game;
+import ejcMain.EJC_WindowEventHandler;
 import snakesAndLadders.gui.SnL_GUI;
 
-public class EJC_SnakesAndLadders extends JFrame implements EJC_Interface
+public class EJC_SnakesAndLadders extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = 7284705718024953236L;
 	private static final int index = 15;
@@ -16,7 +16,7 @@ public class EJC_SnakesAndLadders extends JFrame implements EJC_Interface
 	private SnL_GUI GUI;
 	
 	@Override
-	public void start(WindowEventHandler eventHandler)
+	public void start(EJC_WindowEventHandler eventHandler)
 	{
 		this.addWindowListener(eventHandler);
 		this.setTitle("Snakes and Ladders");

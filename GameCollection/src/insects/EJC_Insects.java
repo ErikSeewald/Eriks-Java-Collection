@@ -2,10 +2,11 @@ package insects;
 
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
-import Main.menu.WindowEventHandler;
-import ejcMain.EJC_Interface;
 
-public class EJC_Insects extends JFrame implements EJC_Interface
+import ejcMain.EJC_Game;
+import ejcMain.EJC_WindowEventHandler;
+
+public class EJC_Insects extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = -3887848730761835772L;
 	private static final int index = 0;
@@ -14,7 +15,7 @@ public class EJC_Insects extends JFrame implements EJC_Interface
 	private GUI GUI;
 	
 	@Override
-	public void start(WindowEventHandler eventHandler)
+	public void start(EJC_WindowEventHandler eventHandler)
 	{
 		this.addWindowListener(eventHandler);
 		panel = new InsectsPanel();

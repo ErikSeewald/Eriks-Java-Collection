@@ -1,7 +1,6 @@
-/Main/
-/sierpinski/
-/bomb_sorting/
+/ejcMain/
 /bloonShoot/
+/bombSorting/
 /cheeseBreeder/
 /clothSim/
 /gravityVectors/
@@ -16,8 +15,7 @@
 /randGrowth/
 /reflectionDemo/
 /sidescroller/
+/sierpinski/
 /snakesAndLadders/
 /sudoku/
 /taxCollector/
-/ejcMain/
-/bombSorting/

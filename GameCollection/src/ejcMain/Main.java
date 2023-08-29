@@ -2,7 +2,7 @@ package ejcMain;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import Main.menu.MainMenu;
+import ejcMain.menu.MainMenu;
 
 public class Main 
 {

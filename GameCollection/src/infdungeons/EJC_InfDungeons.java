@@ -8,10 +8,10 @@ import java.util.HashSet;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
-import Main.menu.WindowEventHandler;
-import ejcMain.EJC_Interface;
+import ejcMain.EJC_Game;
+import ejcMain.EJC_WindowEventHandler;
 
-public class EJC_InfDungeons extends JFrame implements EJC_Interface
+public class EJC_InfDungeons extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = 4927061210031943469L;
 	private static final int index = 17;
@@ -21,7 +21,7 @@ public class EJC_InfDungeons extends JFrame implements EJC_Interface
 	private Timer timer;
 	
 	@Override
-	public void start(WindowEventHandler eventHandler)
+	public void start(EJC_WindowEventHandler eventHandler)
 	{	
 		this.addWindowListener(eventHandler);
 		this.setTitle("Inf Dungeons");

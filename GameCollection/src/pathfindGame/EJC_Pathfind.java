@@ -6,13 +6,13 @@ import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 
-import Main.menu.WindowEventHandler;
-import ejcMain.EJC_Interface;
+import ejcMain.EJC_Game;
+import ejcMain.EJC_WindowEventHandler;
 import ejcMain.EJC_GUI.EJC_MenuBar;
 import pathfindGame.PathfindPanel.ControlBooleans;
 
 
-public class EJC_Pathfind extends JFrame implements ActionListener, EJC_Interface
+public class EJC_Pathfind extends JFrame implements ActionListener, EJC_Game
 {
 	private static final long serialVersionUID = 386670748457681736L;
 	private static final int index = 4;
@@ -20,7 +20,7 @@ public class EJC_Pathfind extends JFrame implements ActionListener, EJC_Interfac
 	private JMenuItem seedItem;
 	private PathfindPanel panel;
 	
-	public void start(WindowEventHandler eventHandler)
+	public void start(EJC_WindowEventHandler eventHandler)
 	{
 		this.addWindowListener(eventHandler);
 		this.setTitle("Pathfind");

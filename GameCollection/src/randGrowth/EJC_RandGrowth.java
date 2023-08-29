@@ -2,10 +2,10 @@ package randGrowth;
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 
-import Main.menu.WindowEventHandler;
-import ejcMain.EJC_Interface;
+import ejcMain.EJC_Game;
+import ejcMain.EJC_WindowEventHandler;
 
-public class EJC_RandGrowth extends JFrame implements EJC_Interface
+public class EJC_RandGrowth extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = -7593694436385018187L;
 	private static final int index = 14;
@@ -14,7 +14,7 @@ public class EJC_RandGrowth extends JFrame implements EJC_Interface
 	private RG_GUI_Panel GUIpanel;
 	
 	@Override
-	public void start(WindowEventHandler eventHandler)
+	public void start(EJC_WindowEventHandler eventHandler)
 	{
 		this.addWindowListener(eventHandler);
 		this.setTitle("Rand Growth");
