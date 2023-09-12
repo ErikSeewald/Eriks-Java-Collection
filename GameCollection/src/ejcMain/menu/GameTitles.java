@@ -178,9 +178,9 @@ public enum GameTitles {
 					"RAND BATTLE",
 					"Fighters with random sizes, hp, damage, movement speed and projectile speed",
 					"are generated. They pick a random target and try to shoot it until it is",
-					"dead, then they pick a new one. After somet time a new batch is born",
-					"with the genes of the remaining Fighters. Keys:",
-					"S - Show stats | H - Only show Health",
+					"dead, then they pick a new one. After some time a new batch is born",
+					"with the genes of the remaining Fighters and a bit of mutation. The wait time",
+					"for new batches increases each time. S - Show stats | H - Only show Health",
 			}
 	),
 	

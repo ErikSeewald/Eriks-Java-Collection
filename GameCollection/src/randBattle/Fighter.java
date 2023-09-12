@@ -16,7 +16,6 @@ public class Fighter
 	private double[] shootVec = new double[2];
 	private double[] moveVec = new double[2];
 	
-	int size;
 	double moveSpeed;
 	double projectileSpeed;
 	int damage;
@@ -104,5 +103,10 @@ public class Fighter
 		projectile_x = x;
 		projectile_y = y;
 		setShootVect();
+	}
+	
+	public int getSize()
+	{
+		return this.startingHealth / 10;
 	}
 }

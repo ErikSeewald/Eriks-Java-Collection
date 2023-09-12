@@ -58,7 +58,7 @@ public class RB_Panel extends JPanel
 			if (!f.isAlive) {continue;}
 			
 			g2D.setColor(f.damageFrames == 0 ? npc_col : damage_col);
-			g2D.fillRect((int) f.x, (int) f.y, f.size, f.size);
+			g2D.fillRect((int) f.x, (int) f.y, f.getSize(), f.getSize());
 			
 			g2D.setColor(Color.red);
 			g2D.fillRect((int) f.projectile_x+2, (int) f.projectile_y+2, 4, 4);

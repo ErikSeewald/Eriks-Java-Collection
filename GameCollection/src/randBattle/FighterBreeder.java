@@ -28,11 +28,10 @@ public class FighterBreeder
 	{
 		Fighter child = constructChildBase();
 		
-		child.size = random.nextInt(20)+15;
 		child.moveSpeed = random.nextDouble(2.0)+0.2;
 		child.projectileSpeed = random.nextDouble(5)+5;
-		child.damage = random.nextInt(90)+10;
-		child.startingHealth = child.health = random.nextInt(900)+100;
+		child.damage = random.nextInt(40)+10;
+		child.startingHealth = child.health = random.nextInt(600)+100;
 		
 		return child;
 	}
@@ -41,13 +40,30 @@ public class FighterBreeder
 	{
 		Fighter child = constructChildBase();
 		
-		child.size = (int) mixAttributes(p1.size, p2.size);
-		child.moveSpeed = mixAttributes(p1.moveSpeed, p2.moveSpeed);
-		child.projectileSpeed = mixAttributes(p1.projectileSpeed, p2.projectileSpeed);
-		child.damage = (int) mixAttributes(p1.damage, p2.damage);
-		child.startingHealth = child.health = (int) mixAttributes(p1.health, p2.health);
+		//MOVE SPEED
+		double moveSpeed = mixAttributes(p1.moveSpeed, p2.moveSpeed);
+		child.moveSpeed = mutate(moveSpeed);
+		
+		//PROJECTILE SPEED
+		double projectileSpeed = mixAttributes(p1.projectileSpeed, p2.projectileSpeed);
+		child.projectileSpeed = mutate(projectileSpeed);
+		
+		//DAMAGE
+		int damage = (int) mixAttributes(p1.damage, p2.damage);
+		child.damage = (int) mutate(damage);
+		
+		//HEALTH
+		int health = (int) mixAttributes(p1.startingHealth, p2.startingHealth);
+		child.startingHealth = child.health = (int) mutate(health);
 		
 		return child;
+	}
+	
+	private double mutate(double a)
+	{
+		double m = a + random.nextDouble(a/8) - a/16;
+		if (m <= 0) {return a;}
+		return m;
 	}
 	
 	private double mixAttributes(double a1, double a2)
