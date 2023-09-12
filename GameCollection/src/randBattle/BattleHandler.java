@@ -9,7 +9,7 @@ import javax.swing.Timer;
 public class BattleHandler implements ActionListener
 {	
 	private static final int FIGHTER_COUNT = 30;
-	private static final int SPAWN_TIME = 500;
+	private int SPAWN_TIME = 500;
 	private int time_passed = 0;
 	private ArrayList<Fighter> fighters;
 	
@@ -66,6 +66,7 @@ public class BattleHandler implements ActionListener
 		if (time_passed >= SPAWN_TIME)
 		{
 			time_passed = 0;
+			SPAWN_TIME += 100;
 			spawnNewBatch();
 		}
 		manageBattle();
@@ -98,8 +99,8 @@ public class BattleHandler implements ActionListener
 		{
 			if (hit == fighter) {continue;}
 			
-			if (fighter.projectile_x > hit.x && fighter.projectile_x < hit.x+hit.size
-				&& fighter.projectile_y > hit.y && fighter.projectile_y < hit.y+hit.size)
+			if (fighter.projectile_x > hit.x && fighter.projectile_x < hit.x+hit.getSize()
+				&& fighter.projectile_y > hit.y && fighter.projectile_y < hit.y+hit.getSize())
 			{return hit;}
 		}
 		return null;
