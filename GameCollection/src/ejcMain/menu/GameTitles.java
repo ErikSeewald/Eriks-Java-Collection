@@ -176,10 +176,10 @@ public enum GameTitles {
 			new String[] 
 			{
 					"RAND BATTLE",
-					"NPCs with random sizes, hp, damage, movement speed and projectile speed",
+					"Fighters with random sizes, hp, damage, movement speed and projectile speed",
 					"are generated. They pick a random target and try to shoot it until it is",
-					"dead, then they pick a new one. Who will be victorious?",
-					"Keys:",
+					"dead, then they pick a new one. After each battle a new batch is born",
+					"with the genes of the last 10 remaining Fighters. Keys:",
 					"R - Restart | S - Show stats | H - Only show Health",
 			}
 	),
