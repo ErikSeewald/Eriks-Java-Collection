@@ -9,8 +9,9 @@ import javax.swing.Timer;
 public class BattleHandler implements ActionListener
 {	
 	private static final int FIGHTER_COUNT = 30;
+	private static final int SPAWN_TIME = 500;
+	private int time_passed = 0;
 	private ArrayList<Fighter> fighters;
-	private boolean finished;
 	
 	private Timer timer;
 	private Random random;
@@ -28,35 +29,26 @@ public class BattleHandler implements ActionListener
 		{
 			fighters.add(breeder.breedParentless());
 		}
+		
+		for (Fighter f : fighters)
+		{setNewTarget(f);}
+		timer = new Timer(16, this);
+		timer.start();
 	}
 	
-	public void restart()
+	private void spawnNewBatch()
 	{
-		//FIGHTERS
-		if (fighters.size() != FIGHTER_COUNT) // not first battle -> breed winners
+		ArrayList<Fighter> oldFighters = new ArrayList<>(fighters);
+		
+		for (int i = 0; i < FIGHTER_COUNT - oldFighters.size(); i++)
 		{
-			ArrayList<Fighter> oldFighters = new ArrayList<>(fighters);
-			fighters.removeAll(oldFighters);
-			
-			for (int i = 0; i < FIGHTER_COUNT; i++)
-			{
-				Fighter p1 = oldFighters.get(random.nextInt(fighters.size()));
-				Fighter p2 = oldFighters.get(random.nextInt(fighters.size()));
-				fighters.add(breeder.breedParents(p1, p2));
-			}
+			Fighter p1 = oldFighters.get(random.nextInt(oldFighters.size()));
+			Fighter p2 = oldFighters.get(random.nextInt(oldFighters.size()));
+			fighters.add(breeder.breedParents(p1, p2));
 		}
 		
 		for (Fighter f : fighters)
-		{
-			setNewTarget(f);
-		}
-		
-		//TIMER
-		if (timer != null) {timer.stop();}
-		timer = new Timer(16, this);
-		timer.start();
-		
-		finished = false;
+		{setNewTarget(f);}
 	}
 	
 	private void setNewTarget(Fighter fighter)
@@ -70,14 +62,18 @@ public class BattleHandler implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
+		time_passed++;
+		if (time_passed >= SPAWN_TIME)
+		{
+			time_passed = 0;
+			spawnNewBatch();
+		}
 		manageBattle();
 		panel.repaint();
 	}
 	
 	private void manageBattle()
-	{
-		if (finishCheck()) {timer.stop(); return;}
-		
+	{	
 		for (Fighter f : fighters)
 		{
 			if (!f.isAlive) {continue;}
@@ -93,14 +89,7 @@ public class BattleHandler implements ActionListener
 			{hitFighter.takeDamage(f.damage);}		
 		}
 		
-		//remove dead fighters except for last 10
-		//(can be less if more are eliminated in a single call - but there is no strict need
-		// for it to be exactly 10)
-		if (fighters.size() > 10)
-		{
-			fighters.removeIf(f -> !f.isAlive);
-		}
-		
+		fighters.removeIf(f -> !f.isAlive);
 	}
 		
 	private Fighter getHitFighter(Fighter fighter)
@@ -116,22 +105,7 @@ public class BattleHandler implements ActionListener
 		return null;
 	}
 	
-	private boolean finishCheck()
-	{
-		int aliveCount = 0;
-		for (Fighter f : fighters)
-		{
-			if (f.isAlive)
-			{++aliveCount;}
-		}
-		
-		finished = aliveCount < 2;		
-		return finished;
-	}
-	
-	public void stopTimer() {timer.stop();}
+	public void stop() {timer.stop();}
 	
 	public ArrayList<Fighter> getNPCs() {return fighters;}
-	
-	public boolean hasFinished() {return finished;}
 }

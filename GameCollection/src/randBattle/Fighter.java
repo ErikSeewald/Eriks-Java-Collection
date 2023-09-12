@@ -1,6 +1,6 @@
 package randBattle;
 
-import infdungeons.enemies.Projectile;
+import java.util.Random;
 
 public class Fighter 
 {
@@ -22,6 +22,11 @@ public class Fighter
 	int damage;
 	int health;
 	int startingHealth;
+	
+	private Random random;
+	
+	public Fighter(Random random)
+	{this.random = random;}
 	
 	public void move()
 	{	
@@ -83,9 +88,8 @@ public class Fighter
 	
 	public void updateGoal()
 	{
-		goalX = (int) (target.x + projectile_y / 10);
-		goalY = (int) (target.y + projectile_x / 10);
-		
+		goalX = random.nextInt(RB_Panel.PANEL_WIDTH);
+		goalY = random.nextInt(RB_Panel.PANEL_HEIGHT);
 
 		setMoveVect();
 	}
