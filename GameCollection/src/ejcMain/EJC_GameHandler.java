@@ -65,7 +65,7 @@ public class EJC_GameHandler
 			games.get(index).getConstructor().newInstance().start(eventHandler);
 			gameOpened[index] = true;
 		} 
-        catch (Exception e) {System.out.println("FATAL ERROR: Failed to construct game instance");}
+        catch (Exception e) {System.out.println("FATAL ERROR: Failed to construct game instance"); e.printStackTrace();}
     }
 	
 	public static void closeGame(EJC_Game game)

@@ -2,36 +2,53 @@ package randBattle;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.Timer;
 
 public class BattleHandler implements ActionListener
 {	
-	private int NPC_COUNT = 30;
-	private NPC[] NPCs;
+	private static final int FIGHTER_COUNT = 30;
+	private ArrayList<Fighter> fighters;
 	private boolean finished;
 	
 	private Timer timer;
 	private Random random;
 	private RB_Panel panel;
+	private FighterBreeder breeder;
 	
 	BattleHandler(RB_Panel panel, int PANEL_WIDTH, int PANEL_HEIGHT)
 	{
 		this.panel = panel;
 		random = new Random();
+		breeder = new FighterBreeder(panel);
 		
-		NPCs = new NPC[NPC_COUNT];
-		for (int i = 0; i < NPC_COUNT; i++)
-		{NPCs[i] = new NPC(PANEL_WIDTH,PANEL_HEIGHT, random);}
+		fighters = new ArrayList<>();
+		for (int i = 0; i < FIGHTER_COUNT; i++)
+		{
+			fighters.add(breeder.breedParentless());
+		}
 	}
 	
-	public void start()
+	public void restart()
 	{
-		//NPCS
-		for (NPC npc : NPCs)
+		//FIGHTERS
+		if (fighters.size() != FIGHTER_COUNT) // not first battle -> breed winners
 		{
-			npc.reset();
-			setNewTarget(npc);
+			ArrayList<Fighter> oldFighters = new ArrayList<>(fighters);
+			fighters.removeAll(oldFighters);
+			
+			for (int i = 0; i < FIGHTER_COUNT; i++)
+			{
+				Fighter p1 = oldFighters.get(random.nextInt(fighters.size()));
+				Fighter p2 = oldFighters.get(random.nextInt(fighters.size()));
+				fighters.add(breeder.breedParents(p1, p2));
+			}
+		}
+		
+		for (Fighter f : fighters)
+		{
+			setNewTarget(f);
 		}
 		
 		//TIMER
@@ -42,12 +59,12 @@ public class BattleHandler implements ActionListener
 		finished = false;
 	}
 	
-	private void setNewTarget(NPC npc)
+	private void setNewTarget(Fighter fighter)
 	{
-		NPC target;
-		do {target = NPCs[random.nextInt(NPC_COUNT)];}
-		while (target == npc);
-		npc.setTarget(target);
+		Fighter target;
+		do {target = fighters.get(random.nextInt(fighters.size()));}
+		while (target == fighter);
+		fighter.setTarget(target);
 	}
 
 	@Override
@@ -61,31 +78,40 @@ public class BattleHandler implements ActionListener
 	{
 		if (finishCheck()) {timer.stop(); return;}
 		
-		for (NPC npc : NPCs)
+		for (Fighter f : fighters)
 		{
-			if (!npc.isAlive) {continue;}
+			if (!f.isAlive) {continue;}
 			
-			if (!npc.getTarget().isAlive) 
-			{setNewTarget(npc);}
+			if (!f.getTarget().isAlive) 
+			{setNewTarget(f);}
 
-			npc.move();
-			npc.shoot();
+			f.move();
+			f.shoot();
 
-			NPC hitNPC = getHitNPC(npc);
-			if (hitNPC != null)
-			{hitNPC.takeDamage(npc.DAMAGE);}		
-		}	
+			Fighter hitFighter = getHitFighter(f);
+			if (hitFighter != null)
+			{hitFighter.takeDamage(f.damage);}		
+		}
+		
+		//remove dead fighters except for last 10
+		//(can be less if more are eliminated in a single call - but there is no strict need
+		// for it to be exactly 10)
+		if (fighters.size() > 10)
+		{
+			fighters.removeIf(f -> !f.isAlive);
+		}
+		
 	}
 		
-	private NPC getHitNPC(NPC npc)
+	private Fighter getHitFighter(Fighter fighter)
 	{	
-		for (NPC hitNPC : NPCs)
+		for (Fighter hit : fighters)
 		{
-			if (hitNPC == npc) {continue;}
+			if (hit == fighter) {continue;}
 			
-			if (npc.PROJECTILE_X > hitNPC.x && npc.PROJECTILE_X < hitNPC.x+hitNPC.SIZE
-				&& npc.PROJECTILE_Y > hitNPC.y && npc.PROJECTILE_Y < hitNPC.y+hitNPC.SIZE)
-			{return hitNPC;}
+			if (fighter.projectile_x > hit.x && fighter.projectile_x < hit.x+hit.size
+				&& fighter.projectile_y > hit.y && fighter.projectile_y < hit.y+hit.size)
+			{return hit;}
 		}
 		return null;
 	}
@@ -93,9 +119,9 @@ public class BattleHandler implements ActionListener
 	private boolean finishCheck()
 	{
 		int aliveCount = 0;
-		for (NPC npc : NPCs)
+		for (Fighter f : fighters)
 		{
-			if (npc.isAlive)
+			if (f.isAlive)
 			{++aliveCount;}
 		}
 		
@@ -105,7 +131,7 @@ public class BattleHandler implements ActionListener
 	
 	public void stopTimer() {timer.stop();}
 	
-	public NPC[] getNPCs() {return NPCs;}
+	public ArrayList<Fighter> getNPCs() {return fighters;}
 	
 	public boolean hasFinished() {return finished;}
 }

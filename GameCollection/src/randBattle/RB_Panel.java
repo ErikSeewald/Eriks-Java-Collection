@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+
 import javax.swing.JPanel;
 
 import ejcMain.EJC_Util;
@@ -12,8 +14,8 @@ public class RB_Panel extends JPanel
 {
 	private static final long serialVersionUID = -8706000019243206523L;
 	
-	private int PANEL_WIDTH = 1320;
-	private int PANEL_HEIGHT = (int) (PANEL_WIDTH *0.6);
+	public static final int PANEL_WIDTH = 1320;
+	public static final int PANEL_HEIGHT = (int) (PANEL_WIDTH *0.6);
 	
 	private boolean showStats = false;
 	private boolean onlyShowHealth = false;
@@ -29,7 +31,7 @@ public class RB_Panel extends JPanel
 	
 	public void start()
 	{
-		battleHandler.start();
+		battleHandler.restart();
 		repaint();
 	}
 	
@@ -56,17 +58,17 @@ public class RB_Panel extends JPanel
 		g2D.setPaint(background_col);
 		g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
 		
-		//NPCs
-		NPC[] NPCs = battleHandler.getNPCs();
-		for (NPC npc : NPCs)
+		//Fighters
+		ArrayList<Fighter> fighters = battleHandler.getNPCs();
+		for (Fighter f : fighters)
 		{
-			if (!npc.isAlive) {continue;}
+			if (!f.isAlive) {continue;}
 			
-			g2D.setColor(npc.damageFrames == 0 ? npc_col : damage_col);
-			g2D.fillRect((int) npc.x, (int) npc.y, npc.SIZE, npc.SIZE);
+			g2D.setColor(f.damageFrames == 0 ? npc_col : damage_col);
+			g2D.fillRect((int) f.x, (int) f.y, f.size, f.size);
 			
 			g2D.setColor(Color.red);
-			g2D.fillRect((int) npc.PROJECTILE_X+2, (int) npc.PROJECTILE_Y+2, 4, 4);
+			g2D.fillRect((int) f.projectile_x+2, (int) f.projectile_y+2, 4, 4);
 		}
 		
 		if (battleHandler.hasFinished()) 
@@ -80,17 +82,17 @@ public class RB_Panel extends JPanel
 		
 		g2D.setPaint(Color.white);
 		g2D.setFont(new Font("", Font.BOLD, 9));
-		for (NPC npc : NPCs)
+		for (Fighter f : fighters)
 		{
-			if (!npc.isAlive) {continue;}
+			if (!f.isAlive) {continue;}
 			
-			g2D.drawString(npc.HEALTH+ "hp", (int) npc.x, (int) npc.y);
+			g2D.drawString(f.health+ "hp", (int) f.x, (int) f.y);
 
 			if (onlyShowHealth) {continue;}
 			
-			g2D.drawString(npc.DAMAGE+ "dmg", (int) npc.x, (int) npc.y-10);
-			g2D.drawString(EJC_Util.round(npc.MOVE_SPEED,2)+ "speed", (int) npc.x, (int) npc.y-20);
-			g2D.drawString(EJC_Util.round(npc.PROJECTILE_SPEED,2)+ "dmg speed", (int) npc.x, (int) npc.y-30);
+			g2D.drawString(f.damage+ "dmg", (int) f.x, (int) f.y-10);
+			g2D.drawString(EJC_Util.round(f.moveSpeed,2)+ "speed", (int) f.x, (int) f.y-20);
+			g2D.drawString(EJC_Util.round(f.projectileSpeed,2)+ "dmg speed", (int) f.x, (int) f.y-30);
 		}	
 	}
 }
