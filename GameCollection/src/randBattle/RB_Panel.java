@@ -26,17 +26,10 @@ public class RB_Panel extends JPanel
 	{
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		battleHandler = new BattleHandler(this, PANEL_WIDTH, PANEL_HEIGHT);
-		start();
 	}
 	
-	public void start()
-	{
-		battleHandler.restart();
-		repaint();
-	}
-	
-	public void stopTimer()
-	{battleHandler.stopTimer();}
+	public void stop()
+	{battleHandler.stop();}
 	
 	public void showStats()
 	{showStats = !showStats;}
@@ -69,12 +62,6 @@ public class RB_Panel extends JPanel
 			
 			g2D.setColor(Color.red);
 			g2D.fillRect((int) f.projectile_x+2, (int) f.projectile_y+2, 4, 4);
-		}
-		
-		if (battleHandler.hasFinished()) 
-		{
-			g2D.setFont(new Font("", Font.BOLD, 144));
-			g2D.drawString("FINISHED", PANEL_WIDTH/4, PANEL_HEIGHT/4);
 		}
 		
 		//STATS

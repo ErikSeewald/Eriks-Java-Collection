@@ -30,7 +30,6 @@ public class EJC_RandBattle extends JFrame implements EJC_Game
 			{
 				int code = e.getKeyCode();
 				
-				if (code == 82) {panel.start();} //R
 				if (code == 83) {panel.showStats();} //S
 				if (code == 72) {panel.onlyShowHealth();} //H
 			}
@@ -45,7 +44,7 @@ public class EJC_RandBattle extends JFrame implements EJC_Game
 	}
 	
 	@Override
-	public void stop() {panel.stopTimer(); panel = null;}
+	public void stop() {panel.stop(); panel = null;}
 	
 	@Override
 	public int getIndex() {return index;}

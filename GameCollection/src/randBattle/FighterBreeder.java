@@ -13,7 +13,7 @@ public class FighterBreeder
 	
 	private Fighter constructChildBase()
 	{
-		Fighter child = new Fighter();
+		Fighter child = new Fighter(random);
 		
 		child.projectile_x = child.x = random.nextInt(RB_Panel.PANEL_WIDTH);
 		child.projectile_y = child.y = random.nextInt(RB_Panel.PANEL_HEIGHT);
