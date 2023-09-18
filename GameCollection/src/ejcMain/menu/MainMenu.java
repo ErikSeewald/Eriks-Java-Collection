@@ -61,7 +61,7 @@ public class MainMenu extends JFrame implements MouseListener
 				new GButton("   Sidescroller", 8), new GButton(" Pixel Collision", 9), new GButton("    Cloth Sim", 10), new GButton(" Gravity Vects", 11),
 				new GButton("  Bloon Shoot", 12), new GButton("  Rand Battle", 13), new GButton(" Rand Growth", 14), new GButton("     Ladders", 15), 
 				new GButton(" Bomb Sorting", 16), new GButton(" Inf Dungeons", 17), new GButton(" Cheese Breed", 18), new GButton(" Tax Collector", 19), 
-				new GButton("", 20), new GButton("", 21), new GButton("", 22), new GButton("", 23), 
+				new GButton("    Automata", 20), new GButton("", 21), new GButton("", 22), new GButton("", 23), 
 		};
 		
 		private static final Color text_color = new Color(210,210,230);
