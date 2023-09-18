@@ -2,6 +2,7 @@ package ejcMain;
 
 import java.util.ArrayList;
 
+import automata.EJC_Automata;
 import bloonShoot.EJC_BloonShoot;
 import bombSorting.EJC_BombSorting;
 import cheeseBreeder.EJC_CheeseBreeder;
@@ -52,6 +53,8 @@ public class EJC_GameHandler
 		games.add(EJC_InfDungeons.class); 
 		games.add(EJC_CheeseBreeder.class); 
 		games.add(EJC_TaxCollector.class);
+		
+		games.add(EJC_Automata.class);
 	}
 	
 	private static EJC_WindowEventHandler eventHandler = new EJC_WindowEventHandler();

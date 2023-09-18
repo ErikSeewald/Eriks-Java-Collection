@@ -260,6 +260,19 @@ public enum GameTitles {
 					"to the IRS Building. Any time you are hit by a car, you lose a lot of money!",
 					"Press e to collect/return, r to restart, g to show the grid and t to pause the timer.",
 			}
+	),
+	
+	Automata
+	(
+			new String[]
+			{
+					"CELLULAR AUTOMATA",
+					"An implementation of the Cellular Automata concept by Slackermanz.",
+					"The state of each pixel (cell) is initially randomized between 0 and 1. Every frame",
+					"the state of a cell is updated  based on the states of the cells around it.",
+					"Learn more on @slackermanz youtube channel.",
+					"",
+			}
 	);
 
 	String[] guide = new String[6];
