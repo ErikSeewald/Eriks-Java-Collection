@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.Random;
 
 import javax.swing.JPanel;
 
@@ -14,11 +15,13 @@ public class CellPanel extends JPanel
 	public static final int PANEL_HEIGHT = 900;
 	
 	private CellHandler cellHandler;
+	private Random random;
 	
 	CellPanel()
 	{
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		
+		this.random = new Random();
+		this.mainColor = randomColor();
 		this.cellHandler = new CellHandler();
 	}
 	
@@ -26,6 +29,12 @@ public class CellPanel extends JPanel
 	{
 		cellHandler.update();
 		repaint();
+	}
+	
+	public void randomSwitch()
+	{
+		cellHandler.generateRules();
+		this.randomColor();
 	}
 	
 	public void stop()
@@ -39,17 +48,21 @@ public class CellPanel extends JPanel
 	{
 		Graphics2D g2D = (Graphics2D) g;
 		
-		//BACKGROUND (DO NOT DRAW ALL STATE 0 CELLS INDIVIDUALLY
-		g2D.setPaint(color0);
-		g2D.fillRect(0, 0, PANEL_WIDTH, PANEL_HEIGHT);
-		
 		//CELLS
 		paintCells(g2D, cellHandler.getCells());
 	}
 	
-	//Colors to blend between based on cell state
-	private static final Color color0 = new Color(0,0,0);
-	private static final Color color1 = new Color(0, 180, 255);
+	private Color mainColor;
+	private static final Color[] colors =
+	{
+		new Color(5, 125, 37)
+	};
+	
+	private Color randomColor()
+	{
+		return new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255));
+		//return colors[random.nextInt(colors.length)];
+	}
 	
 	private void paintCells(Graphics2D g2D, float[][] cells)
 	{
@@ -62,19 +75,32 @@ public class CellPanel extends JPanel
 		for (int x = 0; x < width; x++)
 		{
 			for (int y = 0; y < height; y++)
-			{
-				if (cells[x][y] == 0) {continue;}
-				
-				g2D.setPaint(mix(color0, color1, cells[x][y]));
+			{			
+				g2D.setPaint(blendCellColor(mainColor, cells[x][y]));
 				g2D.fillRect(x * cellWidth, y * cellWidth, cellWidth, cellHeight);
 			}
 		}
 	}
 	
-	private Color mix(Color a, Color b, double ratio) 
+	private Color blendCellColor(Color color, float brightness) 
 	{
-        return new Color((int) (a.getRed() * ratio + b.getRed() * (1.0 - ratio)),
-                (int) (a.getGreen() * ratio + b.getGreen() * (1.0 - ratio)),
-                (int) (a.getBlue() * ratio + b.getBlue() * (1.0 - ratio)));
+		// Calculate the blended RGB values
+		int r,g,b;
+		if (brightness >= 0.5f)
+		{
+			brightness -= 0.5;
+			r = (int) (color.getRed() * (1.0 - brightness) + 255 * brightness);
+	        g = (int) (color.getGreen() * (1.0 - brightness) + 255 * brightness);
+	        b = (int) (color.getBlue() * (1.0 - brightness) + 255 * brightness);
+		}
+		else
+		{
+			r = (int) (color.getRed() * brightness);
+	        g = (int) (color.getGreen() * brightness);
+	        b = (int) (color.getBlue() * brightness);
+		}
+        
+        // Create and return the blended color
+        return new Color(r, g, b);
     }
 }
