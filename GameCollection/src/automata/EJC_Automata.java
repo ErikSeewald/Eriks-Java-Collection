@@ -2,6 +2,8 @@ package automata;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 import ejcMain.EJC_Game;
@@ -32,6 +34,23 @@ public class EJC_Automata extends JFrame implements EJC_Game
 			{
 				panel.update();
 			}	
+		});
+		
+		this.addKeyListener(new KeyListener()
+		{
+			@Override
+			public void keyTyped(KeyEvent e) {}
+
+			@Override
+			public void keyPressed(KeyEvent e) 
+			{
+				int code = e.getKeyCode();
+				if (code == 82) {panel.randomSwitch();} //R
+				else if (code == 83) {panel.switchPixelSize();} //S
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {}
 		});
 
 		timer.setInitialDelay(100);
