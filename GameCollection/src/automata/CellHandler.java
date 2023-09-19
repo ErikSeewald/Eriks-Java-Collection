@@ -5,11 +5,15 @@ import java.util.Random;
 public class CellHandler 
 {
 	private float[][] cells; //cell state between 0 and 1
-	private static final int cells_x = 375;
-	private static final int cells_y = 225;
+	private int num_cells_x = 375;
+	private int num_cells_y = 225;
+	boolean pixelsSmaller = true;
 	
 	private static final int numSensors = 8;
 	private static final int numPotentialStates = numSensors / 2;
+	private static final float dt = 0.048f;
+	private float sensorData[] = new float[numSensors];
+	private float potentialStates[] = new float[numPotentialStates];
 	
 	private class Ring
 	{
@@ -30,23 +34,13 @@ public class CellHandler
 	
 	CellHandler()
 	{
-		cells = new float[cells_x][cells_y];
+		cells = new float[num_cells_x][num_cells_y];
 		random = new Random();
 		generateRules();
 		generateCells();
 	}
 	
-	private void generateCells()
-	{
-		for (int x = 0; x < cells_x; x++)
-		{
-			for (int y = 0; y < cells_y; y++)
-			{
-				cells[x][y] = (float) Math.pow(random.nextFloat(), 4);
-			}
-		}
-	}
-	
+	//RULES
 	public void generateRules()
 	{
 		for (int i = 0; i < rings.length; i++)
@@ -76,76 +70,127 @@ public class CellHandler
 		return new float[] {a, b};
 	}
 	
+	//CELLS
+	private void generateCells()
+	{
+		for (int x = 0; x < num_cells_x; x++)
+		{
+			for (int y = 0; y < num_cells_y; y++)
+			{
+				cells[x][y] = (float) Math.pow(random.nextFloat(), 4);
+			}
+		}
+	}
+	
+	public void draw(int x, int y)
+	{
+		int i = x / (CellPanel.PANEL_WIDTH / num_cells_x);
+		int j = y / (CellPanel.PANEL_HEIGHT / num_cells_y);
+		
+		for (int k = 0; k < 10; k++)
+		{
+			for (int l = 0; l < 10; l++)
+			{
+				int a = i + k, b = j + l;
+				if (a < 0 || a >= num_cells_x || b < 0 || b >= num_cells_y) {continue;}
+				cells[a][b] = 1;
+			}
+		}
+	}
+	
+	//CONTROL
+	public void switchPixelSize()
+	{
+		if (pixelsSmaller)
+		{
+			num_cells_x = 150;
+			num_cells_y = 90;
+		}
+		else
+		{
+			num_cells_x = 375;
+			num_cells_y = 225;
+		}
+			
+		pixelsSmaller = !pixelsSmaller;
+		cells = new float[num_cells_x][num_cells_y];
+		generateRules();
+		generateCells();
+	}
+	
 	public void stop()
 	{
 		cells = null;
 	}
 	
+	public float[][] getCells() {return cells.clone();}
+	
+	//SIMULATION
 	public void update()
-	{	
-		for (int x = 0; x < cells_x; x++)
+	{
+		for (int x = 0; x < num_cells_x; x++)
 		{
-			for (int y = 0; y < cells_y; y++)
+			for (int y = 0; y < num_cells_y; y++)
 			{
-				float dt = 0.048f;
-
-				// CALCULATE SENSOR DATA FOR EACH RING
-				float sensorData[] = new float[numSensors];
-
-				for (int i = 0; i < numSensors; i++) 
-				{
-					sensorData[i] = sensorCalc(x, y, rings[i].radiusMinMax[0], rings[i].radiusMinMax[1]);
-				}
-
-				// NEXT POTENTIAL STATES INITIALIZED TO PREV STATE
-				float potentialStates[] = new float[numPotentialStates];
-
-				for (int i = 0; i < numPotentialStates; i++) 
-				{
-					potentialStates[i] = cells[x][y];
-				}
-
-				// LOOP OVER SENSOR DATA
-				// EACH STATE IS AFFECTED BY TWO CONSECUTIVE SENSORS
-				for (int i = 0; i < numSensors; i++) 
-				{
-					float sensorValue = sensorData[i];
-
-					if (sensorValue >= rings[i].aliveMinMax[0] && sensorValue <= rings[i].aliveMinMax[1]) 
-					{potentialStates[i / 2] += dt;}
-					
-					if (sensorValue >= rings[i].deadMinMax[0] && sensorValue <= rings[i].deadMinMax[1]) 
-					{potentialStates[i / 2] -= dt;}
-				}
-
-				// BLUR POTENTIAL STATES
-				for (int i = 0; i < numPotentialStates; i++) 
-				{
-					float avgInSensors = (sensorData[i*2] + sensorData[i*2+1]) * 0.5f;
-					potentialStates[i] = (potentialStates[i] + avgInSensors * dt) / (1 + dt);
-				}
-
-				// CHOOSE POTENTIAL STATE MOST DIFFERENT FROM PREV
-				float maxDelta = 0;
-				int selectedStateIndex = 0;
-
-				for (int i = 0; i < numPotentialStates; i++ ) 
-				{
-					float delta = Math.abs(cells[x][y] - potentialStates[i]);
-					if (delta > maxDelta) 
-					{
-						maxDelta = delta;
-						selectedStateIndex = i;
-					}
-				}
-
-				cells[x][y] = potentialStates[selectedStateIndex];
-				if (cells[x][y] < 0) {cells[x][y] = 0;}
-				else if (cells[x][y] > 1) {cells[x][y] = 1;}
+				updateCell(x,y);
 			}
 		}
 	}
-	// Calculate avarage value of all cells inside the sensor radius
+	
+	private void updateCell(int x, int y)
+	{
+		// CALCULATE SENSOR DATA FOR EACH RING
+		for (int i = 0; i < numSensors; i++) 
+		{
+			sensorData[i] = sensorCalc(x, y, rings[i].radiusMinMax[0], rings[i].radiusMinMax[1]);
+		}
+
+		// NEXT POTENTIAL STATES INITIALIZED TO PREV STATE
+		for (int i = 0; i < numPotentialStates; i++) 
+		{
+			potentialStates[i] = cells[x][y];
+		}
+
+		// LOOP OVER SENSOR DATA
+		// EACH STATE IS AFFECTED BY TWO CONSECUTIVE SENSORS
+		for (int i = 0; i < numSensors; i++) 
+		{
+			float sensorValue = sensorData[i];
+
+			if (sensorValue >= rings[i].aliveMinMax[0] && sensorValue <= rings[i].aliveMinMax[1]) 
+			{potentialStates[i / 2] += dt;}
+			
+			if (sensorValue >= rings[i].deadMinMax[0] && sensorValue <= rings[i].deadMinMax[1]) 
+			{potentialStates[i / 2] -= dt;}
+		}
+
+		// BLUR POTENTIAL STATES
+		for (int i = 0; i < numPotentialStates; i++) 
+		{
+			float avgInSensors = (sensorData[i*2] + sensorData[i*2+1]) * 0.5f;
+			potentialStates[i] = (potentialStates[i] + avgInSensors * dt) / (1 + dt);
+		}
+
+		// CHOOSE POTENTIAL STATE MOST DIFFERENT FROM PREV
+		float maxDelta = 0;
+		int selectedStateIndex = 0;
+
+		for (int i = 0; i < numPotentialStates; i++ ) 
+		{
+			float delta = Math.abs(cells[x][y] - potentialStates[i]);
+			if (delta > maxDelta) 
+			{
+				maxDelta = delta;
+				selectedStateIndex = i;
+			}
+		}
+
+		cells[x][y] = potentialStates[selectedStateIndex];
+		if (cells[x][y] < 0) {cells[x][y] = 0;}
+		else if (cells[x][y] > 1) {cells[x][y] = 1;}
+	}
+	
+	// Calculate average value of all cells inside the sensor radius
 	private float sensorCalc(int x, int y, int radiusMin, int radiusMax) 
 	{
 		int cellCount = 0;
@@ -157,7 +202,7 @@ public class CellHandler
 			{
 				int newX = x + offsetX, newY = y + offsetY;
 				
-				if (newX < 0 || newX >= cells_x || newY < 0 || newY >= cells_y)
+				if (newX < 0 || newX >= num_cells_x || newY < 0 || newY >= num_cells_y)
 				{continue;}
 				
 				double distance = Math.sqrt(offsetX*offsetX + offsetY*offsetY);
@@ -170,8 +215,8 @@ public class CellHandler
 				}
 			}
 		}
+		
+		if (cellCount == 0) {return 0;}
 		return value / cellCount;
 	}
-	
-	public float[][] getCells() {return cells.clone();}
 }
