@@ -19,6 +19,7 @@ public class EJC_Sierpinski extends JFrame implements EJC_Game
 	private SierpinskiPanel panel;
 	private JPanel selectionPanel;
 	private JFrame instance = this;
+	private boolean modePicked = false;
 	
 	@Override
 	public void start(EJC_WindowEventHandler eventHandler)
@@ -37,9 +38,12 @@ public class EJC_Sierpinski extends JFrame implements EJC_Game
 			@Override
 			public void keyTyped(KeyEvent e) 
 			{	
+				if (modePicked) {return;}
+				
 				int mode = e.getKeyChar() - '0'; //char to int
 				if (mode < 1 || mode > 3) {return;}
 				
+				modePicked = true;
 				panel = new SierpinskiPanel(mode);
 				instance.remove(selectionPanel);
 				instance.add(panel);
