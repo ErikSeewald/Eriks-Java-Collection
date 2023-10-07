@@ -15,7 +15,6 @@ import pathfindGame.PathfindPanel.ControlBooleans;
 public class EJC_Pathfind extends JFrame implements ActionListener, EJC_Game
 {
 	private static final long serialVersionUID = 386670748457681736L;
-	private static final int index = 4;
 
 	private JMenuItem seedItem;
 	private PathfindPanel panel;
@@ -69,7 +68,4 @@ public class EJC_Pathfind extends JFrame implements ActionListener, EJC_Game
 
 	@Override
 	public void stop() {panel = null; seedItem = null;}
-	
-	@Override
-	public int getIndex() {return index;}
 }

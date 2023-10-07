@@ -9,7 +9,6 @@ import ejcMain.EJC_WindowEventHandler;
 public class EJC_MouseDodge extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = 1453082636502752179L;
-	private static final int index = 7;
 	
 	private MouseDodgePanel panel;
 	
@@ -48,7 +47,4 @@ public class EJC_MouseDodge extends JFrame implements EJC_Game
 
 	@Override
 	public void stop() {panel.stop(); panel = null;}
-	
-	@Override
-	public int getIndex() {return index;}
 }

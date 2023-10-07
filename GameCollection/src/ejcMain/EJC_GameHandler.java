@@ -21,7 +21,6 @@ import reflectionDemo.EJC_ReflectionDemo;
 import sidescroller.EJC_Sidescroller;
 import sierpinski.EJC_Sierpinski;
 import snakesAndLadders.EJC_SnakesAndLadders;
-import sudoku.EJC_Sudoku;
 import taxCollector.EJC_TaxCollector;
 
 public class EJC_GameHandler 
@@ -32,28 +31,26 @@ public class EJC_GameHandler
 		games.add(EJC_Insects.class); 
 		games.add(EJC_Particles.class); 
 		games.add(EJC_Sierpinski.class);
-		games.add(EJC_Sudoku.class);
-		
 		games.add(EJC_Pathfind.class); 
+		
 		games.add(EJC_ParallelUniverses.class); 
 		games.add(EJC_ReflectionDemo.class); 
 		games.add(EJC_MouseDodge.class);
-		
 		games.add(EJC_Sidescroller.class); 
+		
 		games.add(EJC_PixelCollision.class); 
 		games.add(EJC_ClothSim.class); 
 		games.add(EJC_GravityVectors.class);
-		
 		games.add(EJC_BloonShoot.class); 
+		
 		games.add(EJC_RandBattle.class); 
 		games.add(EJC_RandGrowth.class); 
 		games.add(EJC_SnakesAndLadders.class);
-		
 		games.add(EJC_BombSorting.class); 
+		
 		games.add(EJC_InfDungeons.class); 
 		games.add(EJC_CheeseBreeder.class); 
 		games.add(EJC_TaxCollector.class);
-		
 		games.add(EJC_Automata.class);
 	}
 	
@@ -74,6 +71,6 @@ public class EJC_GameHandler
 	public static void closeGame(EJC_Game game)
 	{
 		game.stop();
-		gameOpened[game.getIndex()] = false;
+		gameOpened[games.indexOf(game.getClass())] = false;
 	}
 }

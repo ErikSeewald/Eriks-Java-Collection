@@ -10,7 +10,6 @@ import ejcMain.EJC_WindowEventHandler;
 public class EJC_BloonShoot extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = -1952542729679771029L;
-	private static final int index = 12;
 	
 	private BlS_Panel panel;
 
@@ -50,7 +49,4 @@ public class EJC_BloonShoot extends JFrame implements EJC_Game
 	@Override
 	public void stop()
 	{panel.stop(); panel = null;}
-
-	@Override
-	public int getIndex() {return index;}
 }

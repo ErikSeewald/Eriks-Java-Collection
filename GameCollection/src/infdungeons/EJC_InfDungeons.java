@@ -14,7 +14,6 @@ import ejcMain.EJC_WindowEventHandler;
 public class EJC_InfDungeons extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = 4927061210031943469L;
-	private static final int index = 17;
 
 	private Inf_Panel panel;
 	private HashSet<Integer> pressedKeys = new HashSet<>();
@@ -90,7 +89,4 @@ public class EJC_InfDungeons extends JFrame implements EJC_Game
 	@Override
 	public void stop()
 	{timer.stop(); panel.stop(); panel = null;}
-
-	@Override
-	public int getIndex() {return index;}
 }

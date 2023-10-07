@@ -14,7 +14,6 @@ import ejcMain.EJC_GUI.EJC_MenuBar;
 public class EJC_ClothSim extends JFrame implements EJC_Game, ActionListener
 {
 	private static final long serialVersionUID = -1946430738048947884L;
-	private static final int index = 10;
 	
 	private ClothSimPanel panel;
 	private Timer timer;
@@ -77,7 +76,4 @@ public class EJC_ClothSim extends JFrame implements EJC_Game, ActionListener
 	@Override
 	public void stop()
 	{timer.stop(); timer = null; panel = null;}
-	
-	@Override
-	public int getIndex() {return index;}
 }

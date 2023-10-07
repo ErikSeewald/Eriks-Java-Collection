@@ -20,7 +20,6 @@ import ejcMain.EJC_GUI.EJC_MenuBar;
 public class EJC_PixelCollision extends JFrame implements EJC_Game, ActionListener
 {
 	private static final long serialVersionUID = 1188212923048325213L;
-	private static final int index = 9;
 	
 	private HashSet<Integer> pressedKeys = new HashSet<>();
 	private KeyHandler keyHandler;
@@ -119,7 +118,4 @@ public class EJC_PixelCollision extends JFrame implements EJC_Game, ActionListen
 	@Override
 	public void stop()
 	{timer.stop(); panel = null; pressedKeys = null;}
-	
-	@Override
-	public int getIndex() {return index;}
 }

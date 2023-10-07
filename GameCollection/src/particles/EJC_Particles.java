@@ -9,7 +9,6 @@ import ejcMain.EJC_WindowEventHandler;
 public class EJC_Particles extends JFrame implements EJC_Game
 {	
 	private static final long serialVersionUID = -1650331621506133111L;
-	private static final int index = 1;
 	
 	private ParticlesPanel panel;
 	
@@ -44,7 +43,4 @@ public class EJC_Particles extends JFrame implements EJC_Game
 
 	@Override
 	public void stop() {panel.stop(); panel = null;}
-	
-	@Override
-	public int getIndex() {return index;}
 }

@@ -16,7 +16,6 @@ import ejcMain.EJC_GUI.EJC_MenuBar;
 public class EJC_Sidescroller extends JFrame implements ActionListener, EJC_Game
 {	
 	private static final long serialVersionUID = -7018763596595532898L;
-	private static final int index = 8;
 	
 	private Timer timer;
 	private SidescrollerPanel panel;
@@ -77,9 +76,6 @@ public class EJC_Sidescroller extends JFrame implements ActionListener, EJC_Game
 	@Override
 	public void stop()
 	{timer.stop(); panel = null;}
-	
-	@Override
-	public int getIndex() {return index;}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) 

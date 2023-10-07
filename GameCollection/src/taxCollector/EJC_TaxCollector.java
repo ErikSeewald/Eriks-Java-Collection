@@ -18,7 +18,6 @@ import taxCollector.MapHandler.ResetActions;
 public class EJC_TaxCollector extends JFrame implements EJC_Game, ActionListener
 {
 	private static final long serialVersionUID = -5389438519379536388L;
-	private static final int index = 19;
 	
 	private TC_Panel panel;
 	private HashSet<Integer> pressedKeys = new HashSet<>();
@@ -107,8 +106,4 @@ public class EJC_TaxCollector extends JFrame implements EJC_Game, ActionListener
 	{
 		timer.stop(); panel.stop(); panel = null;
 	}
-
-	@Override
-	public int getIndex() 
-	{return index;}
 }

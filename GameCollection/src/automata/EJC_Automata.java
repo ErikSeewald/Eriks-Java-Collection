@@ -12,7 +12,6 @@ import ejcMain.EJC_WindowEventHandler;
 public class EJC_Automata extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = -53838519379536388L;
-	private static final int index = 20;
 
 	private CellPanel panel;
 	private Timer timer;
@@ -68,8 +67,4 @@ public class EJC_Automata extends JFrame implements EJC_Game
 		panel.stop(); 
 		panel = null;
 	}
-
-	@Override
-	public int getIndex() 
-	{return index;}
 }

@@ -10,7 +10,6 @@ import ejcMain.EJC_WindowEventHandler;
 public class EJC_RandBattle extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = 411705531616331949L;
-	private static final int index = 13;
 	
 	private RB_Panel panel;
 	
@@ -45,7 +44,4 @@ public class EJC_RandBattle extends JFrame implements EJC_Game
 	
 	@Override
 	public void stop() {panel.stop(); panel = null;}
-	
-	@Override
-	public int getIndex() {return index;}
 }

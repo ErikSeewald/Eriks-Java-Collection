@@ -8,7 +8,6 @@ import ejcMain.EJC_WindowEventHandler;
 public class EJC_RandGrowth extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = -7593694436385018187L;
-	private static final int index = 14;
 	
 	private RandGrowthPanel panel;
 	private RG_GUI_Panel GUIpanel;
@@ -33,7 +32,4 @@ public class EJC_RandGrowth extends JFrame implements EJC_Game
 	@Override
 	public void stop()
 	{panel.stop(); panel = null;}
-	
-	@Override
-	public int getIndex() {return index;}
 }
