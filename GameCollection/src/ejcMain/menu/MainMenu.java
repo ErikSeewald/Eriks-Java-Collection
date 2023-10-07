@@ -54,15 +54,7 @@ public class MainMenu extends JFrame implements MouseListener
 			}
 		}
 		
-		private final GButton[] gameButtons = 
-		{
-				new GButton("      Insects", 0), new GButton("     Particles", 1), new GButton("    Sierpinski", 2), new GButton("      Pathfind", 3), 
-				new GButton("    Parallel U.", 4), new GButton("    Reflection", 5), new GButton(" Mouse Dodge", 6), new GButton("   Sidescroller", 7), 
-				new GButton(" Pixel Collision", 8), new GButton("    Cloth Sim", 9), new GButton(" Gravity Vects", 10),new GButton("  Bloon Shoot", 11), 
-				new GButton("  Rand Battle", 12), new GButton(" Rand Growth", 13), new GButton("     Ladders", 14), new GButton(" Bomb Sorting", 15), 
-				new GButton(" Inf Dungeons", 16), new GButton(" Cheese Breed", 17), new GButton(" Tax Collector", 18), new GButton("    Automata", 19), 
-				new GButton("", 20), new GButton("", 21), new GButton("", 22), new GButton("", 23) 
-		};
+		private GButton[] gameButtons = new GButton[EJC_GameHandler.maxGameCount];
 		
 		private static final Color text_color = new Color(210,210,230);
 		private static final Color b_color_basic = new Color(75,75,105);
@@ -72,6 +64,8 @@ public class MainMenu extends JFrame implements MouseListener
 		//LABELS
 		private JLabel[] guideLabels = 
 		{new JLabel("ERIK'S COLLECTION"), new JLabel(""), new JLabel(""), new JLabel(""), new JLabel(""), new JLabel("")};
+		
+		private static GameText[] game_text = GameText.values();
 		
 		private void initialize(boolean firstInit)
 		{
@@ -92,8 +86,11 @@ public class MainMenu extends JFrame implements MouseListener
 			
 			//BUTTONS
 			int x = 0, y = 0;
-			for (GButton button : gameButtons)
+			for (int i = 0; i < EJC_GameHandler.maxGameCount; i++)
 			{
+				String button_text = i < game_text.length ? game_text[i].button_text : "";
+				GButton button = new GButton(button_text, i);
+				gameButtons[i] = button;
 				initButton(button, (resolution/10) + x*(resolution/5), (resolution/3) + y*(resolution/10));
 				
 				if (firstInit)
@@ -135,7 +132,7 @@ public class MainMenu extends JFrame implements MouseListener
 	private void changeGuide(int index)
 	{	
 		for(int i = 0; i < guideLabels.length; i++)
-		{guideLabels[i].setText(GameTitles.values()[index].guide[i]);}
+		{guideLabels[i].setText(game_text[index].guide[i]);}
 		System.gc();
 	}
 	

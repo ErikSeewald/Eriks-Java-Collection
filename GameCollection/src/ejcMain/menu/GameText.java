@@ -1,9 +1,12 @@
 package ejcMain.menu;
 
-public enum GameTitles {
+public enum GameText 
+{
 	
 	Insects
 	(
+			"      Insects",
+			
 			new String[] 
 			{
 					"INSECTS",
@@ -17,6 +20,8 @@ public enum GameTitles {
 	
 	Particles
 	(
+			"     Particles",
+			
 			new String[] 
 			{
 					"PARTICLES",
@@ -30,6 +35,8 @@ public enum GameTitles {
 	
 	Sierpinski
 	(
+			"    Sierpinski",
+			
 			new String[] 
 			{
 					"SIERPINSKI",
@@ -43,6 +50,8 @@ public enum GameTitles {
 	
 	Pathfind
 	(
+			"      Pathfind",
+			
 			new String[] 
 			{
 					"PATHFIND",
@@ -56,6 +65,8 @@ public enum GameTitles {
 	
 	ParralelUniverses
 	(
+			"    Parallel U.",
+			
 			new String[] 
 			{
 					"PARALLEL UNIVERSES",
@@ -69,6 +80,8 @@ public enum GameTitles {
 	
 	ReflectionDemo
 	(
+			"    Reflection",
+			
 			new String[] 
 			{
 					"REFLECTION DEMO",
@@ -82,6 +95,8 @@ public enum GameTitles {
 	
 	MouseDodge
 	(
+			" Mouse Dodge",
+			
 			new String[] 
 			{
 					"MOUSE DODGE",
@@ -95,6 +110,8 @@ public enum GameTitles {
 	
 	Sidescroller
 	(
+			"   Sidescroller",
+			
 			new String[] 
 			{
 					"SIDESCROLLER",
@@ -108,6 +125,8 @@ public enum GameTitles {
 	
 	PixelCollision
 	(
+			" Pixel Collision",
+			
 			new String[] 
 			{
 					"PIXEL COLLISION",
@@ -121,6 +140,8 @@ public enum GameTitles {
 	
 	ClothSim
 	(
+			"    Cloth Sim",
+			
 			new String[] 
 			{
 					"CLOTH SIM",
@@ -134,6 +155,8 @@ public enum GameTitles {
 	
 	GravityVectors
 	(
+			" Gravity Vects",
+			
 			new String[] 
 			{
 					"GRAVITY VECTORS",
@@ -147,6 +170,8 @@ public enum GameTitles {
 	
 	BalloonShooting
 	(
+			"  Bloon Shoot",
+			
 			new String[] 
 			{
 					"BALLOON SHOOTING",
@@ -154,12 +179,14 @@ public enum GameTitles {
 					"my own sprite renderer. Shoot the balloons using the slingshot with the",
 					"mouse held down. Press the right arrow key to load the next level,",
 					"left for the previous level. R - Restart level | G - Show level grid",
-					"+/- to change resolution"
+					"+/- to change resolution",
 			}
 	),
 	
 	RandBattle
 	(
+			"  Rand Battle",
+			
 			new String[] 
 			{
 					"RAND BATTLE",
@@ -173,6 +200,8 @@ public enum GameTitles {
 	
 	RandGrowth
 	(
+			" Rand Growth",
+			
 			new String[] 
 			{
 					"RAND GROWTH",
@@ -186,6 +215,8 @@ public enum GameTitles {
 	
 	SnakesAndLadders
 	(
+			"     Ladders",
+			
 			new String[] 
 			{
 					"SNAKES AND LADDERS",
@@ -199,6 +230,8 @@ public enum GameTitles {
 	
 	BombSorting
 	(
+			" Bomb Sorting",
+			
 			new String[]
 			{
 					"BOMB SORTING",
@@ -212,6 +245,8 @@ public enum GameTitles {
 	
 	InfDungeons
 	(
+			" Inf Dungeons",
+			
 			new String[]
 			{
 					"INFINITE DUNGEONS",
@@ -225,6 +260,8 @@ public enum GameTitles {
 	
 	CheeseBreeder
 	(
+			" Cheese Breed",
+			
 			new String[]
 			{
 					"CHEESE BREEDER",
@@ -238,6 +275,8 @@ public enum GameTitles {
 	
 	TaxCollector
 	(
+			" Tax Collector",
+			
 			new String[]
 			{
 					"TAX COLLECTOR",
@@ -251,6 +290,8 @@ public enum GameTitles {
 	
 	Automata
 	(
+			"    Automata",
+			
 			new String[]
 			{
 					"CELLULAR AUTOMATA",
@@ -262,8 +303,12 @@ public enum GameTitles {
 			}
 	);
 
+	String button_text;
 	String[] guide = new String[6];
 	
-	GameTitles(String[] str)
-	{this.guide = str;}
+	GameText(String button_text, String[] guide)
+	{
+		this.button_text = button_text;
+		this.guide = guide;
+	}
 }

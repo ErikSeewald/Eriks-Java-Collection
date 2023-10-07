@@ -25,6 +25,9 @@ import taxCollector.EJC_TaxCollector;
 
 public class EJC_GameHandler 
 {
+	public static int maxGameCount = 24;
+	public static int getGameCount() {return games.size();}
+	
 	private static final ArrayList<Class<? extends EJC_Game>> games = new ArrayList<>();
 	static
 	{
