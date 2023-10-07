@@ -10,7 +10,6 @@ import ejcMain.EJC_WindowEventHandler;
 public class EJC_GravityVectors extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = -7941120893843254800L;
-	private static final int index = 11;
 	
 	private GravityVectorsPanel panel;
 
@@ -52,7 +51,4 @@ public class EJC_GravityVectors extends JFrame implements EJC_Game
 
 	@Override
 	public void stop() {panel = null;}
-	
-	@Override
-	public int getIndex() {return index;}
 }

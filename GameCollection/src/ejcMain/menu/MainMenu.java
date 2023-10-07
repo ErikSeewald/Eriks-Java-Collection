@@ -56,12 +56,12 @@ public class MainMenu extends JFrame implements MouseListener
 		
 		private final GButton[] gameButtons = 
 		{
-				new GButton("      Insects", 0), new GButton("     Particles", 1), new GButton("    Sierpinski", 2), new GButton("      Sudoku", 3),
-				new GButton("      Pathfind", 4), new GButton("    Parallel U.", 5), new GButton("    Reflection", 6), new GButton(" Mouse Dodge", 7), 
-				new GButton("   Sidescroller", 8), new GButton(" Pixel Collision", 9), new GButton("    Cloth Sim", 10), new GButton(" Gravity Vects", 11),
-				new GButton("  Bloon Shoot", 12), new GButton("  Rand Battle", 13), new GButton(" Rand Growth", 14), new GButton("     Ladders", 15), 
-				new GButton(" Bomb Sorting", 16), new GButton(" Inf Dungeons", 17), new GButton(" Cheese Breed", 18), new GButton(" Tax Collector", 19), 
-				new GButton("    Automata", 20), new GButton("", 21), new GButton("", 22), new GButton("", 23), 
+				new GButton("      Insects", 0), new GButton("     Particles", 1), new GButton("    Sierpinski", 2), new GButton("      Pathfind", 3), 
+				new GButton("    Parallel U.", 4), new GButton("    Reflection", 5), new GButton(" Mouse Dodge", 6), new GButton("   Sidescroller", 7), 
+				new GButton(" Pixel Collision", 8), new GButton("    Cloth Sim", 9), new GButton(" Gravity Vects", 10),new GButton("  Bloon Shoot", 11), 
+				new GButton("  Rand Battle", 12), new GButton(" Rand Growth", 13), new GButton("     Ladders", 14), new GButton(" Bomb Sorting", 15), 
+				new GButton(" Inf Dungeons", 16), new GButton(" Cheese Breed", 17), new GButton(" Tax Collector", 18), new GButton("    Automata", 19), 
+				new GButton("", 20), new GButton("", 21), new GButton("", 22), new GButton("", 23) 
 		};
 		
 		private static final Color text_color = new Color(210,210,230);

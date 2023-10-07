@@ -14,7 +14,6 @@ import ejcMain.EJC_WindowEventHandler;
 public class EJC_Sierpinski extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = 5764966202240396499L;
-	private static final int index = 2;
 	
 	private SierpinskiPanel panel;
 	private JPanel selectionPanel;
@@ -81,7 +80,4 @@ public class EJC_Sierpinski extends JFrame implements EJC_Game
 		if (panel != null) {panel.stop();} 
 		panel = null;
 	}
-	
-	@Override
-	public int getIndex() {return index;}
 }

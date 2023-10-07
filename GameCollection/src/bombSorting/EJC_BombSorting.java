@@ -11,7 +11,6 @@ import ejcMain.EJC_WindowEventHandler;
 public class EJC_BombSorting extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = 7284705718024953236L;
-	private static final int index = 16;
 	
 	private Sort_Panel panel;
 	
@@ -48,7 +47,4 @@ public class EJC_BombSorting extends JFrame implements EJC_Game
 	@Override
 	public void stop()
 	{panel.stop(); panel = null;}
-	
-	@Override
-	public int getIndex() {return index;}
 }

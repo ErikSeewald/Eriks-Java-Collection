@@ -9,7 +9,6 @@ import ejcMain.EJC_WindowEventHandler;
 public class EJC_Insects extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = -3887848730761835772L;
-	private static final int index = 0;
 	
 	private InsectsPanel panel;
 	private GUI GUI;
@@ -34,7 +33,4 @@ public class EJC_Insects extends JFrame implements EJC_Game
 
 	@Override
 	public void stop() {panel.stop(); panel = null; GUI = null;}
-	
-	@Override
-	public int getIndex() {return index;}
 }

@@ -9,7 +9,6 @@ import ejcMain.EJC_WindowEventHandler;
 public class EJC_ReflectionDemo extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = 1345146613461L;
-	private static final int index = 6;
 	
 	private ReflectionPanel panel;
 	
@@ -53,7 +52,4 @@ public class EJC_ReflectionDemo extends JFrame implements EJC_Game
 	
 	@Override
 	public void stop() {panel = null;}
-	
-	@Override
-	public int getIndex() {return index;}
 }

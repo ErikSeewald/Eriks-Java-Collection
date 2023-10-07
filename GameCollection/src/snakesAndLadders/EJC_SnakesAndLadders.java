@@ -10,7 +10,6 @@ import snakesAndLadders.gui.SnL_GUI;
 public class EJC_SnakesAndLadders extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = 7284705718024953236L;
-	private static final int index = 15;
 	
 	private SnL_Panel panel;
 	private SnL_GUI GUI;
@@ -35,7 +34,4 @@ public class EJC_SnakesAndLadders extends JFrame implements EJC_Game
 	@Override
 	public void stop()
 	{panel.stop(); panel = null;}
-	
-	@Override
-	public int getIndex() {return index;}
 }

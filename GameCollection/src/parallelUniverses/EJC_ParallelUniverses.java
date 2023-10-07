@@ -13,7 +13,6 @@ import ejcMain.EJC_WindowEventHandler;
 public class EJC_ParallelUniverses extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = -728908076775898206L;
-	private static final int index = 5;
 	
 	private PU_Panel panel;
 	private HashSet<Integer> pressedKeys = new HashSet<>();
@@ -75,7 +74,4 @@ public class EJC_ParallelUniverses extends JFrame implements EJC_Game
 	@Override
 	public void stop()
 	{timer.stop(); panel = null; pressedKeys = null;}
-	
-	@Override
-	public int getIndex() {return index;}
 }

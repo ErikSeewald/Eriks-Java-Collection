@@ -14,7 +14,6 @@ import ejcMain.EJC_GUI.EJC_MenuBar;
 public class EJC_CheeseBreeder extends JFrame implements EJC_Game, ActionListener
 {
 	private static final long serialVersionUID = 4927061210031934469L;
-	private static final int index = 18;
 
 	private BreederPanel panel;
 	
@@ -81,8 +80,4 @@ public class EJC_CheeseBreeder extends JFrame implements EJC_Game, ActionListene
 	@Override
 	public void stop() 
 	{}
-
-	@Override
-	public int getIndex() 
-	{return index;}
 }
