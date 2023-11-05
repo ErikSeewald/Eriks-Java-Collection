@@ -9,6 +9,9 @@ import java.awt.event.MouseEvent;
 import java.util.Random;
 import javax.swing.JPanel;
 
+/**
+ * Panel to display the automata simulation. Extends {@link JPanel}.
+ */
 public class CellPanel extends JPanel
 {
 	private static final long serialVersionUID = 342384L;
@@ -17,7 +20,11 @@ public class CellPanel extends JPanel
 	
 	private CellHandler cellHandler;
 	private Random random;
+	private Color mainColor;
 	
+	/**
+	 * Creates an instance of {@link CellPanel}.
+	 */
 	CellPanel()
 	{
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
@@ -28,37 +35,66 @@ public class CellPanel extends JPanel
 		this.addMouseListener(new ClickListener());
 	}
 	
+	/**
+	 * {@link CellPanel} specific extension of {@link MouseAdapter}.
+	 */
 	public class ClickListener extends MouseAdapter
 	{
+	    /**
+	     * Handles {@link MouseEvent}s for drawing on the automata cells.
+	     * 
+	     * @param e the {@link MouseEvent} for 'mousePressed'
+	     */
+		@Override
 		public void mousePressed(MouseEvent e) 
 		{
 			cellHandler.draw(e.getX(), e.getY());
 		}
 	}
 	
+	/**
+	 * Updates the view of this panel instance.
+	 * Additionally handles updating this panels {@link CellHandler}.
+	 */
 	public void update()
 	{
 		cellHandler.update();
 		repaint();
 	}
 	
+	/**
+	 * Handles the switch to a random new set of rules for this panels {@link CellHandler}
+	 * and to new colors for the cells.
+	 */
 	public void randomSwitch()
 	{
 		cellHandler.generateRules();
 		mainColor = this.randomColor();
 	}
 	
+	/**
+	 * Transfers a request to switch the cell/pixel size to {@link CellHandler}.
+	 */
 	public void switchPixelSize()
 	{
 		cellHandler.switchPixelSize();
 	}
 	
+	/**
+	 * Helper method for {@link EJC_Automata}s stop method.
+	 * Calls {@link CellHandler}s stop method and frees memory.
+	 */
 	public void stop()
 	{
 		cellHandler.stop();
 		cellHandler = null;
 	}
 	
+	/**
+	 * Renders a view of the automata cells to the given {@link Graphics} object.
+	 * 
+	 * @param g the {@link Graphics} object to render to.
+	 */
 	@Override
 	public void paint(Graphics g)
 	{
@@ -68,13 +104,22 @@ public class CellPanel extends JPanel
 		paintCells(g2D, cellHandler.getCells());
 	}
 	
-	private Color mainColor;
-	
+	/**
+	 * Gets a new random color. Utilizes the global {@link Random} object of this class.
+	 * 
+	 * @return new randomly generated {@link Color}
+	 */
 	private Color randomColor()
 	{
 		return new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255));
 	}
 	
+	/**
+	 * Draws the given cells to the given {@link Graphics2D} object with the current global parameters.
+	 * 
+	 * @param g2D the {@link Graphics2D} object to render to.
+	 * @param cells the {@link float[][]} array containing the cells' values
+	 */
 	private void paintCells(Graphics2D g2D, float[][] cells)
 	{
 		int width = cells.length;
@@ -93,6 +138,15 @@ public class CellPanel extends JPanel
 		}
 	}
 	
+	/**
+	 * Blends the given {@link Color} based on the brightness parameter.
+	 * If the brightness is 0, the returned {@link Color} is black. If it is 0.5, the input {@link Color} is returned.
+	 * If brightness is 1, the returned {@link Color} is white. Everything in between is blended accordingly.
+	 * 
+	 * @param color the {@link Color} to blend
+	 * @param brightness the {@link float} brightness parameter to blend with
+	 * @return the new blended {@link Color}
+	 */
 	private Color blendCellColor(Color color, float brightness) 
 	{
 		int r,g,b;
