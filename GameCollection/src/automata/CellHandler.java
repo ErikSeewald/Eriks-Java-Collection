@@ -2,6 +2,9 @@ package automata;
 
 import java.util.Random;
 
+/**
+ * Handles the simulation of the automata cells.
+ */
 public class CellHandler 
 {
 	private float[][] cells; //cell state between 0 and 1
@@ -15,6 +18,10 @@ public class CellHandler
 	private float sensorData[] = new float[numSensors];
 	private float potentialStates[] = new float[numPotentialStates];
 	
+	/**
+	 * Representation of a ring of influence around a conceptual cell.
+	 * Contains the rules which govern how the the influence is exerted.
+	 */
 	private class Ring
 	{
 		int[] radiusMinMax;
@@ -32,6 +39,9 @@ public class CellHandler
 	
 	private Random random;
 	
+	/**
+	 * Creates a {@link CellHandler} object.
+	 */
 	CellHandler()
 	{
 		cells = new float[num_cells_x][num_cells_y];
@@ -40,7 +50,11 @@ public class CellHandler
 		generateCells();
 	}
 	
+	
 	//RULES
+	/**
+	 * Creates new {@link Ring}s with randomly generated rules to govern the behavior of the automata cells.
+	 */
 	public void generateRules()
 	{
 		for (int i = 0; i < rings.length; i++)
@@ -52,6 +66,11 @@ public class CellHandler
 		}
 	}
 	
+	/**
+	 * Sets the minimum and maximum radius of the given {@link Ring} to a random value within a certain range.
+	 * 
+	 * @param ring the {@link Ring} to be modified
+	 */
 	private void setRandomRadius(Ring ring)
 	{
 		int max = 10;
@@ -61,6 +80,12 @@ public class CellHandler
 		ring.radiusMinMax[1] = (radiusA > radiusB) ? radiusA : radiusB;
 	}
 	
+	/**
+	 * Creates a new randomly generated pair of values with the requirement that the value at index 0 is less than or
+	 * equal to the value at index 1.
+	 * 
+	 * @return the {@link float[]} value pair
+	 */
 	private float[] minMaxPair()
 	{
 		float a = random.nextFloat();
@@ -70,7 +95,12 @@ public class CellHandler
 		return new float[] {a, b};
 	}
 	
+	
 	//CELLS
+	/**
+	 * Generates new cell values and fills this objects cells[][] array with them.
+	 * The values are generated from a function f(x): [0.0, 1.0] -> x^4 
+	 */
 	private void generateCells()
 	{
 		for (int x = 0; x < num_cells_x; x++)
@@ -82,6 +112,12 @@ public class CellHandler
 		}
 	}
 	
+	/**
+	 * Handles a call to 'draw' (i.e. spawn new cells with value 1) on a position (x,y).
+	 * 
+	 * @param x the x position
+	 * @param y the y position
+	 */
 	public void draw(int x, int y)
 	{
 		int i = x / (CellPanel.PANEL_WIDTH / num_cells_x);
@@ -99,6 +135,10 @@ public class CellHandler
 	}
 	
 	//CONTROL
+	
+	/**
+	 * Switches between the two possible pixel/cell sizes. Thereby it generates a new set of cells and rules.
+	 */
 	public void switchPixelSize()
 	{
 		if (pixelsSmaller)
@@ -118,14 +158,26 @@ public class CellHandler
 		generateCells();
 	}
 	
+	/**
+	 * Helper method for {@link EJC_Automata}s stop method.
+	 * Frees memory.
+	 */
 	public void stop()
 	{
 		cells = null;
 	}
 	
+	/**
+	 * Returns a clone of this objects cells array.
+	 * @return {@link float[][]} cells array
+	 */
 	public float[][] getCells() {return cells.clone();}
 	
+	
 	//SIMULATION
+	/**
+	 * Updates the simulation by one step.
+	 */
 	public void update()
 	{
 		for (int x = 0; x < num_cells_x; x++)
@@ -137,6 +189,13 @@ public class CellHandler
 		}
 	}
 	
+	/**
+	 * Updates the cell at the given coordinates by one step based on specific rules.
+	 * Assumes that a cell at the given coordinate actually exists.
+	 * 
+	 * @param x the x coordinate of the cell
+	 * @param y the y coordinate of the cell
+	 */
 	private void updateCell(int x, int y)
 	{
 		// CALCULATE SENSOR DATA FOR EACH RING
@@ -190,7 +249,15 @@ public class CellHandler
 		else if (cells[x][y] > 1) {cells[x][y] = 1;}
 	}
 	
-	// Calculate average value of all cells inside the sensor radius
+	/**
+	 * Calculates the average value of all cells inside the sensor radius.
+	 * 
+	 * @param x the x coordinate of the cell
+	 * @param y the y coordinate of the cell
+	 * @param radiusMin the minimum radius of cells to check
+	 * @param radiusMax the maximum radius of cells to check
+	 * @return the average value of all cells inside the sensor radius
+	 */
 	private float sensorCalc(int x, int y, int radiusMin, int radiusMax) 
 	{
 		int cellCount = 0;
