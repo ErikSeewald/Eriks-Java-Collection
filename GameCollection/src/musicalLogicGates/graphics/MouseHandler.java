@@ -5,6 +5,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import musicalLogicGates.circuit.CircuitManager;
 import musicalLogicGates.gates.Gate;
+import musicalLogicGates.gates.Gate.GateType;
+import musicalLogicGates.gates.IN;
 
 public class MouseHandler 
 {
@@ -30,24 +32,16 @@ public class MouseHandler
 	
 
 	public int getMouseX()
-	{
-	    return mouseX;
-	}
+	{return mouseX;}
 	
 	public int getMouseY()
-	{
-	    return mouseY;
-	}
+	{return mouseY;}
 	
 	public boolean isConnecting() 
-	{
-        return isConnecting;
-    }
+	{return isConnecting;}
 	
 	public Gate getSelectedGate()
-	{
-	    return selectedGate;
-	}
+	{return selectedGate;}
 
 
     public class ClickListener extends MouseAdapter
@@ -60,22 +54,27 @@ public class MouseHandler
 			
 			selectedGate = getGateAtCoordinates(mouseX, mouseY);
 			
-			if (e.isAltDown() && selectedGate != null)
+			if (selectedGate == null) {return;}
+			
+			if (e.isAltDown())
 			{circuitManager.removeGate(selectedGate);}
+			
+			if (e.isControlDown() && selectedGate.getType().equals(GateType.IN))
+			{((IN) selectedGate).switchState();}
+			
+			panel.updateGraphics();
 		}
 	}
     
     public Gate getGateAtCoordinates(int x, int y)
     {
-        for (Gate gate : circuitManager.getGates())
-        {
-            if (x > gate.x - 5 && x < gate.x + 60 
-                    && y > gate.y - 5 && y < gate.y + 60 )
-            {
-                return gate;
-            }
-        }
-        return null;
+		for (Gate gate : circuitManager.getGates())
+		{
+		    if (x > gate.x - 5 && x < gate.x + 60 
+		            && y > gate.y - 5 && y < gate.y + 60 )
+		    {return gate;}
+		}
+		return null;
     }
 
 	public class DragListener extends MouseMotionAdapter
@@ -88,7 +87,7 @@ public class MouseHandler
 		    
 	        if (selectedGate == null) {return;}
 	        
-	        if (e.isShiftDown()) 
+	        if (e.isShiftDown() && selectedGate.getType() != GateType.OUT) 
             {
                 isConnecting = true;
             }
@@ -108,23 +107,18 @@ public class MouseHandler
 		@Override
 		public void mouseReleased(MouseEvent e) 
 		{
-		    isConnecting = false;
-		    
-		    Gate endGate = getGateAtCoordinates(e.getX(), e.getY());
-		    if (endGate != null && selectedGate != null && endGate != selectedGate)
-		    {
-		        if (e.getY() - endGate.y < 25)
-		        {
-		        	endGate.setInput1(selectedGate);
-		        }
-		        
-		        else
-		        {
-		        	endGate.setInput2(selectedGate);
-		        }
-		    }
-		    
-		    panel.updateGraphics();
+			isConnecting = false;
+			
+			Gate endGate = getGateAtCoordinates(e.getX(), e.getY());
+			if (endGate != null && selectedGate != null && endGate != selectedGate)
+			{
+			    if (e.getY() - endGate.y < 25)
+			    {endGate.setInput1(selectedGate);}
+			    
+			    else
+			    {endGate.setInput2(selectedGate);}
+			}
+			panel.updateGraphics();
 		}
 	}
 }

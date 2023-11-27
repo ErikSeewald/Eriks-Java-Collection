@@ -8,9 +8,9 @@ public class AND extends Gate
 	}
 
 	@Override
-	public boolean output(boolean a, boolean b) 
+	public boolean output() 
 	{
-		return super.updateState(a&&b);
+		return super.updateState(super.getInput1().output() && super.getInput2().output());
 	}
 
 	@Override

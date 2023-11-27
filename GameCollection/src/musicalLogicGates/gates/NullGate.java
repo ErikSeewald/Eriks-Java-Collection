@@ -14,7 +14,7 @@ public class NullGate extends Gate
 	}
 	
 	@Override
-	public boolean output(boolean a, boolean b) 
+	public boolean output()
 	{
 		return false;
 	}
