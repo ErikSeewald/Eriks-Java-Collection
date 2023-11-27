@@ -9,6 +9,10 @@ import javax.swing.Timer;
 import ejcMain.EJC_Game;
 import ejcMain.EJC_WindowEventHandler;
 
+/**
+ * EJC_Game implementation class for the automata project.
+ * Extends {@link JFrame} and implements {@link EJC_Game}
+ */
 public class EJC_Automata extends JFrame implements EJC_Game
 {
 	private static final long serialVersionUID = -53838519379536388L;
@@ -16,6 +20,12 @@ public class EJC_Automata extends JFrame implements EJC_Game
 	private CellPanel panel;
 	private Timer timer;
 	
+	/**
+	 * Starts this implementation of EJC_Game with the given {@link EJC_WindowEventHandler}.
+	 * Creates a new window and sets up the necessary timers and key listeners.
+	 * 
+	 * @param eventHandler the {@link EJC_WindowEventHandler} to handle this instance
+	 */
 	@Override
 	public void start(EJC_WindowEventHandler eventHandler) 
 	{
@@ -58,6 +68,10 @@ public class EJC_Automata extends JFrame implements EJC_Game
 		this.setVisible(true);
 	}
 
+	/**
+	 * {@link EJC_Automata} specific implementation of the {@link EJC_Game} stop method.
+	 * Halts all timers and frees memory.
+	 */
 	@Override
 	public void stop() 
 	{
