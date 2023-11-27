@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
@@ -50,6 +51,7 @@ public class CircuitPanel extends JPanel
 	private static final Color OR_COLOR = new Color(180, 255, 180);
 	private static final Color XOR_COLOR = new Color(255, 180, 180);
 	private static final Color CONNECT_COLOR_OFF = new Color(20, 20, 30);
+	private static final Color CONNECT_COLOR_ON = new Color(255, 255, 180);
 	
 	private static final int and_out_pos_x = 39;
 	private static final int nand_out_pos_x = 50;
@@ -65,6 +67,7 @@ public class CircuitPanel extends JPanel
 	private static final Area nor_area;
 	private static final Area xor_area;
 	private static final Area xnor_area;
+	private static final Area not_area;
 			
 	static 
 	{
@@ -89,6 +92,10 @@ public class CircuitPanel extends JPanel
 		//XNOR
 		xnor_area = new Area(xor_area);
 		xnor_area.add(not_circle_area.createTransformedArea(new AffineTransform(1, 0, 0, 1, 88, 20)));
+		
+		//NOT
+		not_area = new Area(new Polygon(new int[] {0, 0, 40}, new int[] {0, 30, 15}, 3));
+		not_area.add(not_circle_area.createTransformedArea(new AffineTransform(1, 0, 0, 1, 78, 9)));
 	}
 	
 	public void updateGraphics()
@@ -107,7 +114,6 @@ public class CircuitPanel extends JPanel
 		
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
-		
 		//CONNECTING MODE
         g2D.setStroke(new BasicStroke(3));
         g2D.setPaint(CONNECT_COLOR_OFF);
@@ -116,8 +122,10 @@ public class CircuitPanel extends JPanel
             Gate selected = mouseHandler.getSelectedGate();
                 
             int outPosX = getOutPosX(selected.getType());
-                
-            g2D.drawLine(selected.x + outPosX, selected.y + out_pos_y, mouseHandler.getMouseX(), mouseHandler.getMouseY());
+            int outY = selected.getType().equals(GateType.IN) || selected.getType().equals(GateType.NOT) 
+            		? selected.y - 11 : selected.y;    
+            
+            g2D.drawLine(selected.x + outPosX, outY + out_pos_y, mouseHandler.getMouseX(), mouseHandler.getMouseY());
         }
         
         //CONNECTIONS
@@ -152,28 +160,32 @@ public class CircuitPanel extends JPanel
             case NOR : return nand_out_pos_x;
             case XOR : return nand_out_pos_x;
             case XNOR : return xnor_out_pos_x;
-            case NULL_GATE : return 0;
+			case NOT : return and_out_pos_x + 5;
+			case IN : return 15;
+			case OUT: return 0;
+			case NULL_GATE : return 0;
             default : return 0;
         }
 	}
 	
 	public void drawConnection(Gate out, Gate in, Graphics2D g2D, boolean isInput1)
 	{
+	    g2D.setPaint(out.output() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);
+		
 	    int outPosX = getOutPosX(out.getType());
-	    
-	    g2D.setPaint(CONNECT_COLOR_OFF);
-	    
+	    int outY = out.getType().equals(GateType.IN) || out.getType().equals(GateType.NOT) ? out.y - 11 : out.y;
 	    int centerX = (in.x - (out.x + outPosX)) / 2;
 	    int inY = isInput1 ? in.y + out_pos_y - 10 : in.y + out_pos_y + 10;
 	    
 	    //OUT -> CENTER (out y)
-	    g2D.drawLine(out.x + outPosX, out.y + out_pos_y, out.x + outPosX + centerX, out.y + out_pos_y);
+	    g2D.drawLine(out.x + outPosX, outY + out_pos_y, out.x + outPosX + centerX, outY + out_pos_y);
 	    
 	    //CENTER (out y) -> CENTER (in y)
-        g2D.drawLine(out.x + outPosX + centerX, out.y + out_pos_y, out.x + outPosX + centerX, inY);
+        g2D.drawLine(out.x + outPosX + centerX, outY + out_pos_y, out.x + outPosX + centerX, inY);
         
         //CENTER (in y) -> IN
-        int inX = in.getType() == GateType.OR || in.getType() == GateType.NOR ? in.x + 8 : in.x;
+        int inX = in.getType() == GateType.OR || in.getType() == GateType.NOR || in.getType() == GateType.OUT
+        		? in.x + 8 : in.x;
         g2D.drawLine(out.x + outPosX + centerX, inY, inX, inY);    
 	}
 	
@@ -187,11 +199,14 @@ public class CircuitPanel extends JPanel
 		{
 			case AND : drawANDGate(gate, g2D); break;
 			case NAND : drawNANDGate(gate, g2D); break;
-			case NOR : drawNORGate(gate, g2D); break;
-			case NULL_GATE : break;
 			case OR : drawORGate(gate, g2D); break;
-			case XNOR : drawXNORGate(gate, g2D); break;
+			case NOR : drawNORGate(gate, g2D); break;
 			case XOR : drawXORGate(gate, g2D); break;
+			case XNOR : drawXNORGate(gate, g2D); break;
+			case NOT : drawNOTGate(gate, g2D); break;
+			case IN : drawINGate(gate, g2D); break;
+			case OUT: drawOUTGate(gate, g2D); break;
+			case NULL_GATE : break;
 			default : break;
 		}
 	}
@@ -230,5 +245,23 @@ public class CircuitPanel extends JPanel
 	{
 		g2D.setPaint(XOR_COLOR);
 		g2D.fill(xnor_area.createTransformedArea(new AffineTransform(1, 0, 0, 1, gate.x, gate.y)));
+	}
+	
+	public void drawINGate(Gate gate, Graphics2D g2D)
+	{
+		g2D.setPaint(gate.output() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);
+		g2D.fillRect(gate.x, gate.y, 30, 30);
+	}
+	
+	public void drawOUTGate(Gate gate, Graphics2D g2D)
+	{
+		g2D.setPaint(gate.output() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);
+		g2D.fillOval(gate.x, gate.y, 30, 30);
+	}
+	
+	public void drawNOTGate(Gate gate, Graphics2D g2D)
+	{
+		g2D.setPaint(gate.output() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);
+		g2D.fill(not_area.createTransformedArea(new AffineTransform(1, 0, 0, 1, gate.x, gate.y)));
 	}
 }

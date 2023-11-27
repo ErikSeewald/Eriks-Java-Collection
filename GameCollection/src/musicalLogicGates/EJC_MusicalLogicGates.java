@@ -33,7 +33,7 @@ public class EJC_MusicalLogicGates extends JFrame implements EJC_Game
 		westGUI = new WestGUI(circuitManager, this);
 		this.add(westGUI, BorderLayout.WEST);
 		
-		eastGUI = new EastGUI();
+		eastGUI = new EastGUI(circuitManager, this);
 		this.add(eastGUI, BorderLayout.EAST);
 		
 		this.setResizable(false);

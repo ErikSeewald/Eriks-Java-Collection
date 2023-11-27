@@ -6,9 +6,12 @@ import java.util.List;
 import musicalLogicGates.gates.AND;
 import musicalLogicGates.gates.Gate;
 import musicalLogicGates.gates.Gate.GateType;
+import musicalLogicGates.gates.IN;
 import musicalLogicGates.gates.NAND;
 import musicalLogicGates.gates.NOR;
+import musicalLogicGates.gates.NOT;
 import musicalLogicGates.gates.OR;
+import musicalLogicGates.gates.OUT;
 import musicalLogicGates.gates.XNOR;
 import musicalLogicGates.gates.XOR;
 
@@ -41,6 +44,9 @@ public class CircuitManager
 			case NOR : gates.add(new NOR(100, 100)); break;
 			case XOR : gates.add(new XOR(100, 100)); break;
 			case XNOR : gates.add(new XNOR(100, 100)); break;
+			case NOT : gates.add(new NOT(100,100)); break;
+			case IN : gates.add(new IN(100,100)); break;
+			case OUT: gates.add(new OUT(100,100)); break;
 			case NULL_GATE : break;
 			default : break;
 		}
@@ -53,5 +59,10 @@ public class CircuitManager
 			g.removeGateFromInputs(gate);
 		}
 		return gates.remove(gate);
+	}
+	
+	public boolean clearGates()
+	{
+		return gates.removeAll(gates);
 	}
 }

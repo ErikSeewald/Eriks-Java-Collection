@@ -54,19 +54,19 @@ public class WestGUI extends JPanel implements MouseListener
 		setButtonSettings(playButton, 23, 30, buttonSizeX, buttonSizeY);
 		
 		andButton = new JLabel("    AND");
-		setButtonSettings(andButton, 23, 140, buttonSizeX, buttonSizeY);
+		setButtonSettings(andButton, 23, 180, buttonSizeX, buttonSizeY);
 		nandButton = new JLabel("   NAND");
-		setButtonSettings(nandButton, 23, 220, buttonSizeX, buttonSizeY);
+		setButtonSettings(nandButton, 23, 260, buttonSizeX, buttonSizeY);
 		
 		orButton = new JLabel("     OR");
-		setButtonSettings(orButton, 23, 320, buttonSizeX, buttonSizeY);
+		setButtonSettings(orButton, 23, 360, buttonSizeX, buttonSizeY);
 		norButton = new JLabel("    NOR");
-		setButtonSettings(norButton, 23, 400, buttonSizeX, buttonSizeY);
+		setButtonSettings(norButton, 23, 440, buttonSizeX, buttonSizeY);
 		
 		xorButton = new JLabel("    XOR");
-		setButtonSettings(xorButton, 23, 500, buttonSizeX, buttonSizeY);
+		setButtonSettings(xorButton, 23, 540, buttonSizeX, buttonSizeY);
 		xnorButton = new JLabel("   XNOR");
-		setButtonSettings(xnorButton, 23, 580, buttonSizeX, buttonSizeY);
+		setButtonSettings(xnorButton, 23, 620, buttonSizeX, buttonSizeY);
 		
 		this.setLayout(null);
 	}

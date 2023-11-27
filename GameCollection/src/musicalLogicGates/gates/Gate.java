@@ -10,7 +10,7 @@ public abstract class Gate
 	 */
 	public enum GateType 
 	{
-		AND, NAND, OR, NOR, XOR, XNOR, NULL_GATE
+		AND, NAND, OR, NOR, XOR, XNOR, NOT, IN, OUT, NULL_GATE
 	}
 	
 	private boolean state;
@@ -35,14 +35,12 @@ public abstract class Gate
 	}
 
 	/**
-	 * Produces an output based on the two inputs. Also updates the
+	 * Produces an output based on the two input {@link Gate}s. Also updates the
 	 * {@link Gate}'s internal state variable.
 	 * 
-	 * @param a {@link boolean} input 1
-	 * @param b {@link boolean} input 2
 	 * @return {@link boolean} logical output
 	 */
-	public abstract boolean output(boolean a, boolean b);
+	public abstract boolean output();
 	
 	/**
 	 * Updates the internal {@literal boolean} state.
@@ -120,7 +118,7 @@ public abstract class Gate
 	 */
 	public void removeGateFromInputs(Gate gate)
 	{
-		if (input1.equals(gate)) {input1 = NullGate.instance;}
-		if (input2.equals(gate)) {input2 = NullGate.instance;}
+		if (getInput1().equals(gate)) {setInput1(NullGate.instance);}
+		if (getInput2().equals(gate)) {setInput2(NullGate.instance);}
 	}
 }
