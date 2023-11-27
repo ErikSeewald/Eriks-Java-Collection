@@ -11,6 +11,7 @@ import gravityVectors.EJC_GravityVectors;
 import infdungeons.EJC_InfDungeons;
 import insects.EJC_Insects;
 import mouseDodge.EJC_MouseDodge;
+import musicalLogicGates.EJC_MusicalLogicGates;
 import parallelUniverses.EJC_ParallelUniverses;
 import particles.EJC_Particles;
 import pathfindGame.EJC_Pathfind;
@@ -55,12 +56,14 @@ public class EJC_GameHandler
 		games.add(EJC_CheeseBreeder.class); 
 		games.add(EJC_TaxCollector.class);
 		games.add(EJC_Automata.class);
+		
+		games.add(EJC_MusicalLogicGates.class);
 	}
 	
 	private static EJC_WindowEventHandler eventHandler = new EJC_WindowEventHandler();
 	private static boolean[] gameOpened = new boolean[24];
 	
-	public static void startGame(int index) 
+	public static void startGame(int index)
     {
     	if (index >= games.size() || gameOpened[index]) {return;}
         try 

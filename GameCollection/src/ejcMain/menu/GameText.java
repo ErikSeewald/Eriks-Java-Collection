@@ -301,14 +301,29 @@ public enum GameText
 					"R - Randomize game rules | S - Change cell size (potential flash warning)",
 					"Click anywhere on the screen to spawn a small patch of active cells.",
 			}
+	),
+	
+	MusicalGates
+	(
+			" Musical Gates",
+			
+			new String[]
+			{
+					"MUSICAL LOGIC GATES",
+					"",
+					"",
+					"",
+					"",
+					"",
+			}
 	);
 
-	String button_text;
+	String buttonText;
 	String[] guide = new String[6];
 	
-	GameText(String button_text, String[] guide)
+	GameText(String buttonText, String[] guide)
 	{
-		this.button_text = button_text;
+		this.buttonText = buttonText;
 		this.guide = guide;
 	}
 }

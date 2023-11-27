@@ -88,8 +88,8 @@ public class MainMenu extends JFrame implements MouseListener
 			int x = 0, y = 0;
 			for (int i = 0; i < EJC_GameHandler.maxGameCount; i++)
 			{
-				String button_text = i < game_text.length ? game_text[i].button_text : "";
-				GButton button = new GButton(button_text, i);
+				String buttonText = i < game_text.length ? game_text[i].buttonText : "";
+				GButton button = new GButton(buttonText, i);
 				gameButtons[i] = button;
 				initButton(button, (resolution/10) + x*(resolution/5), (resolution/3) + y*(resolution/10));
 				
