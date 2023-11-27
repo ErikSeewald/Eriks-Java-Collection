@@ -82,7 +82,7 @@ public abstract class Gate
 	 * @param gate must not be {@literal null}
 	 * @throws IllegalArgumentException
 	 */
-	protected void setInput1(Gate gate) 
+	public void setInput1(Gate gate) 
 	{
 		if (gate == null ) 
 		{
@@ -97,7 +97,7 @@ public abstract class Gate
 	 * @param gate must not be {@literal null}
 	 * @throws IllegalArgumentException
 	 */
-	protected void setInput2(Gate gate) 
+	public void setInput2(Gate gate) 
 	{
 		if (gate == null ) 
 		{

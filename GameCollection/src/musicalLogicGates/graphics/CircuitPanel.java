@@ -13,6 +13,8 @@ import java.awt.geom.Ellipse2D;
 import javax.swing.JPanel;
 import musicalLogicGates.circuit.CircuitManager;
 import musicalLogicGates.gates.Gate;
+import musicalLogicGates.gates.Gate.GateType;
+import musicalLogicGates.gates.NullGate;
 
 public class CircuitPanel extends JPanel
 {
@@ -46,6 +48,13 @@ public class CircuitPanel extends JPanel
 	private static final Color AND_COLOR = new Color(180, 180, 255);
 	private static final Color OR_COLOR = new Color(180, 255, 180);
 	private static final Color XOR_COLOR = new Color(255, 180, 180);
+	
+	private static final int and_out_pos_x = 39;
+	private static final int nand_out_pos_x = 50;
+    private static final int xnor_out_pos_x = 60;
+
+    private static final int out_pos_y = 26;
+    
 	
 	private static final Area not_circle_area = new Area(new Ellipse2D.Double(-40,0, 12, 12));
 	private static final Area and_area = new Area(new Arc2D.Double(-40, 0, 80, 50, -90, 180, Arc2D.PIE));
@@ -96,10 +105,73 @@ public class CircuitPanel extends JPanel
 		
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
+		
+		//CONNECTING MODE
+        if (mouseHandler.isConnecting())
+        {
+            Gate selected = mouseHandler.getSelectedGate();
+            g2D.setPaint(Color.black);
+                
+            int outPosX = getOutPosX(selected.getType());
+                
+            g2D.drawLine(selected.x + outPosX, selected.y + out_pos_y, mouseHandler.getMouseX(), mouseHandler.getMouseY());
+        }
+        
+        //CONNECTIONS
+        for (Gate gate : circuitManager.getGates())
+        {
+            if (!(gate.getInput1() instanceof NullGate))
+            {
+                drawConnection(gate.getInput1(), gate, g2D);
+            }
+            
+            if (!(gate.getInput2() instanceof NullGate))
+            {
+                drawConnection(gate.getInput2(), gate, g2D);
+            }
+        }
+		
+        //GATES
 		for (Gate gate : circuitManager.getGates())
 		{
 			drawGate(gate, g2D);
 		}
+	}
+	
+	//CONNECTIONS
+	private int getOutPosX(GateType type)
+	{
+        switch (type)
+        {
+            case AND : return and_out_pos_x;
+            case NAND : return nand_out_pos_x;
+            case OR : return and_out_pos_x;
+            case NOR : return nand_out_pos_x;
+            case XOR : return nand_out_pos_x;
+            case XNOR : return xnor_out_pos_x;
+            case NULL_GATE : return 0;
+            default : return 0;
+        }
+	}
+	
+	public void drawConnection(Gate out, Gate in, Graphics2D g2D)
+	{
+	    int outPosX = getOutPosX(out.getType());
+	    
+	    g2D.setPaint(Color.black);
+	    
+	    int centerX = (in.x - (out.x + outPosX)) / 2;
+	    
+	    //OUT -> CENTER (out y)
+	    g2D.drawLine(out.x + outPosX, out.y + out_pos_y, out.x + outPosX + centerX, out.y + out_pos_y);
+	    
+	    //CENTER (out y) -> CENTER (in y)
+        g2D.drawLine(out.x + outPosX + centerX, out.y + out_pos_y, out.x + outPosX + centerX, in.y);
+        
+        //CENTER (in y) -> IN
+        g2D.drawLine(out.x + outPosX + centerX, in.y, in.x, in.y);
+	    
+	    
 	}
 	
 	//GATES
