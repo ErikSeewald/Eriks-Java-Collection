@@ -6,7 +6,9 @@ package musicalLogicGates.gates;
  */
 public class NullGate extends Gate
 {	
-	public NullGate() 
+	public static final NullGate instance = new NullGate();
+	
+	private NullGate() 
 	{
 		super(0, 0);
 	}

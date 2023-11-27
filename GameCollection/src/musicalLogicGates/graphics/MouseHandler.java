@@ -3,10 +3,8 @@ package musicalLogicGates.graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-
 import musicalLogicGates.circuit.CircuitManager;
 import musicalLogicGates.gates.Gate;
-import musicalLogicGates.gates.NullGate;
 
 public class MouseHandler 
 {
@@ -59,8 +57,11 @@ public class MouseHandler
 		{		    
 		    mouseX = e.getX();
 			mouseY = e.getY();
-			    
+			
 			selectedGate = getGateAtCoordinates(mouseX, mouseY);
+			
+			if (e.isAltDown() && selectedGate != null)
+			{circuitManager.removeGate(selectedGate);}
 		}
 	}
     
@@ -112,13 +113,14 @@ public class MouseHandler
 		    Gate endGate = getGateAtCoordinates(e.getX(), e.getY());
 		    if (endGate != null && selectedGate != null && endGate != selectedGate)
 		    {
-		        if (endGate.getInput1() instanceof NullGate)
+		        if (e.getY() - endGate.y < 25)
 		        {
-		            endGate.setInput1(selectedGate);
+		        	endGate.setInput1(selectedGate);
 		        }
+		        
 		        else
 		        {
-		            endGate.setInput2(selectedGate);
+		        	endGate.setInput2(selectedGate);
 		        }
 		    }
 		    

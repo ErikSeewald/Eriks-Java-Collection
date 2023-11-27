@@ -1,5 +1,6 @@
 package musicalLogicGates.graphics;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -48,6 +49,7 @@ public class CircuitPanel extends JPanel
 	private static final Color AND_COLOR = new Color(180, 180, 255);
 	private static final Color OR_COLOR = new Color(180, 255, 180);
 	private static final Color XOR_COLOR = new Color(255, 180, 180);
+	private static final Color CONNECT_COLOR_OFF = new Color(20, 20, 30);
 	
 	private static final int and_out_pos_x = 39;
 	private static final int nand_out_pos_x = 50;
@@ -107,10 +109,11 @@ public class CircuitPanel extends JPanel
 		
 		
 		//CONNECTING MODE
+        g2D.setStroke(new BasicStroke(3));
+        g2D.setPaint(CONNECT_COLOR_OFF);
         if (mouseHandler.isConnecting())
         {
             Gate selected = mouseHandler.getSelectedGate();
-            g2D.setPaint(Color.black);
                 
             int outPosX = getOutPosX(selected.getType());
                 
@@ -122,12 +125,12 @@ public class CircuitPanel extends JPanel
         {
             if (!(gate.getInput1() instanceof NullGate))
             {
-                drawConnection(gate.getInput1(), gate, g2D);
+                drawConnection(gate.getInput1(), gate, g2D, true);
             }
             
             if (!(gate.getInput2() instanceof NullGate))
             {
-                drawConnection(gate.getInput2(), gate, g2D);
+                drawConnection(gate.getInput2(), gate, g2D, false);
             }
         }
 		
@@ -154,24 +157,24 @@ public class CircuitPanel extends JPanel
         }
 	}
 	
-	public void drawConnection(Gate out, Gate in, Graphics2D g2D)
+	public void drawConnection(Gate out, Gate in, Graphics2D g2D, boolean isInput1)
 	{
 	    int outPosX = getOutPosX(out.getType());
 	    
-	    g2D.setPaint(Color.black);
+	    g2D.setPaint(CONNECT_COLOR_OFF);
 	    
 	    int centerX = (in.x - (out.x + outPosX)) / 2;
+	    int inY = isInput1 ? in.y + out_pos_y - 10 : in.y + out_pos_y + 10;
 	    
 	    //OUT -> CENTER (out y)
 	    g2D.drawLine(out.x + outPosX, out.y + out_pos_y, out.x + outPosX + centerX, out.y + out_pos_y);
 	    
 	    //CENTER (out y) -> CENTER (in y)
-        g2D.drawLine(out.x + outPosX + centerX, out.y + out_pos_y, out.x + outPosX + centerX, in.y);
+        g2D.drawLine(out.x + outPosX + centerX, out.y + out_pos_y, out.x + outPosX + centerX, inY);
         
         //CENTER (in y) -> IN
-        g2D.drawLine(out.x + outPosX + centerX, in.y, in.x, in.y);
-	    
-	    
+        int inX = in.getType() == GateType.OR || in.getType() == GateType.NOR ? in.x + 8 : in.x;
+        g2D.drawLine(out.x + outPosX + centerX, inY, inX, inY);    
 	}
 	
 	//GATES
