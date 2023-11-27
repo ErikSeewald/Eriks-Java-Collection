@@ -26,8 +26,8 @@ public abstract class Gate
 		// only set inputs to NullGate if object is not a NullGate itself -> prevent loop
 		if (!(this instanceof NullGate)) 
 		{
-			this.input1 = new NullGate();
-			this.input2 = new NullGate();
+			this.input1 = NullGate.instance;
+			this.input2 = NullGate.instance;
 		}
 		
 		this.x = x;
@@ -112,4 +112,15 @@ public abstract class Gate
 	 * @return the {@link GateType}
 	 */
 	public abstract GateType getType();
+	
+	/**
+	 * Removes a given {@link Gate} from this {@link Gate}'s inputs if it is present.
+	 * 
+	 * @param gate the {@link Gate} to be deleted
+	 */
+	public void removeGateFromInputs(Gate gate)
+	{
+		if (input1.equals(gate)) {input1 = NullGate.instance;}
+		if (input2.equals(gate)) {input2 = NullGate.instance;}
+	}
 }

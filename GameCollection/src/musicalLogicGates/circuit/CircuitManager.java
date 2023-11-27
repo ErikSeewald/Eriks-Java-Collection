@@ -45,4 +45,13 @@ public class CircuitManager
 			default : break;
 		}
 	}
+	
+	public boolean removeGate(Gate gate)
+	{
+		for (Gate g : gates)
+		{
+			g.removeGateFromInputs(gate);
+		}
+		return gates.remove(gate);
+	}
 }
