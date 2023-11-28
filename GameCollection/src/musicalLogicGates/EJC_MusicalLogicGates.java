@@ -45,6 +45,17 @@ public class EJC_MusicalLogicGates extends JFrame implements EJC_Game
 	{
 		panel.updateGraphics();
 	}
+	
+	public void saveCircuit()
+	{
+		FileManager.saveCircuit(circuitManager.getGates());
+	}
+	
+	public void loadCircuit()
+	{
+		circuitManager.loadCircuit(FileManager.loadCircuit());
+		updateGraphics();
+	}
 
 	@Override
 	public void stop()

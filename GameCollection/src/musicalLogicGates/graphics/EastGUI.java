@@ -29,6 +29,9 @@ public class EastGUI extends JPanel implements MouseListener
 	private JLabel inButton;
 	private JLabel outButton;
 	
+	private JLabel saveButton;
+	private JLabel loadButton;
+	
 	private CircuitManager circuitManager;
 	private EJC_MusicalLogicGates game;
 	
@@ -56,6 +59,11 @@ public class EastGUI extends JPanel implements MouseListener
 		setButtonSettings(inButton, 23, 260, buttonSizeX, buttonSizeY);
 		outButton = new JLabel("    OUT");
 		setButtonSettings(outButton, 23, 340, buttonSizeX, buttonSizeY);
+		
+		saveButton = new JLabel("   SAVE");
+		setButtonSettings(saveButton, 23, 500, buttonSizeX, buttonSizeY);
+		loadButton = new JLabel("   LOAD");
+		setButtonSettings(loadButton, 23, 580, buttonSizeX, buttonSizeY);
 		
 		this.setLayout(null);
 	}
@@ -89,6 +97,12 @@ public class EastGUI extends JPanel implements MouseListener
 		
 		else if (button.equals(outButton))
 		{circuitManager.addGate(GateType.OUT);}
+		
+		else if (button.equals(saveButton))
+		{game.saveCircuit();}
+		
+		else if (button.equals(loadButton))
+		{game.loadCircuit();}
 		
 		buttonAnimation(button, -(buttonSizeX /30));
 		button.setBackground(EJC_GUI.b_color_highlight);
