@@ -140,7 +140,8 @@ public class MouseHandler
 	            selectedGate.y = mouseY - 20;
 	        }
 	        
-	        panel.updateGraphics();
+	        //only updateGraphics while not playing or you risk messing up the frame rates
+	        if (!circuitManager.isPlaying()) {panel.updateGraphics();}    
 		}
 	}
 

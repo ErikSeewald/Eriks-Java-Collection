@@ -23,6 +23,12 @@ public class OUT extends Gate
 	{
 		return input.output();
 	}
+	
+	@Override
+	public boolean output(boolean a, boolean b)
+	{
+		return a;
+	}
 
 	/**
 	 * Sets the single input {@link Gate} of this {@link OUT} {@link Gate}.
