@@ -158,4 +158,8 @@ public class FileManager
 		
 		return gates;
 	}
+	
+	public static final String full_adder =
+			"{IN,88,185,-1,-1,}{IN,47,269,-1,-1,}{IN,54,399,-1,-1,}{XOR,380,147,0,1,}{XOR,618,182,3,2,}"
+			+ "{AND,513,427,3,2,}{AND,380,300,0,1,}{OR,828,260,6,5,}{OUT,1019,172,4,-1,}{OUT,1003,304,7,-1,}/";
 }
