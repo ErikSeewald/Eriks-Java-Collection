@@ -38,6 +38,9 @@ public class EJC_MusicalLogicGates extends JFrame implements EJC_Game
 		
 		this.setResizable(false);
 		this.pack();
+		
+		circuitManager.loadCircuit(FileManager.loadString(FileManager.full_adder));
+		
 		this.setVisible(true);
 	}
 	
