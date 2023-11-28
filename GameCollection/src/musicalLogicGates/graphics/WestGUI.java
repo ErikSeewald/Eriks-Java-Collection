@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import ejcMain.EJC_GUI;
 import musicalLogicGates.EJC_MusicalLogicGates;
+import musicalLogicGates.EJC_MusicalLogicGates.OnOff;
 import musicalLogicGates.circuit.CircuitManager;
 import musicalLogicGates.gates.Gate.GateType;
 
@@ -56,7 +57,7 @@ public class WestGUI extends JPanel implements MouseListener
 		this.setBorder(BorderFactory.createLineBorder(borderColor, 8));
 
 		//BUTTONS
-		playButton = new JLabel("    Play");
+		playButton = new JLabel("   PLAY");
 		setButtonSettings(playButton, 23, 30, buttonSizeX, buttonSizeY);
 		
 		andButton = new JLabel("    AND");
@@ -75,6 +76,21 @@ public class WestGUI extends JPanel implements MouseListener
 		setButtonSettings(xnorButton, 23, 620, buttonSizeX, buttonSizeY);
 		
 		this.setLayout(null);
+	}
+	
+	/**
+	 * Helper method to disable and enable all edit buttons while in 'playing' mode
+	 */
+	public void switchOnOffEditButtons(OnOff onOff)
+	{
+		boolean b = onOff == OnOff.ON ? true : false;
+		
+		andButton.setVisible(b);
+		nandButton.setVisible(b);
+		orButton.setVisible(b);
+		norButton.setVisible(b);
+		xorButton.setVisible(b);
+		xnorButton.setVisible(b);
 	}
 	
 	/**
@@ -103,7 +119,22 @@ public class WestGUI extends JPanel implements MouseListener
 	{
 		JLabel button = (JLabel) e.getSource();
 		
-		if (button.equals(andButton))
+		if (button.equals(playButton))
+		{
+			if (circuitManager.isPlaying())
+			{
+				game.stopPlaying();
+				playButton.setText("   PLAY");
+			}
+			
+			else
+			{
+				game.startPlaying();
+				playButton.setText("   STOP");
+			}	
+		}
+		
+		else if (button.equals(andButton))
 		{circuitManager.addGate(GateType.AND);}
 		
 		else if (button.equals(nandButton))

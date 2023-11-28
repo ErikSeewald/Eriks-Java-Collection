@@ -13,8 +13,8 @@ public abstract class Gate
 		AND, NAND, OR, NOR, XOR, XNOR, NOT, IN, OUT, NULL_GATE
 	}
 	
-	//STATE
-	private boolean state;
+	//STATE FOR 'PLAYING' MODE
+	private boolean playState;
 	
 	//INPUTS
 	private Gate input1;
@@ -23,6 +23,10 @@ public abstract class Gate
 	//COORDINATES
 	public int x;
 	public int y;
+	
+	//ANIMATION
+	private static final int ANIMATION_FRAMES = 15;
+	private int animationFrame = 0;
 
 	protected Gate(int x, int y) 
 	{
@@ -33,36 +37,80 @@ public abstract class Gate
 			this.input2 = NullGate.instance;
 		}
 		
+		this.resetPlayState(); //initialize play state
+		
 		this.x = x;
 		this.y = y;
 	}
 
 	/**
-	 * Produces an output based on the two input {@link Gate}s. Also updates the
-	 * {@link Gate}'s internal state variable.
+	 * Produces an output based on the two input {@link Gate}s.
 	 * 
 	 * @return {@link boolean} logical output
 	 */
-	public abstract boolean output();
+	public boolean output() {return output(getInput1().output(), getInput2().output());}
 	
 	/**
-	 * Updates the internal {@literal boolean} state.
+	 * Produces an output based on the two input {@link booleans}.
 	 * 
+	 * @return {@link boolean} logical output
+	 */
+	public abstract boolean output(boolean a, boolean b);
+	
+	/**
+	 * Updates the internal {@literal boolean} state in 'playing' mode. 
+	 * Allows for step by step advancement of the logical circuit.
 	 * @param state {@literal boolean} to update with
 	 * @return the {@literal boolean} new state
+	 *
 	 */
-	protected boolean updateState(boolean state) 
+	public boolean updatePlayState(boolean state) 
 	{
-		this.state = state;
-		return this.state;
+		//start animation if state has switched
+		if (this.playState != state)
+		{this.animationFrame = ANIMATION_FRAMES;}
+		
+		this.playState = state;
+		return this.playState;
 	}
 	
 	/**
-	 * Returns the internal state.
+	 * Resets the {@link Gate}'s play state.
+	 */
+	public void resetPlayState()
+	{
+		this.playState = this.output(false, false);
+	}
+	
+	/**
+	 * Returns whether this {@link Gate} is currently in an animation.
+	 * 
+	 * @return whether this {@link Gate} is currently in an animation
+	 */
+	public boolean isAnimating() {return this.animationFrame > 0;}
+	
+	/**
+	 * Advances the animation frame counter.
+	 */
+	public void advanceAnimation()
+	{
+		if (!this.isAnimating()) {return;}
+		this.animationFrame--;
+	}
+	
+	/**
+	 * Stops the animation. Sets the animation frame counter to 0.
+	 */
+	public void stopAnimation()
+	{this.animationFrame = 0;}
+	
+	/**
+	 * Returns the internal state in 'playing' mode. 
+	 * Allows for step by step advancement of the logical circuit.
 	 * 
 	 * @return {@link boolean} state
 	 */
-	protected boolean getState() {return this.state;}
+	public boolean getPlayState() {return this.playState;}
 
 	/**
 	 * Gets the {@link Gate}'s first input.

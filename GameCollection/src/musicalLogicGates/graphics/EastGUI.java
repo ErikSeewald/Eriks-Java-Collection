@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import ejcMain.EJC_GUI;
 import musicalLogicGates.EJC_MusicalLogicGates;
+import musicalLogicGates.EJC_MusicalLogicGates.OnOff;
 import musicalLogicGates.circuit.CircuitManager;
 import musicalLogicGates.gates.Gate.GateType;
 
@@ -78,6 +79,21 @@ public class EastGUI extends JPanel implements MouseListener
 		setButtonSettings(loadButton, 23, 580, buttonSizeX, buttonSizeY);
 		
 		this.setLayout(null);
+	}
+	
+	/**
+	 * Helper method to disable and enable all edit buttons while in 'playing' mode
+	 */
+	public void switchOnOffEditButtons(OnOff onOff)
+	{
+		boolean b = onOff == OnOff.ON ? true : false;
+		
+		clearButton.setVisible(b);
+		notButton.setVisible(b);
+		inButton.setVisible(b);
+		outButton.setVisible(b);
+		saveButton.setVisible(b);
+		loadButton.setVisible(b);
 	}
 	
 

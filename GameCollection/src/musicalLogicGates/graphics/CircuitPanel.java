@@ -142,7 +142,7 @@ public class CircuitPanel extends JPanel
             
             g2D.drawLine(selected.x + outPosX, outY + OUT_POS_Y, mouseHandler.getMouseX(), mouseHandler.getMouseY());
         }
-        
+         
         //CONNECTIONS
         for (Gate gate : circuitManager.getGates())
         {
@@ -178,7 +178,10 @@ public class CircuitPanel extends JPanel
 	 */
 	private void drawConnection(Gate out, Gate in, Graphics2D g2D, boolean isInput1)
 	{
-	    g2D.setPaint(out.output() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);
+		if (circuitManager.isPlaying())
+		{g2D.setPaint(out.getPlayState() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);}
+		else
+		{g2D.setPaint(out.output() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);}
 		
 	    int outPosX = getOutPosX(out.getType());
 	    int outY = getOutY(out.getType(), out.y);
@@ -260,17 +263,26 @@ public class CircuitPanel extends JPanel
 		if (gate == null) 
 		{throw new IllegalArgumentException("gate cannot be null");}
 		
+		//ANIMATION
+		double sizeMultiplier = 1.0;
+		if (gate.isAnimating()) 
+		{
+			gate.advanceAnimation();
+			sizeMultiplier = 1.5;
+		}
+		
+		//GATE TYPE
 		switch (gate.getType()) 
 		{
-			case AND : drawANDGate(gate, g2D); break;
-			case NAND : drawNANDGate(gate, g2D); break;
-			case OR : drawORGate(gate, g2D); break;
-			case NOR : drawNORGate(gate, g2D); break;
-			case XOR : drawXORGate(gate, g2D); break;
-			case XNOR : drawXNORGate(gate, g2D); break;
-			case NOT : drawNOTGate(gate, g2D); break;
-			case IN : drawINGate(gate, g2D); break;
-			case OUT: drawOUTGate(gate, g2D); break;
+			case AND : drawANDGate(gate, g2D, sizeMultiplier); break;
+			case NAND : drawNANDGate(gate, g2D, sizeMultiplier); break;
+			case OR : drawORGate(gate, g2D, sizeMultiplier); break;
+			case NOR : drawNORGate(gate, g2D, sizeMultiplier); break;
+			case XOR : drawXORGate(gate, g2D, sizeMultiplier); break;
+			case XNOR : drawXNORGate(gate, g2D, sizeMultiplier); break;
+			case NOT : drawNOTGate(gate, g2D, sizeMultiplier); break;
+			case IN : drawINGate(gate, g2D, sizeMultiplier); break;
+			case OUT: drawOUTGate(gate, g2D, sizeMultiplier); break;
 			case NULL_GATE : break;
 			default : break;
 		}
@@ -281,11 +293,14 @@ public class CircuitPanel extends JPanel
 	 * 
 	 * @param gate the {@link Gate} to render
 	 * @param g2D the {@link Graphics2D} context to render to
+	 * @param sizeMultiplier {@link double} with which to multiply the {@link Gate}'s size
 	 */
-	private void drawANDGate(Gate gate, Graphics2D g2D)
+	private void drawANDGate(Gate gate, Graphics2D g2D, double sizeMultiplier)
 	{
 		g2D.setPaint(AND_COLOR);
-		g2D.fill(and_area.createTransformedArea(new AffineTransform(1, 0, 0, 1, gate.x, gate.y)));
+		g2D.fill(and_area.createTransformedArea(
+				new AffineTransform(sizeMultiplier, 0, 0, sizeMultiplier, 
+						sizeMultiplier > 1.0 ? gate.x - 10 : gate.x, sizeMultiplier > 1.0 ? gate.y - 10 : gate.y)));
 	}
 	
 	/**
@@ -293,11 +308,14 @@ public class CircuitPanel extends JPanel
 	 * 
 	 * @param gate the {@link Gate} to render
 	 * @param g2D the {@link Graphics2D} context to render to
+	 * @param sizeMultiplier {@link double} with which to multiply the {@link Gate}'s size
 	 */
-	private void drawNANDGate(Gate gate, Graphics2D g2D)
+	private void drawNANDGate(Gate gate, Graphics2D g2D, double sizeMultiplier)
 	{
 		g2D.setPaint(AND_COLOR);
-		g2D.fill(nand_area.createTransformedArea(new AffineTransform(1, 0, 0, 1, gate.x, gate.y)));
+		g2D.fill(nand_area.createTransformedArea(
+				new AffineTransform(sizeMultiplier, 0, 0, sizeMultiplier, 
+						sizeMultiplier > 1.0 ? gate.x - 10 : gate.x, sizeMultiplier > 1.0 ? gate.y - 10 : gate.y)));
 	}
 	
 	/**
@@ -305,11 +323,14 @@ public class CircuitPanel extends JPanel
 	 * 
 	 * @param gate the {@link Gate} to render
 	 * @param g2D the {@link Graphics2D} context to render to
+	 * @param sizeMultiplier {@link double} with which to multiply the {@link Gate}'s size
 	 */
-	private void drawORGate(Gate gate, Graphics2D g2D)
+	private void drawORGate(Gate gate, Graphics2D g2D, double sizeMultiplier)
 	{
 		g2D.setPaint(OR_COLOR);
-		g2D.fill(or_area.createTransformedArea(new AffineTransform(1, 0, 0, 1, gate.x, gate.y)));
+		g2D.fill(or_area.createTransformedArea(
+				new AffineTransform(sizeMultiplier, 0, 0, sizeMultiplier, 
+						sizeMultiplier > 1.0 ? gate.x - 10 : gate.x, sizeMultiplier > 1.0 ? gate.y - 10 : gate.y)));
 	}
 	
 	/**
@@ -317,11 +338,14 @@ public class CircuitPanel extends JPanel
 	 * 
 	 * @param gate the {@link Gate} to render
 	 * @param g2D the {@link Graphics2D} context to render to
+	 * @param sizeMultiplier {@link double} with which to multiply the {@link Gate}'s size
 	 */
-	private void drawNORGate(Gate gate, Graphics2D g2D)
+	private void drawNORGate(Gate gate, Graphics2D g2D, double sizeMultiplier)
 	{
 		g2D.setPaint(OR_COLOR);
-		g2D.fill(nor_area.createTransformedArea(new AffineTransform(1, 0, 0, 1, gate.x, gate.y)));
+		g2D.fill(nor_area.createTransformedArea(
+				new AffineTransform(sizeMultiplier, 0, 0, sizeMultiplier, 
+						sizeMultiplier > 1.0 ? gate.x - 10 : gate.x, sizeMultiplier > 1.0 ? gate.y - 10 : gate.y)));
 	}
 	
 	/**
@@ -329,11 +353,14 @@ public class CircuitPanel extends JPanel
 	 * 
 	 * @param gate the {@link Gate} to render
 	 * @param g2D the {@link Graphics2D} context to render to
+	 * @param sizeMultiplier {@link double} with which to multiply the {@link Gate}'s size
 	 */
-	private void drawXORGate(Gate gate, Graphics2D g2D)
+	private void drawXORGate(Gate gate, Graphics2D g2D, double sizeMultiplier)
 	{
 		g2D.setPaint(XOR_COLOR);
-		g2D.fill(xor_area.createTransformedArea(new AffineTransform(1, 0, 0, 1, gate.x, gate.y)));
+		g2D.fill(xor_area.createTransformedArea(
+				new AffineTransform(sizeMultiplier, 0, 0, sizeMultiplier, 
+						sizeMultiplier > 1.0 ? gate.x - 10 : gate.x, sizeMultiplier > 1.0 ? gate.y - 10 : gate.y)));
 	}
 	
 	/**
@@ -341,11 +368,14 @@ public class CircuitPanel extends JPanel
 	 * 
 	 * @param gate the {@link Gate} to render
 	 * @param g2D the {@link Graphics2D} context to render to
+	 * @param sizeMultiplier {@link double} with which to multiply the {@link Gate}'s size
 	 */
-	private void drawXNORGate(Gate gate, Graphics2D g2D)
+	private void drawXNORGate(Gate gate, Graphics2D g2D, double sizeMultiplier)
 	{
 		g2D.setPaint(XOR_COLOR);
-		g2D.fill(xnor_area.createTransformedArea(new AffineTransform(1, 0, 0, 1, gate.x, gate.y)));
+		g2D.fill(xnor_area.createTransformedArea(
+				new AffineTransform(sizeMultiplier, 0, 0, sizeMultiplier, 
+						sizeMultiplier > 1.0 ? gate.x - 10 : gate.x, sizeMultiplier > 1.0 ? gate.y - 10 : gate.y)));
 	}
 	
 	/**
@@ -353,11 +383,16 @@ public class CircuitPanel extends JPanel
 	 * 
 	 * @param gate the {@link Gate} to render
 	 * @param g2D the {@link Graphics2D} context to render to
+	 * @param sizeMultiplier {@link double} with which to multiply the {@link Gate}'s size
 	 */
-	private void drawINGate(Gate gate, Graphics2D g2D)
+	private void drawINGate(Gate gate, Graphics2D g2D, double sizeMultiplier)
 	{
-		g2D.setPaint(gate.output() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);
-		g2D.fillRect(gate.x, gate.y, 30, 30);
+		if (circuitManager.isPlaying())
+		{g2D.setPaint(gate.getPlayState() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);}
+		else
+		{g2D.setPaint(gate.output() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);}
+		g2D.fillRect(sizeMultiplier > 1.0 ? gate.x - 10 : gate.x, sizeMultiplier > 1.0 ? gate.y - 10 : gate.y, 
+				(int) (30 * sizeMultiplier), (int) (30 * sizeMultiplier));
 	}
 	
 	/**
@@ -365,11 +400,16 @@ public class CircuitPanel extends JPanel
 	 * 
 	 * @param gate the {@link Gate} to render
 	 * @param g2D the {@link Graphics2D} context to render to
+	 * @param sizeMultiplier {@link double} with which to multiply the {@link Gate}'s size
 	 */
-	private void drawOUTGate(Gate gate, Graphics2D g2D)
+	private void drawOUTGate(Gate gate, Graphics2D g2D, double sizeMultiplier)
 	{
-		g2D.setPaint(gate.output() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);
-		g2D.fillOval(gate.x, gate.y, 30, 30);
+		if (circuitManager.isPlaying())
+		{g2D.setPaint(gate.getPlayState() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);}
+		else
+		{g2D.setPaint(gate.output() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);}
+		g2D.fillOval(sizeMultiplier > 1.0 ? gate.x - 10 : gate.x, sizeMultiplier > 1.0 ? gate.y - 10 : gate.y, 
+				(int) (30 * sizeMultiplier), (int) (30 * sizeMultiplier));
 	}
 	
 	/**
@@ -377,10 +417,16 @@ public class CircuitPanel extends JPanel
 	 * 
 	 * @param gate the {@link Gate} to render
 	 * @param g2D the {@link Graphics2D} context to render to
+	 * @param sizeMultiplier {@link double} with which to multiply the {@link Gate}'s size
 	 */
-	private void drawNOTGate(Gate gate, Graphics2D g2D)
+	private void drawNOTGate(Gate gate, Graphics2D g2D, double sizeMultiplier)
 	{
-		g2D.setPaint(gate.output() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);
-		g2D.fill(not_area.createTransformedArea(new AffineTransform(1, 0, 0, 1, gate.x, gate.y)));
+		if (circuitManager.isPlaying())
+		{g2D.setPaint(gate.getPlayState() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);}
+		else
+		{g2D.setPaint(gate.output() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);}
+		g2D.fill(not_area.createTransformedArea(
+				new AffineTransform(sizeMultiplier, 0, 0, sizeMultiplier, 
+						sizeMultiplier > 1.0 ? gate.x - 10 : gate.x, sizeMultiplier > 1.0 ? gate.y - 10 : gate.y)));
 	}
 }

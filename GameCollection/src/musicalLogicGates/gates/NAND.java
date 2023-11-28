@@ -17,9 +17,9 @@ public class NAND extends Gate
 	}
 	
 	@Override
-	public boolean output() 
+	public boolean output(boolean a, boolean b) 
 	{
-		return !(super.getInput1().output() && super.getInput2().output());
+		return !(a && b);
 	}
 	
 	@Override

@@ -1,4 +1,4 @@
-package musicalLogicGates;
+package musicalLogicGates.circuit;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFileChooser;
-import musicalLogicGates.circuit.CircuitManager;
+
 import musicalLogicGates.gates.Gate;
 import musicalLogicGates.gates.Gate.GateType;
 

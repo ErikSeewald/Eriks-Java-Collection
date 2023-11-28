@@ -23,6 +23,8 @@ public class CircuitManager
 {
 	private List<Gate> gates;
 	
+	private boolean playing;
+	
 	/**
 	 * Creates a new {@link CircuitManager}
 	 */
@@ -111,4 +113,39 @@ public class CircuitManager
 	 * Removes all {@link Gate}s from the circuit.
 	 */
 	public void clearGates() {gates.removeAll(gates);}
+	
+	
+	public void updateOneStep()
+	{
+		if (!playing) {return;}
+		
+		boolean[] newStates = new boolean[gates.size()];
+		for (int i = 0; i < gates.size(); i++)
+		{
+			Gate gate = gates.get(i);
+			newStates[i] = gate.output(gate.getInput1().getPlayState(), gate.getInput2().getPlayState());
+		}
+		
+		for (int i = 0; i < gates.size(); i++)
+		{
+			Gate gate = gates.get(i);
+			
+			gate.updatePlayState(newStates[i]);
+		}
+	}
+
+	public void startPlaying() {playing = true;}
+	
+	public void stopPlaying()
+	{
+		playing = false;
+		
+		for (Gate gate : gates)
+		{
+			gate.stopAnimation();
+			gate.resetPlayState();
+		}
+	}
+	
+	public boolean isPlaying() {return playing;}
 }

@@ -16,6 +16,8 @@ public class IN extends Gate
 		super(x, y);
 	}
 	
+	private boolean inputState;
+	
 	/**
 	 * Switches the {@link boolean} state of this {@link IN} {@link Gate} on and off.
 	 * 
@@ -23,8 +25,15 @@ public class IN extends Gate
 	 */
 	public boolean switchState() 
 	{
-		super.updateState(!super.getState());
-		return super.getState();
+		inputState = !inputState;
+		return inputState;
+	}
+	
+	@Override
+	public void resetPlayState()
+	{
+		this.inputState = false;
+		super.resetPlayState();
 	}
 	
 	//IN HAS NO INPUT
@@ -37,10 +46,11 @@ public class IN extends Gate
 	{}
 
 	//IN RETURNS ITS STATE AS OUTPUT
+	
 	@Override
-	public boolean output() 
+	public boolean output(boolean a, boolean b) 
 	{
-		return super.getState();
+		return inputState;
 	}
 
 	@Override

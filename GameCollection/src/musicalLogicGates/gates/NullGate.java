@@ -23,6 +23,12 @@ public class NullGate extends Gate
 	}
 	
 	@Override
+	public boolean output(boolean a, boolean b) 
+	{
+		return false;
+	}
+	
+	@Override
 	public GateType getType() 
 	{
 		return GateType.NULL_GATE;
