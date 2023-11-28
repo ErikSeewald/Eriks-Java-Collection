@@ -8,6 +8,9 @@ public class NullGate extends Gate
 {	
 	public static final NullGate instance = new NullGate();
 	
+	/**
+	 * Creates a new {@link NullGate} {@link Gate}.
+	 */
 	private NullGate() 
 	{
 		super(0, 0);

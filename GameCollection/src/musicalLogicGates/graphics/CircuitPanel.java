@@ -18,6 +18,9 @@ import musicalLogicGates.gates.Gate;
 import musicalLogicGates.gates.Gate.GateType;
 import musicalLogicGates.gates.NullGate;
 
+/**
+ * Class extending {@link JPanel} to handle the visualization of a circuit.
+ */
 public class CircuitPanel extends JPanel
 {
 	private static final long serialVersionUID = -1401186262381029504L;
@@ -28,6 +31,12 @@ public class CircuitPanel extends JPanel
 	private CircuitManager circuitManager;
 	private MouseHandler mouseHandler;
 	
+	/**
+	 * Creates a new {@link CircuitPanel} with the given {@link CircuitManager}
+	 * 
+	 * @param circuitManager the {@link CircuitManager} for this {@link CircuitPanel}
+	 * @throws IllegalArgumentException if the {@link CircuitManager} is {@literal null}
+	 */
 	public CircuitPanel(CircuitManager circuitManager) 
 	{
 		if (circuitManager == null)
@@ -46,6 +55,7 @@ public class CircuitPanel extends JPanel
 	
 	//---------------------------------------PAINT---------------------------------------
 	
+	//COLORS
 	private static final Color background_col = new Color(60,60,80);
 	private static final Color AND_COLOR = new Color(180, 180, 255);
 	private static final Color OR_COLOR = new Color(180, 255, 180);
@@ -53,13 +63,19 @@ public class CircuitPanel extends JPanel
 	private static final Color CONNECT_COLOR_OFF = new Color(20, 20, 30);
 	private static final Color CONNECT_COLOR_ON = new Color(255, 255, 180);
 	
-	private static final int and_out_pos_x = 39;
-	private static final int nand_out_pos_x = 50;
-    private static final int xnor_out_pos_x = 60;
+	//OFFSET POSITIONS TO DETERMINE WHERE THE OUTPUT CONNECTOR OF SHOULD BE DRAWN FOR DIFFERENT GATES
+	private static final int AND_OUT_POS_X = 39;
+	private static final int NAND_OUT_POS_X = 50;
+    private static final int XNOR_OUT_POS_X = 60;
+    private static final int IN_OUT_POS_X = 15;
+    private static final int NOT_OUT_POS_X = 44;
 
-    private static final int out_pos_y = 26;
+    public static final int OUT_POS_Y = 26;
     
-	
+    //Y OFFSET BETWEEN THE FIRST AND SECOND INPUT CONNECTOR OF A GATE 
+    private static final int INPUT_1_2_OFFSET = 10;
+    
+    //AREAS USED TO DRAW GATES
 	private static final Area not_circle_area = new Area(new Ellipse2D.Double(-40,0, 12, 12));
 	private static final Area and_area = new Area(new Arc2D.Double(-40, 0, 80, 50, -90, 180, Arc2D.PIE));
 	private static final Area nand_area; 
@@ -98,10 +114,10 @@ public class CircuitPanel extends JPanel
 		not_area.add(not_circle_area.createTransformedArea(new AffineTransform(1, 0, 0, 1, 78, 9)));
 	}
 	
-	public void updateGraphics()
-	{
-		repaint();
-	}
+	/**
+	 * Updates the graphics of the circuit.
+	 */
+	public void updateGraphics() {repaint();}
 	
 	@Override
 	public void paint(Graphics g) 
@@ -122,23 +138,25 @@ public class CircuitPanel extends JPanel
             Gate selected = mouseHandler.getSelectedGate();
                 
             int outPosX = getOutPosX(selected.getType());
-            int outY = selected.getType().equals(GateType.IN) || selected.getType().equals(GateType.NOT) 
-            		? selected.y - 11 : selected.y;    
+            int outY = getOutY(selected.getType(), selected.y);    
             
-            g2D.drawLine(selected.x + outPosX, outY + out_pos_y, mouseHandler.getMouseX(), mouseHandler.getMouseY());
+            g2D.drawLine(selected.x + outPosX, outY + OUT_POS_Y, mouseHandler.getMouseX(), mouseHandler.getMouseY());
         }
         
         //CONNECTIONS
         for (Gate gate : circuitManager.getGates())
         {
+        	boolean isInput1 = true;
+        	
             if (!(gate.getInput1() instanceof NullGate))
             {
-                drawConnection(gate.getInput1(), gate, g2D, true);
+                drawConnection(gate.getInput1(), gate, g2D, isInput1);
             }
             
             if (!(gate.getInput2() instanceof NullGate))
             {
-                drawConnection(gate.getInput2(), gate, g2D, false);
+            	isInput1 = false;
+                drawConnection(gate.getInput2(), gate, g2D, isInput1);
             }
         }
 		
@@ -150,47 +168,94 @@ public class CircuitPanel extends JPanel
 	}
 	
 	//CONNECTIONS
+	/**
+	 * Draw a connection between the two given {@link Gates}.
+	 * 
+	 * @param out the out {@link Gate}
+	 * @param in the in {@link Gate}
+	 * @param g2D the {@link Graphics2D} context to render to
+	 * @param isInput1 {@link boolean} representing whether the first or second input of a gate is being drawn
+	 */
+	private void drawConnection(Gate out, Gate in, Graphics2D g2D, boolean isInput1)
+	{
+	    g2D.setPaint(out.output() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);
+		
+	    int outPosX = getOutPosX(out.getType());
+	    int outY = getOutY(out.getType(), out.y);
+	    int inY = isInput1 ? in.y + OUT_POS_Y - INPUT_1_2_OFFSET : in.y + OUT_POS_Y + INPUT_1_2_OFFSET;
+	    
+	    int centerX = (in.x - (out.x + outPosX)) / 2;
+	    //OUT -> CENTER (out y)
+	    g2D.drawLine(out.x + outPosX, outY + OUT_POS_Y, out.x + outPosX + centerX, outY + OUT_POS_Y);
+	    
+	    //CENTER (out y) -> CENTER (in y)
+        g2D.drawLine(out.x + outPosX + centerX, outY + OUT_POS_Y, out.x + outPosX + centerX, inY);
+        
+        //CENTER (in y) -> IN
+        int inX = getInX(in.getType(), in.x);
+        g2D.drawLine(out.x + outPosX + centerX, inY, inX, inY);    
+	}
+	
+	/**
+	 * Returns the output y coordinate with an offset based on the {@link GateType} to render the connection at 
+	 * the right place.
+	 * 
+	 * @param type the {@link GateType} to match the offset to
+	 * @param y the original y coordinate
+	 * @return the updated y coordinate
+	 */
+	private int getOutY(GateType type, int y)
+	{
+		return type.equals(GateType.IN) || type.equals(GateType.NOT) 
+        		? y - 11 : y; 
+	}
+	
+	/**
+	 * Returns the input x coordinate with an offset based on the {@link GateType} to render the connection at 
+	 * the right place.
+	 * 
+	 * @param type the {@link GateType} to match the offset to
+	 * @param x the original x coordinate
+	 * @return the updated x coordinate
+	 */
+	private int getInX(GateType type, int x)
+	{
+		return type == GateType.OR || type == GateType.NOR || type == GateType.OUT
+        		? x + 8 : x;
+	}
+	
+	/**
+	 * Gets the correct x position offset for the output connector of the given {@link GateType}.
+	 * 
+	 * @param type the {@link GateType} to get the x position offset for
+	 * @return x the x position offset
+	 */
 	private int getOutPosX(GateType type)
 	{
         switch (type)
         {
-            case AND : return and_out_pos_x;
-            case NAND : return nand_out_pos_x;
-            case OR : return and_out_pos_x;
-            case NOR : return nand_out_pos_x;
-            case XOR : return nand_out_pos_x;
-            case XNOR : return xnor_out_pos_x;
-			case NOT : return and_out_pos_x + 5;
-			case IN : return 15;
+            case AND : return AND_OUT_POS_X;
+            case NAND : return NAND_OUT_POS_X;
+            case OR : return AND_OUT_POS_X;
+            case NOR : return NAND_OUT_POS_X;
+            case XOR : return NAND_OUT_POS_X;
+            case XNOR : return XNOR_OUT_POS_X;
+			case NOT : return NOT_OUT_POS_X;
+			case IN : return IN_OUT_POS_X;
 			case OUT: return 0;
 			case NULL_GATE : return 0;
             default : return 0;
         }
 	}
 	
-	public void drawConnection(Gate out, Gate in, Graphics2D g2D, boolean isInput1)
-	{
-	    g2D.setPaint(out.output() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);
-		
-	    int outPosX = getOutPosX(out.getType());
-	    int outY = out.getType().equals(GateType.IN) || out.getType().equals(GateType.NOT) ? out.y - 11 : out.y;
-	    int centerX = (in.x - (out.x + outPosX)) / 2;
-	    int inY = isInput1 ? in.y + out_pos_y - 10 : in.y + out_pos_y + 10;
-	    
-	    //OUT -> CENTER (out y)
-	    g2D.drawLine(out.x + outPosX, outY + out_pos_y, out.x + outPosX + centerX, outY + out_pos_y);
-	    
-	    //CENTER (out y) -> CENTER (in y)
-        g2D.drawLine(out.x + outPosX + centerX, outY + out_pos_y, out.x + outPosX + centerX, inY);
-        
-        //CENTER (in y) -> IN
-        int inX = in.getType() == GateType.OR || in.getType() == GateType.NOR || in.getType() == GateType.OUT
-        		? in.x + 8 : in.x;
-        g2D.drawLine(out.x + outPosX + centerX, inY, inX, inY);    
-	}
-	
 	//GATES
-	public void drawGate(Gate gate, Graphics2D g2D) 
+	/**
+	 * Draws the given {@link Gate} to the given {@link Graphics2D} context.
+	 * 
+	 * @param gate the {@link Gate} to render
+	 * @param g2D the {@link Graphics2D} to render to
+	 */
+	private void drawGate(Gate gate, Graphics2D g2D) 
 	{
 		if (gate == null) 
 		{throw new IllegalArgumentException("gate cannot be null");}
@@ -211,55 +276,109 @@ public class CircuitPanel extends JPanel
 		}
 	}
 	
-	public void drawANDGate(Gate gate, Graphics2D g2D)
+	/**
+	 * Draws a {@link AND} {@link Gate} to the given {@link Graphics2D} context.
+	 * 
+	 * @param gate the {@link Gate} to render
+	 * @param g2D the {@link Graphics2D} context to render to
+	 */
+	private void drawANDGate(Gate gate, Graphics2D g2D)
 	{
 		g2D.setPaint(AND_COLOR);
 		g2D.fill(and_area.createTransformedArea(new AffineTransform(1, 0, 0, 1, gate.x, gate.y)));
 	}
 	
-	public void drawNANDGate(Gate gate, Graphics2D g2D)
+	/**
+	 * Draws a {@link NAND} {@link Gate} to the given {@link Graphics2D} context.
+	 * 
+	 * @param gate the {@link Gate} to render
+	 * @param g2D the {@link Graphics2D} context to render to
+	 */
+	private void drawNANDGate(Gate gate, Graphics2D g2D)
 	{
 		g2D.setPaint(AND_COLOR);
 		g2D.fill(nand_area.createTransformedArea(new AffineTransform(1, 0, 0, 1, gate.x, gate.y)));
 	}
 	
-	public void drawORGate(Gate gate, Graphics2D g2D)
+	/**
+	 * Draws a {@link OR} {@link Gate} to the given {@link Graphics2D} context.
+	 * 
+	 * @param gate the {@link Gate} to render
+	 * @param g2D the {@link Graphics2D} context to render to
+	 */
+	private void drawORGate(Gate gate, Graphics2D g2D)
 	{
 		g2D.setPaint(OR_COLOR);
 		g2D.fill(or_area.createTransformedArea(new AffineTransform(1, 0, 0, 1, gate.x, gate.y)));
 	}
 	
-	public void drawNORGate(Gate gate, Graphics2D g2D)
+	/**
+	 * Draws a {@link NOR} {@link Gate} to the given {@link Graphics2D} context.
+	 * 
+	 * @param gate the {@link Gate} to render
+	 * @param g2D the {@link Graphics2D} context to render to
+	 */
+	private void drawNORGate(Gate gate, Graphics2D g2D)
 	{
 		g2D.setPaint(OR_COLOR);
 		g2D.fill(nor_area.createTransformedArea(new AffineTransform(1, 0, 0, 1, gate.x, gate.y)));
 	}
 	
-	public void drawXORGate(Gate gate, Graphics2D g2D)
+	/**
+	 * Draws a {@link XOR} {@link Gate} to the given {@link Graphics2D} context.
+	 * 
+	 * @param gate the {@link Gate} to render
+	 * @param g2D the {@link Graphics2D} context to render to
+	 */
+	private void drawXORGate(Gate gate, Graphics2D g2D)
 	{
 		g2D.setPaint(XOR_COLOR);
 		g2D.fill(xor_area.createTransformedArea(new AffineTransform(1, 0, 0, 1, gate.x, gate.y)));
 	}
 	
-	public void drawXNORGate(Gate gate, Graphics2D g2D)
+	/**
+	 * Draws a {@link XNOR} {@link Gate} to the given {@link Graphics2D} context.
+	 * 
+	 * @param gate the {@link Gate} to render
+	 * @param g2D the {@link Graphics2D} context to render to
+	 */
+	private void drawXNORGate(Gate gate, Graphics2D g2D)
 	{
 		g2D.setPaint(XOR_COLOR);
 		g2D.fill(xnor_area.createTransformedArea(new AffineTransform(1, 0, 0, 1, gate.x, gate.y)));
 	}
 	
-	public void drawINGate(Gate gate, Graphics2D g2D)
+	/**
+	 * Draws a {@link IN} {@link Gate} to the given {@link Graphics2D} context.
+	 * 
+	 * @param gate the {@link Gate} to render
+	 * @param g2D the {@link Graphics2D} context to render to
+	 */
+	private void drawINGate(Gate gate, Graphics2D g2D)
 	{
 		g2D.setPaint(gate.output() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);
 		g2D.fillRect(gate.x, gate.y, 30, 30);
 	}
 	
-	public void drawOUTGate(Gate gate, Graphics2D g2D)
+	/**
+	 * Draws a {@link OUT} {@link Gate} to the given {@link Graphics2D} context.
+	 * 
+	 * @param gate the {@link Gate} to render
+	 * @param g2D the {@link Graphics2D} context to render to
+	 */
+	private void drawOUTGate(Gate gate, Graphics2D g2D)
 	{
 		g2D.setPaint(gate.output() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);
 		g2D.fillOval(gate.x, gate.y, 30, 30);
 	}
 	
-	public void drawNOTGate(Gate gate, Graphics2D g2D)
+	/**
+	 * Draws a {@link NOT} {@link Gate} to the given {@link Graphics2D} context.
+	 * 
+	 * @param gate the {@link Gate} to render
+	 * @param g2D the {@link Graphics2D} context to render to
+	 */
+	private void drawNOTGate(Gate gate, Graphics2D g2D)
 	{
 		g2D.setPaint(gate.output() ? CONNECT_COLOR_ON : CONNECT_COLOR_OFF);
 		g2D.fill(not_area.createTransformedArea(new AffineTransform(1, 0, 0, 1, gate.x, gate.y)));

@@ -13,17 +13,19 @@ import musicalLogicGates.EJC_MusicalLogicGates;
 import musicalLogicGates.circuit.CircuitManager;
 import musicalLogicGates.gates.Gate.GateType;
 
+/**
+ * GUI for the east side of a {@link CircuitPanel}.
+ */
 public class EastGUI extends JPanel implements MouseListener
 {
 	private static final long serialVersionUID = -587643554501823550L;
 	private static final int PANEL_WIDTH = 200;
 
+	//COLORS
 	private static final Color textColor = new Color(90, 90, 110);
 	private static final Color borderColor = new Color(90,90,120);
 	
-	private int buttonSizeX = 150, buttonSizeY = 70;
-	private boolean buttonSizeIncreased = false;
-	
+	//BUTTONS
 	private JLabel clearButton;
 	private JLabel notButton;
 	private JLabel inButton;
@@ -32,9 +34,19 @@ public class EastGUI extends JPanel implements MouseListener
 	private JLabel saveButton;
 	private JLabel loadButton;
 	
+	private int buttonSizeX = 150, buttonSizeY = 70;
+	private boolean buttonSizeIncreased = false;
+	
+	//REFERENCES
 	private CircuitManager circuitManager;
 	private EJC_MusicalLogicGates game;
 	
+	/**
+	 * Creates a new {@link EastGUI} with the given {@link CircuitManager} and {@link EJC_MusicalLogicGates}.
+	 * 
+	 * @param circuitManager the {@link CircuitManager} for this {@link EastGUI}
+	 * @param game the {@link EJC_MusicalLogicGates} for this {@link EastGUI}
+	 */
 	public EastGUI(CircuitManager circuitManager, EJC_MusicalLogicGates game)
 	{
 		if (circuitManager == null)
@@ -69,6 +81,15 @@ public class EastGUI extends JPanel implements MouseListener
 	}
 	
 
+	/**
+	 * Sets the settings for the given {@link JLabel} button and adds it to the {@link JPanel}.
+	 * 
+	 * @param button the {@link JLabel} button
+	 * @param a the x coordinate
+	 * @param b the y coordinate
+	 * @param c the width
+	 * @param d the height
+	 */
 	private void setButtonSettings(JLabel button, int a, int b, int c, int d)
 	{
 		button.setBounds(a,b,c,d);
@@ -140,6 +161,12 @@ public class EastGUI extends JPanel implements MouseListener
 	@Override
 	public void mouseReleased(MouseEvent e) {}
 
+	/**
+	 * Handles animating the given {@link JLabel} button by a given change rate.
+	 * 
+	 * @param button the {@link JLabel} button to animate
+	 * @param change the amount of change
+	 */
 	private void buttonAnimation(JLabel button, int change)
 	{
 		if ((change > 0 && buttonSizeIncreased) || (change < 0 && !buttonSizeIncreased)) {return;} //don't go beyond max/min size
