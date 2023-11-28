@@ -1,7 +1,16 @@
 package musicalLogicGates.gates;
 
+/**
+ * Logic {@link Gate} representing the logical XOR function.
+ */
 public class XOR extends Gate 
 {
+	/**
+	 * Creates a new {@link XOR} {@link Gate} at the given coordinates.
+	 * 
+	 * @param x the x coordinate.
+	 * @param y the y coordinate.
+	 */
 	public XOR(int x, int y) 
 	{
 		super(x, y);
@@ -10,7 +19,7 @@ public class XOR extends Gate
 	@Override
 	public boolean output() 
 	{
-		return super.updateState(super.getInput1().output() ^ super.getInput2().output());
+		return super.getInput1().output() ^ super.getInput2().output();
 	}
 
 	@Override

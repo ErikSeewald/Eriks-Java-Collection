@@ -8,17 +8,28 @@ import musicalLogicGates.gates.Gate;
 import musicalLogicGates.gates.Gate.GateType;
 import musicalLogicGates.gates.IN;
 
+/**
+ * Class to handle all mouse interactions for {@link EJC_MusicalLogicGates}
+ */
 public class MouseHandler 
 {
 	private CircuitPanel panel;
 	private CircuitManager circuitManager;
 	
+	//GATE
 	private Gate selectedGate;
 	private boolean isConnecting;
 	
+	//COORDINATES
 	private int mouseX;
 	private int mouseY;
 	
+	/**
+	 * Creates a new {@link MouseHandler} with the given {@link CircuitPanel} and {@link CircuitManager}.
+	 * 
+	 * @param panel the {@link CircuitPanel} for this {@link MouseHandler}
+	 * @param circuitManager the {@link CircuitManager} for this {@link MouseHandler}
+	 */
 	MouseHandler(CircuitPanel panel, CircuitManager circuitManager)
 	{
 		if (panel == null)
@@ -30,43 +41,43 @@ public class MouseHandler
 		this.circuitManager = circuitManager;
 	}
 	
-
-	public int getMouseX()
-	{return mouseX;}
+	/**
+	 * Returns the last saved x coordinate of the mouse.
+	 * 
+	 * @return the x coordinate of the mouse
+	 */
+	public int getMouseX() {return mouseX;}
 	
-	public int getMouseY()
-	{return mouseY;}
+	/**
+	 * Returns the last saved y coordinate of the mouse.
+	 * 
+	 * @return the y coordinate of the mouse
+	 */
+	public int getMouseY() {return mouseY;}
 	
-	public boolean isConnecting() 
-	{return isConnecting;}
+	/**
+	 * Returns whether or not the {@link MouseHandler} has entered connecting mode.
+	 * 
+	 * @return {@link boolean} isConnecting
+	 */
+	public boolean isConnecting() {return isConnecting;}
 	
-	public Gate getSelectedGate()
-	{return selectedGate;}
+	/**
+	 * Returns the currently selected {@link Gate}. Can be {@literal null}.
+	 * 
+	 * @return the currently selected {@link Gate}
+	 */
+	public Gate getSelectedGate() {return selectedGate;}
 
-
-    public class ClickListener extends MouseAdapter
-	{
-		@Override
-		public void mousePressed(MouseEvent e) 
-		{		    
-		    mouseX = e.getX();
-			mouseY = e.getY();
-			
-			selectedGate = getGateAtCoordinates(mouseX, mouseY);
-			
-			if (selectedGate == null) {return;}
-			
-			if (e.isAltDown())
-			{circuitManager.removeGate(selectedGate);}
-			
-			if (e.isControlDown() && selectedGate.getType().equals(GateType.IN))
-			{((IN) selectedGate).switchState();}
-			
-			panel.updateGraphics();
-		}
-	}
-    
-    public Gate getGateAtCoordinates(int x, int y)
+	/**
+	 * Helper method to get the {@link Gate} at the given coordinates. Can return {@literal null} if no {@link Gate}
+	 * is present at the coordinates.
+	 * 
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 * @return the {@link Gate} at the given coordinates
+	 */
+	private Gate getGateAtCoordinates(int x, int y)
     {
 		for (Gate gate : circuitManager.getGates())
 		{
@@ -77,6 +88,37 @@ public class MouseHandler
 		return null;
     }
 
+	/**
+	 * Class to handle click actions for {@link MouseHandler}.
+	 */
+    public class ClickListener extends MouseAdapter
+	{
+		@Override
+		public void mousePressed(MouseEvent e) 
+		{	
+		    mouseX = e.getX();
+			mouseY = e.getY();
+			
+			//SELECT
+			selectedGate = getGateAtCoordinates(mouseX, mouseY);
+			
+			if (selectedGate == null) {return;}
+			
+			//DELETE
+			if (e.isAltDown())
+			{circuitManager.removeGate(selectedGate);}
+			
+			//SWITCH STATE
+			if (e.isControlDown() && selectedGate.getType().equals(GateType.IN))
+			{((IN) selectedGate).switchState();}
+			
+			panel.updateGraphics();
+		}
+	}
+
+	/**
+	 * Class to handle drag actions for {@link MouseHandler}.
+	 */
 	public class DragListener extends MouseMotionAdapter
 	{
 		@Override
@@ -87,11 +129,11 @@ public class MouseHandler
 		    
 	        if (selectedGate == null) {return;}
 	        
+	        //CONNECTING MODE
 	        if (e.isShiftDown() && selectedGate.getType() != GateType.OUT) 
-            {
-                isConnecting = true;
-            }
+            {isConnecting = true; }
 	        
+	        //DRAGGING MODE
 	        else
 	        {
 	            selectedGate.x = mouseX - 15;
@@ -102,6 +144,9 @@ public class MouseHandler
 		}
 	}
 
+	/**
+	 * Class to handle release actions for {@link MouseHandler}.
+	 */
 	public class ReleaseListener extends MouseAdapter
 	{
 		@Override
@@ -109,12 +154,15 @@ public class MouseHandler
 		{
 			isConnecting = false;
 			
+			//CONNECT
 			Gate endGate = getGateAtCoordinates(e.getX(), e.getY());
 			if (endGate != null && selectedGate != null && endGate != selectedGate)
 			{
-			    if (e.getY() - endGate.y < 25)
+				//UPPER HALF
+			    if (e.getY() - endGate.y < CircuitPanel.OUT_POS_Y)
 			    {endGate.setInput1(selectedGate);}
 			    
+			    //LOWER HALF
 			    else
 			    {endGate.setInput2(selectedGate);}
 			}

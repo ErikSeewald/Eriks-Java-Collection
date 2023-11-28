@@ -15,14 +15,19 @@ import musicalLogicGates.EJC_MusicalLogicGates;
 import musicalLogicGates.circuit.CircuitManager;
 import musicalLogicGates.gates.Gate.GateType;
 
+/**
+ * GUI for the west side of a {@link CircuitPanel}.
+ */
 public class WestGUI extends JPanel implements MouseListener
 {
 	private static final long serialVersionUID = -587643554501823550L;
 	private static final int PANEL_WIDTH = 200;
 
+	//COLORS
 	private static final Color textColor = new Color(90, 90, 110);
 	private static final Color borderColor = new Color(90,90,120);
 	
+	//BUTTONS
 	private JLabel playButton;
 	
 	private JLabel andButton, nandButton;
@@ -32,6 +37,7 @@ public class WestGUI extends JPanel implements MouseListener
 	private int buttonSizeX = 150, buttonSizeY = 70;
 	private boolean buttonSizeIncreased = false;
 	
+	//REFERENCES
 	private CircuitManager circuitManager;
 	private EJC_MusicalLogicGates game;
 	
@@ -71,6 +77,15 @@ public class WestGUI extends JPanel implements MouseListener
 		this.setLayout(null);
 	}
 	
+	/**
+	 * Sets the settings for the given {@link JLabel} button and adds it to the {@link JPanel}.
+	 * 
+	 * @param button the {@link JLabel} button
+	 * @param a the x coordinate
+	 * @param b the y coordinate
+	 * @param c the width
+	 * @param d the height
+	 */
 	private void setButtonSettings(JLabel button, int a, int b, int c, int d)
 	{
 		button.setBounds(a,b,c,d);
@@ -142,6 +157,12 @@ public class WestGUI extends JPanel implements MouseListener
 	@Override
 	public void mouseReleased(MouseEvent e) {}
 
+	/**
+	 * Handles animating the given {@link JLabel} button by a given change rate.
+	 * 
+	 * @param button the {@link JLabel} button to animate
+	 * @param change the amount of change
+	 */
 	private void buttonAnimation(JLabel button, int change)
 	{
 		if ((change > 0 && buttonSizeIncreased) || (change < 0 && !buttonSizeIncreased)) {return;} //don't go beyond max/min size

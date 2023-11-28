@@ -10,6 +10,9 @@ import musicalLogicGates.graphics.CircuitPanel;
 import musicalLogicGates.graphics.EastGUI;
 import musicalLogicGates.graphics.WestGUI;
 
+/**
+ * An {@link EJC_Game} in which the player can build logic gate circuits and have them play audio.
+ */
 public class EJC_MusicalLogicGates extends JFrame implements EJC_Game 
 {
 	private static final long serialVersionUID = 1588751028197042712L;
@@ -44,16 +47,25 @@ public class EJC_MusicalLogicGates extends JFrame implements EJC_Game
 		this.setVisible(true);
 	}
 	
+	/**
+	 * Updates all graphics across the {@link EJC_MusicalLogicGates} instance.
+	 */
 	public void updateGraphics() 
 	{
 		panel.updateGraphics();
 	}
 	
+	/**
+	 * Handles interaction with the {@link FileManager} and {@link CircuitManager} to save the current circuit.
+	 */
 	public void saveCircuit()
 	{
 		FileManager.saveCircuit(circuitManager.getGates());
 	}
 	
+	/**
+	 * Handles interaction with the {@link FileManager} and {@link CircuitManager} to load a circuit from a file.
+	 */
 	public void loadCircuit()
 	{
 		circuitManager.loadCircuit(FileManager.loadCircuit());

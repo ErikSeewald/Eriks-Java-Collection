@@ -12,12 +12,20 @@ import musicalLogicGates.circuit.CircuitManager;
 import musicalLogicGates.gates.Gate;
 import musicalLogicGates.gates.Gate.GateType;
 
+/**
+ * Manages file saving and loading for circuits.
+ */
 public class FileManager 
 {
 	/** Structure:
 	 * {GateType, x, y, input1 index in array, input2 index in array}, {...}, ... /
 	 */
 	
+	/**
+	 * Handles the file choose dialogue and file writing for saving a circuit.
+	 * 
+	 * @param gates the {@code List<Gate>} circuit to save
+	 */
 	public static void saveCircuit(List<Gate> gates)
 	{
 		JFileChooser fileChooser = new JFileChooser();
@@ -55,6 +63,12 @@ public class FileManager
 		catch (IOException e1) {e1.printStackTrace();}
 	}
 	
+	/**
+	 * Handles the file choose dialogue for loading a saved circuit. If successful, returns the loaded circuit as a
+	 * {@code List<Gate>}.
+	 * 
+	 * @return the loaded {@code List<Gate>}
+	 */
 	public static List<Gate> loadCircuit()
 	{
 		JFileChooser fileChooser = new JFileChooser();
@@ -76,6 +90,12 @@ public class FileManager
 		return List.of();
 	}
 	
+	/**
+	 * Creates a {@code List<Gate>} from a given save {@link String}, given that it is properly formatted.
+	 * 
+	 * @param line the {@link String} to load from
+	 * @return the loaded {@code List<Gate>}
+	 */
 	public static List<Gate> loadString(String line)
 	{
 		List<Gate> gates = new ArrayList<>();
@@ -159,6 +179,7 @@ public class FileManager
 		return gates;
 	}
 	
+	//EXAMPLE CIRCUIT
 	public static final String full_adder =
 			"{IN,88,185,-1,-1,}{IN,47,269,-1,-1,}{IN,54,399,-1,-1,}{XOR,380,147,0,1,}{XOR,618,182,3,2,}"
 			+ "{AND,513,427,3,2,}{AND,380,300,0,1,}{OR,828,260,6,5,}{OUT,1019,172,4,-1,}{OUT,1003,304,7,-1,}/";

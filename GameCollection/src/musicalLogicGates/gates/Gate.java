@@ -13,11 +13,14 @@ public abstract class Gate
 		AND, NAND, OR, NOR, XOR, XNOR, NOT, IN, OUT, NULL_GATE
 	}
 	
+	//STATE
 	private boolean state;
 	
+	//INPUTS
 	private Gate input1;
 	private Gate input2;
 	
+	//COORDINATES
 	public int x;
 	public int y;
 
@@ -53,26 +56,27 @@ public abstract class Gate
 		this.state = state;
 		return this.state;
 	}
+	
+	/**
+	 * Returns the internal state.
+	 * 
+	 * @return {@link boolean} state
+	 */
+	protected boolean getState() {return this.state;}
 
 	/**
 	 * Gets the {@link Gate}'s first input.
 	 * 
 	 * @return the first input {@link Gate}
 	 */
-	public Gate getInput1() 
-	{
-		return input1;
-	}
+	public Gate getInput1() {return input1;}
 
 	/**
 	 * Gets the {@link Gate}'s second input.
 	 * 
 	 * @return the second input {@link Gate}
 	 */
-	public Gate getInput2() 
-	{
-		return input2;
-	}
+	public Gate getInput2() {return input2;}
 	
 	/**
 	 * Sets the first input {@link Gate}.
@@ -83,9 +87,8 @@ public abstract class Gate
 	public void setInput1(Gate gate) 
 	{
 		if (gate == null ) 
-		{
-			throw new IllegalArgumentException("Cannot set input to null");
-		}
+		{throw new IllegalArgumentException("Cannot set input to null");}
+		
 		this.input1 = gate;
 	}
 	
@@ -98,8 +101,7 @@ public abstract class Gate
 	public void setInput2(Gate gate) 
 	{
 		if (gate == null ) 
-		{
-			throw new IllegalArgumentException("Cannot set input to null");
+		{throw new IllegalArgumentException("Cannot set input to null");
 		}
 		this.input2 = gate;
 	}

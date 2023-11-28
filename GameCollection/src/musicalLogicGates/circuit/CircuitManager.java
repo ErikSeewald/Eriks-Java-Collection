@@ -16,20 +16,31 @@ import musicalLogicGates.gates.OUT;
 import musicalLogicGates.gates.XNOR;
 import musicalLogicGates.gates.XOR;
 
+/**
+ * Class to manage a logic gate circuit.
+ */
 public class CircuitManager 
 {
 	private List<Gate> gates;
 	
-	public CircuitManager() 
-	{
-		gates = new ArrayList<>();
-	}
+	/**
+	 * Creates a new {@link CircuitManager}
+	 */
+	public CircuitManager() {gates = new ArrayList<>();}
 
-	public List<Gate> getGates() 
-	{
-		return gates;
-	}
+	/**
+	 * Returns a list of all gates in the circuit.
+	 * 
+	 * @return {@code List<Gate>} gates
+	 */
+	public List<Gate> getGates() {return gates;}
 	
+	/**
+	 * Loads the given list of {@link Gate}s into the circuit.
+	 * 
+	 * @param gates the {@link Gate}s to load
+	 * @throws IllegalArgumentException if {@code} gates is {@literal null}
+	 */
 	public void loadCircuit(List<Gate> gates)
 	{
 		if (gates == null)
@@ -38,17 +49,29 @@ public class CircuitManager
 		this.gates = new ArrayList<>(gates);
 	}
 	
+	/**
+	 * Adds a new {@link Gate} of the given {@link GateType} to the circuit.
+	 * 
+	 * @param type the {@link GateType} to add
+	 * @throws IllegalArgumentException if {@code type} is {@literal null}
+	 */
 	public void addGate(GateType type)
 	{
 		if (type == null)
-		{
-			throw new IllegalArgumentException("Cannot create Gate of type null!");
-		}
+		{throw new IllegalArgumentException("Cannot create Gate of type null!");}
+		
 		Gate newGate = createGate(type);
+		
 		if (newGate.getType() != GateType.NULL_GATE)
 		{gates.add(newGate);}
 	}
 	
+	/**
+	 * Creates a new {@link Gate} object with the given {@link GateType}.
+	 * 
+	 * @param type the {@link GateType} to create
+	 * @return new {@link Gate}
+	 */
 	public static Gate createGate(GateType type)
 	{
 		switch (type)
@@ -68,6 +91,13 @@ public class CircuitManager
 		return NullGate.instance;
 	}
 	
+	/**
+	 * Removes the given {@link Gate} from the circuit if it is present.
+	 * Handles removing any connections to the given {@link Gate} as well.
+	 * 
+	 * @param gate the {@link Gate} to remove.
+	 * @return {@link boolean} successful removal
+	 */
 	public boolean removeGate(Gate gate)
 	{
 		for (Gate g : gates)
@@ -77,8 +107,8 @@ public class CircuitManager
 		return gates.remove(gate);
 	}
 	
-	public boolean clearGates()
-	{
-		return gates.removeAll(gates);
-	}
+	/**
+	 * Removes all {@link Gate}s from the circuit.
+	 */
+	public void clearGates() {gates.removeAll(gates);}
 }
