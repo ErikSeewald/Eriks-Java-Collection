@@ -154,12 +154,20 @@ public class MouseHandler
 		@Override
 		public void mouseReleased(MouseEvent e) 
 		{
+			if (!isConnecting) {return;}
 			isConnecting = false;
 			
 			//CONNECT
 			Gate endGate = getGateAtCoordinates(e.getX(), e.getY());
-			if (endGate != null && selectedGate != null && endGate != selectedGate)
+			if (endGate != null && selectedGate != null)
 			{
+				//no circular logic
+				if (endGate == selectedGate || circuitManager.inputTreeContains(endGate, selectedGate)) 
+				{
+					panel.updateGraphics();
+					return;
+				} 
+				
 				//UPPER HALF
 			    if (e.getY() - endGate.y < CircuitPanel.OUT_POS_Y)
 			    {endGate.setInput1(selectedGate);}
@@ -169,6 +177,7 @@ public class MouseHandler
 			    {endGate.setInput2(selectedGate);}
 			}
 			panel.updateGraphics();
+			
 		}
 	}
 }

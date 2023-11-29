@@ -68,7 +68,7 @@ public class CircuitManager
 	 * @throws IllegalArgumentException if {@code type} is {@literal null}
 	 */
 	public void addGate(GateType type)
-	{
+	{	
 		if (type == null)
 		{throw new IllegalArgumentException("Cannot create Gate of type null!");}
 		
@@ -124,7 +124,31 @@ public class CircuitManager
 	 */
 	public void clearGates() {gates.removeAll(gates);}
 	
+	/**
+	 * Returns whether the 'input tree' of the {@link Gate} 'findIn' (all inputs of 'findIn',
+	 * all of the inputs' inputs and so on) contains the {@link Gate} 'find'.
+	 * Useful to prevent adding an {@link Gate} connection that would cause a logic cycle.
+	 * 
+	 * @param find the {@link Gate} to be searched for in the input tree
+	 * @param findIn the {@link Gate} to be searched through
+	 * @return {@link boolean} whether the input tree contains 'find'
+	 */
+	public boolean inputTreeContains(Gate find, Gate findIn)
+	{
+		if (findIn.getType().equals(GateType.NULL_GATE)) {return false;}
+		
+		boolean input1Contains = findIn.getInput1().equals(find);
+		if (!input1Contains)
+		{input1Contains = inputTreeContains(find, findIn.getInput1());}
+		
+		boolean input2Contains = findIn.getInput2().equals(find);
+		if (!input1Contains && !input2Contains)
+		{input2Contains = inputTreeContains(find, findIn.getInput2());}
+		
+		return input1Contains || input2Contains;
+	}
 	
+	//'PLAYING' MODE
 	/**
 	 * Updates the 'playing' mode states by one step.
 	 */
@@ -155,7 +179,13 @@ public class CircuitManager
 	/**
 	 * Starts the 'playing' mode
 	 */
-	public void startPlaying() {playing = true;}
+	public void startPlaying() 
+	{
+		playing = true;
+		
+		for (Gate gate : gates)
+		{gate.resetPlayState();} //NOT REDUNDANT
+	}
 	
 	
 	/**

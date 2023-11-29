@@ -5,6 +5,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,9 +31,11 @@ public class EastGUI extends JPanel implements MouseListener
 	
 	//BUTTONS
 	private JLabel clearButton;
+	
 	private JLabel notButton;
 	private JLabel inButton;
 	private JLabel outButton;
+	private Map<JLabel, GateType> gateButtonsToType = new HashMap<>();
 	
 	private JLabel saveButton;
 	private JLabel loadButton;
@@ -68,10 +73,13 @@ public class EastGUI extends JPanel implements MouseListener
 		
 		notButton = new JLabel("    NOT");
 		setButtonSettings(notButton, 23, 180, buttonSizeX, buttonSizeY);
+		gateButtonsToType.put(notButton, GateType.NOT);
 		inButton = new JLabel("      IN");
 		setButtonSettings(inButton, 23, 260, buttonSizeX, buttonSizeY);
+		gateButtonsToType.put(inButton, GateType.IN);
 		outButton = new JLabel("    OUT");
 		setButtonSettings(outButton, 23, 340, buttonSizeX, buttonSizeY);
+		gateButtonsToType.put(outButton, GateType.OUT);
 		
 		saveButton = new JLabel("   SAVE");
 		setButtonSettings(saveButton, 23, 500, buttonSizeX, buttonSizeY);
@@ -126,14 +134,10 @@ public class EastGUI extends JPanel implements MouseListener
 		if (button.equals(clearButton))
 		{circuitManager.clearGates();}
 		
-		else if (button.equals(notButton))
-		{circuitManager.addGate(GateType.NOT);}
-		
-		else if (button.equals(inButton))
-		{circuitManager.addGate(GateType.IN);}
-		
-		else if (button.equals(outButton))
-		{circuitManager.addGate(GateType.OUT);}
+		else if (gateButtonsToType.containsKey(button))
+		{
+			circuitManager.addGate(gateButtonsToType.get(button));
+		}
 		
 		else if (button.equals(saveButton))
 		{game.saveCircuit();}
