@@ -3,6 +3,14 @@ import javax.swing.JOptionPane;
 
 public class EJC_Util
 {
+	/**
+	 * Control {@literal enum} for parameters of methods that turn objects on/off.
+	 */
+	public enum StateControl 
+	{
+		ON, OFF
+	}
+	
 	public static long createSeed()
 	{
 		String seedStr = JOptionPane.showInputDialog("Seed:");

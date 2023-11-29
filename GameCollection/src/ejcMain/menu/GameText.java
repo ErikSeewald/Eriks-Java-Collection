@@ -310,11 +310,11 @@ public enum GameText
 			new String[]
 			{
 					"MUSICAL LOGIC GATES",
-					"",
-					"",
-					"",
-					"",
-					"",
+					"Create logic gate circuits and make them play 'music'. Add gates with the button bar.",
+					"MOUSE CONTROLS: DRAG - Move gate | SHIFT+DRAG - Connect gates | ALT+CLICK",
+					"- Delete gate | CNTRL+CLICK - Switch state of 'IN' gates (instant in edit mode,",
+					"animated in 'playing' mode. In 'playing' mode (PLAY button) you can randomize the",
+					"sounds of the gates with another button. You can also save and load existing circuits.",
 			}
 	);
 

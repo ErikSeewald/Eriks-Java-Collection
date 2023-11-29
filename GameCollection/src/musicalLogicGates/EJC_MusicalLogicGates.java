@@ -5,11 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import javax.swing.JFrame;
 import javax.swing.Timer;
-
 import ejcMain.EJC_Game;
+import ejcMain.EJC_Util.StateControl;
 import ejcMain.EJC_WindowEventHandler;
 import musicalLogicGates.circuit.CircuitManager;
 import musicalLogicGates.circuit.FileManager;
@@ -17,6 +16,7 @@ import musicalLogicGates.graphics.CircuitPanel;
 import musicalLogicGates.graphics.EastGUI;
 import musicalLogicGates.graphics.WestGUI;
 import musicalLogicGates.music.BeatManager;
+import musicalLogicGates.music.SoundManager;
 
 /**
  * An {@link EJC_Game} in which the player can build logic gate circuits and have them play audio.
@@ -31,6 +31,7 @@ public class EJC_MusicalLogicGates extends JFrame implements EJC_Game, ActionLis
 	private CircuitManager circuitManager;
 	private BeatManager beatManager;
 	private Timer playingAnimationTimer;
+	private SoundManager soundManager;
 
 	@Override
 	public void start(EJC_WindowEventHandler eventHandler) 
@@ -38,7 +39,8 @@ public class EJC_MusicalLogicGates extends JFrame implements EJC_Game, ActionLis
 		this.addWindowListener(eventHandler);
 		this.setTitle("Musical Logic Gates");
 
-		circuitManager = new CircuitManager();
+		soundManager = new SoundManager();
+		circuitManager = new CircuitManager(soundManager);
 		beatManager = new BeatManager(this);
 		playingAnimationTimer = new Timer(30, this);
 		
@@ -85,21 +87,18 @@ public class EJC_MusicalLogicGates extends JFrame implements EJC_Game, ActionLis
 		});
 	}
 	
-	public enum OnOff 
-	{
-		ON, OFF
-	}
-	
 	/**
 	 * Enters 'playing' mode and starts playing the music of the circuit.
+	 * 
+	 * @throws IllegalStateException if {@link CircuitManager} is already in 'playing' mode
 	 */
 	public void startPlaying()
 	{
 		if (circuitManager.isPlaying()) 
 		{throw new IllegalStateException("Cannot start playing when already in 'playing' mode");}
 		
-		eastGUI.switchOnOffEditButtons(OnOff.OFF);
-		westGUI.switchOnOffEditButtons(OnOff.OFF);
+		eastGUI.switchOnOffEditButtons(StateControl.OFF);
+		westGUI.switchOnOffEditButtons(StateControl.OFF);
 		circuitManager.startPlaying();
 		beatManager.startBeat();
 		playingAnimationTimer.start();
@@ -107,6 +106,8 @@ public class EJC_MusicalLogicGates extends JFrame implements EJC_Game, ActionLis
 	
 	/**
 	 * Exits 'playing' mode.
+	 * 
+	 * @throws IllegalStateException if {@link CircuitManager} is not in 'playing' mode
 	 */
 	public void stopPlaying()
 	{
@@ -115,13 +116,15 @@ public class EJC_MusicalLogicGates extends JFrame implements EJC_Game, ActionLis
 		
 		playingAnimationTimer.stop();
 		beatManager.stopBeat();
-		eastGUI.switchOnOffEditButtons(OnOff.ON);
-		westGUI.switchOnOffEditButtons(OnOff.ON);
+		eastGUI.switchOnOffEditButtons(StateControl.ON);
+		westGUI.switchOnOffEditButtons(StateControl.ON);
 		circuitManager.stopPlaying();
 	}
 	
 	/**
-	 * Advances the circuit by one step/beat.
+	 * Advances the circuit by one step/beat.#
+	 * 
+	 * @throws IllegalStateException if {@link CircuitManager} is not in 'playing' mode
 	 */
 	public void beatAdvanceStep()
 	{
@@ -130,6 +133,16 @@ public class EJC_MusicalLogicGates extends JFrame implements EJC_Game, ActionLis
 		
 		circuitManager.updateOneStep();
 		updateGraphics();
+	}
+	
+	/**
+	 * Changes the {@link SoundManager}s instruments and restarts 'playing' mode.
+	 */
+	public void changeInstruments()
+	{
+		soundManager.regenerateSequences();
+		stopPlaying();
+		startPlaying();
 	}
 	
 	/**
@@ -169,5 +182,7 @@ public class EJC_MusicalLogicGates extends JFrame implements EJC_Game, ActionLis
 	{
 		if (circuitManager.isPlaying())
 		{stopPlaying();}
+		
+		soundManager.stop();
 	}
 }

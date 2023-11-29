@@ -149,8 +149,7 @@ public abstract class Gate
 	public void setInput2(Gate gate) 
 	{
 		if (gate == null ) 
-		{throw new IllegalArgumentException("Cannot set input to null");
-		}
+		{throw new IllegalArgumentException("Cannot set input to null");}
 		this.input2 = gate;
 	}
 	
