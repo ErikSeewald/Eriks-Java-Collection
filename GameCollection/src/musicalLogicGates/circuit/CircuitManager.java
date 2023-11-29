@@ -15,6 +15,7 @@ import musicalLogicGates.gates.OR;
 import musicalLogicGates.gates.OUT;
 import musicalLogicGates.gates.XNOR;
 import musicalLogicGates.gates.XOR;
+import musicalLogicGates.music.SoundManager;
 
 /**
  * Class to manage a logic gate circuit.
@@ -23,12 +24,21 @@ public class CircuitManager
 {
 	private List<Gate> gates;
 	
-	private boolean playing;
+	private boolean playing; // true if in 'playing' mode
+	
+	private SoundManager soundManager;
 	
 	/**
 	 * Creates a new {@link CircuitManager}
 	 */
-	public CircuitManager() {gates = new ArrayList<>();}
+	public CircuitManager(SoundManager soundManager) 
+	{
+		if (soundManager == null)
+		{throw new NullPointerException("soundManager cannot be null!");}
+		this.soundManager = soundManager;
+		
+		gates = new ArrayList<>();
+	}
 
 	/**
 	 * Returns a list of all gates in the circuit.
@@ -78,15 +88,15 @@ public class CircuitManager
 	{
 		switch (type)
 		{
-			case AND : return new AND(100, 100);
-			case NAND :return new NAND(100, 100);
-			case OR : return new OR(100, 100);
-			case NOR : return new NOR(100, 100);
-			case XOR : return new XOR(100, 100);
-			case XNOR : return new XNOR(100, 100);
-			case NOT : return new NOT(100,100);
-			case IN : return new IN(100,100);
-			case OUT: return new OUT(100,100);
+			case AND : return new AND(100, 60);
+			case NAND :return new NAND(180, 60);
+			case OR : return new OR(260, 60);
+			case NOR : return new NOR(340, 60);
+			case XOR : return new XOR(420, 60);
+			case XNOR : return new XNOR(500, 60);
+			case NOT : return new NOT(580, 60);
+			case IN : return new IN(30, 60);
+			case OUT: return new OUT(660, 60);
 			case NULL_GATE : break;
 			default : break;
 		}
@@ -115,6 +125,9 @@ public class CircuitManager
 	public void clearGates() {gates.removeAll(gates);}
 	
 	
+	/**
+	 * Updates the 'playing' mode states by one step.
+	 */
 	public void updateOneStep()
 	{
 		if (!playing) {return;}
@@ -126,16 +139,28 @@ public class CircuitManager
 			newStates[i] = gate.output(gate.getInput1().getPlayState(), gate.getInput2().getPlayState());
 		}
 		
+		//UPDATE STATE IN SECOND LOOP SO THE FIRST LOOP ONLY USES OLD STATES AS INPUTS
 		for (int i = 0; i < gates.size(); i++)
 		{
 			Gate gate = gates.get(i);
+			
+			//SOUND
+			if (newStates[i] != gate.getPlayState()) //state changed
+			{soundManager.playGateSound(gate.getType());}
 			
 			gate.updatePlayState(newStates[i]);
 		}
 	}
 
+	/**
+	 * Starts the 'playing' mode
+	 */
 	public void startPlaying() {playing = true;}
 	
+	
+	/**
+	 * Stops the 'playing' mode
+	 */
 	public void stopPlaying()
 	{
 		playing = false;
@@ -147,5 +172,10 @@ public class CircuitManager
 		}
 	}
 	
+	/**
+	 * Returns whether the {@link CircuitManager} is in 'playing' mode.
+	 * 
+	 * @return {@link boolean} whether the {@link CircuitManager} is in 'playing' mode
+	 */
 	public boolean isPlaying() {return playing;}
 }

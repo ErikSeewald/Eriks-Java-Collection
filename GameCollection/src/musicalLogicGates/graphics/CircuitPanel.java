@@ -40,7 +40,7 @@ public class CircuitPanel extends JPanel
 	public CircuitPanel(CircuitManager circuitManager) 
 	{
 		if (circuitManager == null)
-		{throw new IllegalArgumentException("circuitManager cannot be null!");}
+		{throw new NullPointerException("circuitManager cannot be null!");}
 		
 		this.circuitManager = circuitManager;
 		

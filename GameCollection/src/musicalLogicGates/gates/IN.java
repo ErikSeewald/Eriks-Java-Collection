@@ -38,15 +38,12 @@ public class IN extends Gate
 	
 	//IN HAS NO INPUT
 	@Override
-	public void setInput1(Gate gate)
-	{}
+	public void setInput1(Gate gate) {}
 	
 	@Override
-	public void setInput2(Gate gate)
-	{}
+	public void setInput2(Gate gate) {}
 
 	//IN RETURNS ITS STATE AS OUTPUT
-	
 	@Override
 	public boolean output(boolean a, boolean b) 
 	{

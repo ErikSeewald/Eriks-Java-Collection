@@ -15,45 +15,18 @@ public class OUT extends Gate
 	{
 		super(x, y);
 	}
-
-	private Gate input = NullGate.instance; //OUT only has one input -> "override" Gate input functionality
-	
-	@Override
-	public boolean output()
-	{
-		return input.output();
-	}
 	
 	@Override
 	public boolean output(boolean a, boolean b)
 	{
 		return a;
 	}
-
-	/**
-	 * Sets the single input {@link Gate} of this {@link OUT} {@link Gate}.
-	 * 
-	 * @param gate the {@link Gate} to be set as the input
-	 */
-	public void setInput(Gate gate)
-	{
-		if (gate == null)
-		{throw new IllegalArgumentException("gate cannot be null!");}
-		input = gate;
-	}
 	
-	//ONLY HAS ONE INPUT -> REDIRECT TO setInput()
+	//ONLY HAS ONE INPUT -> REDIRECT TO setInput1()
 	@Override
-	public void setInput1(Gate gate) {setInput(gate);}
-	
-	@Override
-	public void setInput2(Gate gate) {setInput(gate);}
+	public void setInput2(Gate gate) {super.setInput1(gate);}
 	
 	//ONLY RETURN INPUT AT INPUT1, OTHERWISE IT WILL BE VISUALIZED WITH TWO WIRES TO ONE INPUT
-	@Override
-	public Gate getInput1()
-	{return input;}
-	
 	@Override
 	public Gate getInput2()
 	{return NullGate.instance;}

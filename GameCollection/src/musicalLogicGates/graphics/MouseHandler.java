@@ -13,6 +13,7 @@ import musicalLogicGates.gates.IN;
  */
 public class MouseHandler 
 {
+	//REFERENCES
 	private CircuitPanel panel;
 	private CircuitManager circuitManager;
 	
@@ -33,11 +34,11 @@ public class MouseHandler
 	MouseHandler(CircuitPanel panel, CircuitManager circuitManager)
 	{
 		if (panel == null)
-		{throw new IllegalArgumentException("panel cannot be null!");}
+		{throw new NullPointerException("panel cannot be null!");}
 		this.panel = panel;
 		
 		if (circuitManager == null)
-		{throw new IllegalArgumentException("circuitManager cannot be null!");}
+		{throw new NullPointerException("circuitManager cannot be null!");}
 		this.circuitManager = circuitManager;
 	}
 	

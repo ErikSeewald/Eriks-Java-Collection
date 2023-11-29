@@ -5,14 +5,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
 import ejcMain.EJC_GUI;
+import ejcMain.EJC_Util.StateControl;
 import musicalLogicGates.EJC_MusicalLogicGates;
-import musicalLogicGates.EJC_MusicalLogicGates.OnOff;
 import musicalLogicGates.circuit.CircuitManager;
 import musicalLogicGates.gates.Gate.GateType;
 
@@ -31,6 +29,8 @@ public class WestGUI extends JPanel implements MouseListener
 	//BUTTONS
 	private JLabel playButton;
 	
+	private JLabel instrumentButton;
+	
 	private JLabel andButton, nandButton;
 	private JLabel orButton, norButton;
 	private JLabel xorButton, xnorButton;
@@ -45,11 +45,11 @@ public class WestGUI extends JPanel implements MouseListener
 	public WestGUI(CircuitManager circuitManager, EJC_MusicalLogicGates game)
 	{
 		if (circuitManager == null)
-		{throw new IllegalArgumentException("circuitManager cannot be null!");}
+		{throw new NullPointerException("circuitManager cannot be null!");}
 		this.circuitManager = circuitManager;
 		
 		if (game == null)
-		{throw new IllegalArgumentException("game cannot be null!");}
+		{throw new NullPointerException("game cannot be null!");}
 		this.game = game;
 		
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, CircuitPanel.PANEL_HEIGHT));
@@ -59,6 +59,11 @@ public class WestGUI extends JPanel implements MouseListener
 		//BUTTONS
 		playButton = new JLabel("   PLAY");
 		setButtonSettings(playButton, 23, 30, buttonSizeX, buttonSizeY);
+		
+		instrumentButton = new JLabel("  RANDOM SOUNDS");
+		setButtonSettings(instrumentButton, 23, 120, buttonSizeX, buttonSizeY);
+		instrumentButton.setFont(new Font("", Font.BOLD, 14));
+		instrumentButton.setVisible(false);
 		
 		andButton = new JLabel("    AND");
 		setButtonSettings(andButton, 23, 180, buttonSizeX, buttonSizeY);
@@ -81,9 +86,9 @@ public class WestGUI extends JPanel implements MouseListener
 	/**
 	 * Helper method to disable and enable all edit buttons while in 'playing' mode
 	 */
-	public void switchOnOffEditButtons(OnOff onOff)
+	public void switchOnOffEditButtons(StateControl onOff)
 	{
-		boolean b = onOff == OnOff.ON ? true : false;
+		boolean b = (onOff == StateControl.ON);
 		
 		andButton.setVisible(b);
 		nandButton.setVisible(b);
@@ -91,6 +96,7 @@ public class WestGUI extends JPanel implements MouseListener
 		norButton.setVisible(b);
 		xorButton.setVisible(b);
 		xnorButton.setVisible(b);
+		instrumentButton.setVisible(!b);
 	}
 	
 	/**
@@ -133,6 +139,9 @@ public class WestGUI extends JPanel implements MouseListener
 				playButton.setText("   STOP");
 			}	
 		}
+		
+		else if (button.equals(instrumentButton))
+		{game.changeInstruments();}
 		
 		else if (button.equals(andButton))
 		{circuitManager.addGate(GateType.AND);}

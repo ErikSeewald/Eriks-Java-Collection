@@ -9,8 +9,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import ejcMain.EJC_GUI;
+import ejcMain.EJC_Util.StateControl;
 import musicalLogicGates.EJC_MusicalLogicGates;
-import musicalLogicGates.EJC_MusicalLogicGates.OnOff;
 import musicalLogicGates.circuit.CircuitManager;
 import musicalLogicGates.gates.Gate.GateType;
 
@@ -51,11 +51,11 @@ public class EastGUI extends JPanel implements MouseListener
 	public EastGUI(CircuitManager circuitManager, EJC_MusicalLogicGates game)
 	{
 		if (circuitManager == null)
-		{throw new IllegalArgumentException("circuitManager cannot be null!");}
+		{throw new NullPointerException("circuitManager cannot be null!");}
 		this.circuitManager = circuitManager;
 		
 		if (game == null)
-		{throw new IllegalArgumentException("game cannot be null!");}
+		{throw new NullPointerException("game cannot be null!");}
 		this.game = game;
 		
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, CircuitPanel.PANEL_HEIGHT));
@@ -84,9 +84,9 @@ public class EastGUI extends JPanel implements MouseListener
 	/**
 	 * Helper method to disable and enable all edit buttons while in 'playing' mode
 	 */
-	public void switchOnOffEditButtons(OnOff onOff)
+	public void switchOnOffEditButtons(StateControl onOff)
 	{
-		boolean b = onOff == OnOff.ON ? true : false;
+		boolean b = (onOff == StateControl.ON);
 		
 		clearButton.setVisible(b);
 		notButton.setVisible(b);
