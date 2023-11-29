@@ -37,8 +37,6 @@ public abstract class Gate
 			this.input2 = NullGate.instance;
 		}
 		
-		this.resetPlayState(); //initialize play state
-		
 		this.x = x;
 		this.y = y;
 	}
@@ -79,7 +77,7 @@ public abstract class Gate
 	 */
 	public void resetPlayState()
 	{
-		this.playState = this.output(false, false);
+		this.playState = this.output();
 	}
 	
 	/**

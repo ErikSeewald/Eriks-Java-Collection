@@ -21,6 +21,8 @@ public class SoundManager
     
     private Sequence[] soundSequences = new Sequence[9];
     private Random random;
+    
+    private static final int bannedInstruments[] = {49, 78, 79, 89, 93, 95, 101, 119, 121, 122, 125, 126};
 
     /**
      * Creates a new {@link SoundManager}.
@@ -51,6 +53,7 @@ public class SoundManager
             try
             {
 				soundSequences[i] = createMidiSequence(random.nextInt(60)+30, 50, 300);
+				
 			} catch (InvalidMidiDataException e) {e.printStackTrace();}
         }
     }
@@ -71,7 +74,22 @@ public class SoundManager
         
         //INSTRUMENT
         ShortMessage programChange = new ShortMessage();
-        programChange.setMessage(ShortMessage.PROGRAM_CHANGE, 0, random.nextInt(126)+1, 0);
+        
+        int instrument = 0;
+        boolean validInstrument = false;
+        while (!validInstrument)
+        {
+        	instrument = random.nextInt(127);
+        	validInstrument = true;
+        	
+            for (int i = 0; i < bannedInstruments.length; i++)
+            {
+            	if (instrument == bannedInstruments[i])
+            	{validInstrument = false;}
+            }
+        }
+        
+        programChange.setMessage(ShortMessage.PROGRAM_CHANGE, 0, instrument, 0);
         track.add(new MidiEvent(programChange, 0));
 
         //NOTE-ON

@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -34,6 +36,8 @@ public class WestGUI extends JPanel implements MouseListener
 	private JLabel andButton, nandButton;
 	private JLabel orButton, norButton;
 	private JLabel xorButton, xnorButton;
+	
+	private Map<JLabel, GateType> gateButtonsToType = new HashMap<>();
 	
 	private int buttonSizeX = 150, buttonSizeY = 70;
 	private boolean buttonSizeIncreased = false;
@@ -67,18 +71,24 @@ public class WestGUI extends JPanel implements MouseListener
 		
 		andButton = new JLabel("    AND");
 		setButtonSettings(andButton, 23, 180, buttonSizeX, buttonSizeY);
+		gateButtonsToType.put(andButton, GateType.AND);
 		nandButton = new JLabel("   NAND");
 		setButtonSettings(nandButton, 23, 260, buttonSizeX, buttonSizeY);
+		gateButtonsToType.put(nandButton, GateType.NAND);
 		
 		orButton = new JLabel("     OR");
 		setButtonSettings(orButton, 23, 360, buttonSizeX, buttonSizeY);
+		gateButtonsToType.put(orButton, GateType.OR);
 		norButton = new JLabel("    NOR");
 		setButtonSettings(norButton, 23, 440, buttonSizeX, buttonSizeY);
+		gateButtonsToType.put(norButton, GateType.NOR);
 		
 		xorButton = new JLabel("    XOR");
 		setButtonSettings(xorButton, 23, 540, buttonSizeX, buttonSizeY);
+		gateButtonsToType.put(xorButton, GateType.XOR);
 		xnorButton = new JLabel("   XNOR");
 		setButtonSettings(xnorButton, 23, 620, buttonSizeX, buttonSizeY);
+		gateButtonsToType.put(xnorButton, GateType.XNOR);
 		
 		this.setLayout(null);
 	}
@@ -143,23 +153,10 @@ public class WestGUI extends JPanel implements MouseListener
 		else if (button.equals(instrumentButton))
 		{game.changeInstruments();}
 		
-		else if (button.equals(andButton))
-		{circuitManager.addGate(GateType.AND);}
-		
-		else if (button.equals(nandButton))
-		{circuitManager.addGate(GateType.NAND);}
-		
-		else if (button.equals(orButton))
-		{circuitManager.addGate(GateType.OR);}
-		
-		else if (button.equals(norButton))
-		{circuitManager.addGate(GateType.NOR);}
-		
-		else if (button.equals(xorButton))
-		{circuitManager.addGate(GateType.XOR);}
-		
-		else if (button.equals(xnorButton))
-		{circuitManager.addGate(GateType.XNOR);}
+		else if (gateButtonsToType.containsKey(button))
+		{
+			circuitManager.addGate(gateButtonsToType.get(button));
+		}
 		
 		buttonAnimation(button, -(buttonSizeX /30));
 		button.setBackground(EJC_GUI.b_color_highlight);
