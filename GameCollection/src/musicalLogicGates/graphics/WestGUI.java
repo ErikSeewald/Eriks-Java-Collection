@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import ejcMain.EJC_GUI;
 import ejcMain.EJC_Util.StateControl;
+import ejcMain.menu.MainMenu;
 import musicalLogicGates.EJC_MusicalLogicGates;
 import musicalLogicGates.circuit.CircuitManager;
 import musicalLogicGates.gates.Gate.GateType;
@@ -66,7 +67,7 @@ public class WestGUI extends JPanel implements MouseListener
 		
 		instrumentButton = new JLabel("  RANDOM SOUNDS");
 		setButtonSettings(instrumentButton, 23, 120, buttonSizeX, buttonSizeY);
-		instrumentButton.setFont(new Font("", Font.BOLD, 14));
+		instrumentButton.setFont(new Font(MainMenu.fontName, Font.BOLD, 14));
 		instrumentButton.setVisible(false);
 		
 		andButton = new JLabel("    AND");
@@ -125,7 +126,7 @@ public class WestGUI extends JPanel implements MouseListener
 		button.setForeground(textColor);
 		button.setOpaque(true);
 		button.setBorder(BorderFactory.createLineBorder(borderColor, 3));
-		button.setFont(new Font("", Font.BOLD, 32));
+		button.setFont(new Font(MainMenu.fontName, Font.BOLD, 32));
 		button.addMouseListener(this);
 		this.add(button);
 	}
