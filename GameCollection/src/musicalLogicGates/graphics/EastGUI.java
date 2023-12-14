@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import ejcMain.EJC_GUI;
 import ejcMain.EJC_Util.StateControl;
+import ejcMain.menu.MainMenu;
 import musicalLogicGates.EJC_MusicalLogicGates;
 import musicalLogicGates.circuit.CircuitManager;
 import musicalLogicGates.gates.Gate.GateType;
@@ -121,7 +122,7 @@ public class EastGUI extends JPanel implements MouseListener
 		button.setForeground(textColor);
 		button.setOpaque(true);
 		button.setBorder(BorderFactory.createLineBorder(borderColor, 3));
-		button.setFont(new Font("", Font.BOLD, 32));
+		button.setFont(new Font(MainMenu.fontName, Font.BOLD, 32));
 		button.addMouseListener(this);
 		this.add(button);
 	}
