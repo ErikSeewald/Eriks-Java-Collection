@@ -12,6 +12,7 @@ import ejcMain.EJC_GameHandler;
 public class MainMenu extends JFrame implements MouseListener
 {
 	private static final long serialVersionUID = 1454253443346436L;
+	public static final String fontName = "Dialog";
 	
 	private static final class MenuControl
 	{
@@ -78,8 +79,8 @@ public class MainMenu extends JFrame implements MouseListener
 				guideLabels[i].setBounds(resolution/40,	(int) (resolution/divisors[i]),	resolution+100,	resolution/15);
 				guideLabels[i].setForeground(text_color);
 				
-				if (i == 0) {guideLabels[i].setFont(new Font ("", Font.BOLD, resolution/26));}
-				else {guideLabels[i].setFont(new Font ("", Font.BOLD, resolution/42));}
+				if (i == 0) {guideLabels[i].setFont(new Font (fontName, Font.BOLD, resolution/26));}
+				else {guideLabels[i].setFont(new Font (fontName, Font.BOLD, resolution/42));}
 				
 				if (firstInit) {this.add(guideLabels[i]);}
 			}
@@ -110,7 +111,7 @@ public class MainMenu extends JFrame implements MouseListener
 			button.width = resolution/6;
 			button.height = resolution/15;
 			button.setBounds(x, y, button.width, button.height);		
-			button.setFont(new Font ("", Font.PLAIN, resolution/42));
+			button.setFont(new Font (fontName, Font.PLAIN, resolution/42));
 			button.setBorder(BorderFactory.createLineBorder(new Color(100,100,130), resolution/300));
 		}
 	
