@@ -90,10 +90,14 @@ public class MainMenu extends JFrame implements MouseListener
 			for (int i = 0; i < EJC_GameHandler.maxGameCount; i++)
 			{
 				String buttonText = i < game_text.length ? game_text[i].buttonText : "";
-				GButton button = new GButton(buttonText, i);
-				gameButtons[i] = button;
-				initButton(button, (resolution/10) + x*(resolution/5), (resolution/3) + y*(resolution/10));
 				
+				GButton button;
+				if (firstInit) {button = new GButton(buttonText, i);}
+				else {button = gameButtons[i];}
+				
+				initButton(button, (resolution/10) + x*(resolution/5), (resolution/3) + y*(resolution/10));
+                gameButtons[i] = button;
+                
 				if (firstInit)
 				{
 					button.addMouseListener(this);
