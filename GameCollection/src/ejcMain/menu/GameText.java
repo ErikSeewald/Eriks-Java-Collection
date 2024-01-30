@@ -316,6 +316,21 @@ public enum GameText
 					"animated in 'playing' mode. In 'playing' mode (PLAY button) you can randomize the",
 					"sounds of the gates with another button. You can also save and load existing circuits.",
 			}
+	), 
+	
+	JuicePoet
+	(
+			"   Juice Poet",
+			
+			new String[]
+			{
+					"JUICE POET",
+					"",
+					"",
+					"",
+					"",
+					"",
+			}
 	);
 
 	String buttonText;

@@ -3,8 +3,8 @@ package taxCollector;
 import java.util.ArrayList;
 import java.util.Random;
 
-import ejcMain.EJC_Util;
-import ejcMain.EJC_Util.Direction;
+import ejcMain.util.EJC_Util;
+import ejcMain.util.EJC_Util.Direction;
 import taxCollector.mapItem.House;
 import taxCollector.mapItem.IRS;
 import taxCollector.mapItem.Lake;

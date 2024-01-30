@@ -11,8 +11,8 @@ import javax.swing.Timer;
 
 import ejcMain.EJC_Game;
 import ejcMain.EJC_WindowEventHandler;
-import ejcMain.EJC_GUI.EJC_MenuBar;
-import ejcMain.EJC_Util.Direction;
+import ejcMain.util.EJC_GUI.EJC_MenuBar;
+import ejcMain.util.EJC_Util.Direction;
 import taxCollector.MapHandler.ResetActions;
 
 public class EJC_TaxCollector extends JFrame implements EJC_Game, ActionListener

@@ -9,7 +9,7 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
-import ejcMain.EJC_Util;
+import ejcMain.util.EJC_Util;
 
 public class PathfindPanel extends JPanel
 {

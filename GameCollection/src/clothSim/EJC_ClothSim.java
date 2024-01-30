@@ -9,7 +9,7 @@ import javax.swing.Timer;
 
 import ejcMain.EJC_Game;
 import ejcMain.EJC_WindowEventHandler;
-import ejcMain.EJC_GUI.EJC_MenuBar;
+import ejcMain.util.EJC_GUI.EJC_MenuBar;
 
 public class EJC_ClothSim extends JFrame implements EJC_Game, ActionListener
 {

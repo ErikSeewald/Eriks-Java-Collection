@@ -10,9 +10,10 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import ejcMain.EJC_GUI;
-import ejcMain.EJC_Util.StateControl;
+
 import ejcMain.menu.MainMenu;
+import ejcMain.util.EJC_GUI;
+import ejcMain.util.EJC_Util.StateControl;
 import musicalLogicGates.EJC_MusicalLogicGates;
 import musicalLogicGates.circuit.CircuitManager;
 import musicalLogicGates.gates.Gate.GateType;

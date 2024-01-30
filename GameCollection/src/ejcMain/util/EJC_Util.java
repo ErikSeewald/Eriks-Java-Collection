@@ -1,4 +1,4 @@
-package ejcMain;
+package ejcMain.util;
 import javax.swing.JOptionPane;
 
 public class EJC_Util

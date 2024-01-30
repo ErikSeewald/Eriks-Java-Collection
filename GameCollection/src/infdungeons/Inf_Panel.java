@@ -10,7 +10,7 @@ import java.awt.RenderingHints;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
-import ejcMain.EJC_Util.Direction;
+import ejcMain.util.EJC_Util.Direction;
 import infdungeons.Room.Door;
 import infdungeons.enemies.Enemy;
 import infdungeons.enemies.Projectile;

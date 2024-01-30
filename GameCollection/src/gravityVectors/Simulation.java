@@ -1,7 +1,7 @@
 package gravityVectors;
 import java.util.ArrayList;
 
-import ejcMain.EJC_Util;
+import ejcMain.util.EJC_Util;
 
 public class Simulation 
 {

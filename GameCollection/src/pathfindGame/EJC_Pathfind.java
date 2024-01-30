@@ -8,7 +8,7 @@ import javax.swing.JMenuItem;
 
 import ejcMain.EJC_Game;
 import ejcMain.EJC_WindowEventHandler;
-import ejcMain.EJC_GUI.EJC_MenuBar;
+import ejcMain.util.EJC_GUI.EJC_MenuBar;
 import pathfindGame.PathfindPanel.ControlBooleans;
 
 
