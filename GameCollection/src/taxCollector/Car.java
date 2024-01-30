@@ -1,6 +1,6 @@
 package taxCollector;
 
-import ejcMain.EJC_Util.Direction;
+import ejcMain.util.EJC_Util.Direction;
 
 public class Car 
 {

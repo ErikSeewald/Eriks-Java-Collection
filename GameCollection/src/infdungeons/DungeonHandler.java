@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-import ejcMain.EJC_Util;
-import ejcMain.EJC_Util.Direction;
+import ejcMain.util.EJC_Util;
+import ejcMain.util.EJC_Util.Direction;
 import infdungeons.Room.Chest;
 import infdungeons.Room.Door;
 import infdungeons.enemies.Enemy;

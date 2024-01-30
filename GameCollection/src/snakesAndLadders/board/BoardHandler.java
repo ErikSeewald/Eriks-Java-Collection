@@ -5,7 +5,7 @@ import java.util.Random;
 
 import javax.swing.Timer;
 
-import ejcMain.EJC_Util;
+import ejcMain.util.EJC_Util;
 import snakesAndLadders.SnL_Panel;
 import snakesAndLadders.gui.SnL_GUI;
 

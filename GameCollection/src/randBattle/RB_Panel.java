@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import ejcMain.EJC_Util;
+import ejcMain.util.EJC_Util;
 
 public class RB_Panel extends JPanel
 {

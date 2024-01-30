@@ -1,6 +1,6 @@
 package infdungeons.player;
 
-import ejcMain.EJC_Util.Direction;
+import ejcMain.util.EJC_Util.Direction;
 import infdungeons.DungeonHandler;
 import infdungeons.Room;
 

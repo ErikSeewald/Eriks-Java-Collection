@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import ejcMain.EJC_GUI;
+import ejcMain.util.EJC_GUI;
 
 public class GUI extends JPanel implements MouseListener
 {

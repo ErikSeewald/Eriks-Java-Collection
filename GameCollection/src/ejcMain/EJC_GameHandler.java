@@ -10,6 +10,7 @@ import clothSim.EJC_ClothSim;
 import gravityVectors.EJC_GravityVectors;
 import infdungeons.EJC_InfDungeons;
 import insects.EJC_Insects;
+import juicePoet.EJC_JuicePoet;
 import mouseDodge.EJC_MouseDodge;
 import musicalLogicGates.EJC_MusicalLogicGates;
 import parallelUniverses.EJC_ParallelUniverses;
@@ -58,6 +59,7 @@ public class EJC_GameHandler
 		games.add(EJC_Automata.class);
 		
 		games.add(EJC_MusicalLogicGates.class);
+		games.add(EJC_JuicePoet.class);
 	}
 	
 	private static EJC_WindowEventHandler eventHandler = new EJC_WindowEventHandler();
