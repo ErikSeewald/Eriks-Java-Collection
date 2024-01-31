@@ -1,11 +1,32 @@
 package juicePoet.juice;
 
 import java.awt.Color;
+import java.util.HashSet;
+import java.util.Set;
+
 import juicePoet.poem.Poem;
 
+/**
+ * Algorithm for extracting a {@link Juice} texture from a {@link Poem} {@link String}
+ */
 public class JuiceAlgorithm
 {
 	public static final int MAX_POEM_LENGTH = 1000;
+	
+	private static final Set<Character> WHITESPACE_CHARS = new HashSet<>();
+	private static final Set<Character> VOWEL_CHARS = new HashSet<>();
+	static 
+	{
+		WHITESPACE_CHARS.add(' ');
+		WHITESPACE_CHARS.add('\t');
+		WHITESPACE_CHARS.add('\n');
+		
+		VOWEL_CHARS.add('a');
+		VOWEL_CHARS.add('e');
+		VOWEL_CHARS.add('i');
+		VOWEL_CHARS.add('o');
+		VOWEL_CHARS.add('u');
+	}
 	
 	/**
 	 * Juices the given poem. Generates a {@link Juice} object from the given {@link Poem}.
@@ -30,8 +51,21 @@ public class JuiceAlgorithm
 		Color mainColor = extractMainColor(poemText);
 		juice.fillTexture(mainColor);
 		
-		//STEP 3: SINGLE PIXELS
+		//STEP 3: PIXEL PATTERNS
+		// get a seed value based on the number of occurrences of certain character sets within the poem text
+		// and then use this seed to generate a pattern of pixels each time
 		
+		//PATTERN 1
+		int whitespaceCount = countOccurrencesOfChars(WHITESPACE_CHARS, poemText);
+		extractPatternWithSeed(juice, poemText, whitespaceCount);
+		
+		//PATTERN 2
+		int vowelCount = countOccurrencesOfChars(VOWEL_CHARS, poemText.toLowerCase());
+		extractPatternWithSeed(juice, poemText, vowelCount);
+		
+		//PATTERN 3
+		int lastCharCount = countOccurrencesOfChars(Set.of(poemText.charAt(poemText.length() - 1)), poemText);
+		extractPatternWithSeed(juice, poemText, lastCharCount);
 		
 		return juice;
 	}
@@ -56,9 +90,9 @@ public class JuiceAlgorithm
 		int blueTotal = 0;
 		
 		for (char c : poemText.toCharArray())
-		{
-			if (c < 70) {redTotal++;}
-			else if (c < 80) {greenTotal++;}
+		{		
+			if (c < 69) {redTotal++;}
+			else if (c < 78) {greenTotal++;}
 			else {blueTotal++;}
 		}
 		
@@ -75,11 +109,76 @@ public class JuiceAlgorithm
 		
 		// instead of Math truncation: take min brightness and add factor of a smaller scale so the original value
 		// redistributes nicely in the range left over without the min brightness
-		brightness =  0.2f + (brightness * 0.8f); 
+		brightness =  0.2f + (brightness * 0.8f);
 		
 		return Color.getHSBColor(hsb[0], hsb[1], brightness);
 	}
 	
+	/**
+	 * Extracts a pixel pattern from the given poem text based on the given seed and then adds it to the texture
+	 * of the given {@link Juice}.
+	 * 
+	 * @param juice the {@link Juice} to update
+	 * @param poemText the {@link String} text to extract the pattern from
+	 * @param seed the seed for the pattern extraction
+	 */
+	private static void extractPatternWithSeed(Juice juice, String poemText, int seed)
+	{
+		lengthExceptionCheck(poemText);
+		
+		int textLength = poemText.length();
+		int seedIndex = seed % textLength;
+		char patternChar = poemText.charAt(seedIndex);
+		
+		//COLOR
+		// count the occurrences of the char at seedIndex and the two chars next to it (modulo textLength)
+		// and use each count as the r,g or b value respectively
+		int[] rgb = new int[3];
+		for (int i = 0; i < 3; i++)
+		{
+			int charIndex = (seedIndex + i) % textLength;
+			
+			rgb[i] = countOccurrencesOfChars(Set.of(poemText.charAt(charIndex)), poemText);
+			rgb[i] = (int) (rgb[i] * 255.0 / (textLength * 0.25));
+			rgb[i] = Math.min(255, rgb[i]);
+		}
+		Color patternColor = new Color(rgb[0], rgb[1], rgb[2]);
+		
+		//PATTERN
+		//wrap the poemText around the texture (repeating if necessary) and then draw a pixel if the char
+		//at the index of the pixel in the poemText matches the given pattern char
+		for (int x = 0; x < Juice.TEXTURE_SIZE; x++)
+		{
+			for (int y = 0; y < Juice.TEXTURE_SIZE; y++)
+			{
+				int pixelIndexInPoemText = (x * Juice.TEXTURE_SIZE + y) % textLength;	
+				if (poemText.charAt(pixelIndexInPoemText) == patternChar)
+				{
+					juice.setTexturePixel(x, y, patternColor);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Counts the number of times any of the given chars occur in the given poem text.
+	 * 
+	 * @param chars the chars to look for
+	 * @param poemText the {@link String} to look through
+	 * @return the number of times any of the given chars occur
+	 */
+	private static int countOccurrencesOfChars(Set<Character> chars, String poemText)
+	{	
+		lengthExceptionCheck(poemText);
+		
+		int count = 0;
+		for (char c : poemText.toCharArray())
+		{
+			if (chars.contains(c)) {count++;}
+		}
+		
+		return count;
+	}
 	
 	//---------------------------------------EXCEPTION CHECKS---------------------------------------
 	
