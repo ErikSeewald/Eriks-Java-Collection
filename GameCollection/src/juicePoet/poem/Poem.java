@@ -7,7 +7,7 @@ import ejcMain.util.Draggable;
  */
 public class Poem implements Draggable
 {
-	protected String text;
+	protected final String text;
 	
 	public static final int WIDTH = 120;
 	public static final int HEIGHT = 80;
@@ -22,6 +22,8 @@ public class Poem implements Draggable
 		this.x = x;
 		this.y = y;
 	}
+	
+	public String getText() {return text;}
 	
 	@Override
 	public void dragTo(int x, int y)
