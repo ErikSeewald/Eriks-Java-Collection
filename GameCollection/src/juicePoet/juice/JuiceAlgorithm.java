@@ -79,28 +79,24 @@ public class JuiceAlgorithm
 	private static Color extractMainColor(String poemText) 
 	{
 		lengthExceptionCheck(poemText);
+		int textLength = poemText.length();
 		
 		// STEP 1: HUE	
 		//Split all the chars of poemText into 3 categories based on their char code. Each char in each category
 		//contributes to the color's red, green and blue value respectively		
 		poemText = poemText.toUpperCase(); // case insensitive division of letters
 		
-		int redTotal = 0;
-		int greenTotal = 0;
-		int blueTotal = 0;
-		
+		int[] totals = new int[3];
 		for (char c : poemText.toCharArray())
-		{		
-			if (c < 69) {redTotal++;}
-			else if (c < 78) {greenTotal++;}
-			else {blueTotal++;}
+		{	
+			totals[c % 3]++;
 		}
 		
-		int textLength = poemText.length();
-		
-		int r = (int) (redTotal * 255.0 / textLength );
-		int g = (int) (greenTotal * 255.0  / textLength);
-		int b = (int) (blueTotal * 255.0 / textLength );
+		//order in which the modulo 3 counts contribute to the r,g,b
+		int order = textLength % 3;
+		int r = (int) (totals[order] * 255.0 / textLength );
+		int g = (int) ( totals[(order + 1) % 3] * 255.0  / textLength);
+		int b = (int) (totals[(order + 2) % 3] * 255.0 / textLength );
 		
 		//STEP 2: BRIGHTNESS
 		// Scale the brightness based on the char code of the very first char
