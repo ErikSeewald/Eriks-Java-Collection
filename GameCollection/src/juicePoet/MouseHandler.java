@@ -118,7 +118,7 @@ public class MouseHandler
 					panel.repaint();
 				}
 				
-				else if (draggable instanceof Glass glass)
+				else if (draggable instanceof Glass glass && glass.isEmpty())
 				{
 					glass.fill(juicer.extractJuice());
 					panel.repaint();

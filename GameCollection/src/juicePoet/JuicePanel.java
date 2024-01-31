@@ -169,7 +169,7 @@ public class JuicePanel extends JPanel
 		if (!glass.isEmpty())
 		{
 			g2D.setPaint(getJuiceTexturePaint(glass.getJuice()));
-			g2D.fillRect(x - halfWidth, y - halfHeight , Glass.WIDTH, Glass.HEIGHT - y_offset);
+			g2D.fillRect(x - halfWidth, y - halfHeight + 15, Glass.WIDTH, Glass.HEIGHT - y_offset - 15);
 		}
 		
 		//GLASS
