@@ -3,9 +3,7 @@ package juicePoet.juice;
 import juicePoet.poem.Poem;
 
 public class Juicer
-{
-	public static final int max_poem_length = 1000;
-	
+{	
 	private Juice juice; //the juice currently held inside the juicer
 	
 	//BOTTOM STAND OF THE JUICER
@@ -30,16 +28,15 @@ public class Juicer
 		this.coordinates[0] = x;
 		this.coordinates[1] = y;
 	}
-	
+
 	/**
-	 * Juices the given poem. Generates a {@link Juice} object from the given {@link Poem}.
-	 * Then it keeps the {@link Juice} until it is extracted or a new poem is juiced.
+	 * Juices the given poem. Then it keeps the {@link Juice} until it is extracted or a new poem is juiced.
 	 * 
 	 * @param poem the poem to juice.
 	 */
 	public void juice(Poem poem)
 	{
-		this.juice = new Juice();
+		this.juice = JuiceAlgorithm.juice(poem);
 	}
 	
 	/**

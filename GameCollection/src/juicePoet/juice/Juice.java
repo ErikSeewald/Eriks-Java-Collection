@@ -14,13 +14,6 @@ public class Juice
 	Juice()
 	{
 		texture = new BufferedImage(TEXTURE_SIZE, TEXTURE_SIZE, BufferedImage.TYPE_INT_ARGB);
-		for (int x = 0; x < TEXTURE_SIZE; x++)
-		{
-			for (int y = 0; y < TEXTURE_SIZE; y++)
-			{
-				texture.setRGB(x, y, 0xFF00FF00);
-			}
-		}
 	}
 	
 	public BufferedImage getTexture()
@@ -30,7 +23,7 @@ public class Juice
 	
 	/**
 	 * Sets the pixel at the given coordinate to the given {@link Color}. Should only be used by
-	 * the {@link Juicer}.
+	 * the {@link JuiceAlgorithm}.
 	 * 
 	 * @param x the x coordinate of the pixel
 	 * @param y the y coordinate of the pixel
@@ -45,5 +38,22 @@ public class Juice
 		}
 		
 		texture.setRGB(x, y, color.getRGB());
+	}
+	
+	/**
+	 * Fills the entire texture with the given {@link Color}. Should only be used by
+	 * the {@link JuiceAlgorithm}.
+	 * 
+	 * @param color the {@link Color} to fill the texture with
+	 */
+	protected void fillTexture(Color color)
+	{
+		for (int x = 0; x < Juice.TEXTURE_SIZE; x++)
+		{
+			for (int y = 0; y < Juice.TEXTURE_SIZE; y++)
+			{
+				this.setTexturePixel(x, y, color);
+			}
+		}
 	}
 }
