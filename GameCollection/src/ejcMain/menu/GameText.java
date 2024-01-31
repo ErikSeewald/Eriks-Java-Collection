@@ -325,11 +325,11 @@ public enum GameText
 			new String[]
 			{
 					"JUICE POET",
-					"",
-					"",
-					"",
-					"",
-					"",
+					"Use the 'Actions' tab in the menu bar to write a poem. If you drag the poem ",
+					"onto the juicer with your mouse, the juicer will extract the juice from your poem",
+					"using an algorithm that takes the text string as input. You can then use the",
+					"menu bar to get a glass and fill it with the juice by dragging the glass onto ",
+					"the juicer. Use the DEL key to delete a glass.",
 			}
 	);
 

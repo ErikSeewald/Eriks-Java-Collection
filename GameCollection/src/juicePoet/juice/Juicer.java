@@ -4,7 +4,17 @@ import juicePoet.poem.Poem;
 
 public class Juicer
 {
+	public static final int max_poem_length = 1000;
+	
 	private Juice juice; //the juice currently held inside the juicer
+	
+	//BOTTOM STAND OF THE JUICER
+	public static final int BOTTOM_WIDTH = 150;
+	public static final int BOTTOM_HEIGHT = 75;
+	
+	//GLASS THAT HOLDS THE JUICE AFTER JUICING
+	public static final int GLASS_WIDTH = 120;
+	public static final int GLASS_HEIGHT = 150;
 	
 	//COORDINATES
 	private int[] coordinates = new int[2];

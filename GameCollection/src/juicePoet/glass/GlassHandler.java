@@ -5,6 +5,10 @@ import java.util.List;
 
 import juicePoet.juice.Juicer;
 
+/**
+ * Holds a list of all {@link Glass} objects and manages them.
+ *
+ */
 public class GlassHandler
 {
 	private List<Glass> glasses;
@@ -16,13 +20,18 @@ public class GlassHandler
 		this.juicer = juicer;
 	}
 	
+	public void deleteGlass(Glass glass)
+	{
+		glasses.remove(glass);
+	}
+	
+	/**
+	 * Creates a new glass next to the {@link Juicer} and adds it to the {@link GlassHandler}'s list.
+	 */
 	public void addGlass() 
 	{
-		int[] juicerCoords = juicer.getCoordinates();
-		int juicerX = juicerCoords[0];
-		int juicerY = juicerCoords[1];
-		
-		glasses.add(new Glass(juicerX + 300, juicerY));
+		int[] juicerCoords = juicer.getCoordinates();	
+		glasses.add(new Glass(juicerCoords[0] - 100, juicerCoords[1]));
 	}
 	
 	public List<Glass> getGlasses() {return glasses;}
