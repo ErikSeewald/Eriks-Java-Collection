@@ -19,6 +19,9 @@ import juicePoet.juice.Juicer;
 import juicePoet.poem.Poem;
 import juicePoet.poem.PoemHandler;
 
+/**
+ * Class extending {@link JPanel}. Handles all visualization of {@link EJC_JuicePoet}.
+ */
 public class JuicePanel extends JPanel
 {
 	private static final long serialVersionUID = -3619021760663049272L;
@@ -34,27 +37,57 @@ public class JuicePanel extends JPanel
 	JuicePanel()
 	{
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-		this.juicer = new Juicer(510, 400);
+		this.juicer = new Juicer((int) (PANEL_WIDTH * 0.43), (int) (PANEL_HEIGHT * 0.55));
 		
 		this.poemHandler = new PoemHandler();
 		this.glassHandler = new GlassHandler(juicer);
-		this.mouseHandler = new MouseHandler(poemHandler, glassHandler, juicer, this);
 		
+		this.mouseHandler = new MouseHandler(poemHandler, glassHandler, juicer, this);
 		this.addMouseListener(mouseHandler.new ClickListener());
 		this.addMouseMotionListener(mouseHandler.new DragListener());
 		this.addMouseListener(mouseHandler.new ReleaseListener());
 	}
 	
+	/**
+	 * Class the {@link GlassHandler}'s addGlass method and handles repainting.
+	 */
 	public void addGlass()
 	{
 		glassHandler.addGlass();
 		repaint();
 	}
 	
+	/**
+	 * Class the {@link GlassHandler}'s deleteGlass method with the {@link MouseHandler}'s 
+	 * last selected object and handles repainting.
+	 */
+	public void deleteGlass()
+	{
+		if (mouseHandler.getLastSelectedObject() instanceof Glass glass)
+		{
+			glassHandler.deleteGlass(glass);
+			repaint();
+		}
+	}
+	
+	/**
+	 * Class the {@link PoemHandler}'s addPoem method and handles repainting.
+	 */
 	public void addPoem()
 	{
 		poemHandler.addPoem();
 		repaint();
+	}
+	
+	/**
+	 * Helper method for {@link EJC_JuicePoet} {@link EJC_Game} stop method.
+	 */
+	public void stop()
+	{
+		juicer = null;
+		poemHandler = null;
+		glassHandler = null;
+		mouseHandler = null;
 	}
 	
 	//---------------------------------------PAINT---------------------------------------
@@ -93,33 +126,72 @@ public class JuicePanel extends JPanel
 		}
 	}
 	
+	/**
+	 * Draws the given {@link Poem} to the given {@link Graphics2D} context.
+	 * 
+	 * @param g2D the {@link Graphics2D} context to draw to
+	 * @param poem the {@link Poem} to draw
+	 */
 	public static void drawPoem(Graphics2D g2D, Poem poem)
 	{
+		int halfWidth = Poem.WIDTH/2;
+		int halfHeight = Poem.HEIGHT/2;
+		
+		int x = poem.getX();
+		int y = poem.getY();
+		
 		g2D.setPaint(poem_col);
-		g2D.fillRect(poem.x-60, poem.y-40, 120, 80);
+		g2D.fillRect(x - halfWidth, y - halfHeight, Poem.WIDTH, Poem.HEIGHT);
 		
 		g2D.setPaint(poem_col_darker);
 		g2D.fillPolygon(
-				new int[] {poem.x-60, poem.x, poem.x+60}, new int[] {poem.y-40, poem.y - 5, poem.y- 40}, 3);
+				new int[] {x - halfWidth, x, x + halfWidth}, 
+				new int[] {y - halfHeight, y - 5, y - halfHeight}, 
+				3);
 	}
 	
+	/**
+	 * Draws the given {@link Glass} to the given {@link Graphics2D} context.
+	 * 
+	 * @param g2D the {@link Graphics2D} context to draw to
+	 * @param glass the {@link Glass} to draw
+	 */
 	public static void drawGlass(Graphics2D g2D, Glass glass)
-	{		
+	{	
+		final int halfWidth = Glass.WIDTH/2;
+		final int halfHeight = Glass.HEIGHT/2;
+		final int y_offset = 20;
+		
+		int x = glass.getX();
+		int y = glass.getY();
+		
 		//JUICE
 		if (!glass.isEmpty())
 		{
 			g2D.setPaint(getJuiceTexturePaint(glass.getJuice()));
-			g2D.fillRect(glass.x - 50, glass.y - 100, 100, 150);
+			g2D.fillRect(x - halfWidth, y - halfHeight , Glass.WIDTH, Glass.HEIGHT - y_offset);
 		}
 		
 		//GLASS
 		g2D.setPaint(glass_col);
 		g2D.setStroke(juicer_stroke);
-		g2D.drawLine(glass.x - 50, glass.y + 50, glass.x - 50, glass.y - 100);
-		g2D.drawLine(glass.x - 50, glass.y + 50, glass.x + 50, glass.y + 50);
-		g2D.drawLine(glass.x + 50, glass.y + 50, glass.x + 50, glass.y - 100);
+		
+		g2D.drawLine(x - halfWidth, y + halfHeight - y_offset, 
+				x - halfWidth, y - halfHeight); // Bottom left to top left
+		
+		g2D.drawLine(x - halfWidth, y + halfHeight - y_offset, 
+				x + halfWidth, y + halfHeight - y_offset); // Bottom left to bottom right
+		
+		g2D.drawLine(x + halfWidth, y + halfHeight - y_offset, 
+				x + halfWidth, y - halfHeight); // Bottom right to top right
 	}
 	
+	/**
+	 * Draws the given {@link Juicer} to the given {@link Graphics2D} context.
+	 * 
+	 * @param g2D the {@link Graphics2D} context to draw to
+	 * @param juicer the {@link Juicer} to draw
+	 */
 	public static void drawJuicer(Graphics2D g2D, Juicer juicer)
 	{
 		int[] coords = juicer.getCoordinates();
@@ -128,33 +200,38 @@ public class JuicePanel extends JPanel
 		
 		//BOTTOM
 		g2D.setPaint(juicer_col);
-		g2D.fillRect(x, y, 150, 75);
+		g2D.fillRect(x, y, Juicer.BOTTOM_WIDTH, Juicer.BOTTOM_HEIGHT);
 		
 		//TEXT
 		g2D.setPaint(text_col);
 		g2D.setFont(textFont);
 		
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2D.drawString("Juicer", x + 30, y + 50);
+		g2D.drawString("Juicer", x + (int) (Juicer.BOTTOM_WIDTH * 0.22), y + (int) (Juicer.BOTTOM_HEIGHT * 0.66));
 		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		
 		//JUICE
+		int glassOffset = 15;
+		int juiceOffset = 20;
 		if (!juicer.isEmpty())
 		{
 			Juice juice = juicer.getJuice();
 			g2D.setPaint(getJuiceTexturePaint(juice));
-			g2D.fillRect(x+15, y-130, 120, 130);
+			g2D.fillRect(x + glassOffset, y - Juicer.GLASS_HEIGHT + juiceOffset, 
+					Juicer.GLASS_WIDTH, Juicer.GLASS_HEIGHT - juiceOffset);
 		}
 		
 		//GLASS
 		g2D.setPaint(juicer_col);
 		g2D.setStroke(juicer_stroke);
-		g2D.drawLine(x+15, y, x+15, y-150);
-		g2D.drawLine(x+135, y, x+135, y-150);
+		g2D.drawLine(x + glassOffset, y, x + glassOffset, y - Juicer.GLASS_HEIGHT); // Bottom left to top left
+		g2D.drawLine(x + Juicer.BOTTOM_WIDTH - glassOffset, y, 
+				x + Juicer.BOTTOM_WIDTH - glassOffset, y - Juicer.GLASS_HEIGHT); // Bottom right to top right
 		
 		//SLICER
-		g2D.drawLine(x+75, y, x+75, y-30);
-		g2D.drawLine(x+50, y-25, x+100, y-25);
+		int halfBottomWidth = Juicer.BOTTOM_WIDTH / 2;
+		g2D.drawLine(x + halfBottomWidth, y, x + halfBottomWidth, y - 30);
+		g2D.drawLine(x + 50, y - 25, x + 100, y - 25);
 	}
 	
 	/**
@@ -168,6 +245,6 @@ public class JuicePanel extends JPanel
 		if (juice == null) 
 		{throw new IllegalArgumentException("Cannot get TexturePaint from null juice");}
 		
-		return new TexturePaint(juice.getTexture(), new Rectangle(0, 0, Juice.texture_size, Juice.texture_size));
+		return new TexturePaint(juice.getTexture(), new Rectangle(0, 0, Juice.TEXTURE_SIZE, Juice.TEXTURE_SIZE));
 	}
 }

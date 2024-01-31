@@ -5,6 +5,11 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import juicePoet.juice.Juicer;
+
+/**
+ * Class holding a list of all {@link Poem}s. Manages their creation and removal.
+ */
 public class PoemHandler
 {
 	private List<Poem> poems;
@@ -14,14 +19,19 @@ public class PoemHandler
 		poems = new ArrayList<>();
 	}
 	
+	/**
+	 * Handles input dialog and creation of a new {@link Poem}. 
+	 * Adds the {@link Poem} to the {@link PoemHandler}'s list.
+	 * If the user submits an empty poem, the method simply returns without creating a {@link Poem} object.
+	 */
 	public void addPoem()
 	{
 		String poemText = JOptionPane.showInputDialog("Enter your poem");
 		if (poemText == null || poemText.isEmpty()) {return;}
 		
-		if (poemText.length() > 1000) 
+		if (poemText.length() > Juicer.max_poem_length) 
 		{
-			poemText = poemText.substring(0, 1000);
+			poemText = poemText.substring(0, Juicer.max_poem_length);
 		}
 		
 		poems.add(new Poem(poemText, 100, 100));
