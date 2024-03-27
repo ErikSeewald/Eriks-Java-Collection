@@ -49,7 +49,7 @@ public class JuicePanel extends JPanel
 	}
 	
 	/**
-	 * Class the {@link GlassHandler}'s addGlass method and handles repainting.
+	 * Calls the {@link GlassHandler}'s addGlass method and handles repainting.
 	 */
 	public void addGlass()
 	{
@@ -58,7 +58,7 @@ public class JuicePanel extends JPanel
 	}
 	
 	/**
-	 * Class the {@link GlassHandler}'s deleteGlass method with the {@link MouseHandler}'s 
+	 * Calls the {@link GlassHandler}'s deleteGlass method with the {@link MouseHandler}'s 
 	 * last selected object and handles repainting.
 	 */
 	public void deleteGlass()
@@ -71,7 +71,7 @@ public class JuicePanel extends JPanel
 	}
 	
 	/**
-	 * Class the {@link PoemHandler}'s addPoem method and handles repainting.
+	 * Calls the {@link PoemHandler}'s addPoem method and handles repainting.
 	 */
 	public void addPoem()
 	{
