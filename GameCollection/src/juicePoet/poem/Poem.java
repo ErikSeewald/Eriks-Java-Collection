@@ -16,7 +16,7 @@ public class Poem implements Draggable
 	private int x;
 	private int y;
 	
-	protected Poem(String text, int x, int y)
+	Poem(String text, int x, int y)
 	{
 		this.text = text;
 		this.x = x;

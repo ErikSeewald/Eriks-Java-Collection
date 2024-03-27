@@ -1,6 +1,10 @@
 package automata;
 
+import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Handles the simulation of the automata cells.
@@ -8,6 +12,7 @@ import java.util.Random;
 public class CellHandler 
 {
 	private float[][] cells; //cell state between 0 and 1
+	private float[][] newCells; // Next cell states, for concurrent threads to write to
 	private int num_cells_x = 375;
 	private int num_cells_y = 225;
 	boolean pixelsSmaller = true;
@@ -15,8 +20,6 @@ public class CellHandler
 	private static final int numSensors = 8;
 	private static final int numPotentialStates = numSensors / 2;
 	private static final float dt = 0.048f;
-	private float sensorData[] = new float[numSensors];
-	private float potentialStates[] = new float[numPotentialStates];
 	
 	/**
 	 * Representation of a ring of influence around a conceptual cell.
@@ -45,6 +48,7 @@ public class CellHandler
 	CellHandler()
 	{
 		cells = new float[num_cells_x][num_cells_y];
+		newCells = new float[num_cells_x][num_cells_y];
 		random = new Random();
 		generateRules();
 		generateCells();
@@ -102,7 +106,7 @@ public class CellHandler
 	 * The values are generated from a function f(x): [0.0, 1.0] -> x^4 
 	 */
 	private void generateCells()
-	{
+	{		
 		for (int x = 0; x < num_cells_x; x++)
 		{
 			for (int y = 0; y < num_cells_y; y++)
@@ -179,13 +183,34 @@ public class CellHandler
 	 * Updates the simulation by one step.
 	 */
 	public void update()
-	{
+	{	
+		// RUN SEPARATE UPDATE THREADS FOR EACH COLUMN OF THE CELL ARRAY (6x performance increase)
+		ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+		
+		for (int x = 0; x < num_cells_x; x++) 
+		{
+		    final int finalX = x; // Variables in lambdas need to be final
+		    executor.submit(() -> 
+		    {
+		    	// UPDATE THE COLUMN
+		        for (int y = 0; y < num_cells_y; y++) 
+		        {
+		            updateCell(finalX, y);
+		        }
+		    });
+		}
+
+		// TERMINATE THREADS
+		executor.shutdown();
+		try 
+		{
+		    executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+		} catch (InterruptedException e) {e.printStackTrace();}
+		
+		// COPY THE NEW STATES TO THE MAIN CELL STATE ARRAY
 		for (int x = 0; x < num_cells_x; x++)
 		{
-			for (int y = 0; y < num_cells_y; y++)
-			{
-				updateCell(x,y);
-			}
+			cells[x] = Arrays.copyOf(newCells[x], num_cells_y);
 		}
 	}
 	
@@ -198,6 +223,9 @@ public class CellHandler
 	 */
 	private void updateCell(int x, int y)
 	{
+		float[] sensorData = new float[numSensors];
+		float[] potentialStates = new float[numPotentialStates];
+		
 		// CALCULATE SENSOR DATA FOR EACH RING
 		for (int i = 0; i < numSensors; i++) 
 		{
@@ -244,9 +272,9 @@ public class CellHandler
 			}
 		}
 
-		cells[x][y] = potentialStates[selectedStateIndex];
-		if (cells[x][y] < 0) {cells[x][y] = 0;}
-		else if (cells[x][y] > 1) {cells[x][y] = 1;}
+		newCells[x][y] = potentialStates[selectedStateIndex];
+		if (newCells[x][y] < 0) {newCells[x][y] = 0;}
+		else if (newCells[x][y] > 1) {newCells[x][y] = 1;}
 	}
 	
 	/**
