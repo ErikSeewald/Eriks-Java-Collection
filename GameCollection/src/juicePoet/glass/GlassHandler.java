@@ -16,7 +16,7 @@ public class GlassHandler
 	
 	public GlassHandler(Juicer juicer)
 	{
-		glasses= new ArrayList<>();
+		glasses = new ArrayList<>();
 		this.juicer = juicer;
 	}
 	

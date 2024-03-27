@@ -54,7 +54,7 @@ public class JuiceAlgorithm
 		//STEP 3: PIXEL PATTERNS
 		// get a seed value based on the number of occurrences of certain character sets within the poem text
 		// and then use this seed to generate a pattern of pixels each time
-		
+
 		//PATTERN 1
 		int whitespaceCount = countOccurrencesOfChars(WHITESPACE_CHARS, poemText);
 		extractPatternWithSeed(juice, poemText, whitespaceCount);

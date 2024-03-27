@@ -295,11 +295,11 @@ public enum GameText
 			new String[]
 			{
 					"CELLULAR AUTOMATA",
+					"WARNING: POTENTIAL FLASHING LIGHTS",
 					"An implementation of Slackermanz's Cellular Automata concept.",
-					"The state of each pixel (cell) is initially randomized between 0 and 1. Every frame",
-					"the state of a cell is updated  based on the states of the cells around it. Keys:",
-					"R - Randomize game rules | S - Change cell size (potential flash warning)",
-					"Click anywhere on the screen to spawn a small patch of active cells.",
+					"Keys: R - Randomize game rules | S - Change cell size (And reset cell grid)",
+					"Click anywhere on the screen to spawn a small patch of active cells. Try randomizing",
+					"rules and repeatedly changing cell size if nothing interesting is happening.",
 			}
 	),
 	

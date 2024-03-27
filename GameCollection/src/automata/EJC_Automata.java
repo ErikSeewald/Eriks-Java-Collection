@@ -37,7 +37,7 @@ public class EJC_Automata extends JFrame implements EJC_Game
 		this.add(panel);
 		this.pack();
 		
-		timer = new Timer(25, new ActionListener()
+		timer = new Timer(30, new ActionListener()
 		{	@Override
 			public void actionPerformed(ActionEvent e) 
 			{
