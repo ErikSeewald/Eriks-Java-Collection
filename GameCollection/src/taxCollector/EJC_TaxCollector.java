@@ -8,9 +8,10 @@ import java.util.HashSet;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.Timer;
-
 import ejcMain.EJC_Game;
 import ejcMain.EJC_WindowEventHandler;
+import ejcMain.MusicManager;
+import ejcMain.MusicManager.EJC_Track;
 import ejcMain.util.EJC_GUI.EJC_MenuBar;
 import ejcMain.util.EJC_Util.Direction;
 import taxCollector.MapHandler.ResetActions;
@@ -88,6 +89,8 @@ public class EJC_TaxCollector extends JFrame implements EJC_Game, ActionListener
 		menuBar.addEJCMenu("Seed", new JMenuItem[] {seedItem});
 		menuBar.setTimersToControl(new Timer[] {timer});
 		menuBar.setKeyListToControl(pressedKeys);
+		
+		MusicManager.loopTrack(this, EJC_Track.UrgentTaxation);
 	}
 	
 	@Override

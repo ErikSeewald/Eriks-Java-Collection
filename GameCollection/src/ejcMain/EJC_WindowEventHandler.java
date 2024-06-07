@@ -7,7 +7,9 @@ public class EJC_WindowEventHandler extends WindowAdapter
 {	
 	public void windowClosing(WindowEvent evt)
 	{
-		EJC_GameHandler.closeGame((EJC_Game) evt.getComponent());
+		EJC_Game game = (EJC_Game) evt.getComponent();
+		EJC_GameHandler.closeGame(game);
+		MusicManager.closeAllTracks(game);
 		System.gc();
 	}
 }
