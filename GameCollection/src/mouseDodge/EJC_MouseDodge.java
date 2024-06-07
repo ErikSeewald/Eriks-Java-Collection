@@ -2,11 +2,8 @@ package mouseDodge;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JFrame;
-
 import ejcMain.EJC_Game;
 import ejcMain.EJC_WindowEventHandler;
-import ejcMain.MusicManager;
-import ejcMain.MusicManager.EJC_Track;
 
 public class EJC_MouseDodge extends JFrame implements EJC_Game
 {
@@ -45,7 +42,6 @@ public class EJC_MouseDodge extends JFrame implements EJC_Game
 		this.add(panel);
 		this.pack();
 		this.setVisible(true);
-		MusicManager.loopTrack(this, EJC_Track.UrgentTaxation);
 	}
 
 	@Override
