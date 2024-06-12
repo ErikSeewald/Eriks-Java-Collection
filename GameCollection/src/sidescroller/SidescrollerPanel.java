@@ -36,8 +36,10 @@ public class SidescrollerPanel extends JPanel
 		final static boolean restart = false;
 	}
 	
-	SidescrollerPanel()
+	EJC_Sidescroller ejcSidescroller;
+	SidescrollerPanel(EJC_Sidescroller ejcSidescroller)
 	{
+		this.ejcSidescroller = ejcSidescroller;
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		mapHandler = new MapHandler(elements);
 		player = new Player(this, mapHandler);
@@ -47,6 +49,7 @@ public class SidescrollerPanel extends JPanel
 	public void start(boolean newMap)
 	{
 		player.spawn();
+		ejcSidescroller.resetTrack();
 			
 		//MAP
 		mapHandler.reset();
