@@ -32,7 +32,7 @@ public class EJC_TaxCollector extends JFrame implements EJC_Game, ActionListener
 		this.setTitle("Tax Collector");
 		this.setResizable(false);
 		
-		panel = new TC_Panel();
+		panel = new TC_Panel(this);
 		this.add(panel);
 		this.pack();
 		pressedKeys = new HashSet<>();
@@ -90,6 +90,12 @@ public class EJC_TaxCollector extends JFrame implements EJC_Game, ActionListener
 		menuBar.setTimersToControl(new Timer[] {timer});
 		menuBar.setKeyListToControl(pressedKeys);
 		
+		MusicManager.loopTrack(this, EJC_Track.UrgentTaxation);
+	}
+	
+	public void resetTrack()
+	{
+		MusicManager.closeAllTracks(this);
 		MusicManager.loopTrack(this, EJC_Track.UrgentTaxation);
 	}
 	

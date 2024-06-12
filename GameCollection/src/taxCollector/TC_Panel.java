@@ -37,8 +37,11 @@ public class TC_Panel extends JPanel
 	private int tileSize; //controlled by MapHandler	
 	private int scrollX, scrollY;
 	
-	TC_Panel()
+	EJC_TaxCollector ejcTaxCollector;
+	
+	TC_Panel(EJC_TaxCollector ejcTaxCollector)
 	{
+		this.ejcTaxCollector = ejcTaxCollector;
 		this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
 		
 		mapHandler = new MapHandler(this);
@@ -83,6 +86,7 @@ public class TC_Panel extends JPanel
 	
 	public void restart(boolean newSeed)
 	{
+		this.ejcTaxCollector.resetTrack();
 		mapHandler.reset(newSeed);
 		this.taxCollector = mapHandler.getTaxCollector();
 		this.irs = mapHandler.getIRS();

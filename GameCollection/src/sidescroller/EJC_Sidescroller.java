@@ -11,6 +11,8 @@ import javax.swing.Timer;
 
 import ejcMain.EJC_Game;
 import ejcMain.EJC_WindowEventHandler;
+import ejcMain.MusicManager;
+import ejcMain.MusicManager.EJC_Track;
 import ejcMain.util.EJC_GUI.EJC_MenuBar;
 
 public class EJC_Sidescroller extends JFrame implements ActionListener, EJC_Game
@@ -27,7 +29,7 @@ public class EJC_Sidescroller extends JFrame implements ActionListener, EJC_Game
 	{
 		this.addWindowListener(eventHandler);
 		this.setTitle("Sidescroller");
-		panel = new SidescrollerPanel();
+		panel = new SidescrollerPanel(this);
 		this.add(panel);
 		this.pack();
 		this.setResizable(false);
@@ -71,6 +73,12 @@ public class EJC_Sidescroller extends JFrame implements ActionListener, EJC_Game
 		menuBar.setKeyListToControl(pressedKeys);
 
 		this.setVisible(true);
+	}
+	
+	public void resetTrack()
+	{
+		MusicManager.closeAllTracks(this);
+		MusicManager.loopTrack(this, EJC_Track.SquareDancing);
 	}
 	
 	@Override

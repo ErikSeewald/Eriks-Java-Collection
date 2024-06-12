@@ -13,7 +13,7 @@ public class MusicManager
 {
 	public static enum EJC_Track
 	{
-		UrgentTaxation
+		UrgentTaxation, SquareDancing
 	}
 
 	private static final HashMap<EJC_Game, ArrayList<Clip>> activeTracks = new HashMap<>();
@@ -70,6 +70,9 @@ public class MusicManager
 		{
 		case UrgentTaxation:
 			musicFilePath += "Urgent Taxation.wav";
+			break;
+		case SquareDancing:
+			musicFilePath += "Square Dancing.wav";
 			break;
 		default:
 			return null;

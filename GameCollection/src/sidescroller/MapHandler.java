@@ -25,7 +25,7 @@ public class MapHandler
 	
 	public void scroll()
 	{
-		if (elements.getLast().slot > 50) {scrollingSpeed = 2;}
+		if (elements.getLast().slot > 42) {scrollingSpeed = 2;}
 		if (elements.getLast().slot > 300) {scrollingSpeed = 3;}
 		
 		scrollAmount-=scrollingSpeed;

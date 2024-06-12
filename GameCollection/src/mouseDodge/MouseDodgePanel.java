@@ -38,8 +38,11 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 	private boolean finished = false;
 	boolean darkMode = true;
 	
-	MouseDodgePanel()
-	{				
+	EJC_MouseDodge ejcMouseDodge;
+	
+	MouseDodgePanel(EJC_MouseDodge ejcMouseDodge)
+	{			
+		this.ejcMouseDodge = ejcMouseDodge;
 		this.setPreferredSize(new Dimension(PANEL_WIDTH,PANEL_HEIGHT));
 		
 		player = new Player(PANEL_HEIGHT);
@@ -98,6 +101,8 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 	public void start()
 	{
 		if (paused) {return;}
+		
+		ejcMouseDodge.resetTrack();
 		
 		//PLAYER
 		player.score.reset();
