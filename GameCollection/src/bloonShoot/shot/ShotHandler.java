@@ -65,6 +65,14 @@ public class ShotHandler implements ActionListener
 			if (!LevelHandler.isHittable(gridEdges[i], level))
 			{continue;}
 			
+			// Check if the grid edge wrapped around the screen -> ignore in that case
+			int[] edgeOrigin = level[gridEdges[i]].getOrigin();
+			int[] projectileOrigin = projectile.getOrigin();
+			int bounds = panel.getCellSize() * 2;
+			if (Math.abs(edgeOrigin[0] - projectileOrigin[0]) > bounds || 
+					Math.abs(edgeOrigin[1] - projectileOrigin[1]) > bounds)
+			{continue;}
+			
 			level[gridEdges[i]].hit();
 			
 			if (level[gridEdges[i]].getHittableID() == HittableIDs.boomballoon)
@@ -93,7 +101,7 @@ public class ShotHandler implements ActionListener
 		edges[1] = edges[0] + 1;								  		//  |	  |
 		edges[2] = (row+1)* LevelHandler.CELL_COUNT_X+ column;			//  |_____|
 		edges[3] = edges[2] + 1;								 		//  2	  3
-														
+		
 		return edges;
 	}
 	
