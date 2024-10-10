@@ -2,12 +2,11 @@ package bloonShoot.level;
 
 public class Levels_Databox
 {
-	public static final int LEVEL_COUNT = 12;
 	public static final int CELL_COUNT = 1008;
 	
 	public static byte[] loadLevel(int levelNum)
 	{
-		if (levelNum < 1 || levelNum > LEVEL_COUNT) {return null;}
+		if (levelNum < 1 || levelNum > LEVELS.length) {return null;}
 		
 		short[] level = LEVELS[levelNum-1];		//compressed data
 		byte[] level_raw = new byte[CELL_COUNT]; //raw data
@@ -35,7 +34,7 @@ public class Levels_Databox
 	{
 		//LEVEL 1
 		{
-			-225, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25,
+			-225, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17, -25, 17,
 		},
 			
 		//LEVEL 2
