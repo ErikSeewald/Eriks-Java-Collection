@@ -3,6 +3,10 @@ package perfectParty.voters;
 import java.util.ArrayList;
 import java.util.Random;
 
+import perfectParty.election.ElectionResult;
+import perfectParty.party.Party;
+import perfectParty.party.PolicyCollection;
+
 /**
  * Class representing the entire voting population, made up of smaller {@link VoterBlock}s.
  */
@@ -11,7 +15,11 @@ public class Population
 	private int numPopulation;
 	private ArrayList<VoterBlock> voterBlocks;
 	
-	public Population(int startingPopulation)
+	/**
+	 * Creates a new {@link Population} object with the given starting population and generates {@link VoterBlock}s
+	 * using the given {@link Random} object.
+	 */
+	public Population(int startingPopulation, Random random)
 	{
 		if (startingPopulation <= 0)
 		{
@@ -20,11 +28,27 @@ public class Population
 		this.numPopulation = startingPopulation;
 		
 		voterBlocks = new ArrayList<>();
+		generateVoterBlocks(random);
 	}
 	
 	public int getNumber()
 	{
 		return this.numPopulation;
+	}
+	
+	/**
+	 * Votes on the given {@link Party} array and returns the {@link ElectionResult}.
+	 */
+	public ElectionResult vote(Party[] parties)
+	{				
+		ElectionResult result = new ElectionResult();
+		for (VoterBlock block : voterBlocks)
+		{
+			Party blockWinner = block.vote(parties);
+			result.addVotes(blockWinner, block.numVoters);
+		}
+		
+		return result;
 	}
 	
 	/**
@@ -71,6 +95,19 @@ public class Population
 			
 			voterBlocks.add(new VoterBlock(blockSize));
 			leftToAllocate -= blockSize;
+		}
+	}
+	
+	/**
+	 * Generates each {@link VoterBlock}s {@link Preference}s for each policy in the given {@link PolicyCollection}
+	 * @param policyCollection the {@link PolicyCollection} to generate for
+	 * @param random The {@link Random} object to be used for generation
+	 */
+	public void generatePreferences(PolicyCollection policyCollection, Random random)
+	{
+		for (VoterBlock voterBlock : voterBlocks)
+		{
+			voterBlock.generatePreferences(policyCollection, random);
 		}
 	}
 }
