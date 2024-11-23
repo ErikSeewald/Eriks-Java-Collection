@@ -16,6 +16,7 @@ import musicalLogicGates.EJC_MusicalLogicGates;
 import parallelUniverses.EJC_ParallelUniverses;
 import particles.EJC_Particles;
 import pathfindGame.EJC_Pathfind;
+import perfectParty.EJC_PerfectParty;
 import pixelCollision.EJC_PixelCollision;
 import randBattle.EJC_RandBattle;
 import randGrowth.EJC_RandGrowth;
@@ -60,6 +61,7 @@ public class EJC_GameHandler
 		
 		games.add(EJC_MusicalLogicGates.class);
 		games.add(EJC_JuicePoet.class);
+		games.add(EJC_PerfectParty.class);
 	}
 	
 	private static EJC_WindowEventHandler eventHandler = new EJC_WindowEventHandler();

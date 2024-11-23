@@ -331,6 +331,21 @@ public enum GameText
 					"menu bar to get a glass and fill it with the juice by dragging the glass onto ",
 					"the juicer. Use the DEL key to delete a glass.",
 			}
+	),
+	
+	PerfectParty
+	(
+			"  Perfect Party",
+			
+			new String[]
+			{
+					"PERFECT PARTY",
+					"",
+					"",
+					"",
+					"",
+					"",
+			}
 	);
 
 	String buttonText;
