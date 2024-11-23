@@ -1,8 +1,10 @@
 package perfectParty;
 
 import javax.swing.JFrame;
+
 import ejcMain.EJC_Game;
 import ejcMain.EJC_WindowEventHandler;
+import perfectParty.election.ElectionHandler;
 
 public class EJC_PerfectParty extends JFrame implements EJC_Game
 {
@@ -13,6 +15,10 @@ public class EJC_PerfectParty extends JFrame implements EJC_Game
 		this.addWindowListener(eventHandler);
 		this.setTitle("PerfectParty");
 		this.setResizable(false);
+		
+		//DEBUG
+		ElectionHandler handler = new ElectionHandler();
+		handler.runElection();
 		
 		this.pack();
 		this.setVisible(true);

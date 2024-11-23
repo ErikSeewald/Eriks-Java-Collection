@@ -12,5 +12,19 @@ package perfectParty.voters;
  */
 public enum Preference
 {
-	PlusPlus, Plus, Zero, Minus, MinusMinus
+	PlusPlus(2), Plus(1), Zero(0), Minus(-1), MinusMinus(-2);
+	
+	private int pointMultiplier;
+	Preference(int pointMultiplier)
+	{
+		this.pointMultiplier = pointMultiplier;
+	}
+	
+	/**
+	 * Weighs the given number of {@link PolicyPoints} by the {@link Preference}'s point multiplier.
+	 */
+	public int weighPoints(int numPoints)
+	{
+		return numPoints * this.pointMultiplier;
+	}
 }
