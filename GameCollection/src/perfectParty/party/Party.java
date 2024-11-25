@@ -20,6 +20,14 @@ public class Party
 	}
 	
 	/**
+	 * Returns the number of {@link PolicyPoints} that the party has not yet spent on any {@link Policy}
+	 */
+	public int getNumUnspentPoints()
+	{
+		return this.policyPoints.getAmount();
+	}
+	
+	/**
 	 * Returns the number of {@link PolicyPoints} that the party has spent on the given {@link Policy}.
 	 */
 	public int numPointsSpentOn(Policy policy) 

@@ -25,6 +25,20 @@ public class VoterBlock
 	}
 	
 	/**
+	 * Returns the {@link Preference} of this VoterBlock for the given {@link Policy}.
+	 * Defaults to {@link Prefernce.Zero} if the given {@link Policy} is untracked.
+	 */
+	public Preference getPreference(Policy policy)
+	{
+		Preference preference = preferences.get(policy);
+		if (preference == null)
+		{
+			preference = Preference.Zero;
+		}
+		return preference;
+	}
+	
+	/**
 	 * Generates {@link Preference}s for each policy in the given {@link PolicyCollection}
 	 * @param policyCollection the {@link PolicyCollection} to generate for
 	 * @param random The {@link Random} object to be used for generation

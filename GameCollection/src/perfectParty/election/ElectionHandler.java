@@ -44,9 +44,11 @@ public class ElectionHandler
 		policyCollection.generateCollection(2);
 		population.generatePreferences(policyCollection, random);
 		
-		playerParty.spendPoints(12, policyCollection.getPolicies().get(1));
+		//playerParty.spendPoints(12, policyCollection.getPolicies().get(1));
 		
-		cpuParty.spendPoints(12, policyCollection.getPolicies().get(1));
+		
+		// CURRENTLY BROKEN
+		cpuParty.distributePoints(policyCollection, population, random);
 		
 		ElectionResult result = population.vote(parties);
 		System.out.println("CPU: " + result.getVotes(cpuParty));
