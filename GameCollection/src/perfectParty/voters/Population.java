@@ -1,10 +1,12 @@
 package perfectParty.voters;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import perfectParty.election.ElectionResult;
 import perfectParty.party.Party;
+import perfectParty.party.Policy;
 import perfectParty.party.PolicyCollection;
 
 /**
@@ -36,6 +38,31 @@ public class Population
 		return this.numPopulation;
 	}
 	
+	/**
+	 * Returns the distribution of {@link Preference}s of voters for the given {@link Policy}.
+	 * The returned {@link HashMap} maps {@link Preference} to the number of voters with that {@link Preference}
+	 * in regards to the given {@link Policy}.
+	 */
+	public HashMap<Preference, Long> getPreferenceDistribution(Policy policy)
+	{
+		
+		HashMap<Preference, Long> distribution = new HashMap<>();
+		
+		for (VoterBlock block : voterBlocks)
+		{
+			Preference preference = block.getPreference(policy);
+			Long oldAmount = distribution.get(preference);
+			if (oldAmount == null)
+			{
+				oldAmount = 0L;
+			}
+			
+			distribution.put(preference, oldAmount + block.numVoters);
+		}
+		
+		return distribution;
+	}
+
 	/**
 	 * Votes on the given {@link Party} array and returns the {@link ElectionResult}.
 	 */
