@@ -1,8 +1,10 @@
 package ejcMain.util;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.util.HashSet;
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -10,6 +12,7 @@ import javax.swing.JMenuItem;
 import javax.swing.Timer;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 
 public class EJC_GUI 
 {
@@ -107,4 +110,37 @@ public class EJC_GUI
 		public void setKeyListToControl(HashSet<Integer> pressedKeys)
 		{this.pressedKeys = pressedKeys;}
 	}
+	
+	/**
+	 * Custom basic scroll bar UI in the EJC theme.
+	 */
+	public static class EJCScrollBar extends BasicScrollBarUI 
+	{
+        @Override
+        protected void configureScrollBarColors() 
+        {
+            this.thumbColor = new Color(80, 80, 100);
+            this.trackColor = new Color(15, 15, 20);
+        }
+
+        @Override
+        protected JButton createDecreaseButton(int orientation) 
+        {
+            return createInvisibleButton();
+        }
+
+        @Override
+        protected JButton createIncreaseButton(int orientation) 
+        {
+            return createInvisibleButton();
+        }
+
+        private JButton createInvisibleButton() {
+            JButton button = new JButton();
+            button.setPreferredSize(new Dimension(0, 0));
+            button.setMinimumSize(new Dimension(0, 0));
+            button.setMaximumSize(new Dimension(0, 0));
+            return button;
+        }
+    }
 }
