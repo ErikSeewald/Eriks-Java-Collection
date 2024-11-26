@@ -2,6 +2,7 @@ package perfectParty.election;
 
 import java.util.Random;
 
+import perfectParty.gui.FrameManager;
 import perfectParty.party.CpuParty;
 import perfectParty.party.Party;
 import perfectParty.party.PolicyCollection;
@@ -24,11 +25,13 @@ public class ElectionHandler
 	// POLICIES
 	private PolicyCollection policyCollection;
 	
-	// UTIL
+	// UTIL AND GUI
+	private FrameManager frameManager;
 	private final Random random;
 	
-	public ElectionHandler()
+	public ElectionHandler(FrameManager frameManager)
 	{
+		this.frameManager = frameManager;
 		this.random = new Random();
 		this.population = new Population(STARTING_POPULATION, random);
 		
@@ -41,8 +44,9 @@ public class ElectionHandler
 	
 	public void runElection()
 	{
-		policyCollection.generateCollection(2);
+		policyCollection.generateCollection(10);
 		population.generatePreferences(policyCollection, random);
+		frameManager.registerPolicyCollection(policyCollection, population);
 		
 		//playerParty.spendPoints(12, policyCollection.getPolicies().get(1));
 		
