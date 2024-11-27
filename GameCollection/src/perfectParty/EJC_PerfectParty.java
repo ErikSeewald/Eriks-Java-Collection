@@ -16,11 +16,10 @@ public class EJC_PerfectParty extends JFrame implements EJC_Game
 		this.setTitle("PerfectParty");
 		
 		FrameManager frameManager = new FrameManager(this);
-		frameManager.buildFrame();
-		
-		//DEBUG
 		ElectionHandler handler = new ElectionHandler(frameManager);
-		handler.runElection();
+		
+		frameManager.setElectionHandler(handler);
+		frameManager.buildFrame();
 	}
 
 	@Override

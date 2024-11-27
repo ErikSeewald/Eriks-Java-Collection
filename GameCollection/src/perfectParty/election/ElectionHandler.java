@@ -25,6 +25,9 @@ public class ElectionHandler
 	// POLICIES
 	private PolicyCollection policyCollection;
 	
+	// ELECTION
+	private int currentRound;
+	
 	// UTIL AND GUI
 	private FrameManager frameManager;
 	private final Random random;
@@ -40,20 +43,37 @@ public class ElectionHandler
 		this.parties = new Party[] {cpuParty, playerParty};
 		
 		this.policyCollection = new PolicyCollection();
+		this.currentRound = 20;
 	}
 	
-	public void runElection()
+	public PolicyCollection getPolicyCollection()
 	{
-		policyCollection.generateCollection(10);
+		return this.policyCollection;
+	}
+	
+	public Population getPopulation()
+	{
+		return this.population;
+	}
+	
+	public Party getCPUParty()
+	{
+		return this.cpuParty;
+	}
+	
+	public void startRound()
+	{
+		policyCollection.generateCollection(this.currentRound + 3);
 		population.generatePreferences(policyCollection, random);
-		frameManager.registerPolicyCollection(policyCollection, population);
 		
 		//playerParty.spendPoints(12, policyCollection.getPolicies().get(1));
 		
-		
 		// CURRENTLY BROKEN
 		cpuParty.distributePoints(policyCollection, population, random);
-		
+	}
+	
+	public void runElection()
+	{	
 		ElectionResult result = population.vote(parties);
 		System.out.println("CPU: " + result.getVotes(cpuParty));
 		System.out.println("Player: " + result.getVotes(playerParty));
