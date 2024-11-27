@@ -119,8 +119,8 @@ public class EJC_GUI
         @Override
         protected void configureScrollBarColors() 
         {
-            this.thumbColor = new Color(80, 80, 100);
-            this.trackColor = new Color(15, 15, 20);
+            this.thumbColor = new Color(220, 220, 240);
+            this.trackColor = new Color(50, 50, 70);
         }
 
         @Override

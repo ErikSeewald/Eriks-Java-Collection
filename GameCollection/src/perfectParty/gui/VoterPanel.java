@@ -23,11 +23,9 @@ public class VoterPanel extends JPanel
 	public VoterPanel()
 	{
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setBackground(ElectionStyle.BACKGROUND_COL);
 
-		JPanel headerPanel = new JPanel();
-		headerPanel.setBackground(ElectionStyle.BACKGROUND_COL);
-		headerPanel.setPreferredSize(new Dimension(0, 100));
-		headerPanel.add(new JLabel("Voters"));
+		JPanel headerPanel = ElectionStyle.buildHeaderPanel(this, "Voters");
 		this.add(headerPanel);
 	}
 
@@ -47,7 +45,7 @@ public class VoterPanel extends JPanel
 			}
 			
 			JPanel contentPanel = new JPanel();
-			contentPanel.setBackground(i % 2 == 0 ? Color.WHITE : Color.CYAN);
+			contentPanel.setBackground(i % 2 == 0 ? ElectionStyle.HEADER_COL : ElectionStyle.HEADER_COL_DARKER);
 			contentPanel.setPreferredSize(new Dimension(0, 50));
 			contentPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 			contentPanel.add(new JLabel(policies.get(i).name + ": " + distributionStr));
