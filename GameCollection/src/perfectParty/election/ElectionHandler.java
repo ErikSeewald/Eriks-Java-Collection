@@ -43,7 +43,7 @@ public class ElectionHandler
 		this.parties = new Party[] {cpuParty, playerParty};
 		
 		this.policyCollection = new PolicyCollection();
-		this.currentRound = 20;
+		this.currentRound = 0;
 	}
 	
 	public PolicyCollection getPolicyCollection()
