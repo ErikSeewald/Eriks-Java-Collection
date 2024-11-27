@@ -37,11 +37,20 @@ public class VoterPanel extends JPanel
 		for (int i = 0; i < policies.size(); i++)
 		{
 			HashMap<Preference, Long> preferences = population.getPreferenceDistribution(policies.get(i));
+			
+			long popNum = population.getNumber();
+			
+			String distributionStr = "| ";
+			for (Preference preference : Preference.values())
+			{
+				distributionStr += preference.symbol + " " + preferences.get(preference) * 100 / popNum + "% | ";
+			}
+			
 			JPanel contentPanel = new JPanel();
 			contentPanel.setBackground(i % 2 == 0 ? Color.WHITE : Color.CYAN);
 			contentPanel.setPreferredSize(new Dimension(0, 50));
 			contentPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-			contentPanel.add(new JLabel(policies.get(i).name + ": " + preferences));
+			contentPanel.add(new JLabel(policies.get(i).name + ": " + distributionStr));
 			this.add(contentPanel);
 		}
 	}

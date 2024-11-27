@@ -12,12 +12,14 @@ package perfectParty.voters;
  */
 public enum Preference
 {
-	PlusPlus(2), Plus(1), Zero(0), Minus(-1), MinusMinus(-2);
+	PlusPlus(2, "++"), Plus(1, "+"), Zero(0, "0"), Minus(-1, "-"), MinusMinus(-2, "--");
 	
 	private int pointMultiplier;
-	Preference(int pointMultiplier)
+	public final String symbol;
+	Preference(int pointMultiplier, String symbol)
 	{
 		this.pointMultiplier = pointMultiplier;
+		this.symbol = symbol;
 	}
 	
 	/**
