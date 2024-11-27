@@ -8,6 +8,7 @@ import javax.swing.event.ChangeListener;
 
 import ejcMain.util.EJC_GUI;
 import perfectParty.EJC_PerfectParty;
+import perfectParty.election.ElectionHandler;
 import perfectParty.party.PolicyCollection;
 import perfectParty.voters.Population;
 
@@ -16,56 +17,81 @@ public class FrameManager
 	private EJC_PerfectParty frame;
 	private PartyPanel partyPanel;
 	private VoterPanel voterPanel;
-	
-	private PolicyCollection policyCollection;
-	
+
+	private ElectionHandler electionHandler;
+
 	public FrameManager(EJC_PerfectParty frame)
 	{
 		this.frame = frame;
 	}
-	
+
+	/**
+	 * Builds the PerfectParty frame made up of the different sub panels with
+	 * synchronized scroll bars. Uses the {@link EJC_PerfectParty} instance given at
+	 * instantiation as the base frame.
+	 */
 	public void buildFrame()
 	{
 		frame.setResizable(false);
 		frame.setBounds(0, 0, 1200, 400);
-		
-        this.partyPanel = new PartyPanel();
-        this.voterPanel = new VoterPanel();
 
+		this.partyPanel = new PartyPanel();
+		this.voterPanel = new VoterPanel();
 
-        // WARP PANELS IN SCROLL PANES
-        JScrollPane scrollPaneParty = new JScrollPane(partyPanel);
-        JScrollPane scrollPaneVoters = new JScrollPane(voterPanel);
-        
-        // HIDE LEFT SCROLLBAR AND STYLE RIGHT SCROLLBAR
-        scrollPaneParty.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-        scrollPaneVoters.getVerticalScrollBar().setUI(new EJC_GUI.EJCScrollBar());
+		// WARP PANELS IN SCROLL PANES
+		JScrollPane scrollPaneParty = new JScrollPane(partyPanel);
+		JScrollPane scrollPaneVoters = new JScrollPane(voterPanel);
 
-        // SYNCHRONIZE SCROLLBARS
-        BoundedRangeModel partyModel = scrollPaneParty.getVerticalScrollBar().getModel();
-        BoundedRangeModel voterModel = scrollPaneVoters.getVerticalScrollBar().getModel();
+		// HIDE LEFT SCROLLBAR AND STYLE RIGHT SCROLLBAR
+		scrollPaneParty.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		scrollPaneVoters.getVerticalScrollBar().setUI(new EJC_GUI.EJCScrollBar());
 
-        partyModel.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) 
-            {voterModel.setValue(partyModel.getValue());}
-        });
+		// SYNCHRONIZE SCROLLBARS
+		BoundedRangeModel partyModel = scrollPaneParty.getVerticalScrollBar().getModel();
+		BoundedRangeModel voterModel = scrollPaneVoters.getVerticalScrollBar().getModel();
 
-        voterModel.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) 
-            {partyModel.setValue(voterModel.getValue());}
-        });
+		partyModel.addChangeListener(new ChangeListener()
+		{
+			public void stateChanged(ChangeEvent e)
+			{
+				voterModel.setValue(partyModel.getValue());
+			}
+		});
 
-        // DIVIDE FRAME USING SPLITPANE
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPaneParty, scrollPaneVoters);
-        splitPane.setDividerLocation(frame.getWidth() / 2);
-        
-        frame.add(splitPane);
+		voterModel.addChangeListener(new ChangeListener()
+		{
+			public void stateChanged(ChangeEvent e)
+			{
+				partyModel.setValue(voterModel.getValue());
+			}
+		});
+
+		// DIVIDE FRAME USING SPLITPANE
+		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPaneParty, scrollPaneVoters);
+		splitPane.setDividerLocation(frame.getWidth() / 2);
+
+		frame.add(splitPane);
 		frame.setVisible(true);
+
+		this.startRound();
+		
 	}
 	
-	public void registerPolicyCollection(PolicyCollection policyCollection, Population population)
+	private void startRound()
 	{
-		this.policyCollection = policyCollection;
-		this.voterPanel.addPolicyCollection(policyCollection, population);
+		electionHandler.startRound();
+		PolicyCollection policyCollection = electionHandler.getPolicyCollection();
+		Population population = electionHandler.getPopulation();
+		
+		voterPanel.displayPreferences(policyCollection, population);
+		partyPanel.displayPolicyPoints(policyCollection, electionHandler.getCPUParty());
+	}
+
+	/**
+	 * Sets the {@link ElectionHandler} instance that is to be linked to the GUI.
+	 */
+	public void setElectionHandler(ElectionHandler electionHandler)
+	{
+		this.electionHandler = electionHandler;
 	}
 }

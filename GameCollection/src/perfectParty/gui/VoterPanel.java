@@ -10,6 +10,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import ejcMain.util.EJC_GUI;
 import perfectParty.party.Policy;
 import perfectParty.party.PolicyCollection;
 import perfectParty.voters.Population;
@@ -23,24 +24,25 @@ public class VoterPanel extends JPanel
 	{
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        JPanel headerPanel = new JPanel();
-        headerPanel.setBackground(Color.LIGHT_GRAY);
-        headerPanel.setPreferredSize(new Dimension(0, 100));
-        headerPanel.add(new JLabel("Voters"));
-        this.add(headerPanel);
+		JPanel headerPanel = new JPanel();
+		headerPanel.setBackground(ElectionStyle.BACKGROUND_COL);
+		headerPanel.setPreferredSize(new Dimension(0, 100));
+		headerPanel.add(new JLabel("Voters"));
+		this.add(headerPanel);
 	}
-	
-	public void addPolicyCollection(PolicyCollection policyCollection, Population population)
+
+	public void displayPreferences(PolicyCollection policyCollection, Population population)
 	{
 		ArrayList<Policy> policies = policyCollection.getPolicies();
-        for (int i = 0; i < policies.size(); i++) {
-    			HashMap<Preference, Long> preferences = population.getPreferenceDistribution(policies.get(i));
-            JPanel contentPanel = new JPanel();
-            contentPanel.setBackground(i % 2 == 0 ? Color.WHITE : Color.CYAN);
-            contentPanel.setPreferredSize(new Dimension(0, 50));
-            contentPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-            contentPanel.add(new JLabel(policies.get(i).name + ": " + preferences));
-            this.add(contentPanel);
-        }
+		for (int i = 0; i < policies.size(); i++)
+		{
+			HashMap<Preference, Long> preferences = population.getPreferenceDistribution(policies.get(i));
+			JPanel contentPanel = new JPanel();
+			contentPanel.setBackground(i % 2 == 0 ? Color.WHITE : Color.CYAN);
+			contentPanel.setPreferredSize(new Dimension(0, 50));
+			contentPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+			contentPanel.add(new JLabel(policies.get(i).name + ": " + preferences));
+			this.add(contentPanel);
+		}
 	}
 }

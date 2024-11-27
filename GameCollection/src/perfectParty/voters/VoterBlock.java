@@ -39,12 +39,14 @@ public class VoterBlock
 	}
 	
 	/**
-	 * Generates {@link Preference}s for each policy in the given {@link PolicyCollection}
+	 * Generates {@link Preference}s for each policy in the given {@link PolicyCollection} and
+	 * clears the old set of {@link Preference}s.
 	 * @param policyCollection the {@link PolicyCollection} to generate for
 	 * @param random The {@link Random} object to be used for generation
 	 */
 	public void generatePreferences(PolicyCollection policyCollection, Random random)
 	{
+		this.preferences.clear();
 		for (Policy policy: policyCollection.getPolicies())
 		{
 			Preference[] options = Preference.values();
