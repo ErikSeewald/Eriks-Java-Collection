@@ -1,19 +1,21 @@
 package perfectParty.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import perfectParty.party.Party;
 import perfectParty.party.Policy;
 import perfectParty.party.PolicyCollection;
-import perfectParty.voters.Preference;
 
 public class PartyPanel extends JPanel
 {
@@ -22,24 +24,24 @@ public class PartyPanel extends JPanel
 	public PartyPanel()
 	{
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setBackground(ElectionStyle.BACKGROUND_COL);
 
-		JPanel headerPanel = new JPanel();
-		headerPanel.setBackground(ElectionStyle.BACKGROUND_COL);
-		headerPanel.setPreferredSize(new Dimension(0, 100));
-		headerPanel.add(new JLabel("Party"));
+		JPanel headerPanel = ElectionStyle.buildHeaderPanel(this, "Player Party");
 		this.add(headerPanel);
 	}
-	
+
 	public void displayPolicyPoints(PolicyCollection policyCollection, Party party)
 	{
 		ArrayList<Policy> policies = policyCollection.getPolicies();
+
 		for (int i = 0; i < policies.size(); i++)
 		{
 			JPanel contentPanel = new JPanel();
-			contentPanel.setBackground(i % 2 == 0 ? Color.WHITE : Color.CYAN);
+			contentPanel.setBackground(i % 2 == 0 ? ElectionStyle.HEADER_COL : ElectionStyle.HEADER_COL_DARKER);
 			contentPanel.setPreferredSize(new Dimension(0, 50));
 			contentPanel.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 			contentPanel.add(new JLabel(policies.get(i).name + ": " + party.numPointsSpentOn(policies.get(i))));
+
 			this.add(contentPanel);
 		}
 	}

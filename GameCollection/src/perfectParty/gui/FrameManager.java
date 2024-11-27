@@ -1,12 +1,18 @@
 package perfectParty.gui;
 
+import java.awt.Color;
+
 import javax.swing.BoundedRangeModel;
+import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import ejcMain.util.EJC_GUI;
+import ejcMain.util.EJC_GUI.EJC_MenuBar;
 import perfectParty.EJC_PerfectParty;
 import perfectParty.election.ElectionHandler;
 import perfectParty.party.PolicyCollection;
@@ -68,10 +74,16 @@ public class FrameManager
 
 		// DIVIDE FRAME USING SPLITPANE
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPaneParty, scrollPaneVoters);
-		splitPane.setDividerLocation(frame.getWidth() / 2);
+		splitPane.setDividerLocation((int) (frame.getWidth() * 0.35));
+		splitPane.setUI(new BasicSplitPaneUI());
 
 		frame.add(splitPane);
 		frame.setVisible(true);
+		
+		// MENUBAR
+		EJC_MenuBar menuBar = new EJC_MenuBar(frame);
+		menuBar.addEJCMenu("Menu", new JMenuItem[] {});
+		menuBar.addEJCMenu("Info", new JMenuItem[] {});
 
 		this.startRound();
 		
