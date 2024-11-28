@@ -1,5 +1,10 @@
 package perfectParty.voters;
 
+import java.awt.Color;
+
+import perfectParty.party.Policy;
+import perfectParty.party.PolicyPoints;
+
 /**
  * Enum representing a preference towards a {@link Policy}.
  * <p>
@@ -12,14 +17,20 @@ package perfectParty.voters;
  */
 public enum Preference
 {
-	PlusPlus(2, "++"), Plus(1, "+"), Zero(0, "0"), Minus(-1, "-"), MinusMinus(-2, "--");
+	PlusPlus(2, "++", new Color(100, 180, 120)), 
+	Plus(1, "+", new Color(150, 200, 160)), 
+	Zero(0, "=", new Color(210, 210, 220)), 
+	Minus(-1, "-", new Color(200, 130, 150)), 
+	MinusMinus(-2, "--", new Color(200, 80, 100));
 	
-	private int pointMultiplier;
+	public int pointMultiplier;
 	public final String symbol;
-	Preference(int pointMultiplier, String symbol)
+	public final Color color;
+	Preference(int pointMultiplier, String symbol, Color color)
 	{
 		this.pointMultiplier = pointMultiplier;
 		this.symbol = symbol;
+		this.color = color;
 	}
 	
 	/**
@@ -28,5 +39,21 @@ public enum Preference
 	public int weighPoints(int numPoints)
 	{
 		return numPoints * this.pointMultiplier;
+	}
+	
+	/**
+	 * Returns whether the {@link Preference} is positive (Plus or PlusPlus)
+	 */
+	public boolean isPositive()
+	{
+		return this.pointMultiplier > 0;
+	}
+	
+	/**
+	 * Returns whether the {@link Preference} is negative (Minus or MinusMinus)
+	 */
+	public boolean isNegative()
+	{
+		return this.pointMultiplier < 0;
 	}
 }

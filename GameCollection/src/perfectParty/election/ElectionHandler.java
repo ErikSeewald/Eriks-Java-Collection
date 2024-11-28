@@ -17,7 +17,8 @@ public class ElectionHandler
 	public static final double POPULATION_GROWTH_FACTOR = 1.5;
 	
 	// PARTIES
-	public static final int INIT_POLICY_POINTS = 12;
+	public static final int INIT_POINTS_PLAYER = 10;
+	public static final int INIT_POINTS_CPU = 10;
 	private CpuParty cpuParty;
 	private Party playerParty;
 	private Party[] parties;
@@ -38,14 +39,30 @@ public class ElectionHandler
 		this.random = new Random();
 		this.population = new Population(STARTING_POPULATION, random);
 		
-		this.cpuParty = new CpuParty("CPU", PolicyPoints.getInitialPoints(INIT_POLICY_POINTS));
-		this.playerParty = new Party("Player", PolicyPoints.getInitialPoints(INIT_POLICY_POINTS));
+		this.cpuParty = new CpuParty("CPU", PolicyPoints.getInitialPoints(INIT_POINTS_CPU));
+		this.playerParty = new Party("Player Party", PolicyPoints.getInitialPoints(INIT_POINTS_PLAYER));
 		this.parties = new Party[] {cpuParty, playerParty};
 		
 		this.policyCollection = new PolicyCollection();
 		this.currentRound = 0;
 	}
 	
+	public void startRound()
+	{
+		policyCollection.generateCollection(this.currentRound + 5);
+		population.generatePreferences(policyCollection, random);
+		cpuParty.distributePoints(policyCollection, population, random);
+	}
+	
+	public void runElection()
+	{	
+		ElectionResult result = population.vote(parties);
+		System.out.println("CPU: " + result.getVotes(cpuParty));
+		System.out.println("Player: " + result.getVotes(playerParty));
+	}
+	
+	// ---GETTERS---
+	 
 	public PolicyCollection getPolicyCollection()
 	{
 		return this.policyCollection;
@@ -61,21 +78,8 @@ public class ElectionHandler
 		return this.cpuParty;
 	}
 	
-	public void startRound()
+	public Party getPlayerParty()
 	{
-		policyCollection.generateCollection(this.currentRound + 3);
-		population.generatePreferences(policyCollection, random);
-		
-		//playerParty.spendPoints(12, policyCollection.getPolicies().get(1));
-		
-		// CURRENTLY BROKEN
-		cpuParty.distributePoints(policyCollection, population, random);
-	}
-	
-	public void runElection()
-	{	
-		ElectionResult result = population.vote(parties);
-		System.out.println("CPU: " + result.getVotes(cpuParty));
-		System.out.println("Player: " + result.getVotes(playerParty));
+		return this.playerParty;
 	}
 }

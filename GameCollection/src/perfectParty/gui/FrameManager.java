@@ -1,6 +1,7 @@
 package perfectParty.gui;
 
-import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoundedRangeModel;
 import javax.swing.JMenuItem;
@@ -8,7 +9,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
 import ejcMain.util.EJC_GUI;
@@ -18,13 +18,21 @@ import perfectParty.election.ElectionHandler;
 import perfectParty.party.PolicyCollection;
 import perfectParty.voters.Population;
 
-public class FrameManager
+/**
+ * Core class of the GUI for {@link EJC_PerfectParty}. 
+ * Manages the EJC {@link JFrame} as well as all sub {@link JPanels} and the {@link ElectionHandler}.
+ */
+public class FrameManager implements ActionListener
 {
 	private EJC_PerfectParty frame;
 	private PartyPanel partyPanel;
 	private VoterPanel voterPanel;
 
 	private ElectionHandler electionHandler;
+	
+	private JMenuItem runElectionItem = new JMenuItem("Run election");
+	private JMenuItem[] actionItems = new JMenuItem[] {runElectionItem};
+	private JMenuItem[] infoItems = new JMenuItem[] {new JMenuItem("Rules")};
 
 	public FrameManager(EJC_PerfectParty frame)
 	{
@@ -38,11 +46,10 @@ public class FrameManager
 	 */
 	public void buildFrame()
 	{
-		frame.setResizable(false);
-		frame.setBounds(0, 0, 1200, 400);
+		frame.setBounds(0, 0, 1000, 600);
 
-		this.partyPanel = new PartyPanel();
-		this.voterPanel = new VoterPanel();
+		this.partyPanel = new PartyPanel(electionHandler.getPlayerParty());
+		this.voterPanel = new VoterPanel(electionHandler.getPopulation());
 
 		// WARP PANELS IN SCROLL PANES
 		JScrollPane scrollPaneParty = new JScrollPane(partyPanel);
@@ -74,7 +81,7 @@ public class FrameManager
 
 		// DIVIDE FRAME USING SPLITPANE
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPaneParty, scrollPaneVoters);
-		splitPane.setDividerLocation((int) (frame.getWidth() * 0.35));
+		splitPane.setDividerLocation(frame.getWidth() / 4);
 		splitPane.setUI(new BasicSplitPaneUI());
 
 		frame.add(splitPane);
@@ -82,8 +89,14 @@ public class FrameManager
 		
 		// MENUBAR
 		EJC_MenuBar menuBar = new EJC_MenuBar(frame);
-		menuBar.addEJCMenu("Menu", new JMenuItem[] {});
-		menuBar.addEJCMenu("Info", new JMenuItem[] {});
+		menuBar.addEJCMenu("Actions", actionItems);
+		menuBar.addEJCMenu("Info", infoItems);
+		
+		for (JMenuItem item : actionItems)
+		{item.addActionListener(this);}
+		
+		for (JMenuItem item : infoItems)
+		{item.addActionListener(this);}
 
 		this.startRound();
 		
@@ -93,10 +106,9 @@ public class FrameManager
 	{
 		electionHandler.startRound();
 		PolicyCollection policyCollection = electionHandler.getPolicyCollection();
-		Population population = electionHandler.getPopulation();
 		
-		voterPanel.displayPreferences(policyCollection, population);
-		partyPanel.displayPolicyPoints(policyCollection, electionHandler.getCPUParty());
+		voterPanel.displayPreferences(policyCollection);
+		partyPanel.displayPolicyPoints(policyCollection);
 	}
 
 	/**
@@ -105,5 +117,14 @@ public class FrameManager
 	public void setElectionHandler(ElectionHandler electionHandler)
 	{
 		this.electionHandler = electionHandler;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+		if (e.getSource() == runElectionItem)
+		{
+			this.electionHandler.runElection();
+		}
 	}
 }

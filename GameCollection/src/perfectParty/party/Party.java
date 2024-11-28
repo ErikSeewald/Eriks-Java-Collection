@@ -30,7 +30,7 @@ public class Party
 	/**
 	 * Returns the number of {@link PolicyPoints} that the party has spent on the given {@link Policy}.
 	 */
-	public int numPointsSpentOn(Policy policy) 
+	public int getNumPointsSpentOn(Policy policy) 
 	{
 		PolicyPoints spent = spentPoints.get(policy);
 		if (spent != null)

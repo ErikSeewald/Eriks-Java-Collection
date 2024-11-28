@@ -49,8 +49,32 @@ public class VoterBlock
 		this.preferences.clear();
 		for (Policy policy: policyCollection.getPolicies())
 		{
-			Preference[] options = Preference.values();
-			preferences.put(policy, options[random.nextInt(options.length)]);
+			Preference[] prefs = Preference.values();
+			int rand = random.nextInt(prefs.length);
+			
+			// Spin again once more if preference is zero to avoid situations where the best choice is not to spend
+			// points on any policy because the population hates or is indifferent to all of them.
+			if (prefs[rand] == Preference.Zero)
+			{rand = random.nextInt(prefs.length);}
+			
+			// 3/4 chance to apply a heavy lean towards one preference
+			if (random.nextInt(4) != 0)
+			{
+				// Same for all VoterBlocks -> if random chance to apply preference occurs, then that preference
+				// is shared. Otherwise it would still look like a mostly flat random distribution
+				int preferenceIndex = policy.hashCode() % prefs.length;
+				
+				// Avoid preference towards zero. Prefer a positive preference in that case.
+				if (prefs[preferenceIndex] == Preference.Zero) 
+				{
+					preferenceIndex = Preference.Plus.ordinal();
+				}
+				
+				if (rand > preferenceIndex) {rand--;}
+				if (rand < preferenceIndex) {rand++;}
+			}
+			
+			preferences.put(policy, prefs[rand]);
 		}
 	}
 	
@@ -75,8 +99,16 @@ public class VoterBlock
 			int score = 0;
 			for (Map.Entry<Policy, Preference> entry : preferences.entrySet())
 			{
-				int pointsSpent = party.numPointsSpentOn(entry.getKey());
-				score += entry.getValue().weighPoints(pointsSpent);
+				int pointsSpent = party.getNumPointsSpentOn(entry.getKey());
+				
+				Preference preference = entry.getValue();
+				score += preference.weighPoints(pointsSpent);
+				
+				// Penalty for not spending points on a policy the voters care about
+				if (pointsSpent == 0 && preference.isPositive())
+				{
+					score -= preference.pointMultiplier;
+				}
 			}
 			
 			// In cases where multiple parties get the same score, recency bias is applied and the
