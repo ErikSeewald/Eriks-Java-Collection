@@ -16,6 +16,9 @@ public class ElectionResult
 		this.resultMap = new HashMap<>();
 	}
 	
+	/**
+	 * Adds the given amount of votes to the total for the given {@link Party}
+	 */
 	public void addVotes(Party party, long votes)
 	{
 		if (votes < 0)
@@ -32,6 +35,9 @@ public class ElectionResult
 		resultMap.put(party, votes);
 	}
 	
+	/**
+	 * Returns the total number of votes for the given {@link Party}
+	 */
 	public long getVotes(Party party)
 	{
 		Long votes = resultMap.get(party);

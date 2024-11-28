@@ -1,7 +1,6 @@
 package perfectParty.party;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Class representing the current global collection of {@link Policy} objects that the {@link VoterBlock}s

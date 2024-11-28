@@ -3,6 +3,8 @@ package perfectParty.voters;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import perfectParty.election.ElectionResult;
 import perfectParty.party.Party;
@@ -45,8 +47,8 @@ public class Population
 	 */
 	public HashMap<Preference, Long> getPreferenceDistribution(Policy policy)
 	{
-		
-		HashMap<Preference, Long> distribution = new HashMap<>();
+		HashMap<Preference, Long> distribution = (HashMap<Preference, Long>) Stream.of(Preference.values())
+                .collect(Collectors.toMap(e -> e, e -> 0L)); // Initialize all with 0
 		
 		for (VoterBlock block : voterBlocks)
 		{

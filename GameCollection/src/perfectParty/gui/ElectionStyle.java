@@ -9,12 +9,23 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+/**
+ * General style specifications for the {@link EJC_PerfectParty} GUI.
+ */
 public class ElectionStyle
 {
 	public static final Color BACKGROUND_COL = new Color(50, 50, 70);
+	public static final Color BRIGHTER_BACKGROUND_COL = new Color(80, 80, 100);
+	
 	public static final Color HEADER_COL = new Color(220, 220, 240);
 	public static final Color HEADER_COL_DARKER = new Color(180, 180, 200);
 	
+	public static final Color BORDER_COL = new Color(110, 110, 120);
+	
+	/**
+	 * Builds and returns a header {@link JPanel} for the given parent {@link JPanel}.
+	 * Contains a {@link JLabel} header with the given header text.
+	 */
 	public static JPanel buildHeaderPanel(JPanel parent, String headerText)
 	{
 		JPanel headerPanel = new JPanel();
@@ -31,5 +42,27 @@ public class ElectionStyle
 		headerPanel.add(headerLabel, BorderLayout.CENTER);
 		
 		return headerPanel;
+	}
+	
+	/**
+	 * Builds and returns a sub header {@link JPanel} for the given parent {@link JPanel}.
+	 * Formats the given {@link JLabel} and adds it to the sub header {@link JPanel}.
+	 */
+	public static JPanel buildSubHeaderPanel(JPanel parent, JLabel label)
+	{
+		JPanel subHeaderPanel = new JPanel();
+		subHeaderPanel.setBackground(ElectionStyle.BRIGHTER_BACKGROUND_COL);
+		subHeaderPanel.setLayout(new BorderLayout());
+
+		subHeaderPanel.setPreferredSize(new Dimension(parent.getWidth(), 60));
+		subHeaderPanel.setMinimumSize(new Dimension(0, 60));
+		subHeaderPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));
+		
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setForeground(ElectionStyle.HEADER_COL);
+		label.setFont(new Font("", Font.BOLD, 16));
+		subHeaderPanel.add(label, BorderLayout.CENTER);
+		
+		return subHeaderPanel;
 	}
 }
