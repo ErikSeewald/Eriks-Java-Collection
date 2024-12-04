@@ -23,15 +23,16 @@ public class EJC_Particles extends JFrame implements EJC_Game
 		this.addKeyListener(new KeyListener() 
 		{
 			@Override
-			public void keyTyped(KeyEvent e) 
+			public void keyPressed(KeyEvent e) 
 			{
-				if (e.getKeyChar() == 'r') {panel.start();}
+				if (e.getKeyCode() == KeyEvent.VK_R) {panel.start();}
 			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {}
+			
 			@Override
 			public void keyReleased(KeyEvent e) {}
+			
+			@Override
+			public void keyTyped(KeyEvent e) {}
 
 		});
 

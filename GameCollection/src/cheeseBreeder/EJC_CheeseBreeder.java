@@ -39,16 +39,19 @@ public class EJC_CheeseBreeder extends JFrame implements EJC_Game, ActionListene
 		this.addKeyListener(new KeyListener() 
 		{
 			@Override
-			public void keyTyped(KeyEvent e) 
+			public void keyPressed(KeyEvent e) 
 			{
-				if (e.getKeyChar() == 'r') {panel.reset();}
-				if (e.getKeyChar() == 'b') {panel.breed();}
+				int code = e.getKeyCode();
+				System.out.println(code);
+				if (code == KeyEvent.VK_R) {panel.reset();}
+				if (code == KeyEvent.VK_B) {panel.breed();}
 			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {}
+			
 			@Override
 			public void keyReleased(KeyEvent e) {}
+			
+			@Override
+			public void keyTyped(KeyEvent e) {}
 
 		});
 		

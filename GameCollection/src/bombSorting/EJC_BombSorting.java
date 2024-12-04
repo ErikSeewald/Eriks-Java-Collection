@@ -27,20 +27,21 @@ public class EJC_BombSorting extends JFrame implements EJC_Game
 		this.setVisible(true);
 		
 		this.addKeyListener(new KeyListener() 
-		{
+		{			
 			@Override
-			public void keyTyped(KeyEvent e) 
-			{	
-				char key = e.getKeyChar();
+			public void keyPressed(KeyEvent e) 
+			{
+				int code = e.getKeyCode();
 				
-				if (key == '+') {panel.changeSize(10); pack();}
-				else if (key == '-') {panel.changeSize(-10); pack();}
-				
+				if (code == KeyEvent.VK_PLUS) {panel.changeSize(10); pack();}
+				else if (code == KeyEvent.VK_MINUS) {panel.changeSize(-10); pack();}	
 			}
+			
 			@Override
-			public void keyPressed(KeyEvent e) {}
+			public void keyReleased(KeyEvent e) {}
+			
 			@Override
-			public void keyReleased(KeyEvent e) {}		
+			public void keyTyped(KeyEvent e) {}
 		});
 	}
 	

@@ -36,9 +36,9 @@ public class EJC_ParallelUniverses extends JFrame implements EJC_Game
 				int code = e.getKeyCode();
 				pressedKeys.add(code);
 				
-				if (code == 72) {panel.hideUniverses();} //H
-			
+				if (code == KeyEvent.VK_H) {panel.hideUniverses();}
 			}
+			
 			@Override
 			public void keyReleased(KeyEvent e) 
 			{pressedKeys.remove(e.getKeyCode());}
@@ -53,12 +53,12 @@ public class EJC_ParallelUniverses extends JFrame implements EJC_Game
 			{
 				int x = 0, y = 0, moveCount = 1;
 
-				if (pressedKeys.contains(68)) {x = 1;} 	//D
-				if (pressedKeys.contains(65)) {x = -1;} 	//A
-				if (pressedKeys.contains(87)) {y = -1;} 	//W
-				if (pressedKeys.contains(83)) {y = 1;} 	//S
+				if (pressedKeys.contains(KeyEvent.VK_D)) {x = 1;}
+				if (pressedKeys.contains(KeyEvent.VK_A)) {x = -1;}
+				if (pressedKeys.contains(KeyEvent.VK_W)) {y = -1;}
+				if (pressedKeys.contains(KeyEvent.VK_S)) {y = 1;}
 
-				if (pressedKeys.contains(16)) {moveCount = 4;}	//SHIFT
+				if (pressedKeys.contains(KeyEvent.VK_SHIFT)) {moveCount = 4;}
 
 				if(x == 0 && y == 0)
 				{return;}

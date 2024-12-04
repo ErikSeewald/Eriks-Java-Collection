@@ -1,5 +1,7 @@
 package pathfindGame;
 
+import java.awt.event.KeyEvent;
+
 public class Player 
 {
 	int x,y;
@@ -17,17 +19,17 @@ public class Player
 		return false;
 	}
 	
-	public boolean move(char key) 
+	public boolean move(int key) 
 	{
 		switch (key)
 		{
-			case 'a': if (isValidMove(this.x-1, this.y)) {this.x--;} else {return false;}
+			case KeyEvent.VK_A: if (isValidMove(this.x-1, this.y)) {this.x--;} else {return false;}
 			break;
-			case 's': if (isValidMove(this.x, this.y+1)) {this.y++;} else {return false;}
+			case KeyEvent.VK_S: if (isValidMove(this.x, this.y+1)) {this.y++;} else {return false;}
 			break;
-			case 'd': if (isValidMove(this.x+1, this.y)) {this.x++;} else {return false;}
+			case KeyEvent.VK_D: if (isValidMove(this.x+1, this.y)) {this.x++;} else {return false;}
 			break;
-			case 'w': if (isValidMove(this.x, this.y-1)) {this.y--;} else {return false;}
+			case KeyEvent.VK_W: if (isValidMove(this.x, this.y-1)) {this.y--;} else {return false;}
 			break;
 		}
 			

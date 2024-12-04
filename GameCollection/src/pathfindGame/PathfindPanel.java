@@ -73,7 +73,7 @@ public class PathfindPanel extends JPanel
 
 	private Player player = new Player();
 		
-	public void nextMove(char key)
+	public void nextMove(int key)
 	{
 		if (finished) {return;}
 		

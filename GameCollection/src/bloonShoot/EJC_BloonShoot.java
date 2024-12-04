@@ -29,13 +29,14 @@ public class EJC_BloonShoot extends JFrame implements EJC_Game
 			{
 				int code = e.getKeyCode();
 				
-				if (code == 71) {panel.changeGridVisibility();} //G
-				else if (code == 45) {panel.changeSize(-1); pack();} //-
-				else if (code == 521) {panel.changeSize(1); pack();} //+
-				else if (code == 37) {panel.changeLevel(LoadOperations.previousLevel);} //LEFT
-				else if (code == 39) {panel.changeLevel(LoadOperations.nextLevel);} //RIGHT	
-				else if (code == 82) {panel.changeLevel(LoadOperations.reload);} //R	
+				if (code == KeyEvent.VK_G) {panel.changeGridVisibility();}
+				else if (code == KeyEvent.VK_MINUS) {panel.changeSize(-1); pack();}
+				else if (code == KeyEvent.VK_PLUS) {panel.changeSize(1); pack();}
+				else if (code == KeyEvent.VK_LEFT) {panel.changeLevel(LoadOperations.previousLevel);}
+				else if (code == KeyEvent.VK_RIGHT) {panel.changeLevel(LoadOperations.nextLevel);}
+				else if (code == KeyEvent.VK_R) {panel.changeLevel(LoadOperations.reload);}
 			}
+			
 			@Override
 			public void keyReleased(KeyEvent e) {}
 			@Override

@@ -48,18 +48,18 @@ public class EJC_Automata extends JFrame implements EJC_Game
 		this.addKeyListener(new KeyListener()
 		{
 			@Override
-			public void keyTyped(KeyEvent e) {}
-
-			@Override
 			public void keyPressed(KeyEvent e) 
 			{
 				int code = e.getKeyCode();
-				if (code == 82) {panel.randomSwitch();} //R
-				else if (code == 83) {panel.switchPixelSize();} //S
+				if (code == KeyEvent.VK_R) {panel.randomSwitch();}
+				else if (code == KeyEvent.VK_S) {panel.switchPixelSize();}
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {}
+			
+			@Override
+			public void keyTyped(KeyEvent e) {}
 		});
 
 		timer.setInitialDelay(100);
