@@ -27,20 +27,19 @@ public class EJC_GravityVectors extends JFrame implements EJC_Game
 			{
 				int code = e.getKeyCode();
 				
-				if (code == 521) {panel.changeSize(30); pack();} //+
-				else if (code == 45) {panel.changeSize(-30); pack();} //-
-				else if (code == 49) {panel.changePPointCount(-1);} //1
-				else if (code == 50) {panel.changePPointCount(1);} //2
-				else if (code == 71) {panel.gradientMode();} //G     
-				else if (code == 78) {panel.switchArrowNormalization();} //N              
+				if (code == KeyEvent.VK_PLUS) {panel.changeSize(30); pack();}
+				else if (code == KeyEvent.VK_MINUS) {panel.changeSize(-30); pack();}
+				else if (code == KeyEvent.VK_1) {panel.changePPointCount(-1);}
+				else if (code == KeyEvent.VK_2) {panel.changePPointCount(1);}
+				else if (code == KeyEvent.VK_G) {panel.gradientMode();}  
+				else if (code == KeyEvent.VK_N) {panel.switchArrowNormalization();}        
 			}
-			
-			@Override
-			public void keyTyped(KeyEvent e) 
-			{}
+		
 			@Override
 			public void keyReleased(KeyEvent e) {}
 			
+			@Override
+			public void keyTyped(KeyEvent e) {}	
 		});
 		
 		this.setResizable(false);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    

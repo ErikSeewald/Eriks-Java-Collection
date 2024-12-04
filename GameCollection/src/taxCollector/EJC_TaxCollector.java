@@ -40,25 +40,25 @@ public class EJC_TaxCollector extends JFrame implements EJC_Game, ActionListener
 		this.addKeyListener(new KeyListener() 
 		{
 			@Override
-			public void keyTyped(KeyEvent e)
-			{}
-			@Override
 			public void keyPressed(KeyEvent e) 
 			{
 				int code = e.getKeyCode();
 				pressedKeys.add(code);
 				
-				char c = e.getKeyChar();
-				if (c == 'r') {panel.restart(ResetActions.newSeed);}
+				if (code == KeyEvent.VK_R) {panel.restart(ResetActions.newSeed);}
 				
 				if (!panel.updateValid()) {return;}
-				else if (c == 'g') {panel.switchGridBool();}
-				else if (c == 'e') {panel.interaction();}
-				else if (c == 't') {panel.switchDebugBool();}
+				else if (code == KeyEvent.VK_G) {panel.switchGridBool();}
+				else if (code == KeyEvent.VK_E) {panel.interaction();}
+				else if (code == KeyEvent.VK_T) {panel.switchDebugBool();}
  			}
+			
 			@Override
 			public void keyReleased(KeyEvent e)
 			{pressedKeys.remove(e.getKeyCode());}
+			
+			@Override
+			public void keyTyped(KeyEvent e) {}
 		});
 
 		this.setVisible(true);
@@ -69,10 +69,10 @@ public class EJC_TaxCollector extends JFrame implements EJC_Game, ActionListener
 			{
 				if (!panel.updateValid()) {return;}
 			
-				if (pressedKeys.contains(68)) {panel.move(Direction.EAST);} 	//D
-				else if (pressedKeys.contains(65)) {panel.move(Direction.WEST);} //A
-				else if (pressedKeys.contains(87)) {panel.move(Direction.NORTH);} //W
-				else if (pressedKeys.contains(83)) {panel.move(Direction.SOUTH);} 	//S
+				if (pressedKeys.contains(KeyEvent.VK_D)) {panel.move(Direction.EAST);}
+				else if (pressedKeys.contains(KeyEvent.VK_A)) {panel.move(Direction.WEST);}
+				else if (pressedKeys.contains(KeyEvent.VK_W)) {panel.move(Direction.NORTH);}
+				else if (pressedKeys.contains(KeyEvent.VK_S)) {panel.move(Direction.SOUTH);}
 
 				panel.advanceFrame();
 			}	

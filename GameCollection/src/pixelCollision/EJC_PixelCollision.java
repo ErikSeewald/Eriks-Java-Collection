@@ -47,13 +47,14 @@ public class EJC_PixelCollision extends JFrame implements EJC_Game, ActionListen
 			{
 				int code = e.getKeyCode();
 					
-				if (code == 82) {panel.start();} 	//R
-				else if (code == 70) {keyHandler.flyMode();}		 //F	
-				else if (code == 45) {panel.changeSize(-30); pack();} 	//-
-				else if (code == 521) {panel.changeSize(30); pack();} 	//+
+				if (code == KeyEvent.VK_R) {panel.start();}
+				else if (code == KeyEvent.VK_F) {keyHandler.flyMode();}
+				else if (code == KeyEvent.VK_MINUS) {panel.changeSize(-30); pack();}
+				else if (code == KeyEvent.VK_PLUS) {panel.changeSize(30); pack();}
 				
 				else {pressedKeys.add(code);}
 			}
+			
 			@Override
 			public void keyReleased(KeyEvent e) 
 			{pressedKeys.remove(e.getKeyCode());}

@@ -34,10 +34,6 @@ public class EJC_JuicePoet extends JFrame implements EJC_Game, ActionListener
 		
 		this.addKeyListener(new KeyListener() 
 		{
-
-			@Override
-			public void keyTyped(KeyEvent e){}
-
 			@Override
 			public void keyPressed(KeyEvent e)
 			{
@@ -49,6 +45,9 @@ public class EJC_JuicePoet extends JFrame implements EJC_Game, ActionListener
 
 			@Override
 			public void keyReleased(KeyEvent e) {}
+			
+			@Override
+			public void keyTyped(KeyEvent e) {}
 			
 		});
 		
