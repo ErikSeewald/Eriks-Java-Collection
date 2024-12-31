@@ -25,6 +25,8 @@ public class PartyPanel extends JPanel
 	private final Party party;
 	private JLabel pointsLabel;
 
+	private ArrayList<JPanel> policyPanels;
+
 	public PartyPanel(Party party)
 	{
 		this.party = party;
@@ -37,6 +39,8 @@ public class PartyPanel extends JPanel
 		this.pointsLabel = new JLabel("Policy Points: " + party.getNumUnspentPoints());
 		JPanel pointsPanel = ElectionStyle.buildSubHeaderPanel(this, pointsLabel);
 		this.add(pointsPanel);
+		
+		this.policyPanels = new ArrayList<>();
 	}
 	
 	/**
@@ -45,6 +49,10 @@ public class PartyPanel extends JPanel
 	 */
 	public void displayPolicyPoints(PolicyCollection policyCollection)
 	{
+		// Clear old policy panels
+		for (JPanel p : policyPanels) {this.remove(p);}
+		policyPanels.clear();
+		
 		ArrayList<Policy> policies = policyCollection.getPolicies();
 
 		for (int i = 0; i < policies.size(); i++)
@@ -73,6 +81,7 @@ public class PartyPanel extends JPanel
 			policyPanel.add(policyLabel, constraints);
 
 			this.add(policyPanel);
+			policyPanels.add(policyPanel);
 		}
 	}
 
@@ -90,10 +99,15 @@ public class PartyPanel extends JPanel
 		}
 
 		policyLabel.setText(getPolicyString(party, policy));
+		updatePolicyPointsDisplay();
+	}
+	
+	public void updatePolicyPointsDisplay()
+	{
 		pointsLabel.setText("Policy Points: " + party.getNumUnspentPoints());
 	}
 
-	private static String getPolicyString(Party party, Policy policy)
+	public static String getPolicyString(Party party, Policy policy)
 	{
 		int pointsSpent = party.getNumPointsSpentOn(policy);
 		String labelString = "   " + policy.name + ": ";

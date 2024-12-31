@@ -16,8 +16,9 @@ import perfectParty.party.PolicyCollection;
  */
 public class Population
 {
-	private int numPopulation;
+	private long numPopulation;
 	private ArrayList<VoterBlock> voterBlocks;
+	private long STARTING_POPULATION;
 	
 	/**
 	 * Creates a new {@link Population} object with the given starting population and generates {@link VoterBlock}s
@@ -29,13 +30,14 @@ public class Population
 		{
 			throw new IllegalArgumentException("Starting population cannot be <= 0");
 		}
+		this.STARTING_POPULATION = startingPopulation;
 		this.numPopulation = startingPopulation;
 		
 		voterBlocks = new ArrayList<>();
 		generateVoterBlocks(random);
 	}
 	
-	public int getNumber()
+	public long getNumber()
 	{
 		return this.numPopulation;
 	}
@@ -81,17 +83,27 @@ public class Population
 	}
 	
 	/**
-	 * Grows the voting population by the given number of people and regenerates the {@link VoterBlock}s.
-	 * @param numPeople the number of people to grow the voting population by
+	 * Grows the voting population by the given growth factor and regenerates the {@link VoterBlock}s.
+	 * @param growthFactor the factor to grow the population by
 	 * @param random the {@link Random} object to use for {@link VoterBlock} generation
 	 */
-	public void growByAndReorganize(int numPeople, Random random)
+	public void growByAndReorganize(double growthFactor, Random random)
 	{
-		if (numPeople < 0)
+		if (growthFactor < 0)
 		{
-			throw new IllegalArgumentException("Cannot grow by a negative number of people");
+			throw new IllegalArgumentException("Cannot grow by a negative growth factor");
 		}
-		this.numPopulation += numPeople;
+		this.numPopulation *= growthFactor;
+		generateVoterBlocks(random);
+	}
+	
+	/**
+	 * Resets the population size back to its initial size and regenerates the {@link VoterBlocks} with the given
+	 * {@link Random} object.
+	 */
+	public void resetPopulation(Random random)
+	{
+		this.numPopulation = this.STARTING_POPULATION;
 		generateVoterBlocks(random);
 	}
 	
@@ -104,13 +116,13 @@ public class Population
 	{
 		voterBlocks.clear();
 		
-		int lowerBound = numPopulation / 1000;
-		int upperBound = (int) Math.max(1, numPopulation / 100.0);
+		long lowerBound = numPopulation / 1000;
+		long upperBound = Long.max(1, numPopulation / 100);
 		
-		int leftToAllocate = numPopulation;
+		long leftToAllocate = numPopulation;
 		while (leftToAllocate > 0)
 		{
-			int blockSize = 0;
+			long blockSize = 0;
 			if (leftToAllocate <= upperBound)
 			{
 				blockSize = leftToAllocate;
@@ -119,7 +131,7 @@ public class Population
 			
 			else
 			{
-				blockSize = (int) Math.max(1, random.nextInt(upperBound - lowerBound) + lowerBound);
+				blockSize = Long.max(1, random.nextLong(upperBound - lowerBound) + lowerBound);
 			}
 			
 			voterBlocks.add(new VoterBlock(blockSize));

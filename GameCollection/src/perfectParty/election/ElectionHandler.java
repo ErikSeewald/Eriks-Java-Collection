@@ -44,21 +44,42 @@ public class ElectionHandler
 		this.parties = new Party[] {cpuParty, playerParty};
 		
 		this.policyCollection = new PolicyCollection();
+		this.currentRound = 20;
+	}
+	
+	public void restart()
+	{
 		this.currentRound = 0;
+		this.population.resetPopulation(random);
+		this.startRound();
+	}
+	
+	public void nextRound()
+	{
+		this.currentRound += 1;
+		population.growByAndReorganize(POPULATION_GROWTH_FACTOR, random);
+		startRound();
 	}
 	
 	public void startRound()
-	{
-		policyCollection.generateCollection(this.currentRound + 5);
+	{		
+		cpuParty.resetPoints(PolicyPoints.getInitialPoints(INIT_POINTS_CPU + currentRound));
+		playerParty.resetPoints(PolicyPoints.getInitialPoints(INIT_POINTS_PLAYER + currentRound));
+		
+		policyCollection.generateCollection(this.currentRound + 4);
 		population.generatePreferences(policyCollection, random);
 		cpuParty.distributePoints(policyCollection, population, random);
+		
+		frameManager.displayGameView();
 	}
 	
 	public void runElection()
 	{	
 		ElectionResult result = population.vote(parties);
-		System.out.println("CPU: " + result.getVotes(cpuParty));
-		System.out.println("Player: " + result.getVotes(playerParty));
+		result.breakTieInFavor(playerParty);
+		boolean hasPlayerWon = result.getWinner() == playerParty;
+		
+		frameManager.displayResult(result, hasPlayerWon);
 	}
 	
 	// ---GETTERS---

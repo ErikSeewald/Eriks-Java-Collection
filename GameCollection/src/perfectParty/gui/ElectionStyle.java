@@ -22,6 +22,8 @@ public class ElectionStyle
 	
 	public static final Color BORDER_COL = new Color(110, 110, 120);
 	
+	public static final Color WINNER_COL = new Color(120, 240, 140);
+	
 	/**
 	 * Builds and returns a header {@link JPanel} for the given parent {@link JPanel}.
 	 * Contains a {@link JLabel} header with the given header text.

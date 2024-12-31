@@ -20,6 +20,7 @@ public class EJC_PerfectParty extends JFrame implements EJC_Game
 		
 		frameManager.setElectionHandler(handler);
 		frameManager.buildFrame();
+		handler.startRound();
 	}
 
 	@Override
