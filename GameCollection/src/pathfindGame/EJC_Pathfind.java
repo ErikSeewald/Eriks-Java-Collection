@@ -34,24 +34,27 @@ public class EJC_Pathfind extends JFrame implements ActionListener, EJC_Game
 		menuBar.addEJCMenu("Seed", new JMenuItem[] {seedItem});
 		
 		this.addKeyListener(new KeyListener() 
-		{
+		{			
 			@Override
-			public void keyTyped(KeyEvent e) 
-			{	
-				char key = e.getKeyChar();
+			public void keyPressed(KeyEvent e) 
+			{
+				int key = e.getKeyCode();
 				
-				if (key == '+') {panel.changeSize(10); pack();}
-				else if (key == '-') {panel.changeSize(-10); pack();}
-				else if (key == 'r') {panel.initialize(ControlBooleans.restart);}
-				else if (key == 't') {panel.initialize(ControlBooleans.fullReset);}
+				if (key == KeyEvent.VK_PLUS) {panel.changeSize(10); pack();}
+				else if (key == KeyEvent.VK_MINUS) {panel.changeSize(-10); pack();}
+				else if (key == KeyEvent.VK_R) {panel.initialize(ControlBooleans.restart);}
+				else if (key == KeyEvent.VK_T) {panel.initialize(ControlBooleans.fullReset);}
 					
-				else if (key == 'a' || key == 's' || key == 'd' || key == 'w')
+				else if (key == KeyEvent.VK_A || key == KeyEvent.VK_S 
+						|| key == KeyEvent.VK_D || key == KeyEvent.VK_W)
 				{panel.nextMove(key);}
 			}
+			
 			@Override
-			public void keyPressed(KeyEvent e) {}
+			public void keyReleased(KeyEvent e) {}
+			
 			@Override
-			public void keyReleased(KeyEvent e) {}		
+			public void keyTyped(KeyEvent e) {}
 		});
 		
 		this.add(panel);

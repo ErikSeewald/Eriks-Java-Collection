@@ -44,20 +44,20 @@ public class EJC_Sidescroller extends JFrame implements ActionListener, EJC_Game
 			{	
 				int code = e.getKeyCode();
 				
-				if (code == 82) {panel.start(SidescrollerPanel.StartOperations.restart);} //R
-				else if (code == 84) {panel.start(SidescrollerPanel.StartOperations.newMap);} //T
-				else if (code == 27) {panel.pause();} //ESC
+				if (code == KeyEvent.VK_R) {panel.start(SidescrollerPanel.StartOperations.restart);}
+				else if (code == KeyEvent.VK_T) {panel.start(SidescrollerPanel.StartOperations.newMap);}
+				else if (code == KeyEvent.VK_ESCAPE) {panel.pause();}
 				
 				else
 				{pressedKeys.add(code);}			
 			}
+			
 			@Override
 			public void keyReleased(KeyEvent e) 
 			{pressedKeys.remove(e.getKeyCode());}
 			
 			@Override
-			public void keyTyped(KeyEvent e) 
-			{}
+			public void keyTyped(KeyEvent e) {}
 		});
 		
 		timer = new Timer(14, this);
@@ -102,14 +102,14 @@ public class EJC_Sidescroller extends JFrame implements ActionListener, EJC_Game
 	private void keyToMovement()
 	{
 		xSpeed = 0;
-		if (pressedKeys.contains(68)) //D
+		if (pressedKeys.contains(KeyEvent.VK_D))
 		{xSpeed = 5;} 	
 		
-		if (pressedKeys.contains(65)) //A
+		if (pressedKeys.contains(KeyEvent.VK_A))
 		{xSpeed = -5;}
 		
 		//JUMPING
-		if (pressedKeys.contains(32) && panel.player.jumpAllowed) //SPACE
+		if (pressedKeys.contains(KeyEvent.VK_SPACE) && panel.player.jumpAllowed)
 		{
 			ySpeed = -5;
 			panel.player.jumpAllowed = false; 

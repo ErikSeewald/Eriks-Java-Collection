@@ -35,8 +35,8 @@ public class EJC_Sierpinski extends JFrame implements EJC_Game
 		this.addKeyListener(new KeyListener() 
 		{
 			@Override
-			public void keyTyped(KeyEvent e) 
-			{	
+			public void keyPressed(KeyEvent e) 
+			{
 				if (modePicked) {return;}
 				
 				int mode = e.getKeyChar() - '0'; //char to int
@@ -48,10 +48,12 @@ public class EJC_Sierpinski extends JFrame implements EJC_Game
 				instance.add(panel);
 				instance.pack();
 			}
+			
 			@Override
-			public void keyPressed(KeyEvent e) {}
+			public void keyReleased(KeyEvent e) {}
+			
 			@Override
-			public void keyReleased(KeyEvent e) {}		
+			public void keyTyped(KeyEvent e) {}
 		});
 		
 		//SELECTION LABELS	
