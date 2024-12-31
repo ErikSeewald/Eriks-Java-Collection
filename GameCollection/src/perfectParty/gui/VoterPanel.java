@@ -24,6 +24,7 @@ public class VoterPanel extends JPanel
 
 	private JLabel populationLabel;
 	private Population population;
+	private ArrayList<JPanel> contentPanels;
 
 	public VoterPanel(Population population)
 	{
@@ -37,6 +38,8 @@ public class VoterPanel extends JPanel
 		this.populationLabel = new JLabel(this.getPopulationString());
 		JPanel populationPanel = ElectionStyle.buildSubHeaderPanel(this, this.populationLabel);
 		this.add(populationPanel);
+		
+		this.contentPanels = new ArrayList<>();
 	}
 
 	/**
@@ -45,6 +48,10 @@ public class VoterPanel extends JPanel
 	 */
 	public void displayPreferences(PolicyCollection policyCollection)
 	{
+		// Clear old content panels
+		for (JPanel p : contentPanels) {this.remove(p);}
+		contentPanels.clear();
+		
 		// Layout constraints
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.weightx = 1.0;
@@ -73,7 +80,13 @@ public class VoterPanel extends JPanel
 			contentPanel.add(bar, constraints);
 
 			this.add(contentPanel);
+			this.contentPanels.add(contentPanel);
 		}
+	}
+	
+	public void updatePopulationLabel()
+	{
+		populationLabel.setText(this.getPopulationString());
 	}
 
 	private String getPopulationString()
