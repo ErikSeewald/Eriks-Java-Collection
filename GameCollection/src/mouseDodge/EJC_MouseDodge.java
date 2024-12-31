@@ -22,23 +22,24 @@ public class EJC_MouseDodge extends JFrame implements EJC_Game
 		this.setResizable(false);
 		
 		this.addKeyListener(new KeyListener() 
-		{
+		{			
 			@Override
-			public void keyTyped(KeyEvent e) 
-			{	
-				char key = e.getKeyChar();
+			public void keyPressed(KeyEvent e) 
+			{
+				int code = e.getKeyCode();
 				
-				if (key == '+') {panel.changeSize(10); pack();}
-				else if (key == '-') {panel.changeSize(-10); pack();}
-				else if (key == 'r') {panel.start();}
-				else if (key == '') {panel.pause();} //ESC Key
-				else if (key == 'd') {panel.darkMode = !panel.darkMode; panel.repaint();}
-				
+				if (code == KeyEvent.VK_PLUS) {panel.changeSize(10); pack();}
+				else if (code == KeyEvent.VK_MINUS) {panel.changeSize(-10); pack();}
+				else if (code == KeyEvent.VK_R) {panel.start();}
+				else if (code == KeyEvent.VK_ESCAPE) {panel.pause();}
+				else if (code == KeyEvent.VK_D) {panel.darkMode = !panel.darkMode; panel.repaint();}
 			}
+			
 			@Override
-			public void keyPressed(KeyEvent e) {}
+			public void keyReleased(KeyEvent e) {}	
+			
 			@Override
-			public void keyReleased(KeyEvent e) {}		
+			public void keyTyped(KeyEvent e)  {}
 		});
 		
 		this.add(panel);

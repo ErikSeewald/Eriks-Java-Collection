@@ -39,11 +39,11 @@ public class EJC_InfDungeons extends JFrame implements EJC_Game
 				int code = e.getKeyCode();
 				pressedKeys.add(code);
 				
-				if (code == 521) {panel.changeSize(10); pack();} // +
-				else if (code == 45) {panel.changeSize(-10); pack();} // -
-				else if (code == 69) {panel.interactEvent();} // E
-				else if (code == 81) {panel.bombDropEvent();} // Q
-				else if (code == 10) {panel.switchDebugMode();} // Enter
+				if (code == KeyEvent.VK_PLUS) {panel.changeSize(10); pack();}
+				else if (code == KeyEvent.VK_MINUS) {panel.changeSize(-10); pack();}
+				else if (code == KeyEvent.VK_E) {panel.interactEvent();}
+				else if (code == KeyEvent.VK_Q) {panel.bombDropEvent();}
+				else if (code == KeyEvent.VK_ENTER) {panel.switchDebugMode();}
 			
 			}
 			@Override

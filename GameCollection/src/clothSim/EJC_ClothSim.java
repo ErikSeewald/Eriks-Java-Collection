@@ -36,19 +36,21 @@ public class EJC_ClothSim extends JFrame implements EJC_Game, ActionListener
 			{
 				int code = e.getKeyCode();
 				
-				if (code == 67) {panel.connect();}	//C -> CONNECT
-				else if (code == 82) {panel.restart();} //R -> RESTART
-				else if (code == 90 && e.isControlDown()) {panel.removeLastConnector();} //CTRL Z
-				else if (code == 83) //S -> START
+				if (code == KeyEvent.VK_C) {panel.connect();}
+				else if (code == KeyEvent.VK_R) {panel.restart();}
+				else if (code == KeyEvent.VK_Z && e.isControlDown()) {panel.removeLastConnector();}
+				else if (code == KeyEvent.VK_S)
 				{
 					if (timer.isRunning()) {timer.stop();} else {timer.start();}
 					panel.switchIsRunning();
 				}	
 			}
-			@Override
-			public void keyTyped(KeyEvent e) {}
+
 			@Override
 			public void keyReleased(KeyEvent e) {}
+			
+			@Override
+			public void keyTyped(KeyEvent e) {}
 		});
 		
 		timer = new Timer(30, this);

@@ -29,11 +29,13 @@ public class EJC_RandBattle extends JFrame implements EJC_Game
 			{
 				int code = e.getKeyCode();
 				
-				if (code == 83) {panel.showStats();} //S
-				if (code == 72) {panel.onlyShowHealth();} //H
+				if (code == KeyEvent.VK_S) {panel.showStats();}
+				if (code == KeyEvent.VK_H) {panel.onlyShowHealth();}
 			}
+			
 			@Override
 			public void keyReleased(KeyEvent e) {}
+			
 			@Override
 			public void keyTyped(KeyEvent e) {}
 		});
