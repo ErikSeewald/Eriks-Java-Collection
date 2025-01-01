@@ -340,11 +340,11 @@ public enum GameText
 			new String[]
 			{
 					"PERFECT PARTY",
-					"",
-					"",
-					"",
-					"",
-					"",
+					"Compete against the cpu party in assigning policy points to randomly generated",
+					"policies. Use the voters preferences to make smart choices and win the election.",
+					"Each round introduces more policies and voters. How long can you keep up?",
+					"For further explanation of controls and rules use the 'Info' tab in the game's ",
+					"menu bar. This game is hard but not impossible.",
 			}
 	);
 

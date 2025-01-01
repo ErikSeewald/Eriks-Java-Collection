@@ -27,15 +27,18 @@ public class PartyResultPanel extends JPanel
 {
 	private static final long serialVersionUID = 654736523443424L;
 
+	// REFERENCE CLASSES
 	private final Party party;
 	private PolicyCollection policyCollection;
 	private Population population;
 	
+	// RESULT
 	private JLabel percentageLabel;
 	private JProgressBar progressBar;
 	private JLabel votesLabel;
 	private Thread animationThread;
 	
+	// POLICIES
 	private ArrayList<JPanel> policyPanels;
 
 	public PartyResultPanel(Party party, PolicyCollection policyCollection, Population population)
@@ -117,7 +120,7 @@ public class PartyResultPanel extends JPanel
 		boolean isWinner = electionResult.getWinner() == party;
 		
 		percentageLabel.setForeground(ElectionStyle.HEADER_COL);
-		animateProgressBar(progressBar, votesLabel, percentageLabel, finalPercentage, absoluteVotes, isWinner);
+		animateResultBar(progressBar, votesLabel, percentageLabel, finalPercentage, absoluteVotes, isWinner);
 	}
 	
 	private void buildPolicyPanels()
@@ -141,9 +144,7 @@ public class PartyResultPanel extends JPanel
 			policyLabel.setFont(new Font("", Font.BOLD, 14));
 
 			policyPanel.setLayout(new GridBagLayout());
-	        GridBagConstraints constraints = new GridBagConstraints();
-	        constraints.weightx = 1.0; // Stretch horizontally
-	        constraints.anchor = GridBagConstraints.WEST; // Left-align
+			GridBagConstraints constraints = ElectionStyle.buildPolicyConstraints();
 			policyPanel.add(policyLabel, constraints);
 			
 			HashMap<Preference, Long> preferences = population.getPreferenceDistribution(policies.get(i));
@@ -155,7 +156,11 @@ public class PartyResultPanel extends JPanel
 		}
 	}
 
-	private void animateProgressBar(JProgressBar progressBar, JLabel votesLabel, JLabel percentageLabel,
+	/**
+	 * Animates the election result {@link JProgressBar} using the animationThread based on the given
+	 * result parameters.
+	 */
+	private void animateResultBar(JProgressBar progressBar, JLabel votesLabel, JLabel percentageLabel,
 			int finalPercentage, long absoluteVotes, boolean isWinner)
 	{
 		stopAnimation();
@@ -184,6 +189,9 @@ public class PartyResultPanel extends JPanel
 		animationThread.start();
 	}
 	
+	/**
+	 * Stops the thread playing the election result animation if it is currently running.
+	 */
 	public void stopAnimation()
 	{
 		if (animationThread != null && animationThread.isAlive())
