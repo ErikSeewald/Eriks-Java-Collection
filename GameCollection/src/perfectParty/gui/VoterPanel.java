@@ -32,13 +32,16 @@ public class VoterPanel extends JPanel
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBackground(ElectionStyle.BACKGROUND_COL);
 
+		// HEADER PANEL
 		JPanel headerPanel = ElectionStyle.buildHeaderPanel(this, "Voters");
 		this.add(headerPanel);
 
+		// POPULATION PANEL
 		this.populationLabel = new JLabel(this.getPopulationString());
 		JPanel populationPanel = ElectionStyle.buildSubHeaderPanel(this, this.populationLabel);
 		this.add(populationPanel);
 		
+		// CONTENT PANELS
 		this.contentPanels = new ArrayList<>();
 	}
 

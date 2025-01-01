@@ -2,18 +2,9 @@ package perfectParty.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.BoundedRangeModel;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
-
-import ejcMain.util.EJC_GUI;
 import ejcMain.util.EJC_GUI.EJC_MenuBar;
 import perfectParty.EJC_PerfectParty;
 import perfectParty.election.ElectionHandler;
@@ -23,7 +14,7 @@ import perfectParty.voters.Population;
 
 /**
  * Core class of the GUI for {@link EJC_PerfectParty}. 
- * Manages the EJC {@link JFrame} as well as all sub {@link JPanels} and the {@link ElectionHandler}.
+ * Manages the EJC {@link JFrame} as well as all sub {@link JPanels} and communicates with the {@link ElectionHandler}.
  */
 public class FrameManager implements ActionListener
 {
@@ -45,7 +36,9 @@ public class FrameManager implements ActionListener
 	private JMenuItem nextRoundItem = new JMenuItem("Next round");
 	private JMenuItem restartItem = new JMenuItem("Restart");
 	private JMenuItem[] actionItems = new JMenuItem[] {runElectionItem, nextRoundItem, restartItem};
-	private JMenuItem[] infoItems = new JMenuItem[] {new JMenuItem("Rules")};
+	private JMenuItem rulesItem = new JMenuItem("Rules");
+	private JMenuItem controlsItem = new JMenuItem("Controls");
+	private JMenuItem[] infoItems = new JMenuItem[] {rulesItem, controlsItem};
 
 	public FrameManager(EJC_PerfectParty frame)
 	{
@@ -73,7 +66,7 @@ public class FrameManager implements ActionListener
 		this.partyPanel = new PartyPanel(electionHandler.getPlayerParty());
 		this.voterPanel = new VoterPanel(electionHandler.getPopulation());
 		gameSplitPane = new JSplitPane();
-		this.buildSplitScrollPane(gameSplitPane, partyPanel, voterPanel);
+		ElectionStyle.buildSplitScrollPane(gameSplitPane, partyPanel, voterPanel);
 		gameSplitPane.setDividerLocation(frame.getWidth() / 4);
 
 	}
@@ -85,50 +78,10 @@ public class FrameManager implements ActionListener
 		
 		this.playerResultPanel = new PartyResultPanel(electionHandler.getPlayerParty(), policyCollection, population);
 		this.cpuResultPanel = new PartyResultPanel(electionHandler.getCPUParty(), policyCollection, population);
+		
 		resultSplitPane = new JSplitPane();
-		this.buildSplitScrollPane(resultSplitPane, playerResultPanel, cpuResultPanel);
+		ElectionStyle.buildSplitScrollPane(resultSplitPane, playerResultPanel, cpuResultPanel);
 		resultSplitPane.setDividerLocation((int) (frame.getWidth() * 0.485));
-	}
-	
-	/**
-	 * Wraps the two given panels in {@link JScrollPane}s with synchronized scroll bars and then adds them to the given
-	 * (empty but already instantiated) {@link JSplitPane}.
-	 */
-	private void buildSplitScrollPane(JSplitPane splitPane, JPanel panelA, JPanel panelB)
-	{
-		// WRAP PANELS IN SCROLL PANES
-		JScrollPane scrollPaneA = new JScrollPane(panelA);
-		JScrollPane scrollPaneB = new JScrollPane(panelB);
-
-		// HIDE LEFT SCROLLBAR AND STYLE RIGHT SCROLLBAR
-		scrollPaneA.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-		scrollPaneB.getVerticalScrollBar().setUI(new EJC_GUI.EJCScrollBar());
-
-		// SYNCHRONIZE SCROLLBARS
-		BoundedRangeModel modelA = scrollPaneA.getVerticalScrollBar().getModel();
-		BoundedRangeModel modelB = scrollPaneB.getVerticalScrollBar().getModel();
-
-		modelA.addChangeListener(new ChangeListener()
-		{
-			public void stateChanged(ChangeEvent e)
-			{
-				modelB.setValue(modelA.getValue());
-			}
-		});
-
-		modelB.addChangeListener(new ChangeListener()
-		{
-			public void stateChanged(ChangeEvent e)
-			{
-				modelA.setValue(modelB.getValue());
-			}
-		});
-
-		// DIVIDE FRAME USING SPLITPANE
-		splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-		splitPane.setLeftComponent(scrollPaneA);
-		splitPane.setRightComponent(scrollPaneB);
-		splitPane.setUI(new BasicSplitPaneUI());
 	}
 	
 	private void buildMenuBar()
@@ -189,7 +142,6 @@ public class FrameManager implements ActionListener
 		frame.repaint();
 	}
 	
-
 	/**
 	 * Sets the {@link ElectionHandler} instance that is to be linked to the GUI.
 	 */
@@ -217,5 +169,17 @@ public class FrameManager implements ActionListener
 		{
 			this.electionHandler.restart();
 		}
+		
+		else if (source == rulesItem)
+		{
+			InfoDialogues.displayInfo(InfoDialogues.InfoType.RULES);
+		}
+		
+		else if (source == controlsItem)
+		{
+			InfoDialogues.displayInfo(InfoDialogues.InfoType.CONTROLS);
+		}
+		
+		
 	}
 }

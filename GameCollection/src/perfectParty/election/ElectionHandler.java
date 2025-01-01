@@ -9,6 +9,10 @@ import perfectParty.party.PolicyCollection;
 import perfectParty.party.PolicyPoints;
 import perfectParty.voters.Population;
 
+/**
+ * Main class in charge of handling the election game. Manages communication with the GUI and
+ * all the important subclasses.
+ */
 public class ElectionHandler
 {
 	// POPULATION
@@ -44,35 +48,48 @@ public class ElectionHandler
 		this.parties = new Party[] {cpuParty, playerParty};
 		
 		this.policyCollection = new PolicyCollection();
-		this.currentRound = 20;
+		this.currentRound = 0;
 	}
 	
+	/**
+	 * Restarts the game. Everything is reset.
+	 */
 	public void restart()
 	{
 		this.currentRound = 0;
 		this.population.resetPopulation(random);
-		this.startRound();
+		this.initAndStartRound();
 	}
 	
+	/**
+	 * Prepares variables for the next round and then calls {@link #initAndStartRound()}
+	 */
 	public void nextRound()
 	{
 		this.currentRound += 1;
 		population.growByAndReorganize(POPULATION_GROWTH_FACTOR, random);
-		startRound();
+		initAndStartRound();
 	}
 	
-	public void startRound()
+	/**
+	 * Initializes all variables for the current round and then starts it.
+	 */
+	public void initAndStartRound()
 	{		
 		cpuParty.resetPoints(PolicyPoints.getInitialPoints(INIT_POINTS_CPU + currentRound));
 		playerParty.resetPoints(PolicyPoints.getInitialPoints(INIT_POINTS_PLAYER + currentRound));
 		
-		policyCollection.generateCollection(this.currentRound + 4);
+		policyCollection.generateCollection(6 + this.currentRound);
 		population.generatePreferences(policyCollection, random);
 		cpuParty.distributePoints(policyCollection, population, random);
 		
 		frameManager.displayGameView();
 	}
 	
+	/**
+	 * Runs the election with the points currently allocated by the cpu party and the player party.
+	 * Tells the GUI to update its view.
+	 */
 	public void runElection()
 	{	
 		ElectionResult result = population.vote(parties);

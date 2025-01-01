@@ -33,13 +33,16 @@ public class PartyPanel extends JPanel
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setBackground(ElectionStyle.BACKGROUND_COL);
 
+		// HEADER PANEL
 		JPanel headerPanel = ElectionStyle.buildHeaderPanel(this, party.name);
 		this.add(headerPanel);
 
+		// POINTS PANEL
 		this.pointsLabel = new JLabel("Policy Points: " + party.getNumUnspentPoints());
 		JPanel pointsPanel = ElectionStyle.buildSubHeaderPanel(this, pointsLabel);
 		this.add(pointsPanel);
 		
+		// POLICY PANELS
 		this.policyPanels = new ArrayList<>();
 	}
 	
@@ -75,9 +78,7 @@ public class PartyPanel extends JPanel
 			});
 
 			policyPanel.setLayout(new GridBagLayout());
-	        GridBagConstraints constraints = new GridBagConstraints();
-	        constraints.weightx = 1.0; // Stretch horizontally
-	        constraints.anchor = GridBagConstraints.WEST; // Left-align
+			GridBagConstraints constraints = ElectionStyle.buildPolicyConstraints();
 			policyPanel.add(policyLabel, constraints);
 
 			this.add(policyPanel);
@@ -107,6 +108,10 @@ public class PartyPanel extends JPanel
 		pointsLabel.setText("Policy Points: " + party.getNumUnspentPoints());
 	}
 
+	/**
+	 * Builds a String displaying the amount of points the given {@link Party} has spent on the given {@link Policy}
+	 * graphically.
+	 */
 	public static String getPolicyString(Party party, Policy policy)
 	{
 		int pointsSpent = party.getNumPointsSpentOn(policy);

@@ -62,7 +62,7 @@ public class ElectionResult
 	
 	/**
 	 * Returns the party with the largest number of absolute votes. In the event of a tie, only one party
-	 * is returned. Use {@link breakTieInFavor()} to avoid this behavior.
+	 * is returned. Use {@link #breakTieInFavor(Party favored)} to avoid this behavior.
 	 */
 	public Party getWinner()
 	{

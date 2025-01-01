@@ -4,10 +4,19 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
 
+import javax.swing.BoundedRangeModel;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
+
+import ejcMain.util.EJC_GUI;
 
 /**
  * General style specifications for the {@link EJC_PerfectParty} GUI.
@@ -66,5 +75,58 @@ public class ElectionStyle
 		subHeaderPanel.add(label, BorderLayout.CENTER);
 		
 		return subHeaderPanel;
+	}
+	
+	/**
+	 * Wraps the two given panels in {@link JScrollPane}s with synchronized scroll bars and then adds them to the given
+	 * (empty but already instantiated) {@link JSplitPane}.
+	 */
+	public static void buildSplitScrollPane(JSplitPane splitPane, JPanel panelA, JPanel panelB)
+	{
+		// WRAP PANELS IN SCROLL PANES
+		JScrollPane scrollPaneA = new JScrollPane(panelA);
+		JScrollPane scrollPaneB = new JScrollPane(panelB);
+
+		// HIDE LEFT SCROLLBAR AND STYLE RIGHT SCROLLBAR
+		scrollPaneA.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		scrollPaneB.getVerticalScrollBar().setUI(new EJC_GUI.EJCScrollBar());
+
+		// SYNCHRONIZE SCROLLBARS
+		BoundedRangeModel modelA = scrollPaneA.getVerticalScrollBar().getModel();
+		BoundedRangeModel modelB = scrollPaneB.getVerticalScrollBar().getModel();
+
+		modelA.addChangeListener(new ChangeListener()
+		{
+			public void stateChanged(ChangeEvent e)
+			{
+				modelB.setValue(modelA.getValue());
+			}
+		});
+
+		modelB.addChangeListener(new ChangeListener()
+		{
+			public void stateChanged(ChangeEvent e)
+			{
+				modelA.setValue(modelB.getValue());
+			}
+		});
+
+		// DIVIDE FRAME USING SPLITPANE
+		splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+		splitPane.setLeftComponent(scrollPaneA);
+		splitPane.setRightComponent(scrollPaneB);
+		splitPane.setUI(new BasicSplitPaneUI());
+	}
+	
+	/**
+	 * Builds and returns a {@link GridBagConstraints} instance for policy panels in the 
+	 * PerfectParty presentation style.
+	 */
+	public static GridBagConstraints buildPolicyConstraints()
+	{
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.weightx = 1.0; // Stretch horizontally
+        constraints.anchor = GridBagConstraints.WEST; // Left-align
+        return constraints;
 	}
 }
