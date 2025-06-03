@@ -18,21 +18,6 @@ public enum GameText
 			}
 	),
 	
-	Particles
-	(
-			"     Particles",
-			
-			new String[] 
-			{
-					"PARTICLES",
-					"Press down on your mouse to draw on the particles.",
-					"Keys:",
-					"R - Reset",
-					"",
-					"",
-			}
-	),
-	
 	Sierpinski
 	(
 			"    Sierpinski",

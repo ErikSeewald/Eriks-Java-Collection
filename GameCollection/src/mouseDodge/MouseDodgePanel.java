@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
@@ -187,6 +188,7 @@ public class MouseDodgePanel extends JPanel implements ActionListener{
 	
 	public void paint (Graphics g)
 	{
+		Toolkit.getDefaultToolkit().sync(); // Force flush (for X11)
 		Graphics2D g2D = (Graphics2D) g;
 		Color[] palette = darkMode ? darkPalette : lightPalette;
 		

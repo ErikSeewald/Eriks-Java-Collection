@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -58,6 +59,7 @@ public class RandGrowthPanel extends JPanel
 	
 	public void paint (Graphics g)
 	{
+		Toolkit.getDefaultToolkit().sync(); // Force flush (for X11)
 		Graphics2D g2D = (Graphics2D) g;
 		
 		//BACKGROUND

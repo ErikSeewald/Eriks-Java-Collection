@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -172,6 +173,7 @@ public class PartyResultPanel extends JPanel
 				final int percentage = i;
 				final long currentVotes = (long) ((percentage / (double) finalPercentage) * absoluteVotes);
 
+				Toolkit.getDefaultToolkit().sync(); // Force flush (for X11)
 				SwingUtilities.invokeLater(() -> {
 					progressBar.setValue(percentage);
 					votesLabel.setText(currentVotes + " votes");

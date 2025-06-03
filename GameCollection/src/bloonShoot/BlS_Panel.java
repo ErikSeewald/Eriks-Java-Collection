@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
+
 import javax.swing.JPanel;
 import bloonShoot.hittable.Hittable;
 import bloonShoot.level.LevelHandler;
@@ -89,6 +91,7 @@ public class BlS_Panel extends JPanel
 	
 	public void paint(Graphics g)
 	{
+		Toolkit.getDefaultToolkit().sync(); // Force flush (for X11)
 		Graphics2D g2D = (Graphics2D) g;
 		
 		//BACKGROUND

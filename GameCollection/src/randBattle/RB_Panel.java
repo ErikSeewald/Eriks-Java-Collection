@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -45,6 +46,7 @@ public class RB_Panel extends JPanel
 	
 	public void paint(Graphics g)
 	{
+		Toolkit.getDefaultToolkit().sync(); // Force flush (for X11)
 		Graphics2D g2D = (Graphics2D) g;
 		
 		//Background
@@ -80,6 +82,8 @@ public class RB_Panel extends JPanel
 			g2D.drawString(f.damage+ "dmg", (int) f.x, (int) f.y-10);
 			g2D.drawString(EJC_Util.round(f.moveSpeed,2)+ "speed", (int) f.x, (int) f.y-20);
 			g2D.drawString(EJC_Util.round(f.projectileSpeed,2)+ "dmg speed", (int) f.x, (int) f.y-30);
-		}	
+		}
+		
+
 	}
 }

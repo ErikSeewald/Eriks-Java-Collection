@@ -10,6 +10,8 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.TexturePaint;
+import java.awt.Toolkit;
+
 import javax.swing.JPanel;
 
 import juicePoet.glass.Glass;
@@ -104,6 +106,7 @@ public class JuicePanel extends JPanel
 	@Override
 	public void paint(Graphics g)
 	{
+		Toolkit.getDefaultToolkit().sync(); // Force flush (for X11)
 		Graphics2D g2D = (Graphics2D) g;
 		
 		//BACKGROUND

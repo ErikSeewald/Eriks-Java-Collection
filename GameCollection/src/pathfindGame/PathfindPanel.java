@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.util.Random;
 
 import javax.swing.JPanel;
@@ -102,6 +103,7 @@ public class PathfindPanel extends JPanel
 	
 	public void paint(Graphics g)
 	{	
+		Toolkit.getDefaultToolkit().sync(); // Force flush (for X11)
 		Graphics2D g2D = (Graphics2D) g;
 
 		//BACKGROUND

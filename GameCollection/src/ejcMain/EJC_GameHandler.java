@@ -14,7 +14,6 @@ import juicePoet.EJC_JuicePoet;
 import mouseDodge.EJC_MouseDodge;
 import musicalLogicGates.EJC_MusicalLogicGates;
 import parallelUniverses.EJC_ParallelUniverses;
-import particles.EJC_Particles;
 import pathfindGame.EJC_Pathfind;
 import perfectParty.EJC_PerfectParty;
 import pixelCollision.EJC_PixelCollision;
@@ -35,31 +34,30 @@ public class EJC_GameHandler
 	static
 	{
 		games.add(EJC_Insects.class); 
-		games.add(EJC_Particles.class); 
 		games.add(EJC_Sierpinski.class);
 		games.add(EJC_Pathfind.class); 
-		
 		games.add(EJC_ParallelUniverses.class); 
+		
 		games.add(EJC_ReflectionDemo.class); 
 		games.add(EJC_MouseDodge.class);
 		games.add(EJC_Sidescroller.class); 
+		games.add(EJC_PixelCollision.class);
 		
-		games.add(EJC_PixelCollision.class); 
 		games.add(EJC_ClothSim.class); 
 		games.add(EJC_GravityVectors.class);
 		games.add(EJC_BloonShoot.class); 
+		games.add(EJC_RandBattle.class);
 		
-		games.add(EJC_RandBattle.class); 
 		games.add(EJC_RandGrowth.class); 
 		games.add(EJC_SnakesAndLadders.class);
 		games.add(EJC_BombSorting.class); 
-		
 		games.add(EJC_InfDungeons.class); 
+		
 		games.add(EJC_CheeseBreeder.class); 
 		games.add(EJC_TaxCollector.class);
 		games.add(EJC_Automata.class);
-		
 		games.add(EJC_MusicalLogicGates.class);
+		
 		games.add(EJC_JuicePoet.class);
 		games.add(EJC_PerfectParty.class);
 	}
