@@ -10,7 +10,7 @@ public enum GameText
 			new String[] 
 			{
 					"INSECTS",
-					"Observe as the insects try to survive in this maze",
+					"Observe as the insects try to survive in this maze.",
 					"You can see the current amount of insects in the top left corner.",
 					"Blue areas are sources of water, red ones are food. The number of insects",
 					"changes each round in relation to how many are within these sources.",
@@ -58,7 +58,7 @@ public enum GameText
 					"The red point represents your position in the universe.",
 					"The green point represents your position in the parallel universes.",
 					"Move with W,A,S,D and hold down shift before pressing the keys to move faster.",
-					"Hide the parallel universes by pressing H",
+					"Hide the parallel universes by pressing H.",
 					"",
 			}
 	),
@@ -115,11 +115,11 @@ public enum GameText
 			new String[] 
 			{
 					"PIXEL COLLISION",
-					"Anything you drawn on screen will become a collision object.",
-					"Use the Object Menu in the top left to drawn an object into the rectangle,",
+					"Anything you draw on screen will become a collision object.",
+					"Use the Object Menu in the top left to draw an object into the rectangle,",
 					"save it and then move it with W,A,S,D. Use shift to move faster.",
 					"Use the Pixel Menu to change the size of the pixel grid.",
-					"+/- to change screen size| F - Fly mode | R - Reset | Shift click - Erase pixel",
+					"+/- to change screen size | F - Fly mode | R - Reset | Shift click - Erase pixel",
 			}
 	),
 	
@@ -178,8 +178,8 @@ public enum GameText
 					"Fighters with random sizes, hp, damage, movement speed and projectile speed",
 					"are generated. They pick a random target and try to shoot it until it is",
 					"dead, then they pick a new one. After some time a new batch is born",
-					"with the genes of the remaining Fighters and a bit of mutation. The wait time",
-					"for new batches increases each time. S - Show stats | H - Only show Health",
+					"with the genes of the remaining fighters and a bit of mutation. The wait time",
+					"for new batches increases each time. S - Show stats | H - Only show health",
 			}
 	),
 	
@@ -207,7 +207,7 @@ public enum GameText
 					"SNAKES AND LADDERS",
 					"A classic game of Snakes And Ladders. Set the amount of players and press 'Start'.",
 					"Once you have pressed on the roll button you can either move your player piece with",
-					"the mouse, or you can press on Auto Move and have the piece move for you.",
+					"the mouse or you can press on 'Auto Move' and have the piece move for you.",
 					"Try to reach square 53!",
 					"",
 			}
@@ -220,8 +220,8 @@ public enum GameText
 			new String[]
 			{
 					"BOMB SORTING",
-					"This is a minigame inspired by 'Sort or Splode' from Mario 64 DS",
-					"Sort the bombs by their colors before their countdown reaches zero",
+					"This is a minigame inspired by 'Sort or Splode' from Mario 64 DS.",
+					"Sort the bombs by their colors before their countdown reaches zero.",
 					"Move them by dragging your mouse.",
 					"+/- to change screen size",
 					"",
@@ -298,7 +298,7 @@ public enum GameText
 					"Create logic gate circuits and make them play 'music'. Add gates with the button bar.",
 					"MOUSE CONTROLS: DRAG - Move gate | SHIFT+DRAG - Connect gates | ALT+CLICK",
 					"- Delete gate | CNTRL+CLICK - Switch state of 'IN' gates (instant in edit mode,",
-					"animated in 'playing' mode. In 'playing' mode (PLAY button) you can randomize the",
+					"animated in 'playing' mode). In 'playing' mode (PLAY button) you can randomize the",
 					"sounds of the gates with another button. You can also save and load existing circuits.",
 			}
 	), 
@@ -328,7 +328,7 @@ public enum GameText
 					"Compete against the cpu party in assigning policy points to randomly generated",
 					"policies. Use the voters preferences to make smart choices and win the election.",
 					"Each round introduces more policies and voters. How long can you keep up?",
-					"For further explanation of controls and rules use the 'Info' tab in the game's ",
+					"For further explanation of controls and rules, use the 'Info' tab in the game's ",
 					"menu bar. This game is hard but not impossible.",
 			}
 	);
