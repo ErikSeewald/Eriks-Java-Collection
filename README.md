@@ -3,7 +3,7 @@ This is a collection of my favorite hobby java projects. The main intention here
 The main menu provides a small explanation of each project on mouse hover and can be scaled with +/-.
 
 ## Notes
-- A lot of these projects are quite old as they were my very first programming projects. They are the result of odd choices and a lack of experience.
+- A lot of these projects are quite old as they were my very first programming projects.
 - Some of the newer ones are still quite nice, but may experience issues on Windows 11. I only tested them on Windows 10 and Linux (X11 Graphics).
 - I recommend [CheeseBreeder](#cheesebreeder), [MusicalGates](#musicalgates), [Automata](#automata), and [TaxCollector](#taxcollector)
 
